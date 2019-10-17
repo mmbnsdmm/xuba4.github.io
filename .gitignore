@@ -1,0 +1,50 @@
+# phpstorm project files
+/.idea
+
+# netbeans project files
+/nbproject
+
+# zend studio for eclipse project files
+/.buildpath
+/.project
+/.settings
+
+# Mac DS_Store Files
+/.DS_Store
+
+# code lob ster IDE
+/*.clpprj
+/*.csprj
+
+# KDevelop IDE
+/*.kdev4
+
+# c9 sdk IDE
+/.c9
+
+# ctags
+/.tags
+/.tags_sorted_by_file
+
+# yii console commands
+/yii
+/yii.bat
+
+# composer vendor dir
+/vendor
+
+# composer itself is not needed
+/composer.phar
+/composer.lock
+
+# npm
+/node_modules
+
+# windows thumbnail cache
+Thumbs.db
+
+# 宝塔
+/.htaccess
+/.user.ini
+/404.html
+/index.html

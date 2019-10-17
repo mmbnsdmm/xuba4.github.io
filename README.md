@@ -1,30 +1,53 @@
-# initYii
+# ysxcapi
 
 #### Description
-yii2 init
+yii2 模板
 
 #### Software Architecture
 Software architecture description
 
 #### Installation
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1. download app
+2. `cd path/to/app`
+3. `php init`
+4. `composer install`
+5. set config in `common/config/main-local.php`
 
-#### Instructions
+#### 伪静态
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+##### nginx
 
-#### Contribution
-
-1.  Fork the repository
-2.  Create Feat_xxx branch
-3.  Commit your code
-4.  Create Pull Request
-
+    location / {
+        try_files $uri $uri/ /index.php$is_args$args;
+    }
+    location /home {
+            try_files $uri $uri/ /home/index.php$is_args$args;
+    }
+    
+    location / 
+    {
+         index  index.html index.htm index.php;
+         if (!-e $request_filename) {
+               rewrite ^/(.*)$ /index.php?s=$1 last;
+               rewrite ^/home(.*)$ /home/index.php?s=$1 last;
+               break;
+         }
+         #autoindex  on;
+    }
+    
+##### apache
+    
+    Options +FollowSymLinks
+    IndexIgnore */*
+    RewriteEngine on
+    
+    # if a directory or a file exists, use it directly
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    
+    # otherwise forward it to index.php
+    RewriteRule . index.php
 
 #### Gitee Feature
 

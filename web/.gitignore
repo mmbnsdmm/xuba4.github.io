@@ -1,0 +1,7 @@
+/storage
+/index.php
+*.txt
+!robots.txt
+/*.html
+.user.ini
+assets
