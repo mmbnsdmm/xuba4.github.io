@@ -51,7 +51,7 @@ class User extends \common\models\db\tables\User implements IdentityInterface
 
     public function setToken()
     {
-        Model::setUniqueStrForModelKey($this);
+        Model::setUniqueStrForModelKey($this, 'token');
         $this->key = \Yii::$app->security->generateRandomString();
     }
 }
