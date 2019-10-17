@@ -1,12 +1,10 @@
-/*
-Navicat MySQL Data Transfer
-*/
+-- Adminer 4.6.3 MySQL dump
 
-SET FOREIGN_KEY_CHECKS=0;
+SET NAMES utf8;
+SET time_zone = '+00:00';
+SET foreign_key_checks = 0;
+SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
--- ----------------------------
--- Table structure for log
--- ----------------------------
 DROP TABLE IF EXISTS `log`;
 CREATE TABLE `log` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -20,13 +18,35 @@ CREATE TABLE `log` (
   KEY `idx_log_category` (`category`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT COMMENT='应用log';
 
--- ----------------------------
--- Records of log
--- ----------------------------
 
--- ----------------------------
--- Table structure for user
--- ----------------------------
+DROP TABLE IF EXISTS `log_quene_yii_task`;
+CREATE TABLE `log_quene_yii_task` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` int(11) unsigned NOT NULL,
+  `result_code` int(11) NOT NULL,
+  `result_msg` text NOT NULL,
+  `done_quene_yii_task_ids` text COMMENT '本次完成的所有任务',
+  `failed_quene_yii_task_ids` text COMMENT '本次失败的所以任务',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='yii任务队列执行记录';
+
+
+DROP TABLE IF EXISTS `quene_yii_task`;
+CREATE TABLE `quene_yii_task` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `created_by` int(11) unsigned DEFAULT NULL,
+  `created_at` int(11) unsigned NOT NULL,
+  `run_at` int(11) unsigned DEFAULT NULL COMMENT '执行时间',
+  `status` int(11) NOT NULL DEFAULT '0' COMMENT '状态0:默认进入队列',
+  `route` varchar(100) NOT NULL COMMENT '任务路由',
+  `params` text COMMENT '参数',
+  `error_msg` text COMMENT '运行失败信息',
+  PRIMARY KEY (`id`),
+  KEY `created_by` (`created_by`),
+  CONSTRAINT `quene_yii_task_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='yii任务队列';
+
+
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -44,6 +64,5 @@ CREATE TABLE `user` (
   UNIQUE KEY `token` (`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户';
 
--- ----------------------------
--- Records of user
--- ----------------------------
+
+-- 2019-10-17 05:54:45
