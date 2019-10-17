@@ -1,4 +1,4 @@
-# ysxcapi
+# initYii
 
 #### Description
 yii2 模板
