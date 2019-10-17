@@ -9,6 +9,7 @@ $config = [
     'bootstrap' => [],
     'components' => [
         'user' => [
+            'class' => \wodrow\yii2wtools\rewrite\yii2web\User::class,
             'identityClass' => \common\models\db\User::class,
         ],
         'urlManager' => [

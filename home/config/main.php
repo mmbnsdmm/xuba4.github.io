@@ -18,6 +18,7 @@ $config = [
             'errorAction' => 'site/error',
         ],
         'user' => [
+            'class' => \wodrow\yii2wtools\rewrite\yii2web\User::class,
             'identityClass' => \common\models\db\User::class,
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-home', 'httpOnly' => true],
@@ -26,11 +27,7 @@ $config = [
             'errorAction' => 'site/error',
         ],
     ],
-    'modules' => [
-        'user' => [
-            'class' => \home\modules\user\UserModule::class,
-        ],
-    ],
+    'modules' => [],
     'as check status' => [
         'class' => \home\behaviors\AccessCheck::class,
         'except' => ['site/*', 'debug/*','gii/*','public/*',],

@@ -44,7 +44,6 @@ Yii::$container = new yii\di\Container;
  *
  * @property \wodrow\yii2wtools\rewrite\yii2web\User $user
  * @property string $name
- * @property \common\components\ApiTool $api_tool
  */
 abstract class BaseApplication extends yii\base\Application
 {

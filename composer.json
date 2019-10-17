@@ -12,9 +12,6 @@
     "kartik-v/yii2-widget-select2": "^2.1",
     "kartik-v/yii2-icons": "^1.4",
     "omnilight/yii2-scheduling": "^1.1",
-    "league/flysystem-sftp": "^1.0",
-    "creocoder/yii2-flysystem": "^0.9",
-    "guzzlehttp/guzzle": "^6.3",
     "yii2mod/yii2-array-query": "^1.4",
     "anchnet/aliyun-openapi-php-sdk": "dev-master"
   },
