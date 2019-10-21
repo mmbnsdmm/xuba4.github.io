@@ -24,12 +24,9 @@ api路由文档: <{$dev_url}/route/api>
 
 #### 注册用户
 
-详见[用户注册]({$dev_url}/route/api#/site/signup)
-
 #### 登录
 
-详见[用户账号登录]({$dev_url}/route/api#/site/login1) [手机号快速登录](http://tx.dev.anshuoyun.tk/route/api#/site/login2)
-用于获取 `token` `key` 以及其他用户数据
+获取 `token` `key` 以及其他用户数据
 
 #### 请求数据签名
 
@@ -37,9 +34,9 @@ api路由文档: <{$dev_url}/route/api>
 
 首先需要把你的`token`，`key`，`timestamp`(当前时间戳,保留10位秒数)，`nonce`(随机数)和请求参数组成一个新的对象`{a:1, b:2, token:token, key:key, timestamp: timestamp, nonce:nonce}`
 
-数组按照键名从小到达排序`{a:1, b:2, key:key, nonce:nonce, token:token, timestamp: timestamp}`
+按照键名从小到达排序`{a:1, b:2, key:key, nonce:nonce, token:token, timestamp: timestamp}`
 
-数组按照`key=value`用`&`拼接成新的字符串`a=1&b=2&key=key&nonce=nonce&token=token&timestamp=timestamp`
+按照`key=value`用`&`拼接成新的字符串`a=1&b=2&key=key&nonce=nonce&token=token&timestamp=timestamp`
 
 生成签名`sign=md5(上面生成的字符串)`
 
