@@ -39,7 +39,7 @@ api路由文档: <{$dev_url}/route/api>
 
 数组按照键名从小到达排序`{a:1, b:2, key:key, nonce:nonce, token:token, timestamp: timestamp}`
 
-数组按照`key=value`用`&`拼接成新的字符串`a=1&b=2&key=key&nonce=nonce&token=token&timestamp= timestamp`
+数组按照`key=value`用`&`拼接成新的字符串`a=1&b=2&key=key&nonce=nonce&token=token&timestamp=timestamp`
 
 生成签名`sign=md5(上面生成的字符串)`
 
