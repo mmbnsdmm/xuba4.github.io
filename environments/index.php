@@ -35,9 +35,11 @@ return [
             'web/storage',
             'web/assets',
             'web/home/assets',
+            'web/admin/assets',
             'console/runtime',
             'api/runtime',
             'home/runtime',
+            'admin/runtime',
         ],
         'setExecutable' => [
             'yii',
@@ -45,6 +47,7 @@ return [
         'setCookieValidationKey' => [
             'api/config/main-local.php',
             'home/config/main-local.php',
+            'admin/config/main-local.php',
         ],
     ],
 ];

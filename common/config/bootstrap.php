@@ -6,6 +6,7 @@ Yii::setAlias('@common', $_project_root . '/common');
 Yii::setAlias('@console', $_project_root . '/console');
 Yii::setAlias('@api', $_project_root . '/api');
 Yii::setAlias('@home', $_project_root . '/home');
+Yii::setAlias('@admin', $_project_root . '/admin');
 
 Yii::setAlias('@wroot', $_project_root . '/web');
 Yii::setAlias('@wurl', '/');
@@ -28,4 +29,12 @@ Yii::$container->set(\kartik\icons\FontAwesomeAsset::class, [
     'css' => [
         'https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css',
     ],
+]);
+
+Yii::$container->set(\yii\widgets\LinkPager::class, [
+    'maxButtonCount' => 9,
+    'firstPageLabel' => '首页',
+    'lastPageLabel' => '末页',
+    'prevPageLabel'=>'上一页',
+    'nextPageLabel'=>'下一页',
 ]);

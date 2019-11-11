@@ -6,6 +6,14 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '',
         ],
+        'session' => [
+            'name' => "admin-admin",
+            'timeout' => 86400*365,
+            'cookieParams' => [
+                'lifetime' => 86400*365,
+                'httponly' => true,
+            ],
+        ],
     ],
     'params' => [],
 ];
@@ -22,9 +30,9 @@ if (YII_ENV_DEV) {
         'class' => 'yii\gii\Module',
         'allowedIPs' => ['127.0.0.1', '::1', 'localhost', '192.168.*'],
     ];
-    $config['modules']['gii']['generators']['wodrowmodel'] = [
-        'class' => \wodrow\wajaxcrud\generators\model\Generator::class,
-        'showName' => "model",
+    $config['modules']['gii']['generators']['wodrowwajaxcrud'] = [
+        'class' => \wodrow\wajaxcrud\generators\crud\Generator::class,
+        'showName' => "crud",
     ];
 }
 

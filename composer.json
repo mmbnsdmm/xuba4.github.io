@@ -1,23 +1,26 @@
 {
-  "name": "ysxcapi",
-  "description": "ysxcapi",
+  "name": "initYii",
+  "description": "initYii",
+  "type": "project",
   "require": {
     "php": ">=7.1",
-    "yiisoft/yii2": "^2.0",
-    "wodrow/yii-fast-api": "^0.1",
-    "wodrow/yii2wajaxcrud": "^3.0",
-    "wodrow/yii2wtxtcrawler": "^0.1",
-    "kartik-v/yii2-widget-fileinput": "^1.0",
-    "kartik-v/yii2-field-range": "^1.3",
-    "kartik-v/yii2-widget-select2": "^2.1",
-    "kartik-v/yii2-icons": "^1.4",
-    "omnilight/yii2-scheduling": "^1.1",
+    "yiisoft/yii2": "^2.0.28",
+    "wodrow/yii-fast-api": "^0.1.0",
+    "wodrow/yii2wajaxcrud": "dev-master",
+    "wodrow/yii2wtxtcrawler": "^0.1.14",
+    "wodrow/yii2-wwtree": "dev-master",
+    "kartik-v/yii2-widget-fileinput": "^1.0.9",
+    "kartik-v/yii2-field-range": "^1.3.5",
+    "omnilight/yii2-scheduling": "^1.1.0",
     "yii2mod/yii2-array-query": "^1.4",
-    "anchnet/aliyun-openapi-php-sdk": "dev-master"
+    "geoip2/geoip2": "^2.9.0",
+    "ralouphie/mimey": "^2.1.0",
+    "mdmsoft/yii2-admin": "~2.0",
+    "dmstr/yii2-adminlte-asset": "^2.6.2"
   },
   "require-dev": {
-    "yiisoft/yii2-debug": "^2.1",
-    "yiisoft/yii2-gii": "^2.1"
+    "yiisoft/yii2-debug": "^2.1.11",
+    "yiisoft/yii2-gii": "^2.1.2"
   },
   "config": {
     "process-timeout": 300,
