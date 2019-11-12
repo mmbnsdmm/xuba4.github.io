@@ -171,13 +171,16 @@ class ApiTool extends Component
 
     /**
      * @param User $user
-     * @return array
+     * @return array {'token': "令牌", 'key': "秘钥， 不要泄露", 'username': "用户名", 'email': "邮箱", 'amount': "余额", 'frozen': "冻结资金", 'deposit': 保证金"}
+     *
      */
-    public function AuthReturn($user)
+    public function authReturn($user)
     {
         return [
             'token' => $user->token,
             'key' => $user->key,
+            'username' => $user->username,
+            'email' => $user->email,
             'amount' => $user->amount,
             'frozen' => $user->frozen,
             'deposit' => $user->deposit,

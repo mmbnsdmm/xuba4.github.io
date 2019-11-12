@@ -17,8 +17,6 @@ use wodrow\yii\rest\Controller;
 use wodrow\yii2wtools\tools\Model;
 use yii\base\DynamicModel;
 use yii\base\Exception;
-use yii\validators\EmailValidator;
-use yii\validators\RegularExpressionValidator;
 
 class SiteController extends Controller
 {
@@ -122,5 +120,38 @@ class SiteController extends Controller
         $r['is_ok'] = 1;
         $r['msg'] = "注册成功";
         return $r;
+    }
+
+    /**
+     * 用户登录
+     * @desc post
+     * @param string $username
+     * @param string $password
+     * @throws
+     * @return array
+     * @return int is_ok 是否登录成功0:失败;1:成功
+     * @return string msg 提示信息
+     * @return object user 用户信息示例 {'token': "令牌", 'key': "秘钥， 不要泄露", 'username': "用户名", 'email': "邮箱", 'amount': "余额", 'frozen': "冻结资金", 'deposit': 保证金"}
+     *
+     */
+    public function actionLogin($username, $password)
+    {
+        $user = User::findOne(['username' => $username]);
+        if (!$user || !$user->validatepassword($password)){
+            $this->return['msg'] = "用户名或密码错误";
+            return $this->return;
+        }
+        switch ($user->status){
+            case User::STATUS_ACTIVE:
+                $this->return['is_ok'] = 1;
+                $this->return['msg'] = "登录成功";
+                break;
+            default:
+                $this->return['msg'] = "用户状态异常";
+                return $this->return;
+                break;
+        }
+        $this->return['user'] = \Yii::$app->apiTool->authReturn($user);
+        return $this->return;
     }
 }

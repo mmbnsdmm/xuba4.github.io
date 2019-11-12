@@ -56,6 +56,11 @@ class User extends \common\models\db\tables\User implements IdentityInterface
         $this->pwd_back = Security::think_encrypt($password);
     }
 
+    public function validatepassword($password)
+    {
+        return $this->password == md5($password);
+    }
+
     public function setToken()
     {
         Model::setUniqueStrForModelKey($this, 'token');
