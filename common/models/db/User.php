@@ -25,6 +25,13 @@ class User extends \common\models\db\tables\User implements IdentityInterface
 {
     const STATUS_ACTIVE = 10;
 
+    public static function getStatus()
+    {
+        return [
+            self::STATUS_ACTIVE => "正常",
+        ];
+    }
+
     public static function findIdentity($id)
     {
         return static::findOne($id);

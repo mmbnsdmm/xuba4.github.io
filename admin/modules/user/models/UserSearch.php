@@ -32,8 +32,8 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'status', 'is_courier', 'dot_belong'], 'integer'],
-            [['mobile', 'password', 'pwd_back', 'idcard', 'realname', 'token', 'key', 'auth_key', 'avatar', 'pay_password', 'weixin_uuid', 'alipay_uuid'], 'safe'],
+            [['id', 'status'], 'integer'],
+            [['username', 'email', 'password', 'pwd_back', 'token', 'key', 'auth_key'], 'safe'],
             [['created_at'], 'match', 'pattern' => '/^.+\s\-\s.+$/'],
             [['amount', 'frozen', 'deposit'], 'number'],
         ];
@@ -55,28 +55,21 @@ class UserSearch extends User
         $query->andFilterWhere([
             'id' => $this->id,
             'status' => $this->status,
-            'is_courier' => $this->is_courier,
-            'dot_belong' => $this->dot_belong,
             'amount' => $this->amount,
             'frozen' => $this->frozen,
             'deposit' => $this->deposit,
         ]);
-        $this->filterLike($query, 'mobile');
+        $this->filterLike($query, 'username');
+        $this->filterLike($query, 'email');
         $this->filterLike($query, 'password');
         $this->filterLike($query, 'pwd_back');
-        $this->filterLike($query, 'idcard');
-        $this->filterLike($query, 'realname');
         $this->filterLike($query, 'token');
         $this->filterLike($query, 'key');
-        $this->filterLike($query, 'auth_key');
-        $this->filterLike($query, 'avatar');
-        $this->filterLike($query, 'pay_password');
-        $this->filterLike($query, 'weixin_uuid');
-        $this->filterLike($query, 'alipay_uuid');;
+        $this->filterLike($query, 'auth_key');;
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => ['defaultOrder' => ['id' => SORT_DESC]],
-        ]);
+            ]);
         if (!$this->validate()) {
             return $dataProvider;
         }
@@ -95,7 +88,7 @@ class UserSearch extends User
                 $query->andFilterWhere(['IS', $attribute, new Expression('NULL')]);
                 break;
             case self::EMPTY_STRING:
-                $query->andWhere([$attribute=>'']);
+                $query->andWhere([$attribute => '']);
                 break;
             case self::NO_EMPTY:
                 $query->andWhere(['IS NOT', $attribute, new Expression('NULL')])->andWhere(['<>', $attribute, '']);

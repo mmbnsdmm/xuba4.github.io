@@ -11,7 +11,9 @@ use kartik\form\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'mobile')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
 
@@ -21,33 +23,17 @@ use kartik\form\ActiveForm;
 
     <?= $form->field($model, 'created_at')->textInput() ?>
 
-    <?= $form->field($model, 'idcard')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'realname')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'token')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'key')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'auth_key')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'is_courier')->textInput() ?>
-
-    <?= $form->field($model, 'dot_belong')->textInput() ?>
-
-    <?= $form->field($model, 'avatar')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'amount')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'frozen')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'deposit')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'pay_password')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'weixin_uuid')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'alipay_uuid')->textInput(['maxlength' => true]) ?>
 
   
 	<?php if (!Yii::$app->request->isAjax){ ?>

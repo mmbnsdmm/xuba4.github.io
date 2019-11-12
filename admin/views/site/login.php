@@ -55,9 +55,9 @@ $fieldOptions2 = [
         <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => false]); ?>
 
         <?= $form
-            ->field($model, 'account', $fieldOptions1)
+            ->field($model, 'username', $fieldOptions1)
             ->label(false)
-            ->textInput(['placeholder' => "邮箱或身份证号"]) ?>
+            ->textInput(['placeholder' => "用户名"]) ?>
 
         <?= $form
             ->field($model, 'password', $fieldOptions2)
