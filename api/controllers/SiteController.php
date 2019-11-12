@@ -75,6 +75,15 @@ class SiteController extends Controller
     public function actionSignup($username, $email, $password, $code)
     {
         $r = $this->return;
+        $rules = [
+            ['password', 'string', 'min' => 6, 'max' => 150],
+        ];
+        $model = DynamicModel::validateData(['password' => $password], $rules);
+        if (!$model->validate()){
+            $r['is_ok'] = 0;
+            $r['msg'] = Model::getModelError($model);
+            return $r;
+        }
         if (User::findOne(['username' => $username])){
             $r['msg'] = "用户名已注册";
             return $r;
@@ -172,5 +181,46 @@ class SiteController extends Controller
             throw new ApiException(201911121532, "登录日志保存失败");
         }
         return $this->return;
+    }
+
+    /**
+     * 重置密码
+     * @desc post
+     * @param string $email
+     * @param string $password 新密码
+     * @param string $code 验证码
+     * @return array
+     * @return int is_ok 是否重置成功0:失败;1:成功
+     * @return string msg 提示信息
+     * @throws
+     */
+    public function actionResetPassword($email, $password, $code)
+    {
+        $r = $this->return;
+        $rules = [
+            ['password', 'string', 'min' => 6, 'max' => 150],
+        ];
+        $model = DynamicModel::validateData(['password' => $password], $rules);
+        if (!$model->validate()){
+            $r['is_ok'] = 0;
+            $r['msg'] = Model::getModelError($model);
+            return $r;
+        }
+        $user = User::findOne(['email' => $email]);
+        if (!$user){
+            $r['msg'] = "未找到用户邮箱";
+            return $r;
+        }
+        if (!\Yii::$app->apiTool->validateEmailCode($email, LogEmailSendCode::TYPE_RESET_PASSWORD, $code)){
+            $r['msg'] = "验证码错误或失效";
+            return $r;
+        }
+        $user->setPassword($password);
+        if (!$user->save()){
+            throw new ApiException(201911121541, Model::getModelError($user));
+        }
+        $r['is_ok'] = 1;
+        $r['msg'] = "密码重置成功";
+        return $r;
     }
 }
