@@ -18,7 +18,11 @@ $config = [
             ],
         ],
     ],
-    'modules' => [],
+    'modules' => [
+        'user' => [
+            'class' => \api\modules\user\UserModule::class,
+        ],
+    ],
     'as token check' => [
         'class' => \api\behaviors\TokenCheck::class,
         'except' => [
