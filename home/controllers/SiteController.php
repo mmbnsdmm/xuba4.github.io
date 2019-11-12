@@ -78,6 +78,17 @@ class SiteController extends Controller
         ]);
     }
 
+    public function actionResetPassword()
+    {
+        $model = new FormResetPassword();
+        if ($model->load(\Yii::$app->request->post()) && $model->validate()){
+            if ($model->resetPassword()){
+                return $this->redirect(['login']);
+            }
+        }
+        return $this->render('reset-password', ['model' => $model]);
+    }
+
     public function actionLogout()
     {
         \Yii::$app->user->logout();

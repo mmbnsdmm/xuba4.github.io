@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?=Html::submitButton("登录", ['class' => "btn btn-primary"]) ?>
             <?php ActiveForm::end(); ?>
             <p>
-                忘记密码？请<?=Html::a('重置密码', ['/site/reset-password']) ?>。你也可以<?=Html::a('验证码快速登录', ['site/login2']) ?>。
+                忘记密码？请<?=Html::a('重置密码', ['/site/reset-password']) ?>。
             </p>
         </div>
     </div>
