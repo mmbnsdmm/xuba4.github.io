@@ -23,11 +23,6 @@ use yii\base\Component;
 class ApiTool extends Component
 {
     public $base_uri;
-    public $sms_app_id;
-    public $sms_app_key;
-    public $sms_template_id;
-    public $sms_sign;
-    public $bd_ak;
 
     /**
      * @param $uri

@@ -2,11 +2,11 @@
 /**
  * Created by PhpStorm.
  * User: wodrow
- * Date: 19-4-30
- * Time: 上午8:48
+ * Date: 19-9-26
+ * Time: 下午12:42
  */
 
-namespace admin\models;
+namespace home\models;
 
 
 use common\models\db\LogUserLogin;
@@ -18,24 +18,21 @@ class FormLogin extends Model
 {
     public $username;
     public $password;
-    public $code;
 
     public function attributeLabels()
     {
         return [
             'username' => "用户名",
             'password' => "密码",
-            'code' => "验证码",
         ];
     }
 
     public function rules()
     {
         return [
-            [['username', 'password', 'code'], 'trim'],
-            [['username', 'password', 'code'], 'required'],
+            [['username', 'password',], 'trim'],
+            [['username', 'password',], 'required'],
             ['password', 'validatePassword'],
-            ['code', 'captcha'],
         ];
     }
 
@@ -43,7 +40,7 @@ class FormLogin extends Model
     {
         if (!$this->hasErrors()) {
             $user = User::findOne(['username' => $this->username]);
-            if (!$user || !$user->validatePassword($this->password)) {
+            if (!$user || !$user->validatepassword($this->password)) {
                 $this->addError($attribute, '用户名或密码错误');
             }
             if ($user->status != User::STATUS_ACTIVE){
@@ -55,20 +52,20 @@ class FormLogin extends Model
     public function login()
     {
         $log = new LogUserLogin();
-        $log->from_app = LogUserLogin::FROM_APP_ADMIN;
+        $log->from_app = LogUserLogin::FROM_APP_HOME;
         $log->created_at = YII_BT_TIME;
         $log->param_username = $this->username;
         $log->from_ip = \Yii::$app->request->remoteIP;
         $user = User::findOne(['username' => $this->username]);
-        if ($user) {
-            if (\Yii::$app->user->login($user, 3600 * 2)) {
+        if ($user){
+            if (\Yii::$app->user->login($user, 3600*2)){
                 $log->is_login = LogUserLogin::IS_LOGIN_Y;
             }
-        } else {
+        }else{
             $log->is_login = LogUserLogin::IS_LOGIN_N;
         }
-        if (!$log->save()) {
-            throw new Exception("登录日志保存异常:" . \wodrow\yii2wtools\tools\Model::getModelError($log));
+        if (!$log->save()){
+            throw new Exception("登录日志保存异常:".\wodrow\yii2wtools\tools\Model::getModelError($log));
         }
         return $log->is_login;
     }

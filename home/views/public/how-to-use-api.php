@@ -8,7 +8,7 @@
  */
 $this->title = "如何对接api平台";
 $this->params['breadcrumbs'][] = $this->title;
-$dev_url = \Yii::$app->api_tool->base_uri;
+$dev_url = \Yii::$app->apiTool->base_uri;
 $markdown = <<<STR
 ### 环境配置
 
@@ -26,7 +26,25 @@ api路由文档: <{$dev_url}/route/api>
 
 #### 登录
 
-获取 `token` `key` 以及其他用户数据
+获取 `token` `key` 以及其他用户数据，postman参考代码
+
+```
+if(responseCode.code === 200){
+    console.log(responseBody);
+    var json = JSON.parse(responseBody);
+    if(json.code === 200){
+        if(json.data.is_ok == 1){
+            pm.environment.set('token', json.data.user.token);
+            pm.environment.set('key', json.data.user.key);
+            pm.environment.set('username', json.data.user.username);
+            pm.environment.set('email', json.data.user.email);
+            pm.environment.set('amount', json.data.user.amount);
+            pm.environment.set('frozen', json.data.user.frozen);
+            pm.environment.set('deposit', json.data.user.deposit);
+        }
+    }
+}
+```
 
 #### 请求数据签名
 
@@ -78,6 +96,36 @@ pm.environment.set("timestamp", _timestamp);
 pm.environment.set("nonce", _nonce);
 pm.environment.set("sign", _sign);
 ```
+
+### 参考php的签名方式
+
+```php
+public function generateFormParams(\$user, \$form_params = [])
+{
+    \$form_params['token'] = \$user->token;
+    \$form_params['timestamp'] = YII_BT_TIME;
+    \$form_params['nonce'] = \$form_params['timestamp'].rand(1000, 4000);
+    \$p = \$form_params;
+    \$p['key'] = \$user->key;
+    ksort(\$p);
+    unset(\$p['sign']);
+    \$p_arr = [];
+    foreach (\$p as \$k => \$v) {
+        \$p_arr[] = \$k."=".\$v;
+    }
+    \$p_str = ArrayHelper::arr2str(\$p_arr, '&');
+    \$form_params['sign'] = md5(\$p_str);
+    return \$form_params;
+}
+```
+
+### 响应结果
+
+统一返回字段有`code`,`data`,`message`
+
+请求成功`code`==`200`,`message`==`OK`,`data`==`{详见api文档给出的响应结果}`
+
+异常状态下`code`!=`200`,`message`==`异常信息`,`data`==`{}`
 STR;
 
 ?>

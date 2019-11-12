@@ -11,7 +11,7 @@ namespace home\controllers;
 
 
 use common\models\db\User;
-use home\models\FormLogin1;
+use home\models\FormLogin;
 use home\models\FormLogin2;
 use home\models\FormResetPassword;
 use home\models\FormSignup;
@@ -63,6 +63,19 @@ class SiteController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+
+    public function actionLogin()
+    {
+        $model = new FormLogin();
+        if ($model->load(\Yii::$app->request->post()) && $model->validate()){
+            if ($model->login()){
+                return $this->redirect(['site/index']);
+            }
+        }
+        return $this->render('login', [
+            'model' => $model,
+        ]);
     }
 
     public function actionLogout()

@@ -43,7 +43,7 @@ use wodrow\yii2wtools\tools\JsBlock;
                         <li class="<?=Yii::$app->controller->route == 'user/message/index'?'active':'' ?>"><?=Html::a(\kartik\icons\Icon::show('envelope-o').Html::tag('span', "", ['class' => "label label-warning", 'v-text' => "unread_messages"]), ['/user/message/index']) ?></li>
                         <li class="dropdown">
                             <a class="avatar dropdown-toggle" href="#" data-toggle="dropdown">
-                                <?=$user->mobile ?>
+                                <?=$user->nickname ?>
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">

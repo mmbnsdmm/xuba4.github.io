@@ -19,6 +19,7 @@ use yii\web\IdentityInterface;
  * Class User
  * @package common\models\db
  *
+ * @property-read string $nickname
  * @property QueneYiiTask[] $queneYiiTasks
  */
 class User extends \common\models\db\tables\User implements IdentityInterface
@@ -86,5 +87,13 @@ class User extends \common\models\db\tables\User implements IdentityInterface
     public function getQueneYiiTasks()
     {
         return $this->hasMany(QueneYiiTask::className(), ['created_by' => 'id']);
+    }
+
+    /**
+     * @return string
+     */
+    public function getNickname()
+    {
+        return $this->username;
     }
 }
