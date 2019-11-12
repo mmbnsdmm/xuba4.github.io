@@ -21,7 +21,12 @@ use Yii;
  * @property string $frozen 冻结资金
  * @property string $deposit 保证金
  *
+ * @property AdminAuthAssignment[] $adminAuthAssignments
+ * @property AdminAuthItem[] $itemNames
+ * @property LogEmailSendCode[] $logEmailSendCodes
  * @property QueneYiiTask[] $queneYiiTasks
+ * @property UserFile[] $userFiles
+ * @property UserFile[] $userFiles0
  */
 class User extends \yii\db\ActiveRecord
 {
@@ -39,8 +44,7 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['username'], 'default'],
-            [['email', 'password', 'pwd_back', 'created_at', 'token', 'key', 'auth_key'], 'required'],
+            [['username', 'email', 'password', 'pwd_back', 'created_at', 'token', 'key', 'auth_key'], 'required'],
             [['status', 'created_at'], 'integer'],
             [['amount', 'frozen', 'deposit'], 'number'],
             [['username', 'password', 'token', 'key', 'auth_key'], 'string', 'max' => 32],
@@ -76,8 +80,48 @@ class User extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getAdminAuthAssignments()
+    {
+        return $this->hasMany(AdminAuthAssignment::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getItemNames()
+    {
+        return $this->hasMany(AdminAuthItem::className(), ['name' => 'item_name'])->viaTable('{{%admin_auth_assignment}}', ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLogEmailSendCodes()
+    {
+        return $this->hasMany(LogEmailSendCode::className(), ['created_by' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getQueneYiiTasks()
     {
         return $this->hasMany(QueneYiiTask::className(), ['created_by' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserFiles()
+    {
+        return $this->hasMany(UserFile::className(), ['created_by' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserFiles0()
+    {
+        return $this->hasMany(UserFile::className(), ['updated_by' => 'id']);
     }
 }

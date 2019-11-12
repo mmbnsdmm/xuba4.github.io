@@ -8,33 +8,63 @@
 
 namespace api\controllers;
 
+use common\models\db\AdminAuthAssignment;
+use common\models\db\AdminAuthItem;
+use common\models\db\LogEmailSendCode;
 use common\models\db\User;
 use wodrow\yii\rest\ApiException;
 use wodrow\yii\rest\Controller;
 use wodrow\yii2wtools\tools\Model;
+use yii\base\DynamicModel;
+use yii\base\Exception;
+use yii\validators\EmailValidator;
+use yii\validators\RegularExpressionValidator;
 
 class SiteController extends Controller
 {
     /**
-     * 测试
+     * 发送邮箱验证码
      * @desc psot
+     * @param string $email
+     * @param string $typeKey 注册:1;登录:2;重置密码:3
      * @return array
-     * @return string str
-     * @return array list
+     * @return int is_ok 是否发送成功
+     * @return string msg
+     * @throws
      */
-    public function actionTest()
+    public function actionSendEmailCode($email, $typeKey)
     {
-        return [
-            'str' => "test",
-            'list' => [
-                ['k' => "v"],
-            ],
+        $r = $this->return;
+        $rules = [
+            ['email', 'string', 'max' => 150],
+            ['email', 'email'],
         ];
+        switch ($typeKey){
+            case LogEmailSendCode::TYPE_SIGNUP:
+                $rules[] = ['email', 'unique', 'targetClass' => User::class, 'targetAttribute' => "email"];
+                break;
+            case LogEmailSendCode::TYPE_LOGIN:
+            case LogEmailSendCode::TYPE_RESET_PASSWORD:
+            $rules[] = ['email', 'exist', 'targetClass' => User::class, 'targetAttribute' => "email"];
+                break;
+            default:
+                throw new ApiException(201911121120, "验证码类型未设置");
+                break;
+        }
+        $model = DynamicModel::validateData(['email' => $email], $rules);
+        if (!$model->validate()){
+            $r['is_ok'] = 0;
+            $r['msg'] = Model::getModelError($model);
+            return $r;
+        }
+        $r = \Yii::$app->apiTool->sendEmailCode($email, $typeKey, 2);
+        return $r;
     }
 
     /**
      * 用户注册
      * @desc post
+     * @param string $username
      * @param string $email
      * @param string $password
      * @param string $code 详见发送验证码
@@ -42,23 +72,26 @@ class SiteController extends Controller
      * @return array
      * @return int is_ok 是否注册成功0:失败;1:成功
      * @return string msg 提示信息
-     * @return object user 用户信息示例 {'token': "令牌",'key': "秘钥，不要泄露",'email': "邮箱",'avatar': "头像",'idcard': "身份证号",'realname': "真实姓名",'is_courier': "是否快递员",'dot_belong': "所属网点id",'amount': "余额",'frozen': "冻结资金",'deposit': 保证金"}
-     *
      */
-    public function actionSignup($email, $password, $code)
+    public function actionSignup($username, $email, $password, $code)
     {
         $r = $this->return;
-        if (User::findOne(['mobile' => $email])){
+        if (User::findOne(['username' => $username])){
+            $r['msg'] = "用户名已注册";
+            return $r;
+        }
+        if (User::findOne(['email' => $email])){
             $r['msg'] = "此邮箱已注册";
             return $r;
         }
-        if (!\Yii::$app->apiTool->validateSmsCode($email, Enum::SMS_CODE_KEY_SIGNUP, $code)){
+        if (!\Yii::$app->apiTool->validateEmailCode($email, LogEmailSendCode::TYPE_SIGNUP, $code)){
             $r['msg'] = "验证码错误或失效";
             return $r;
         }
         $trans = \Yii::$app->db->beginTransaction();
         try {
             $user = new User();
+            $user->username = $username;
             $user->email = $email;
             $user->setPassword($password);
             $user->auth_key = \Yii::$app->security->generateRandomString();
@@ -86,10 +119,8 @@ class SiteController extends Controller
             $trans->rollBack();
             throw $e;
         }
-        $user = \Yii::$app->apiTool->AuthReturn($user);
-        $r['is_joined'] = 1;
+        $r['is_ok'] = 1;
         $r['msg'] = "注册成功";
-        $r['user'] = $user;
         return $r;
     }
 }

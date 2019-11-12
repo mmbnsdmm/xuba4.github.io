@@ -10,6 +10,7 @@ namespace common\components;
 
 
 use common\data\Enum;
+use common\models\db\LogEmailSendCode;
 use common\models\db\User;
 use common\models\db\UserFile;
 use GuzzleHttp\Client;
@@ -28,6 +29,12 @@ class ApiTool extends Component
     public $sms_sign;
     public $bd_ak;
 
+    /**
+     * @param $uri
+     * @param $form_params
+     * @return mixed
+     * @throws
+     */
     public function post($uri, $form_params)
     {
         $client = new Client(['base_uri' => $this->base_uri, 'verify'=>false]);
@@ -39,6 +46,10 @@ class ApiTool extends Component
         return json_decode($resp_content, true);
     }
 
+    /**
+     * @param $form_params
+     * @return array
+     */
     public function signFormParams($form_params)
     {
         if (!\Yii::$app->user->isGuest){
@@ -48,6 +59,11 @@ class ApiTool extends Component
         return $form_params;
     }
 
+    /**
+     * @param $user
+     * @param array $form_params
+     * @return array
+     */
     public function generateFormParams($user, $form_params = [])
     {
         $form_params['token'] = $user->token;
@@ -67,7 +83,7 @@ class ApiTool extends Component
     }
 
     /**
-     * @param $mobile
+     * @param $email
      * @param int $timeout
      * @param $smsCodeKey
      * @return array|mixed
@@ -75,64 +91,71 @@ class ApiTool extends Component
      * @return string msg
      * @throws
      */
-    public function sendSmsCode($mobile, $timeout = 2, $smsCodeKey)
+    public function sendEmailCode($email, $typeKey, $timeout = 10)
     {
         $r = [
             'is_ok' => 0,
             'msg' => "",
         ];
-        $keys = Enum::getSmsCodeKeys();
-        $val = $keys[$smsCodeKey];
-        $query = LogSmsSendCode::find()->where(['nation_code' => LogSmsSendCode::NATION_CODE_CHINA, 'to_mobile' => $mobile, 'sms_key' => $smsCodeKey]);
+        $types = LogEmailSendCode::getTypes();
+        $val = $types[$typeKey];
+        $query = LogEmailSendCode::find()->where(['to' => $email, 'type' => $typeKey]);
         $send_total_in24 = $query->andWhere(['>', 'created_at', YII_BT_TIME - 86400])->count();
         if ($send_total_in24 >= 3){
-            $r['msg'] = "24小时之内相同手机号发送{$val}验证码不能超过3次";
+            $r['msg'] = "24小时之内相同邮箱发送{$val}验证码不能超过3次";
             return $r;
         }
         $lastSendLog = $query->orderBy(['id' => SORT_DESC])->one();
-        if (YII_BT_TIME - $lastSendLog->created_at < 60 * $timeout){
-            $r['msg'] = "{$timeout}分钟之内相同手机号不能重复发送{$val}验证码";
+        if ($lastSendLog && YII_BT_TIME - $lastSendLog->created_at < 60 * $timeout){
+            $r['msg'] = "{$timeout}分钟之内相同邮箱不能重复发送{$val}验证码";
             return $r;
         }
-        $code = rand(1000, 9999);
-        $log = new LogSmsSendCode();
+        $mail = \Yii::$app->mailer->compose();
+        $log = new LogEmailSendCode();
         $log->created_at = YII_BT_TIME;
-        $log->nation_code = (string)LogSmsSendCode::NATION_CODE_CHINA;
-        $log->to_mobile = (string)$mobile;
-        $log->sms_key = $smsCodeKey;
-        $log->code = (string)$code;
-        $log->platform = LogSmsSendCode::PLATFORM_TENCENT;
-        $log->params = json_encode([
-            'sms_app_id' => $this->sms_app_id,
-            'sms_template_id' => $this->sms_template_id,
-            'timeout' => $timeout,
-        ], JSON_UNESCAPED_UNICODE);
+        $log->subject = "{$val}验证码";
+        $log->from = json_encode($mail->getFrom(), JSON_UNESCAPED_UNICODE);
+        $log->to = $email;
+        $log->type = $typeKey;
+        $log->code = \Yii::$app->security->generateRandomString();
         if (YII_ENV_DEV){
-            $_r = [];
-            $_r['result'] = 0;
+            $log->status = LogEmailSendCode::STATUS_SEND_SUCCESS;
+            $r['is_ok'] = 1;
+            $r['msg'] = "测试环境{$val}验证码为：{$log->code}，正式环境会直接把验证码发送到邮箱";
         }else{
-            $sms = new SmsSingleSender($this->sms_app_id, $this->sms_app_key);
-            $result = $sms->sendWithParam($log->nation_code, $mobile, $this->sms_template_id,
-                [$code, $timeout], $this->sms_sign);
-            $_r = json_decode($result, true);
+            $mail->setTo($log->to);
+            $mail->setSubject($log->subject);
+            $mail->setTextBody($log->code);
+            $_r = $mail->send();
+            if ($_r){
+                $r['is_ok'] = 1;
+                $r['msg'] = "发送{$val}验证码成功";
+                $log->status = LogEmailSendCode::STATUS_SEND_SUCCESS;
+            }else{
+                $r['is_ok'] = 0;
+                $r['msg'] = "发送{$val}验证码失败";
+            }
         }
-        $log->result = json_encode($_r, JSON_UNESCAPED_UNICODE);
+        $log->params = json_encode([
+            'timeout' => $timeout,
+            'msg' => $r['msg'],
+        ], JSON_UNESCAPED_UNICODE);
         if (!$log->save()){
-            throw new ApiException(201910251414, "验证码发送日志保存失败:".Model::getModelError($log));
-        }
-        if (isset($_r['result']) && $_r['result'] == 0){
-            $r['is_send'] = 1;
-            $r['msg'] = "{$val}验证码发送成功";
-            if (YII_ENV_DEV)$r['msg'] = "测试环境{$val}验证码为{$code}，正式环境会直接把验证码发送到手机";
-        }else{
-            $r['msg'] = $_r['errmsg'];
+            $r['is_ok'] = 0;
+            $r['msg'] = Model::getModelError($log);
         }
         return $r;
     }
 
-    public function validateSmsCode($mobile, $smsCodeKey, $code)
+    /**
+     * @param $email
+     * @param $typeKey
+     * @param $code
+     * @return bool
+     */
+    public function validateEmailCode($email, $typeKey, $code)
     {
-        $query = LogSmsSendCode::find()->where(['nation_code' => LogSmsSendCode::NATION_CODE_CHINA, 'to_mobile' => $mobile, 'sms_key' => $smsCodeKey]);
+        $query = LogEmailSendCode::find()->where(['to' => $email, 'type' => $typeKey]);
         $lastSendLog = $query->orderBy(['id' => SORT_DESC])->one();
         if (!$lastSendLog){
             return false;

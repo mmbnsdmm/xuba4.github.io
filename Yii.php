@@ -43,6 +43,7 @@ Yii::$container = new yii\di\Container;
  * files. This property is read-only.
  *
  * @property \wodrow\yii2wtools\rewrite\yii2web\User $user
+ * @property \common\components\ApiTool $apiTool
  * @property string $name
  */
 abstract class BaseApplication extends yii\base\Application
