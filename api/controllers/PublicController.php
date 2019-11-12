@@ -8,25 +8,22 @@
 
 namespace api\controllers;
 
-use wodrow\yii\rest\ApiException;
+use common\models\db\LogEmailSendCode;
 use wodrow\yii\rest\Controller;
 
 class PublicController extends Controller
 {
     /**
-     * 测试
+     * 获取邮箱验证码类型列表
      * @desc psot
      * @return array
-     * @return string str
-     * @return array list
+     * @return array types 验证码类型数组
      */
-    public function actionTest()
+    public function actionGetEmailSendCodeTypes()
     {
+        $types = LogEmailSendCode::getTypes();
         return [
-            'str' => "test",
-            'list' => [
-                ['k' => "v"],
-            ],
+            'types' => $types,
         ];
     }
 }
