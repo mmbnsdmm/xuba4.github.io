@@ -11,6 +11,7 @@ namespace api\controllers;
 use common\models\db\AdminAuthAssignment;
 use common\models\db\AdminAuthItem;
 use common\models\db\LogEmailSendCode;
+use common\models\db\LogUserLogin;
 use common\models\db\User;
 use wodrow\yii\rest\ApiException;
 use wodrow\yii\rest\Controller;
@@ -136,11 +137,20 @@ class SiteController extends Controller
      */
     public function actionLogin($username, $password)
     {
+        $log = new LogUserLogin();
+        $log->from_app = LogUserLogin::FROM_APP_API;
+        $log->created_at = YII_BT_TIME;
+        $log->param_username = $username;
         $user = User::findOne(['username' => $username]);
         if (!$user || !$user->validatepassword($password)){
             $this->return['msg'] = "用户名或密码错误";
+            $log->is_login = LogUserLogin::IS_LOGIN_N;
+            if (!$log->save()){
+                throw new ApiException(201911121530, "登录日志保存失败");
+            }
             return $this->return;
         }
+        $log->created_by = $user->id;
         switch ($user->status){
             case User::STATUS_ACTIVE:
                 $this->return['is_ok'] = 1;
@@ -148,10 +158,19 @@ class SiteController extends Controller
                 break;
             default:
                 $this->return['msg'] = "用户状态异常";
+                $log->is_login = LogUserLogin::IS_LOGIN_N;
+                if (!$log->save()){
+                    throw new ApiException(201911121531, "登录日志保存失败");
+                }
                 return $this->return;
                 break;
         }
         $this->return['user'] = \Yii::$app->apiTool->authReturn($user);
+        $log->is_login = LogUserLogin::IS_LOGIN_Y;
+        $log->from_ip = \Yii::$app->request->remoteIP;
+        if (!$log->save()){
+            throw new ApiException(201911121532, "登录日志保存失败");
+        }
         return $this->return;
     }
 }
