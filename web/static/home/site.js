@@ -15,7 +15,8 @@ var vue_body = new Vue({
         dot_belong: "",
         amount: "",
         frozen: "",
-        deposit: ""
+        deposit: "",
+        reg_email: /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
     },
     methods: {
         signFormParams: function(form_params = {}){

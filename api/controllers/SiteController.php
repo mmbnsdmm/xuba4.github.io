@@ -76,7 +76,7 @@ class SiteController extends Controller
     {
         $r = $this->return;
         $rules = [
-            ['password', 'string', 'min' => 6, 'max' => 150],
+            [['username', 'password'], 'string', 'min' => 6, 'max' => 150],
         ];
         $model = DynamicModel::validateData(['password' => $password], $rules);
         if (!$model->validate()){
@@ -209,6 +209,10 @@ class SiteController extends Controller
         $user = User::findOne(['email' => $email]);
         if (!$user){
             $r['msg'] = "未找到用户邮箱";
+            return $r;
+        }
+        if ($user->status != User::STATUS_ACTIVE){
+            $r['msg'] = "用户非正常状态";
             return $r;
         }
         if (!\Yii::$app->apiTool->validateEmailCode($email, LogEmailSendCode::TYPE_RESET_PASSWORD, $code)){

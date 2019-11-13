@@ -2,20 +2,20 @@
 /**
  * Created by PhpStorm.
  * User: wodrow
- * Date: 19-9-26
- * Time: 下午3:24
+ * Date: 19-9-25
+ * Time: 下午5:29
  */
 
 namespace home\models;
 
 
-use common\models\db\LogEmailSendCode;
 use common\models\db\User;
 use yii\base\Model;
 
-class FormResetPassword extends Model
+class FormSignup extends Model
 {
     public $email;
+    public $username;
     public $code;
     public $password;
     public $repassword;
@@ -24,6 +24,7 @@ class FormResetPassword extends Model
     {
         return [
             'email' => "邮箱",
+            'username' => "用户名",
             'password' => "密码",
             'repassword' => "确认密码",
             'code' => "验证码",
@@ -35,17 +36,18 @@ class FormResetPassword extends Model
         return [
             [['email','password', 'repassword', 'code'], 'trim'],
             [['email','password', 'repassword', 'code'], 'required'],
-            ['email', 'exist', 'targetClass' => User::class, 'targetAttribute' => 'email'],
+            ['email', 'unique', 'targetClass' => User::class, 'targetAttribute' => 'email'],
             ['email', 'email'],
-            ['password', 'string', 'min' => 6],
+            ['username', 'unique', 'targetClass' => User::class, 'targetAttribute' => 'username'],
+            [['username', 'password'], 'string', 'min' => 6, 'max' => 150],
             ['repassword', 'compare', 'compareAttribute' => 'password'],
             ['code', 'string', 'min' => 32, 'max' => 32],
         ];
     }
 
-    public function resetPassword()
+    public function signUp()
     {
-        $r = \Yii::$app->apiTool->post('site/reset-password', ['email' => $this->email, 'password' => $this->password, 'code' => $this->code]);
+        $r = \Yii::$app->apiTool->post('site/signup', ['email' => $this->email, 'username' => $this->username, 'password' => $this->password, 'code' => $this->code]);
         if ($r['code'] != 200){
             \Yii::$app->session->addFlash('error', $r['message']);
             return false;
@@ -54,7 +56,7 @@ class FormResetPassword extends Model
             \Yii::$app->session->addFlash('error', $r['data']['msg']);
             return false;
         }
-        \Yii::$app->session->addFlash('success', "重置密码成功");
+        \Yii::$app->session->addFlash('success', "注册成功");
         return true;
     }
 }

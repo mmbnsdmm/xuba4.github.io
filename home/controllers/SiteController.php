@@ -17,6 +17,7 @@ use home\models\FormResetPassword;
 use home\models\FormSignup;
 use xj\oauth\QqAuth;
 use xj\oauth\WeiboAuth;
+use yii\captcha\CaptchaAction;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -57,7 +58,23 @@ class SiteController extends Controller
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
+            'captcha' => [
+                'class' => CaptchaAction::class,
+                'maxLength' => 4, //生成的验证码最大长度
+                'minLength' => 4  //生成的验证码最短长度
+            ],
         ];
+    }
+
+    public function actionSignup()
+    {
+        $model = new FormSignup();
+        if ($model->load(\Yii::$app->request->post()) && $model->validate()){
+            if ($model->signup()){
+                return $this->redirect(['login']);
+            }
+        }
+        return $this->render('signup', ['model' => $model]);
     }
 
     public function actionIndex()

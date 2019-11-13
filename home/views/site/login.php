@@ -7,10 +7,11 @@
  */
 /**
  * @var \yii\web\View $this
- * @var \home\models\FormLogin1 $model
+ * @var \home\models\FormLogin $model
  */
 use yii\helpers\Html;
 use kartik\form\ActiveForm;
+use yii\captcha\Captcha;
 $this->title = "登录";
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -21,6 +22,21 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php $form = ActiveForm::begin(); ?>
             <?=$form->field($model, 'username')->textInput(['placeholder' => "用户名"]) ?>
             <?=$form->field($model, 'password')->passwordInput() ?>
+            <div class="row">
+                <div class="col-xs-8">
+                    <?= $form->field($model, 'code')->widget(Captcha::class, [
+                        'options' => [
+//                        'class' => 'input-text size-L',
+                            'style' => 'width:80px;',
+                            'placeholder' => '输入验证码',
+                        ],
+                        'imageOptions' => [
+                            'class' => "pull-left",
+                            'style' => 'width:100px;height:34px;',
+                        ],
+                    ])->label(false) ?>
+                </div>
+            </div>
             <?=Html::submitButton("登录", ['class' => "btn btn-primary"]) ?>
             <?php ActiveForm::end(); ?>
             <p>

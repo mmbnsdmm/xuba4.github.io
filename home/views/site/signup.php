@@ -6,36 +6,37 @@
  * Time: 下午5:36
  */
 /**
- * @var \home\models\FormResetPassword $model
+ * @var \home\models\FormSignup $model
  */
 use yii\helpers\Html;
 use kartik\form\ActiveForm;
 use wodrow\yii2wtools\tools\JsBlock;
 
-$this->title = "重置密码";
+$this->title = "注册";
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-    <div class="site-reset-password" v-cloak>
-        <div class="row">
-            <div class="col-sm-5">
-                <?php $form = ActiveForm::begin(); ?>
-                <?=$form->field($model, 'email')->textInput(['v-model' => "email", 'type' => "email"]) ?>
-                <?=$form->field($model, 'password')->passwordInput() ?>
-                <?=$form->field($model, 'repassword')->passwordInput() ?>
-                <?=$form->field($model, 'code')->textInput(['placeholder' => "验证码"]) ?>
-                <?=Html::button("发送验证码{{count}}", ['class' => "btn btn-default", '@click' => "sendCode", ':disabled'=>"is_disabled"]) ?>
-                <?=Html::submitButton("重置密码", ['class' => "btn btn-primary"]) ?>
-                <?php ActiveForm::end(); ?>
-            </div>
+<div class="site-signup" v-cloak>
+    <div class="row">
+        <div class="col-sm-5">
+            <?php $form = ActiveForm::begin(); ?>
+            <?=$form->field($model, 'email')->textInput(['v-model' => "email"]) ?>
+            <?=$form->field($model, 'username')->textInput() ?>
+            <?=$form->field($model, 'password')->passwordInput() ?>
+            <?=$form->field($model, 'repassword')->passwordInput() ?>
+            <?=$form->field($model, 'code')->textInput(['placeholder' => "验证码"]) ?>
+            <?=Html::button("发送验证码{{count}}", ['class' => "btn btn-default", '@click' => "sendCode", ':disabled'=>"is_disabled"]) ?>
+            <?=Html::submitButton("注册", ['class' => "btn btn-primary"]) ?>
+            <?php ActiveForm::end(); ?>
         </div>
     </div>
+</div>
 
 
 <?php JsBlock::begin(); ?>
     <script>
-        let reset_password = new Vue({
-            el: ".site-reset-password",
+        let signup = new Vue({
+            el: ".site-signup",
             data: {
                 email: "<?=$model->email ?>",
                 count: "",
@@ -46,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     let _this = this;
                     let email_reg = vue_body.reg_email;
                     if (!email_reg.test(this.email)){
-                        alert("邮箱地址错误");
+                        alert("邮箱错误");
                         return ;
                     }
                     $.ajax({
@@ -54,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         type: "post",
                         data: {
                             email: this.email,
-                            typeKey: 3,
+                            typeKey: 1
                         },
                         dataType: "json",
                         success: function (msg) {

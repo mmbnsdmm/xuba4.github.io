@@ -43,11 +43,15 @@ class FormLogin extends Model
     {
         if (!$this->hasErrors()) {
             $user = User::findOne(['username' => $this->username]);
-            if (!$user || !$user->validatePassword($this->password)) {
+            if (!$user){
                 $this->addError($attribute, '用户名或密码错误');
-            }
-            if ($user->status != User::STATUS_ACTIVE){
-                $this->addError($attribute, '用户未激活');
+            }else{
+                if (!$user->validatePassword($this->password)) {
+                    $this->addError($attribute, '用户名或密码错误');
+                }
+                if ($user->status != User::STATUS_ACTIVE){
+                    $this->addError($attribute, '用户未激活');
+                }
             }
         }
     }
@@ -63,6 +67,7 @@ class FormLogin extends Model
         if ($user) {
             if (\Yii::$app->user->login($user, 3600 * 2)) {
                 $log->is_login = LogUserLogin::IS_LOGIN_Y;
+                $log->created_by = $user->id;
             }
         } else {
             $log->is_login = LogUserLogin::IS_LOGIN_N;
