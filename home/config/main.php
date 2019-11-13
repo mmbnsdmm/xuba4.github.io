@@ -27,7 +27,11 @@ $config = [
             'errorAction' => 'site/error',
         ],
     ],
-    'modules' => [],
+    'modules' => [
+        'user' => [
+            'class' => \home\modules\user\UserModule::class,
+        ],
+    ],
     'as check status' => [
         'class' => \home\behaviors\AccessCheck::class,
         'except' => ['site/*', 'debug/*','gii/*','public/*',],
