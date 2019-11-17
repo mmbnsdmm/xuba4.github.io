@@ -24,6 +24,9 @@ class TokenCheck extends ActionFilter
     public function beforeAction($action)
     {
         $params = \Yii::$app->request->post();
+        if (isset($params['key'])){
+            throw new ApiException(201808161401, '请不要传key，会有安全隐患');
+        }
         if (!isset($params['token'])) {
             throw new ApiException(201808161402, '请求必须有认证口令');
         }
