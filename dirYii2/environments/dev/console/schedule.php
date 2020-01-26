@@ -1,6 +1,6 @@
 <?php
 /**
- * @var \omnilight\scheduling\Schedule $schedule
+ * @var \wodrow\scheduling\Schedule $schedule
  */
 /**
  * 任务调度

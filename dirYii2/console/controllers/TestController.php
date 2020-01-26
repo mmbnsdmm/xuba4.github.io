@@ -9,14 +9,14 @@
 namespace console\controllers;
 
 
-use common\models\db\BaseArea;
-use common\models\db\LogRealnameValidate;
-use common\models\db\QueneYiiTask;
 use yii\console\Controller;
 
 class TestController extends Controller
 {
-    public function actionTest6()
+    /**
+     * php yii test/test
+     */
+    public function actionTest()
     {
         var_dump(YII_BT_TIME + 86400*30);
     }
