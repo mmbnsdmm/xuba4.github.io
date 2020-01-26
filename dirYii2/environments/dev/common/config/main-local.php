@@ -24,11 +24,12 @@ return [
         ],
         'apiTool' => [
             'class' => \common\components\ApiTool::class,
-            'base_uri' => "http://initYii.bnsdmm.tk",
+            'base_uri' => "http://",
         ],
     ],
     'aliases' => [
         '@bower' => "@vendor/bower",
+        '@npm'   => "@vendor/npm",
 //        '@npm'   => "@vendor/npm-asset",
     ],
     'params' => [

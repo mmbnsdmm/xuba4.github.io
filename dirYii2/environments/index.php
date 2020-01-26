@@ -36,6 +36,7 @@ return [
             'web/assets',
             'web/home/assets',
             'web/admin/assets',
+            'web/api/assets',
             'console/runtime',
             'api/runtime',
             'home/runtime',

@@ -9,7 +9,7 @@ Software architecture description
 #### Installation
 
 1. download app
-2. `cd path/to/app`
+2. `cd path/to/dirYii2`
 3. `php init`
 4. `composer install`
 5. set config in `common/config/main-local.php`
@@ -21,8 +21,8 @@ Software architecture description
     location / {
         try_files $uri $uri/ /index.php$is_args$args;
     }
-    location /home {
-            try_files $uri $uri/ /home/index.php$is_args$args;
+    location /app_dir {
+            try_files $uri $uri/ /app_dir/index.php$is_args$args;
     }
     
     location / 
@@ -30,7 +30,7 @@ Software architecture description
          index  index.html index.htm index.php;
          if (!-e $request_filename) {
                rewrite ^/(.*)$ /index.php?s=$1 last;
-               rewrite ^/home(.*)$ /home/index.php?s=$1 last;
+               rewrite ^/app_dir(.*)$ /app_dir/index.php?s=$1 last;
                break;
          }
          #autoindex  on;
