@@ -43,6 +43,14 @@ document.addEventListener('plusready', function () {
             }
         }
     };
+    if (!lastVersion){
+        Dialog.confirm({
+            title: "网络异常",
+            message: "未连接网络，请检查网络"
+        }).then(() => {
+            plus.runtime.quit();
+        })
+    }
     if (lastVersion !== process.env.VUE_APP_VERSION) {
         Config.init();
         if (forceUpdate){

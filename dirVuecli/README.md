@@ -1,4 +1,4 @@
-# xuba3app
+# inityiiapp
 
 ## Project setup
 ```

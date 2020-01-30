@@ -1,12 +1,12 @@
 {
     "@platforms" : [ "android", "iPhone", "iPad" ],
-    "id" : "H5678E34F", /*应用的标识*/
-    "name" : "YY故事汇", /*应用名称，程序桌面图标名称*/
+    "id" : "inityiiapp", /*应用的标识*/
+    "name" : "inityiiapp", /*应用名称，程序桌面图标名称*/
     "version" : {
-        "name" : "3.0.1", /*应用版本名称*/
-        "code" : 3
+        "name" : "1.0.0", /*应用版本名称*/
+        "code" : 1
     },
-    "description" : "续吧", /*应用描述信息*/
+    "description" : "inityiidesc", /*应用描述信息*/
     "icons" : {
         "72" : "icon.png"
     },
