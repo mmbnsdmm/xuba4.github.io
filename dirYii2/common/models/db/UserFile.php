@@ -2,6 +2,7 @@
 
 namespace common\models\db;
 
+use Mimey\MimeTypes;
 use wodrow\yii\rest\ApiException;
 use wodrow\yii2wtools\tools\FileHelper;
 use wodrow\yii2wtools\tools\Model;
@@ -32,7 +33,7 @@ class UserFile extends \common\models\db\tables\UserFile
      * @return mixed
      * @throws
      */
-    public static function upload($filename, $extension, $content = null, $tmp_file = null)
+    public function upload($filename, $extension, $content = null, $tmp_file = null)
     {
         if (!$filename){
             $filename = \Yii::$app->security->generateRandomString().".{$extension}";
@@ -86,6 +87,108 @@ class UserFile extends \common\models\db\tables\UserFile
             }
         }
         return \Yii::$app->request->hostInfo.$uf_path;
+    }
+
+    /**
+     * @param null $base64
+     * @param null $url
+     * @param int $url_file_download
+     * @return array
+     * @throws
+     */
+    public function fileSave($base64 = null, $base64s = null, $url = null, $urls = null, $url_file_download = 0)
+    {
+        $r = [
+            'is_ok' => 0,
+            'msg' => "失败",
+        ];
+        $rurl = [];
+        if ($base64){
+            $rurl[] = $this->_fileSaveBase64($base64);
+        }elseif($base64s){
+            foreach ($base64s as $k => $v){
+                $rurl[] = $this->_fileSaveBase64($v);
+            }
+        }else{
+            if ($url){
+                $rurl[] = $this->_fileSaveUrl($url, $url_file_download);
+            }elseif($urls){
+                foreach ($urls as $k => $v){
+                    $rurl[] = $this->_fileSaveUrl($v, $url_file_download);
+                }
+            }else{
+                if ($_FILES){
+                    if (!isset($_FILES['ufile'])){
+                        $r['msg'] = "表单字段必须为ufile或ufile[]";
+                        return $r;
+                    }
+                    $ufile = $_FILES['ufile'];
+                    $ufiles = [];
+                    if (is_array($ufile['name'])){
+                        $total = count($ufile['name']);
+                        $keys = array_keys($ufile);
+                        for ($i = 0; $i < $total; $i++){
+                            $x = [];
+                            foreach ($keys as $k => $v){
+                                $x[$v] = $ufile[$v][$i];
+                            }
+                            $ufiles[] = $x;
+                        }
+                    }else{
+                        $ufiles[] = $ufile;
+                    }
+                    foreach ($ufiles as $k => $v){
+                        $rurl[] = $this->upload(null, substr(strrchr($v['name'], '.'), 1), null, $v['tmp_name']);
+                    }
+                }else{
+                    $r['msg'] = "url,urls,base64,base64s,表单上传必须选其一";
+                    return $r;
+                }
+            }
+        }
+        $r['is_ok'] = 1;
+        $r['msg'] = "成功";
+        $r['urls'] = $rurl;
+        return $r;
+    }
+
+    /**
+     * @param $base64
+     * @return
+     * @throws
+     */
+    protected function _fileSaveBase64($base64)
+    {
+        $mimes = new MimeTypes();
+        $mime_type = mime_content_type($base64);
+        $match = preg_match('/^(data:\s*(\w+)\/([\w|-]+);base64,)/', $base64, $result);
+        if(!$match){
+            $r['msg'] = "信息匹配失败";
+            return $r;
+        }
+        $extension = $mimes->getExtension($mime_type);
+        $x= str_replace($result[1], '', $base64);
+        $content = base64_decode($x);
+        $r = $this->upload(null, $extension, $content);
+        return $r;
+    }
+
+    /**
+     * @param $url
+     * @param int $url_file_download
+     * @return mixed
+     * @throws
+     */
+    protected function _fileSaveUrl($url, $url_file_download = 0)
+    {
+        if ($url_file_download){
+            $extension = substr(strrchr($url, '.'), 1);
+            $content = file_get_contents($url);
+            $r = $this->upload(null, $extension, $content);
+        }else{
+            $r = $url;
+        }
+        return $r;
     }
 
     public function behaviors()
