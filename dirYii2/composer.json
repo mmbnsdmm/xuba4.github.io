@@ -4,10 +4,10 @@
   "type": "project",
   "require": {
     "php": ">=7.1",
-    "yiisoft/yii2": "^2.0.28",
-    "wodrow/yii-fast-api": "^0.1.0",
+    "yiisoft/yii2": "^2.0.32",
+    "wodrow/yii-fast-api": "dev-master",
     "wodrow/yii2wajaxcrud": "dev-master",
-    "wodrow/yii2wtxtcrawler": "^0.1.14",
+    "wodrow/yii2wtxtcrawler": "dev-master",
     "wodrow/yii2-wwtree": "dev-master",
     "kartik-v/yii2-widget-fileinput": "^1.0.9",
     "kartik-v/yii2-field-range": "^1.3.5",
