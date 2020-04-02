@@ -22,7 +22,7 @@ use yii\base\Component;
 
 class ApiTool extends Component
 {
-    public $base_uri;
+    public $baseUri;
 
     /**
      * @param $uri
@@ -32,7 +32,7 @@ class ApiTool extends Component
      */
     public function post($uri, $form_params)
     {
-        $client = new Client(['base_uri' => $this->base_uri, 'verify'=>false]);
+        $client = new Client(['base_uri' => $this->baseUri, 'verify'=>false]);
         $form_params = $this->signFormParams($form_params);
         $resp = $client->request("POST", $uri, [
             'form_params' => $form_params,

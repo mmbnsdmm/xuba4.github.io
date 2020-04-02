@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         return ;
                     }
                     $.ajax({
-                        url: "<?=Yii::$app->apiTool->base_uri ?>/site/send-email-code",
+                        url: "<?=Yii::$app->apiTool->baseUri ?>/site/send-email-code",
                         type: "post",
                         data: {
                             email: this.email,

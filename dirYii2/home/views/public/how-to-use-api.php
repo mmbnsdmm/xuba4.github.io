@@ -8,7 +8,7 @@
  */
 $this->title = "如何对接api平台";
 $this->params['breadcrumbs'][] = $this->title;
-$dev_url = \Yii::$app->apiTool->base_uri;
+$dev_url = \Yii::$app->apiTool->baseUri;
 $markdown = <<<STR
 ### 环境配置
 

@@ -31,9 +31,9 @@ class QueneYiiTask extends \common\models\db\tables\QueneYiiTask
         $log = new LogQueneYiiTask();
         $result_msgs = LogQueneYiiTask::getResultCodeMsgs();
         $log->created_at = YII_BT_TIME;
-        $quene_yii_task_cache_key = \Yii::$app->params["quene_yii_task_cache_key"];
-//        \Yii::$app->cache->delete($quene_yii_task_cache_key);
-        $locked_at = \Yii::$app->cache->get($quene_yii_task_cache_key);
+        $quenYiiTaskCacheKey = \Yii::$app->params["quenYiiTaskCacheKey"];
+//        \Yii::$app->cache->delete($quenYiiTaskCacheKey);
+        $locked_at = \Yii::$app->cache->get($quenYiiTaskCacheKey);
         if ($locked_at){
             $log->result_code = LogQueneYiiTask::RESULT_CODE_LOCKED;
             $log->result_msg = $result_msgs[$log->result_code];
@@ -49,7 +49,7 @@ class QueneYiiTask extends \common\models\db\tables\QueneYiiTask
                 'log' => $log->toArray(),
             ];
         }
-        \Yii::$app->cache->set($quene_yii_task_cache_key, YII_BT_TIME, 86400*365*10);
+        \Yii::$app->cache->set($quenYiiTaskCacheKey, YII_BT_TIME, 86400*365*10);
         /**
          * @var static[] $quenes
          */
@@ -108,7 +108,7 @@ class QueneYiiTask extends \common\models\db\tables\QueneYiiTask
                 throw new ApiException(201910151552, "执行日志保存失败:".Model::getModelError($log));
             }
         }
-        \Yii::$app->cache->delete($quene_yii_task_cache_key);
+        \Yii::$app->cache->delete($quenYiiTaskCacheKey);
         return [
             'log' => $log->toArray(),
         ];

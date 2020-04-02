@@ -109,13 +109,13 @@ class SiteController extends Controller
             if (!$user->save()) {
                 throw new ApiException(201909231313, "注册失败:" . Model::getModelError($user));
             }
-            $admin_role_ordinary_user_name = \Yii::$app->params['admin_role_ordinary_user_name'];
-            if (!AdminAuthAssignment::findOne(['item_name' => $admin_role_ordinary_user_name, 'user_id' => $user->id])) {
-                if (!AdminAuthItem::findOne(['name' => $admin_role_ordinary_user_name, 'type' => 1])) {
-                    throw new ApiException(201911081011, "没有找到{$admin_role_ordinary_user_name}的角色");
+            $adminRoleOrdinaryUserName = \Yii::$app->params['adminRoleOrdinaryUserName'];
+            if (!AdminAuthAssignment::findOne(['item_name' => $adminRoleOrdinaryUserName, 'user_id' => $user->id])) {
+                if (!AdminAuthItem::findOne(['name' => $adminRoleOrdinaryUserName, 'type' => 1])) {
+                    throw new ApiException(201911081011, "没有找到{$adminRoleOrdinaryUserName}的角色");
                 }
                 $adminAuthAssignment = new AdminAuthAssignment();
-                $adminAuthAssignment->item_name = $admin_role_ordinary_user_name;
+                $adminAuthAssignment->item_name = $adminRoleOrdinaryUserName;
                 $adminAuthAssignment->user_id = $user->id;
                 $adminAuthAssignment->created_at = YII_BT_TIME;
                 if (!$adminAuthAssignment->save()) {

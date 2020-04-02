@@ -24,7 +24,7 @@ return [
         ],
         'apiTool' => [
             'class' => \common\components\ApiTool::class,
-            'base_uri' => "http://",
+            'baseUri' => "http://",
         ],
     ],
     'aliases' => [
@@ -35,9 +35,9 @@ return [
     'params' => [
         'adminEmail' => "",
         'adminMobile' => "",
-        'quene_yii_task_cache_key' => "quene_yii_task_cache_key",
+        'quenYiiTaskCacheKey' => "quenYiiTaskCacheKey",
         'yiichina-username' => "",
         'yiichina-password' => "",
-        'admin_role_ordinary_user_name' => "普通用户",
+        'adminRoleOrdinaryUserName' => "普通用户",
     ],
 ];
