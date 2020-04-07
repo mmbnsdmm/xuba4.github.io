@@ -4,7 +4,7 @@
   "type": "project",
   "require": {
     "php": ">=7.1",
-    "yiisoft/yii2": "^2.0.32",
+    "yiisoft/yii2": "^2.0.34",
     "wodrow/yii-fast-api": "dev-master",
     "wodrow/yii2wajaxcrud": "dev-master",
     "wodrow/yii2wtxtcrawler": "dev-master",
