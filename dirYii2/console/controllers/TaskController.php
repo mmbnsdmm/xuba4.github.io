@@ -9,18 +9,30 @@
 namespace console\controllers;
 
 
-use common\models\db\LogQueneYiiTask;
 use common\models\db\QueneYiiTask;
 use yii\console\Controller;
 
 class TaskController extends Controller
 {
+    /**
+     * php yii task/do-quene 0
+     * @param int $pass_no_task
+     * @throws
+     */
     public function actionDoQuene($pass_no_task = 0)
     {
         $r = QueneYiiTask::doQuene($pass_no_task);
         var_dump($r);
     }
 
+    /**
+     * php yii task/add-test
+     * @desc test
+     * @param string $params
+     * @param null $durning
+     * @param null $created_by
+     * @throws
+     */
     public function actionAddTest($params = "0", $durning = null, $created_by = null)
     {
         $run_at = null;
@@ -30,6 +42,12 @@ class TaskController extends Controller
         echo QueneYiiTask::addTask("task/test", $params, $run_at, $created_by);
     }
 
+    /**
+     * php yii task/test
+     * @desc test
+     * @param int $is_failed
+     * @throws
+     */
     public function actionTest($is_failed = 0)
     {
         if ($is_failed){

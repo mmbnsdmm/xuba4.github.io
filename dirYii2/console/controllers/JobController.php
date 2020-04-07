@@ -21,7 +21,7 @@ class JobController extends Controller
      */
     public function actionCheck()
     {
-        Tools::log(time(), "check-schedule.log");
+        Tools::log(YII_BT_MTIME, "check-schedule");
     }
 
     /**
