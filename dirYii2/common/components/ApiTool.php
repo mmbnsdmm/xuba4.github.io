@@ -9,13 +9,9 @@
 namespace common\components;
 
 
-use common\data\Enum;
 use common\models\db\LogEmailSendCode;
 use common\models\db\User;
-use common\models\db\UserFile;
 use GuzzleHttp\Client;
-use Mimey\MimeTypes;
-use wodrow\yii\rest\ApiException;
 use wodrow\yii2wtools\tools\ArrayHelper;
 use wodrow\yii2wtools\tools\Model;
 use yii\base\Component;
@@ -180,77 +176,5 @@ class ApiTool extends Component
             'frozen' => $user->frozen,
             'deposit' => $user->deposit,
         ];
-    }
-
-    /**
-     * @param null $base64
-     * @param null $url
-     * @param null $filename
-     * @param int $url_file_download
-     * @return array
-     * @throws
-     */
-    public function fileSave($base64 = null, $url = null, $filename = null, $url_file_download = 0)
-    {
-        $r = [
-            'is_ok' => 0,
-            'msg' => "失败",
-        ];
-        $rurl = [];
-        $mimes = new MimeTypes();
-        if ($base64){
-            $mime_type = mime_content_type($base64);
-            $match = preg_match('/^(data:\s*(\w+)\/([\w|-]+);base64,)/', $base64, $result);
-            if(!$match){
-                $r['msg'] = "信息匹配失败";
-                return $r;
-            }
-            $extension = $mimes->getExtension($mime_type);
-            $x= str_replace($result[1], '', $base64);
-            $content = base64_decode($x);
-            $rurl[] = UserFile::upload($filename, $extension, $content);
-        }else{
-            if ($url){
-                if ($url_file_download){
-                    $extension = substr(strrchr($url, '.'), 1);
-                    $content = file_get_contents($url);
-                    $rurl[] = UserFile::upload($filename, $extension, $content);
-                }else{
-                    $rurl[] = $url;
-                }
-            }else{
-                if ($_FILES){
-                    if (!isset($_FILES['ufile'])){
-                        $r['msg'] = "表单字段必须为ufile或ufile[]";
-                        return $r;
-                    }
-                    $ufile = $_FILES['ufile'];
-                    $ufiles = [];
-                    if (is_array($ufile['name'])){
-                        $total = count($ufile['name']);
-                        $keys = array_keys($ufile);
-                        for ($i = 0; $i < $total; $i++){
-                            $x = [];
-                            foreach ($keys as $k => $v){
-                                $x[$v] = $ufile[$v][$i];
-                            }
-                            $ufiles[] = $x;
-                        }
-                    }else{
-                        $ufiles[] = $ufile;
-                    }
-                    foreach ($ufiles as $k => $v){
-                        $rurl[] = UserFile::upload(null, substr(strrchr($v['name'], '.'), 1), null, $v['tmp_name']);
-                    }
-                }else{
-                    $r['msg'] = "url,base64,表单上传必须选其一";
-                    return $r;
-                }
-            }
-        }
-        $r['is_ok'] = 1;
-        $r['msg'] = "成功";
-        $r['urls'] = $rurl;
-        return $r;
     }
 }
