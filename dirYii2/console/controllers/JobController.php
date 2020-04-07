@@ -10,10 +10,20 @@ namespace console\controllers;
 
 
 use QL\QueryList;
+use wodrow\yii2wtools\tools\Tools;
 use yii\console\Controller;
 
 class JobController extends Controller
 {
+    /**
+     * php yii job/check
+     * @desc 检测计划任务是否执行
+     */
+    public function actionCheck()
+    {
+        Tools::log(time(), "check-schedule.log");
+    }
+
     /**
      * php yii job/yiichina-sign
      * @desc https://www.yiichina.com 签到

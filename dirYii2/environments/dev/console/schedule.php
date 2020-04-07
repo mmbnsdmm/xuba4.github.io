@@ -12,8 +12,8 @@
 
 // $schedule->exec('composer self-update')->daily();
 
-// 测试
-$schedule->exec('php yii test/test')->cron('* * * * *');
+// 检测计划任务是否执行
+$schedule->exec('php yii job/check')->cron('* */8 * * *');
 
 // 更新时间
 $schedule->exec('ntpdate time.nist.gov')->cron('*/30 * * * *');
