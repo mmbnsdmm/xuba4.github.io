@@ -1,7 +1,17 @@
 {
   "name": "initYii",
   "description": "initYii",
+  "keywords": ["inityii"],
   "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "wodrow",
+      "email": "wodrow451611cv@gmail.com",
+      "homepage": "https://wodrow.github.io"
+    }
+  ],
+  "minimum-stability": "stable",
   "require": {
     "php": ">=7.1",
     "yiisoft/yii2": "^2.0.34",
