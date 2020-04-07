@@ -21,7 +21,7 @@ class FileController extends Controller
      * @param string $urls json数组格式:['url1', 'url2']
      * @param string $base64
      * @param string $base64s json数组格式:['base64', 'base64']
-     * @param file $ufile
+     * @param file $ufile 表单上传必须有这个字段
      * @param int $url_file_download url文件是否保存到图床 1:保存到图床;0:不保存,用原有url
      * @return array
      * @return int is_ok 是否成功
