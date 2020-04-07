@@ -32,7 +32,6 @@ return [
     'Development' => [
         'path' => 'dev',
         'setWritable' => [
-            'web/storage',
             'web/assets',
             'web/home/assets',
             'web/admin/assets',

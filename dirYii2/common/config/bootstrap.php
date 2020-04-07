@@ -20,8 +20,14 @@ if(YII_ENV_DEV){
     Yii::setAlias('@uploads_root', YII_PROJECT_ROOT . '/web/storage/uploads/prod');
     Yii::setAlias('@uploads_url', '/storage/uploads/prod');
 }
+if (!is_dir(Yii::getAlias('@uploads_root'))){
+    \wodrow\yii2wtools\tools\FileHelper::createDirectory(Yii::getAlias('@uploads_root'));
+}
 Yii::setAlias('@tmp_root', YII_PROJECT_ROOT . '/web/storage/tmp');
 Yii::setAlias('@tmp_url', '/storage/tmp');
+if (!is_dir(Yii::getAlias('@tmp_root'))){
+    \wodrow\yii2wtools\tools\FileHelper::createDirectory(Yii::getAlias('@tmp_root'));
+}
 
 Yii::$container->set(\kartik\icons\FontAwesomeAsset::class, [
     'js' => [],
