@@ -1,5 +1,6 @@
 <?php
 define("YII_BT_TIME", time());
+define("YII_BT_MTIME", microtime(true));
 define("YII_PROJECT_ROOT", dirname(dirname(__DIR__))); // 根目录
 Yii::setAlias('@common', YII_PROJECT_ROOT . '/common');
 Yii::setAlias('@console', YII_PROJECT_ROOT . '/console');
