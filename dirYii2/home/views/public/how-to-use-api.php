@@ -12,7 +12,7 @@ $dev_url = \Yii::$app->apiTool->baseUri;
 $markdown = <<<STR
 ### 环境配置
 
-测试url: <{$dev_url}>
+url: <{$dev_url}>
 
 api路由文档: <{$dev_url}/route/api>
 
@@ -62,7 +62,7 @@ if(responseCode.code === 200){
 
 ### 你可以参考postman的签名方式
 
-```
+```java
 var _token = pm.environment.get("token");
 var _key = pm.environment.get("key");
 var _timestamp = (new Date()).valueOf();
