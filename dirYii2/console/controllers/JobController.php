@@ -121,6 +121,7 @@ class JobController extends Controller
         switch ($_db_type){
             case "mysql":
                 $exec_str .= "mysqldump -u{$db->username} -p{$db->password} ";
+                $exec_str_end = "";
                 $_db_dsn_confs = ArrayHelper::str2arr($_a1[1], ";");
                 foreach ($_db_dsn_confs as $k => $v) {
                     $_a2 = ArrayHelper::str2arr($v, "=");
@@ -134,12 +135,13 @@ class JobController extends Controller
                             $exec_str .= "-P{$_v} ";
                             break;
                         case "dbname":
-                            $exec_str .= "{$_v}>{$backupFileRoot}/{$_v}.sql";
+                            $exec_str_end .= "{$_v}>{$backupFileRoot}/{$_v}.sql";
                             break;
                         default:
                             break;
                     }
                 }
+                $exec_str .= $exec_str_end;
                 exec($exec_str);
                 break;
             default:
