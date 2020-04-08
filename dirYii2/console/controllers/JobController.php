@@ -11,6 +11,7 @@ namespace console\controllers;
 
 use QL\QueryList;
 use wodrow\yii2wtools\tools\ArrayHelper;
+use wodrow\yii2wtools\tools\BackUp;
 use wodrow\yii2wtools\tools\FileHelper;
 use wodrow\yii2wtools\tools\Tools;
 use yii\base\Exception;
@@ -112,43 +113,8 @@ class JobController extends Controller
      */
     public function actionBackup()
     {
-        $exec_str = "";
-        $backupFileRoot = \Yii::getAlias("@uploads_root");
-        $db = \Yii::$app->db;
-        $dsn = $db->dsn;
-        $_a1 = ArrayHelper::str2arr($dsn, ":");
-        $_db_type = $_a1[0];
-        switch ($_db_type){
-            case "mysql":
-                $exec_str .= "mysqldump -u{$db->username} -p{$db->password} ";
-                $exec_str_end = "";
-                $_db_dsn_confs = ArrayHelper::str2arr($_a1[1], ";");
-                foreach ($_db_dsn_confs as $k => $v) {
-                    $_a2 = ArrayHelper::str2arr($v, "=");
-                    $_k = $_a2[0];
-                    $_v = $_a2[1];
-                    switch ($_k){
-                        case "host":
-                            $exec_str .= "-h{$_v} ";
-                            break;
-                        case "port":
-                            $exec_str .= "-P{$_v} ";
-                            break;
-                        case "dbname":
-                            $exec_str_end .= "{$_v}>{$backupFileRoot}/{$_v}.sql";
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                $exec_str .= $exec_str_end;
-                exec($exec_str);
-                break;
-            default:
-                throw new Exception("没有找到数据库类型:{$_db_type}");
-                break;
-        }
-        FileHelper::fileSysMove('sftpFileProd', 'sftpFileBackup');
-        FileHelper::fileSysMove('sftpFileDev', 'sftpFileBackup');
+        BackUp::dbBackup(\Yii::getAlias("@uploads_root"), \Yii::$app->db);
+        BackUp::fileSysBackup(\Yii::$app->sftpFileProd, \Yii::$app->sftpFileBackup);
+        BackUp::fileSysBackup(\Yii::$app->sftpFileDev, \Yii::$app->sftpFileBackup);
     }
 }
