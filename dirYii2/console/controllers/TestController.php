@@ -19,6 +19,7 @@ class TestController extends Controller
      */
     public function actionTest()
     {
+        var_dump(YII_APP_ID);
         var_dump(YII_BT_TIME + 86400*30);
         Tools::log(YII_BT_TIME);
     }

@@ -147,7 +147,7 @@ class SiteController extends Controller
     public function actionLogin($username, $password)
     {
         $log = new LogUserLogin();
-        $log->from_app = LogUserLogin::FROM_APP_API;
+        $log->from_app = YII_APP_ID;
         $log->created_at = YII_BT_TIME;
         $log->param_username = $username;
         $user = User::findOne(['username' => $username]);

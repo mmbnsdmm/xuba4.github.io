@@ -10,13 +10,9 @@ namespace home\controllers;
 
 
 
-use common\models\db\User;
 use home\models\FormLogin;
-use home\models\FormLogin2;
 use home\models\FormResetPassword;
 use home\models\FormSignup;
-use xj\oauth\QqAuth;
-use xj\oauth\WeiboAuth;
 use yii\captcha\CaptchaAction;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -82,6 +78,10 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
+    /**
+     * @return string|\yii\web\Response
+     * @throws
+     */
     public function actionLogin()
     {
         $model = new FormLogin();

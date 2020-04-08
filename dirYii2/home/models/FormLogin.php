@@ -59,7 +59,7 @@ class FormLogin extends Model
     public function login()
     {
         $log = new LogUserLogin();
-        $log->from_app = LogUserLogin::FROM_APP_HOME;
+        $log->from_app = YII_APP_ID;
         $log->created_at = YII_BT_TIME;
         $log->param_username = $this->username;
         $log->from_ip = \Yii::$app->request->remoteIP;

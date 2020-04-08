@@ -21,11 +21,7 @@ class LogUserLogin extends \common\models\db\tables\LogUserLogin
     const IS_LOGIN_Y = 1;
     const IS_LOGIN_N = 0;
 
-    const FROM_APP_API = 'api';
-    const FROM_APP_HOME = 'home';
-    const FROM_APP_ADMIN = 'admin';
-
-    public static function getIsLogins()
+    public static function getIsLoginStatus()
     {
         return [
             self::IS_LOGIN_N => "失败",

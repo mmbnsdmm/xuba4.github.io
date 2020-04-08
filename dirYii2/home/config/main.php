@@ -1,7 +1,7 @@
 <?php
 $basePath = dirname(__DIR__);
 $config = [
-    'id' => "home",
+    'id' => YII_APP_ID,
     'basePath' => $basePath,
     'name' => "home",
     'controllerNamespace' => 'home\controllers',
