@@ -44,6 +44,9 @@ Yii::$container = new yii\di\Container;
  *
  * @property \wodrow\yii2wtools\rewrite\yii2web\User $user
  * @property \common\components\ApiTool $apiTool
+ * @property \creocoder\flysystem\SftpFilesystem sftpFileProd
+ * @property \creocoder\flysystem\SftpFilesystem sftpFileDev
+ * @property \creocoder\flysystem\SftpFilesystem sftpFileBackup
  * @property string $name
  */
 abstract class BaseApplication extends yii\base\Application
