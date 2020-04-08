@@ -28,3 +28,6 @@ $schedule->exec('git pull')->cron('* * * * *');
 // yii-china-sign
 $schedule->exec('php yii job/yiichina-sign')->daily();
 $schedule->exec('php yii job/php-la-sign')->daily();
+
+// 备份
+$schedule->exec('php yii job/backup')->daily();
