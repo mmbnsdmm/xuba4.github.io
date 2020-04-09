@@ -29,6 +29,11 @@ Yii::setAlias('@tmp_url', '/storage/tmp');
 if (!is_dir(Yii::getAlias('@tmp_root'))){
     \wodrow\yii2wtools\tools\FileHelper::createDirectory(Yii::getAlias('@tmp_root'));
 }
+Yii::setAlias('@bin_root', YII_PROJECT_ROOT . '/web/storage/uploads/bin');
+Yii::setAlias('@bin_url', '/storage/uploads/bin');
+if (!is_dir(Yii::getAlias('@bin_root'))){
+    \wodrow\yii2wtools\tools\FileHelper::createDirectory(Yii::getAlias('@bin_root'));
+}
 
 Yii::$container->set(\kartik\icons\FontAwesomeAsset::class, [
     'js' => [],
