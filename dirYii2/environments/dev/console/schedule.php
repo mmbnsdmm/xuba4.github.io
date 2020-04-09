@@ -13,10 +13,10 @@
 // $schedule->exec('composer self-update')->daily();
 
 // 检测计划任务是否执行
-$schedule->exec('php yii job/check')->cron('* */8 * * *');
+$schedule->exec('php yii job/check')->cron('1 */8 * * *');
 
 // 更新时间
-$schedule->exec('ntpdate time.nist.gov')->cron('*/30 * * * *');
+//$schedule->exec('ntpdate time.nist.gov')->cron('*/30 * * * *');
 $schedule->exec('ntpdate ntp1.aliyun.com')->daily();
 
 // quene yii task
