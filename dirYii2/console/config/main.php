@@ -15,5 +15,19 @@ return [
             'namespace' => 'common\fixtures',
           ],
     ],
+    'components' => [
+        'user' => [
+            'class' => \common\components\User::class,
+            'identityClass' => \common\models\db\User::class,
+            'isInConsole' => true,
+            'enableSession' => false,
+        ],
+    ],
+    'as console user login' => [
+        'class' => \console\behaviors\ConsoleUserLogin::class,
+        'only' => [
+            'test/test1',
+        ],
+    ],
     'params' => $params,
 ];

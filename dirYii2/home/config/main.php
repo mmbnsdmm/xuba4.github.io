@@ -18,7 +18,7 @@ $config = [
             'errorAction' => 'site/error',
         ],
         'user' => [
-            'class' => \wodrow\yii2wtools\rewrite\yii2web\User::class,
+            'class' => \common\components\User::class,
             'identityClass' => \common\models\db\User::class,
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-home', 'httpOnly' => true],

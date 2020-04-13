@@ -42,7 +42,7 @@ Yii::$container = new yii\di\Container;
  * @property \yii\base\View|\yii\web\View $view The view application component that is used to render various view
  * files. This property is read-only.
  *
- * @property \wodrow\yii2wtools\rewrite\yii2web\User $user
+ * @property \common\components\User $user
  * @property \common\components\ApiTool $apiTool
  * @property \creocoder\flysystem\SftpFilesystem sftpFileProd
  * @property \creocoder\flysystem\SftpFilesystem sftpFileDev

@@ -35,5 +35,6 @@ class TestController extends Controller
             'href' => ['li.version>a', 'href'],
         ])->queryData();
         var_dump($data);
+        var_dump(\Yii::$app->user->identity->toArray());
     }
 }
