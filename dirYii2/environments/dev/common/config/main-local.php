@@ -25,6 +25,7 @@ return [
         'apiTool' => [
             'class' => \common\components\ApiTool::class,
             'baseUri' => "http://",
+            'apiUri' => "/api",
         ],
         'sftpFileProd' => [
             'class' => \creocoder\flysystem\SftpFilesystem::class,
