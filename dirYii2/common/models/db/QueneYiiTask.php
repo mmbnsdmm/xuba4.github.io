@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Wodro
- * Date: 2019/10/15
- * Time: 10:07
- */
-
 namespace common\models\db;
 
 
@@ -17,9 +10,20 @@ class QueneYiiTask extends \common\models\db\tables\QueneYiiTask
 {
     const STATUS_REDAY = 0; // 准备中
     const STATUS_RUNNING = 1; // 运行中
+    const STATUS_PASS = 2; // 跳过
     const STATUS_OVERDUE = -2; // 任务过期
     const STATUS_FAILED = -10; // 执行失败
     const STATUS_DONE = 10; // 任务完成
+
+    /**
+     * php yii test/init-quene
+     * @throws
+     */
+    public static function initQuene()
+    {
+        \Yii::$app->cache->delete("QueneYiiTask-doQuene");
+        static::updateAll(['status' => static::STATUS_REDAY], ['status' => static::STATUS_RUNNING]);
+    }
 
     /**
      * @param int $pass_no_task
@@ -29,34 +33,38 @@ class QueneYiiTask extends \common\models\db\tables\QueneYiiTask
     public static function doQuene($pass_no_task = 0)
     {
         $log = new LogQueneYiiTask();
-        $result_msgs = LogQueneYiiTask::getResultCodeMsgs();
+        $result_msgs = LogQueneYiiTask::instance()->resultCodeMsgs;
         $log->created_at = YII_BT_TIME;
-        $quenYiiTaskCacheKey = \Yii::$app->params["quenYiiTaskCacheKey"];
-//        \Yii::$app->cache->delete($quenYiiTaskCacheKey);
-        $locked_at = \Yii::$app->cache->get($quenYiiTaskCacheKey);
-        if ($locked_at){
+        $locked = \Yii::$app->cache->get("QueneYiiTask-doQuene");
+        if ($locked){
+            $locked_at = isset($locked['at'])?$locked['at']:0;
+            $locked_at_date = date("Y-m-d H:i:s", $locked_at);
+            $locked_taskID = isset($locked['taskID'])?$locked['taskID']:null;
             $log->result_code = LogQueneYiiTask::RESULT_CODE_LOCKED;
             $log->result_msg = $result_msgs[$log->result_code];
             $locked_second = YII_BT_TIME - $locked_at;
             if ($locked_second > 300){
                 $log->result_code = LogQueneYiiTask::RESULT_CODE_LOCKED_LONG;
-                $log->result_msg = $result_msgs[$log->result_code].",已锁定秒数:{$locked_second}";
+                $log->result_msg = $result_msgs[$log->result_code].",锁定时间:{$locked_at_date},已锁定秒数:{$locked_second},锁定任务id:{$locked_taskID}";
             }
             if (!$log->save()){
                 throw new ApiException(201910151048, "执行日志保存失败:".Model::getModelError($log));
             }
             return [
                 'log' => $log->toArray(),
+                'locked' => $locked,
             ];
         }
-        \Yii::$app->cache->set($quenYiiTaskCacheKey, YII_BT_TIME, 86400*365*10);
-        /**
-         * @var static[] $quenes
-         */
+        $locked = [
+            'at' => YII_BT_TIME,
+            'taskID' => null,
+        ];
         $quenes = static::find()->where(['status' => static::STATUS_REDAY])->all();
         $s_ids = [];
         $e_ids = [];
         foreach ($quenes as $k => $v){
+            $locked['taskID'] = $v->id;
+            \Yii::$app->cache->set("QueneYiiTask-doQuene", $locked, 86400*365*10);
             $v->status = static::STATUS_RUNNING;
             if (!$v->save()){
                 throw new ApiException(201910151600, "执行任务更新失败:".Model::getModelError($v));
@@ -103,12 +111,18 @@ class QueneYiiTask extends \common\models\db\tables\QueneYiiTask
             }
         }
         $log->result_msg = $result_msgs[$log->result_code];
-        if ($pass_no_task && $log->result_code == LogQueneYiiTask::RESULT_CODE_NO_TASK){}else{
+        if ($log->result_code == LogQueneYiiTask::RESULT_CODE_NO_TASK){
+            if ($pass_no_task){}else{
+                if (!$log->save()){
+                    throw new ApiException(201910151553, "执行日志保存失败:".Model::getModelError($log));
+                }
+            }
+        }else{
             if (!$log->save()){
                 throw new ApiException(201910151552, "执行日志保存失败:".Model::getModelError($log));
             }
         }
-        \Yii::$app->cache->delete($quenYiiTaskCacheKey);
+        \Yii::$app->cache->delete("QueneYiiTask-doQuene");
         return [
             'log' => $log->toArray(),
         ];
@@ -127,7 +141,9 @@ class QueneYiiTask extends \common\models\db\tables\QueneYiiTask
         $quene = new static();
         $quene->route = $route;
         $quene->params = $params;
-        $quene->run_at = $run_at;
+        if (!$run_at){
+            $quene->run_at = YII_BT_TIME + 60*5;
+        }
         $quene->created_by = $created_by;
         $quene->created_at = YII_BT_TIME;
         $quene->status = static::STATUS_REDAY;
@@ -142,7 +158,7 @@ class QueneYiiTask extends \common\models\db\tables\QueneYiiTask
      */
     public function run()
     {
-        $yii_path = \Yii::getAlias('@project_root/yii');
+        $yii_path = YII_PROJECT_ROOT."/yii";
         $r = exec("php {$yii_path} {$this->route} {$this->params} 2>&1", $output);
         if ($r == static::STATUS_DONE){
             $this->status = $r;

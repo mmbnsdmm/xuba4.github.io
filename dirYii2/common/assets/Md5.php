@@ -2,11 +2,11 @@
 /**
  * Created by PhpStorm.
  * User: Wodro
- * Date: 2019/10/1
- * Time: 16:41
+ * Date: 2020/6/1
+ * Time: 17:28
  */
 
-namespace home\assets;
+namespace common\assets;
 
 
 use kartik\base\AssetBundle;

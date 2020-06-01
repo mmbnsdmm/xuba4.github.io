@@ -1,21 +1,24 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Wodro
- * Date: 2019/10/15
- * Time: 14:24
- */
-
 namespace console\controllers;
 
 
+
 use common\models\db\QueneYiiTask;
+use wodrow\yii\rest\ApiException;
 use yii\console\Controller;
 
 class TaskController extends Controller
 {
     /**
-     * php yii task/do-quene 0
+     * php yii test/init-quene
+     */
+    public function actionInitQuene()
+    {
+        QueneYiiTask::initQuene();
+    }
+
+    /**
+     * php yii task/do-quene
      * @param int $pass_no_task
      * @throws
      */
@@ -25,14 +28,6 @@ class TaskController extends Controller
         var_dump($r);
     }
 
-    /**
-     * php yii task/add-test
-     * @desc test
-     * @param string $params
-     * @param null $durning
-     * @param null $created_by
-     * @throws
-     */
     public function actionAddTest($params = "0", $durning = null, $created_by = null)
     {
         $run_at = null;
@@ -42,12 +37,6 @@ class TaskController extends Controller
         echo QueneYiiTask::addTask("task/test", $params, $run_at, $created_by);
     }
 
-    /**
-     * php yii task/test
-     * @desc test
-     * @param int $is_failed
-     * @throws
-     */
     public function actionTest($is_failed = 0)
     {
         if ($is_failed){
@@ -56,6 +45,9 @@ class TaskController extends Controller
             }
             if ($is_failed == 2){
                 throw new \Exception("test exception");
+            }
+            if ($is_failed == 3){
+                echo "test";
             }
         }else{
             echo QueneYiiTask::STATUS_DONE;

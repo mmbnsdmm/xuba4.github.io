@@ -2,6 +2,9 @@
 define("YII_BT_TIME", time());
 define("YII_BT_MTIME", microtime(true));
 define("YII_PROJECT_ROOT", dirname(dirname(__DIR__))); // 根目录
+
+\Dotenv\Dotenv::createImmutable(__DIR__)->load();
+
 Yii::setAlias('@common', YII_PROJECT_ROOT . '/common');
 Yii::setAlias('@console', YII_PROJECT_ROOT . '/console');
 Yii::setAlias('@api', YII_PROJECT_ROOT . '/api');
@@ -14,6 +17,7 @@ Yii::setAlias('@static_root', YII_PROJECT_ROOT . '/web/static');
 Yii::setAlias('@static_url', '/static');
 Yii::setAlias('@storage_root', YII_PROJECT_ROOT . '/web/storage');
 Yii::setAlias('@storage_url', '/storage');
+Yii::setAlias('@others_url', '/others');
 if(YII_ENV_DEV){
     Yii::setAlias('@uploads_root', YII_PROJECT_ROOT . '/web/storage/uploads/dev');
     Yii::setAlias('@uploads_url', '/storage/uploads/dev');

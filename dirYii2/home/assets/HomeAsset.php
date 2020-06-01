@@ -9,6 +9,8 @@
 namespace home\assets;
 
 
+use common\assets\Md5;
+use common\assets\Normalize;
 use kartik\base\AssetBundle;
 use yii\bootstrap\BootstrapPluginAsset;
 use yii\web\YiiAsset;

@@ -12,16 +12,9 @@ $config = [
             'class' => \common\components\User::class,
             'identityClass' => \common\models\db\User::class,
         ],
-        'urlManager' => [
-            'rules' => [
-                '/' => 'route/api',
-            ],
-        ],
     ],
     'modules' => [
-        'user' => [
-            'class' => \api\modules\user\UserModule::class,
-        ],
+        'user' => \api\modules\user\UserModule::class,
     ],
     'as token check' => [
         'class' => \api\behaviors\TokenCheck::class,
@@ -31,6 +24,7 @@ $config = [
             'debug/*',
             'route/*',
             'public/*',
+            'notify/*',
         ],
     ],
 ];
@@ -39,5 +33,8 @@ $config = yii\helpers\ArrayHelper::merge(
     $config,
     \wodrow\yii\rest\Controller::getConfig()
 );
+
+$_urlManagers = require(Yii::getAlias('@common/config/_urlManagers.php'));
+$config['components']['urlManager'] = $_urlManagers['urlManagerApi'];
 
 return $config;

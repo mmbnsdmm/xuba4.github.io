@@ -10,14 +10,15 @@ $config = [
         'request' => [
             'csrfParam' => '_csrf-admin',
         ],
-        'assetManager' => [
+        /*'assetManager' => [
             'forceCopy' => YII_ENV == 'dev' ? true : false,
             'linkAssets' => YII_ENV == 'dev' ? true : false,
-        ],
+        ],*/
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
         'user' => [
+            'class' => \common\components\User::class,
             'identityClass' => \common\models\db\User::class,
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-admin', 'httpOnly' => true],
@@ -65,15 +66,9 @@ $config = [
                 ],
             ],
         ],
-        'log' => [
-            'class' => \admin\modules\log\LogModule::class,
-        ],
-        'user' => [
-            'class' => \admin\modules\user\UserModule::class,
-        ],
-        'ucenter' => [
-            'class' => \admin\modules\ucenter\UcenterModule::class,
-        ],
+        'log' => \admin\modules\log\LogModule::class,
+        'user' => \admin\modules\user\UserModule::class,
+        'ucenter' => \admin\modules\ucenter\UcenterModule::class,
     ],
     'as access' => [
         'class' => \mdm\admin\components\AccessControl::class,

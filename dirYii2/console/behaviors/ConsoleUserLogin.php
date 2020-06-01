@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Wodro
- * Date: 2020/4/12
- * Time: 22:38
- */
-
 namespace console\behaviors;
 
 

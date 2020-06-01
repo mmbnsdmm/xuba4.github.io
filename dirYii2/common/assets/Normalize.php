@@ -1,15 +1,15 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: wodrow
- * Date: 19-2-2
- * Time: 上午10:03
+ * User: Wodro
+ * Date: 2020/6/1
+ * Time: 17:29
  */
 
-namespace home\assets;
+namespace common\assets;
 
 
-use yii\web\AssetBundle;
+use kartik\base\AssetBundle;
 
 class Normalize extends AssetBundle
 {

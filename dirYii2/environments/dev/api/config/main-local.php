@@ -24,7 +24,11 @@ if (YII_ENV_DEV) {
     ];
     $config['modules']['gii']['generators']['wodrowmodel'] = [
         'class' => \wodrow\wajaxcrud\generators\model\Generator::class,
-        'showName' => "model",
+        'showName' => "WODROW MODEL",
+    ];
+    $config['modules']['gii']['generators']['wodrowwajaxcrud'] = [
+        'class' => \wodrow\wajaxcrud\generators\crud\Generator::class,
+        'showName' => "WODROE CRUD GENERATOR",
     ];
 }
 

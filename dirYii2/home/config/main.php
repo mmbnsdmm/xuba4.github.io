@@ -28,9 +28,7 @@ $config = [
         ],
     ],
     'modules' => [
-        'user' => [
-            'class' => \home\modules\user\UserModule::class,
-        ],
+        'user' => \home\modules\user\UserModule::class,
     ],
     'as check status' => [
         'class' => \home\behaviors\AccessCheck::class,
@@ -44,5 +42,6 @@ $config = [
     ],
     'params' => [],
 ];
-
+$_urlManagers = require(Yii::getAlias('@common/config/_urlManagers.php'));
+$config['components']['urlManager'] = $_urlManagers['urlManagerHome'];
 return $config;
