@@ -9,6 +9,7 @@
 namespace home\assets;
 
 
+use common\assets\Common;
 use common\assets\Md5;
 use common\assets\Normalize;
 use kartik\base\AssetBundle;
@@ -32,6 +33,7 @@ class HomeAsset extends AssetBundle
             Md5::class,
             Vue::class,
             BootstrapPluginAsset::class,
+            Common::class,
         ];
     }
 }
