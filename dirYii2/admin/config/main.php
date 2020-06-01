@@ -83,5 +83,6 @@ $config = [
         ]
     ],
 ];
-
+$_urlManagers = require(Yii::getAlias('@common/config/_urlManagers.php'));
+$config['components']['urlManager'] = $_urlManagers['urlManagerAdmin'];
 return $config;
