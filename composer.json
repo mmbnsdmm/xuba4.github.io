@@ -15,7 +15,7 @@
   "require": {
     "php": ">=7.3",
     "yiisoft/yii2": "^2.0.35",
-    "wodrow/yii-fast-api": "dev-master",
+    "wodrow/yii-fast-api": "0.1.5",
     "wodrow/yii2wajaxcrud": "dev-master",
     "wodrow/yii2wtxtcrawler": "dev-master",
     "wodrow/yii2-wwtree": "dev-master",
@@ -23,10 +23,13 @@
     "kartik-v/yii2-widget-fileinput": "^1.0.9",
     "kartik-v/yii2-field-range": "^1.3.5",
     "yii2mod/yii2-array-query": "^1.4",
-    "geoip2/geoip2": "^2.10.0",
+    "xj/yii2-oauth": "^2.0.3",
+    "qcloudsms/qcloudsms_php": "^0.1.4",
+    "geoip2/geoip2": "^2.9.0",
     "ralouphie/mimey": "^2.1.0",
     "mdmsoft/yii2-admin": "~2.0",
     "dmstr/yii2-adminlte-asset": "^2.6.2",
+    "guanguans/yii-pay": "^1.0",
     "yiisoft/yii2-swiftmailer": "^2.1.2",
     "vlucas/phpdotenv": "^4.1",
     "2amigos/qrcode-library": "^2.0"
