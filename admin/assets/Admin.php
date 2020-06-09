@@ -1,27 +1,28 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: wodrow
- * Date: 19-9-25
- * Time: 下午4:14
+ * User: Wodro
+ * Date: 2020/6/9
+ * Time: 16:40
  */
 
-namespace home\assets;
+namespace admin\assets;
 
 
 use common\assets\Common;
 use common\assets\Md5;
 use common\assets\Normalize;
 use common\assets\Vue;
+use dmstr\web\AdminLteAsset;
 use kartik\base\AssetBundle;
 use yii\bootstrap\BootstrapPluginAsset;
 use yii\web\YiiAsset;
 
-class HomeAsset extends AssetBundle
+class Admin extends AssetBundle
 {
     public function init()
     {
-        $this->sourcePath = "@static_root/home";
+        $this->sourcePath = "@static_root/admin";
         $this->css = [
             'site.css',
         ];
@@ -30,6 +31,7 @@ class HomeAsset extends AssetBundle
         ];
         $this->depends = [
             Normalize::class,
+            AdminLteAsset::class,
             YiiAsset::class,
             Md5::class,
             Vue::class,

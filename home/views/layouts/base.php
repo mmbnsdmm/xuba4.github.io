@@ -21,6 +21,15 @@ Icon::map($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <script>
+        let ApiBaseUri = "<?= Yii::$app->apiTool->getFullUrl() ?>";
+        <?php if(!Yii::$app->user->isGuest): ?>
+        <?php $authReturn = Yii::$app->apiTool->authReturn(Yii::$app->user->identity); ?>
+        let UserInfo = <?=json_encode($authReturn, JSON_UNESCAPED_UNICODE) ?>;
+        <?php else: ?>
+        let UserInfo = {};
+        <?php endif; ?>
+    </script>
 </head>
 <body class="vue-body">
 <?php $this->beginBody() ?>

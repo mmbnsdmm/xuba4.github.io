@@ -21,6 +21,15 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed201
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <script>
+        let ApiBaseUri = "<?= Yii::$app->apiTool->getFullUrl() ?>";
+        <?php if(!Yii::$app->user->isGuest): ?>
+        <?php $authReturn = Yii::$app->apiTool->authReturn(Yii::$app->user->identity); ?>
+        let UserInfo = <?=json_encode($authReturn, JSON_UNESCAPED_UNICODE) ?>;
+        <?php else: ?>
+        let UserInfo = {};
+        <?php endif; ?>
+    </script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <?php $this->beginBody() ?>

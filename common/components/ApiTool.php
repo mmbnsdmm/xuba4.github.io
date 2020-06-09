@@ -178,4 +178,13 @@ class ApiTool extends Component
             'deposit' => $user->deposit,
         ];
     }
+
+    /**
+     * @param $uri
+     * @return string
+     */
+    public function getFullUrl($uri = "")
+    {
+        return $this->baseUri.$this->apiUri.$uri;
+    }
 }

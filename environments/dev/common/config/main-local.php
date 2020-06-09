@@ -24,7 +24,7 @@ return [
         ],
         'apiTool' => [
             'class' => \common\components\ApiTool::class,
-            'baseUri' => "http://",
+            'baseUri' => getenv("BASE_URl"),
             'apiUri' => "/api",
         ],
         'sftpFileProd' => [
