@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var \yii\web\View $this
+ */
+
 use yii\widgets\Breadcrumbs;
 ?>
 <section class="content-header">

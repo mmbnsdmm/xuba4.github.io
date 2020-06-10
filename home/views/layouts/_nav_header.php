@@ -1,13 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wodrow
- * Date: 19-2-1
- * Time: 下午4:40
- */
-/**
  * @var \yii\web\View $this
  */
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 use wodrow\yii2wtools\tools\JsBlock;
