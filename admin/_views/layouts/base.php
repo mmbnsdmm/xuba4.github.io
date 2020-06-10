@@ -7,6 +7,9 @@ use kartik\icons\Icon;
 
 dmstr\web\AdminLteAsset::register($this);
 Icon::map($this);
+
+$directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/adminlte/dist');
+
 ?>
 
 <?php $this->beginPage() ?>
@@ -32,9 +35,23 @@ Icon::map($this);
 <?php $this->beginBody() ?>
 
 <div class="wrapper">
-    <?= $this->render('header.php') ?>
-    <?= $this->render('left.php') ?>
-    <?= $this->render('content.php', ['content' => $content]) ?>
+
+    <?= $this->render(
+        'header.php',
+        ['directoryAsset' => $directoryAsset]
+    ) ?>
+
+    <?= $this->render(
+        'left.php',
+        ['directoryAsset' => $directoryAsset]
+    )
+    ?>
+
+    <?= $this->render(
+        'content.php',
+        ['content' => $content, 'directoryAsset' => $directoryAsset]
+    ) ?>
+
 </div>
 
 <?php $this->endBody() ?>

@@ -13,7 +13,7 @@
     "require": {
         "php": ">=7.3",
         "yiisoft/yii2": "^2.0.35",
-        "wodrow/yii-fast-api": "dev-maste",
+        "wodrow/yii-fast-api": "dev-master",
         "wodrow/yii2wajaxcrud": "dev-master",
         "wodrow/yii2wtxtcrawler": "dev-master",
         "wodrow/yii2-wwtree": "dev-master",
