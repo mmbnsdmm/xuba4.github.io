@@ -7,9 +7,6 @@ use kartik\icons\Icon;
 
 dmstr\web\AdminLteAsset::register($this);
 Icon::map($this);
-
-$directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/adminlte/dist');
-
 ?>
 
 <?php $this->beginPage() ?>
@@ -18,6 +15,7 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed201
 <head>
     <meta charset="<?= Yii::$app->charset ?>"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
@@ -30,28 +28,20 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed201
         let UserInfo = {};
         <?php endif; ?>
     </script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="@static_url/ie9/html5shiv.min.js"></script>
+    <script src="@static_url/ie9/respond.min.js"></script>
+    <![endif]-->
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <?php $this->beginBody() ?>
 
 <div class="wrapper">
-
-    <?= $this->render(
-        'header.php',
-        ['directoryAsset' => $directoryAsset]
-    ) ?>
-
-    <?= $this->render(
-        'left.php',
-        ['directoryAsset' => $directoryAsset]
-    )
-    ?>
-
-    <?= $this->render(
-        'content.php',
-        ['content' => $content, 'directoryAsset' => $directoryAsset]
-    ) ?>
-
+    <?= $this->render('_header.php') ?>
+    <?= $this->render('_left.php') ?>
+    <?= $this->render('content.php', ['content' => $content]) ?>
 </div>
 
 <?php $this->endBody() ?>

@@ -14,6 +14,7 @@ use yii\captcha\CaptchaAction;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
+use Yii;
 
 class SiteController extends Controller
 {
@@ -28,7 +29,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['index', 'logout'],
+                        'actions' => ['index', 'logout', 'test'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -59,6 +60,19 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
+        Yii::$container->set(\yii\web\JqueryAsset::class, [
+            'sourcePath' => '@static_root/iframe-adminlte/plugins/jQuery',
+            'js' => [
+                'jquery-2.2.3.min.js',
+            ],
+        ]);
+        Yii::$container->set(\yii\bootstrap\BootstrapAsset::class, [
+            'sourcePath' => '@static_root/iframe-adminlte/bootstrap',
+        ]);
+        Yii::$container->set(\yii\bootstrap\BootstrapPluginAsset::class, [
+            'sourcePath' => '@static_root/iframe-adminlte/bootstrap',
+        ]);
+        $this->layout = 'iframe-main';
         return $this->render('index');
     }
 
@@ -79,5 +93,10 @@ class SiteController extends Controller
     {
         \Yii::$app->user->logout();
         return $this->redirect(['site/login']);
+    }
+
+    public function actionTest()
+    {
+        return $this->renderPartial('test');
     }
 }
