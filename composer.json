@@ -1,52 +1,59 @@
 {
-  "name": "initYii",
-  "description": "initYii",
-  "keywords": ["inityii"],
-  "type": "project",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "wodrow",
-      "email": "wodrow451611cv@gmail.com",
-      "homepage": "https://wodrow.github.io"
-    }
-  ],
-  "minimum-stability": "stable",
-  "require": {
-    "php": ">=7.3",
-    "yiisoft/yii2": "^2.0.35",
-    "wodrow/yii-fast-api": "dev-maste",
-    "wodrow/yii2wajaxcrud": "dev-master",
-    "wodrow/yii2wtxtcrawler": "dev-master",
-    "wodrow/yii2-wwtree": "dev-master",
-    "wodrow/yii2-scheduling": "dev-master",
-    "kartik-v/yii2-widget-fileinput": "^1.0.9",
-    "kartik-v/yii2-field-range": "^1.3.5",
-    "yii2mod/yii2-array-query": "^1.4",
-    "xj/yii2-oauth": "^2.0.3",
-    "qcloudsms/qcloudsms_php": "^0.1.4",
-    "geoip2/geoip2": "^2.9.0",
-    "ralouphie/mimey": "^2.1.0",
-    "mdmsoft/yii2-admin": "~2.0",
-    "dmstr/yii2-adminlte-asset": "^2.6.2",
-    "guanguans/yii-pay": "^1.0",
-    "yiisoft/yii2-swiftmailer": "^2.1.2",
-    "vlucas/phpdotenv": "^4.1",
-    "2amigos/qrcode-library": "^2.0"
-  },
-  "require-dev": {
-    "yiisoft/yii2-debug": "^2.1.13",
-    "yiisoft/yii2-gii": "^2.2.0"
-  },
-  "config": {
-    "process-timeout": 300,
-    "preferred-install": "dist",
-    "fxp-asset": {
-      "installer-paths": {
-        "asset-pattern-skip-version": "(-build|-patch)",
-        "npm-asset-library": "vendor/npm",
-        "bower-asset-library": "vendor/bower"
-      }
-    }
-  }
+    "name": "initYii",
+    "description": "initYii",
+    "keywords": ["inityii"],
+    "type": "project",
+    "license": "MIT",
+    "authors": [{
+        "name": "wodrow",
+        "email": "wodrow451611cv@gmail.com",
+        "homepage": "https://wodrow.github.io"
+    }],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.3",
+        "yiisoft/yii2": "^2.0.35",
+        "wodrow/yii-fast-api": "dev-maste",
+        "wodrow/yii2wajaxcrud": "dev-master",
+        "wodrow/yii2wtxtcrawler": "dev-master",
+        "wodrow/yii2-wwtree": "dev-master",
+        "wodrow/yii2-scheduling": "dev-master",
+        "kartik-v/yii2-widget-fileinput": "^1.0.9",
+        "kartik-v/yii2-field-range": "^1.3.5",
+        "yii2mod/yii2-array-query": "^1.4",
+        "xj/yii2-oauth": "^2.0.3",
+        "qcloudsms/qcloudsms_php": "^0.1.4",
+        "geoip2/geoip2": "^2.9.0",
+        "ralouphie/mimey": "^2.1.0",
+        "mdmsoft/yii2-admin": "~2.0",
+        "dmstr/yii2-adminlte-asset": "^2.6.2",
+        "guanguans/yii-pay": "^1.0",
+        "yiisoft/yii2-swiftmailer": "^2.1.2",
+        "vlucas/phpdotenv": "^4.1",
+        "2amigos/qrcode-library": "^2.0"
+    },
+    "require-dev": {
+        "yiisoft/yii2-debug": "^2.1.13",
+        "yiisoft/yii2-gii": "^2.2.0"
+    },
+    "config": {
+        "process-timeout": 300,
+        "preferred-install": "dist",
+        "fxp-asset": {
+            "installer-paths": {
+                "asset-pattern-skip-version": "(-build|-patch)",
+                "npm-asset-library": "vendor/npm",
+                "bower-asset-library": "vendor/bower"
+            }
+        }
+    },
+    "repositories": [{
+        "type": "composer",
+        "url": "https://mirrors.aliyun.com/composer/"
+    },
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
 }
