@@ -17,8 +17,10 @@ $_path = IframeAdmin::register($this);
     <meta charset="<?= Yii::$app->charset ?>"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <?= Html::csrfMetaTags() ?>
-    <title>AdminLTE 2 | with iframe</title>
+    <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
     <script>
         let ApiBaseUri = "<?= Yii::$app->apiTool->getFullUrl() ?>";
@@ -35,8 +37,6 @@ $_path = IframeAdmin::register($this);
     <script src="@static_url/iframe-adminlte/plugins/ie9/html5shiv.min.js"></script>
     <script src="@static_url/iframe-adminlte/plugins/ie9/respond.min.js"></script>
     <![endif]-->
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
     <!--http://aimodu.org:7777/admin/index_iframe.html?q=audio&search=#-->
     <style type="text/css">
@@ -48,11 +48,11 @@ $_path = IframeAdmin::register($this);
 <body class="hold-transition skin-blue sidebar-mini fixed">
 <?php $this->beginBody() ?>
 <div class="wrapper">
-    <?= $this->render('_header.php') ?>
-    <?= $this->render('_left_aside.php') ?>
-    <?= $this->render('_tabs.php') ?>
-    <?= $this->render('_footer') ?>
-    <?= $this->render('_right_aside') ?>
+    <?= $this->render('_iframe_header.php') ?>
+    <?= $this->render('_iframe_left_aside.php') ?>
+    <?= $this->render('_iframe_tabs.php') ?>
+    <?= $this->render('_iframe_footer') ?>
+    <?= $this->render('_iframe_right_aside') ?>
 </div>
 
 <?php $this->endBody() ?>

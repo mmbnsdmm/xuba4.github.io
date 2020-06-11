@@ -30,6 +30,12 @@ Icon::map($this);
         let UserInfo = {};
         <?php endif; ?>
     </script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="@static_url/iframe-adminlte/plugins/ie9/html5shiv.min.js"></script>
+    <script src="@static_url/iframe-adminlte/plugins/ie9/respond.min.js"></script>
+    <![endif]-->
 </head>
 <body class="vue-body">
 <?php $this->beginBody() ?>

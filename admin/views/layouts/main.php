@@ -18,6 +18,8 @@ $_path = Admin::register($this);
     <meta charset="<?= Yii::$app->charset ?>"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
@@ -36,8 +38,6 @@ $_path = Admin::register($this);
     <script src="@static_url/iframe-adminlte/plugins/ie9/html5shiv.min.js"></script>
     <script src="@static_url/iframe-adminlte/plugins/ie9/respond.min.js"></script>
     <![endif]-->
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 </head>
 <body class="">
 <?php $this->beginBody() ?>

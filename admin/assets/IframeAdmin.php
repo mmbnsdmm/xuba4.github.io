@@ -23,10 +23,10 @@ class IframeAdmin extends AssetBundle
     {
         $this->sourcePath = "@static_root/admin";
         $this->css = [
-            'site.css',
+//            'site.css',
         ];
         $this->js = [
-            'site.js',
+//            'site.js',
         ];
         $this->depends = [
             Normalize::class,
