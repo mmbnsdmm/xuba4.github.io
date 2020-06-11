@@ -1,20 +1,24 @@
 <?php
 use wodrow\yii2wtools\tools\JsBlock;
+use yii\helpers\Url;
 
 $items = [
-    ['label' => 'Menu Yii2', 'options' => ['class' => 'header'], 'order' => -1000],
-    ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii'], 'visible' => YII_ENV_DEV?true:false],
-    ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug'], 'visible' => YII_ENV_DEV?true:false],
+    ['label' => 'Menu Yii2', 'options' => ['class' => 'header'], 'order' => -1000, 'isHeader' => true, 'id' => -1, 'text' => "菜单"],
 ];
-
+if (YII_ENV_DEV){
+    $items[] = ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => Url::to(['/gii']), 'id' => -2, 'text' => "Gii", 'targetType' => "", 'urlType' => "abosulte"];
+    $items[] = ['label' => 'Debug', 'icon' => 'dashboard', 'url' => '/debug', 'id' => -3, 'text' => "Dubeg", 'targetType' => "iframe-tab", 'urlType' => "relative"];
+}
 $mdm_items = \mdm\admin\components\MenuHelper::getAssignedMenu(Yii::$app->user->id, null, function ($menu){
     $item = [];
-    $item['label'] = $menu['name'];
-    $item['url'] = [$menu['route']];
+    $item['id'] = $menu['id'];
+    $item['text'] = $menu['name'];
+    $item['url'] = $menu['route'];
     $options = json_decode($menu['data'], true);
-    $item['options'] = $options?$options:[];
-    $item['items'] = $menu['children'];
-    $item['order'] = $menu['order'];
+    if ($menu['children'])$item['children'] = $menu['children'];
+    $item['icon'] = isset($options['icon'])?"fa fa-{$options['icon']}":"";
+    $item['targetType'] = "iframe-tab";
+    $item['urlType'] = isset($item['urlType'])?$item['urlType']:"relative";
     return $item;
 });
 $items = \yii\helpers\ArrayHelper::merge($items, $mdm_items);
@@ -45,7 +49,7 @@ $items = \yii\helpers\ArrayHelper::merge($items, $mdm_items);
     $(function () {
         App.setbasePath("<?=Yii::getAlias('@static_url/iframe-adminlte/') ?>");
         App.setGlobalImgPath("dist/img/");
-        addTabs({
+        /*addTabs({
             id: '10008',
             title: '百度',
             close: false,
@@ -53,38 +57,9 @@ $items = \yii\helpers\ArrayHelper::merge($items, $mdm_items);
             targetType: "iframe-tab",
             icon: "fa fa-circle-o",
             urlType: "abosulte"
-        });
+        });*/
         App.fixIframeCotent();
-        let menus = [
-            {
-                id: "9000",
-                text: "header",
-                icon: "",
-                isHeader: true
-            },
-            {
-                id: "9002",
-                text: "Forms",
-                icon: "fa fa-edit",
-                children: [
-                    {
-                        id: "90023",
-                        text: "editors",
-                        url: "forms/editors_iframe.html",
-                        targetType: "iframe-tab",
-                        icon: "fa fa-circle-o"
-                    },
-                    {
-                        id: "90024",
-                        text: "百度",
-                        url: "https://www.baidu.com",
-                        targetType: "iframe-tab",
-                        icon: "fa fa-circle-o",
-                        urlType: 'abosulte'
-                    }
-                ]
-            }
-        ];
+        let menus = <?=json_encode($items, JSON_UNESCAPED_UNICODE) ?>;
         $('.sidebar-menu').sidebarMenu({data: menus});
     });
 </script>

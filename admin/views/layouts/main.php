@@ -45,7 +45,10 @@ $_path = Admin::register($this);
 <div class="wrap">
     <div class="container-fluid" id="main-container">
         <?= Alert::widget() ?>
-        <?=$content ?>
+        <?=$this->render('_section') ?>
+        <section class="content">
+            <?=$content ?>
+        </section>
     </div>
 </div>
 
