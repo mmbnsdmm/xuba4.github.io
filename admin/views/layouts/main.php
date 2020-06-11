@@ -39,7 +39,7 @@ $_path = Admin::register($this);
     <script src="@static_url/iframe-adminlte/plugins/ie9/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="">
+<body class="" id="vue-body">
 <?php $this->beginBody() ?>
 
 <div class="wrap">

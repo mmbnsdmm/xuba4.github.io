@@ -95,7 +95,7 @@ class SiteController extends Controller
         $model = new FormLogin();
         if ($model->load(\Yii::$app->request->post()) && $model->validate()){
             if ($model->login()){
-                return $this->goBack();
+                return $this->goHome();
             }
         }
         return $this->renderPartial('login', [

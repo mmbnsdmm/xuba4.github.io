@@ -45,7 +45,7 @@ $_path = IframeAdmin::register($this);
         }
     </style>
 </head>
-<body class="hold-transition skin-blue sidebar-mini fixed">
+<body class="hold-transition skin-blue sidebar-mini fixed" id="vue-body">
 <?php $this->beginBody() ?>
 <div class="wrapper">
     <?= $this->render('_iframe_header.php') ?>
