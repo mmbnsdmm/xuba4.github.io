@@ -10,10 +10,10 @@ namespace admin\assets;
 
 
 use common\assets\Common;
-use common\assets\IframeAdminlte;
 use common\assets\Md5;
 use common\assets\Normalize;
 use common\assets\Vue;
+use dmstr\web\AdminLteAsset;
 use kartik\base\AssetBundle;
 use yii\bootstrap\BootstrapPluginAsset;
 use yii\web\YiiAsset;
@@ -33,6 +33,7 @@ class Admin extends AssetBundle
             Normalize::class,
             YiiAsset::class,
             BootstrapPluginAsset::class,
+            AdminLteAsset::class,
             Md5::class,
             Vue::class,
             Common::class,

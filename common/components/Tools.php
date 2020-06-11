@@ -78,4 +78,29 @@ class Tools
             mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
         );
     }
+
+    /**
+     * 获取文件夹大小
+     *
+     * @param string $dir 根文件夹路径
+     * @return int
+     */
+    public static function getDirSize($dir)
+    {
+        $handle = opendir($dir);
+        $sizeResult = 0;
+        while (false !== ($folderOrFile = readdir($handle))) {
+            if ($folderOrFile != "." && $folderOrFile != "..") {
+                if (is_dir("$dir/$folderOrFile")) {
+                    $sizeResult += self::getDirSize("$dir/$folderOrFile");
+                } else {
+                    $sizeResult += filesize("$dir/$folderOrFile");
+                }
+            }
+        }
+
+        closedir($handle);
+
+        return $sizeResult;
+    }
 }

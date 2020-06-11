@@ -3,11 +3,11 @@ use wodrow\yii2wtools\tools\JsBlock;
 use yii\helpers\Url;
 
 $items = [
-    ['label' => 'Menu Yii2', 'options' => ['class' => 'header'], 'order' => -1000, 'isHeader' => true, 'id' => -1, 'text' => "菜单"],
+    ['options' => [], 'order' => -1000, 'isHeader' => true, 'id' => -1, 'text' => "菜单"],
 ];
 if (YII_ENV_DEV){
-    $items[] = ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => Url::to(['/gii']), 'id' => -2, 'text' => "Gii", 'targetType' => "", 'urlType' => "abosulte"];
-    $items[] = ['label' => 'Debug', 'icon' => 'dashboard', 'url' => '/debug', 'id' => -3, 'text' => "Dubeg", 'targetType' => "iframe-tab", 'urlType' => "relative"];
+    $items[] = ['icon' => 'fa fa-file-code-o', 'url' => Url::to(['/gii']), 'id' => -2, 'text' => "Gii", 'targetType' => "", 'urlType' => "abosulte"];
+    $items[] = ['icon' => 'fa fa-dashboard', 'url' => '/debug', 'id' => -3, 'text' => "Dubeg", 'targetType' => "iframe-tab", 'urlType' => "relative"];
 }
 $mdm_items = \mdm\admin\components\MenuHelper::getAssignedMenu(Yii::$app->user->id, null, function ($menu){
     $item = [];
@@ -16,7 +16,7 @@ $mdm_items = \mdm\admin\components\MenuHelper::getAssignedMenu(Yii::$app->user->
     $item['url'] = $menu['route'];
     $options = json_decode($menu['data'], true);
     if ($menu['children'])$item['children'] = $menu['children'];
-    $item['icon'] = isset($options['icon'])?"fa fa-{$options['icon']}":"";
+    $item['icon'] = isset($options['icon'])?"fa fa-{$options['icon']}":"fa fa-circle-o";
     $item['targetType'] = "iframe-tab";
     $item['urlType'] = isset($item['urlType'])?$item['urlType']:"relative";
     return $item;
@@ -49,15 +49,15 @@ $items = \yii\helpers\ArrayHelper::merge($items, $mdm_items);
     $(function () {
         App.setbasePath("<?=Yii::getAlias('@static_url/iframe-adminlte/') ?>");
         App.setGlobalImgPath("dist/img/");
-        /*addTabs({
-            id: '10008',
-            title: '百度',
+        addTabs({
+            id: '-4',
+            title: '信息概览',
             close: false,
-            url: 'https://www.baidu.com',
+            url: "<?=Url::to(['/site/info']) ?>",
             targetType: "iframe-tab",
             icon: "fa fa-circle-o",
             urlType: "abosulte"
-        });*/
+        });
         App.fixIframeCotent();
         let menus = <?=json_encode($items, JSON_UNESCAPED_UNICODE) ?>;
         $('.sidebar-menu').sidebarMenu({data: menus});

@@ -3,10 +3,10 @@
  * @var \yii\web\View $this
  */
 
-use admin\assets\Admin;
+use admin\assets\IframeAdmin;
 use kartik\helpers\Html;
 
-$_path = Admin::register($this);
+$_path = IframeAdmin::register($this);
 ?>
 
 <?php $this->beginPage() ?>

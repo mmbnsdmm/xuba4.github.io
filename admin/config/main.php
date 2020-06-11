@@ -66,6 +66,7 @@ $config = [
                 ],
             ],
         ],
+        'system' => \admin\modules\system\SystemModule::class,
         'log' => \admin\modules\log\LogModule::class,
         'user' => \admin\modules\user\UserModule::class,
         'ucenter' => \admin\modules\ucenter\UcenterModule::class,
