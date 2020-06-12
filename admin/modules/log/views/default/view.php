@@ -6,24 +6,8 @@ use kartik\detail\DetailView;
 /* @var $model common\models\db\Log */
 ?>
 <div class="log-view">
- 
-    <?= DetailView::widget([
-        'model' => $model,
-        'condensed' => true,
-        'hover' => true,
-        'enableEditMode' => false,
-        'panel' => [
-            'heading' => "详细",
-            'type' => DetailView::TYPE_INFO,
-        ],
-        'attributes' => [
-            'id',
-            'level',
-            'category',
-            'log_time',
-            'prefix:ntext',
-            'message:ntext',
-        ],
-    ]) ?>
-
+    <div class="row">
+        <div class="col-sm-12"><?= $this->render("_detail-view", ['model' => $model]) ?></div>
+        <div class="col-sm-12"></div>
+    </div>
 </div>

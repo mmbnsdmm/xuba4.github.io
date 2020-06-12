@@ -32,9 +32,7 @@ class LogEmailSendCodeSearch extends LogEmailSendCode
     public function rules()
     {
         return [
-            [['id', 'created_by', 'type', 'status'], 'integer'],
-            [['created_at'], 'match', 'pattern' => '/^.+\s\-\s.+$/'],
-            [['from', 'to', 'subject', 'code', 'params'], 'safe'],
+            [['id', 'created_by', 'created_at', 'type', 'from', 'to', 'subject', 'code', 'params', 'status'], 'safe'],
         ];
     }
 
@@ -47,24 +45,19 @@ class LogEmailSendCodeSearch extends LogEmailSendCode
     {
         $query = self::find();
         $this->load($params);
-        if ( ! is_null($this->created_at) && strpos($this->created_at, ' - ') !== false ) {
-            list($s, $e) = explode(' - ', $this->created_at);
-            $query->andFilterWhere(['between', 'created_at', strtotime($s), strtotime($e)]);
-        }
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'created_by' => $this->created_by,
-            'type' => $this->type,
-            'status' => $this->status,
-        ]);
-        $this->filterLike($query, 'from');
-        $this->filterLike($query, 'to');
-        $this->filterLike($query, 'subject');
-        $this->filterLike($query, 'code');
-        $this->filterLike($query, 'params');;
+        $this->_fieldFilter($query, 'id', 'id', '=');
+        $this->_fieldFilter($query, 'created_by', 'created_by', '=');
+        $this->_fieldFilter($query, 'created_at', 'created_at', '=');
+        $this->_fieldFilter($query, 'type', 'type', '=');
+        $this->_fieldFilter($query, 'from', 'from', 'like');
+        $this->_fieldFilter($query, 'to', 'to', 'like');
+        $this->_fieldFilter($query, 'subject', 'subject', 'like');
+        $this->_fieldFilter($query, 'code', 'code', 'like');
+        $this->_fieldFilter($query, 'params', 'params', 'like');
+        $this->_fieldFilter($query, 'status', 'status', '=');;
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => ['defaultOrder' => ['id' => SORT_DESC]],
+            'sort' => ['defaultOrder' => ['id' => SORT_DESC, ]],
             ]);
         if (!$this->validate()) {
             return $dataProvider;
@@ -76,21 +69,33 @@ class LogEmailSendCodeSearch extends LogEmailSendCode
      * @param ActiveQuery $query
      * @param $attribute
      */
-    protected function filterLike(&$query, $attribute)
+    protected function _timeFilter(&$query, $attribute)
+    {
+        if ( ! is_null($this->$attribute) && strpos($this->$attribute, ' - ') !== false ) {
+            list($s, $e) = explode(' - ', $this->$attribute);
+            $query->andFilterWhere(['between', $attribute, strtotime($s), strtotime($e)]);
+        }
+    }
+
+    /**
+     * @param ActiveQuery $query
+     * @param $attribute
+     */
+    protected function _fieldFilter(&$query, $field, $attribute, $filter_type)
     {
         $this->$attribute = trim($this->$attribute);
         switch($this->$attribute){
             case \Yii::t('yii', '(not set)'):
-                $query->andFilterWhere(['IS', $attribute, new Expression('NULL')]);
+                $query->andFilterWhere(['IS', $field, new Expression('NULL')]);
                 break;
             case self::EMPTY_STRING:
-                $query->andWhere([$attribute => '']);
+                $query->andWhere([$field => '']);
                 break;
             case self::NO_EMPTY:
-                $query->andWhere(['IS NOT', $attribute, new Expression('NULL')])->andWhere(['<>', $attribute, '']);
+                $query->andWhere(['IS NOT', $field, new Expression('NULL')])->andWhere(['<>', $field, '']);
                 break;
             default:
-                $query->andFilterWhere(['like', $attribute, $this->$attribute]);
+                $query->andFilterWhere([$filter_type, $field, $this->$attribute]);
                 break;
         }
     }

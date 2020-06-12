@@ -42,6 +42,15 @@ let VueBody = new Vue({
             let _this = this;
             _this.$set(_this.user, "token", user_info.token);
             _this.$set(_this.user, "key", user_info.key);
+        },
+        isNumber: function (val) {
+            let regPos = /^\d+(\.\d+)?$/; //非负浮点数
+            let regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+            if(regPos.test(val) || regNeg.test(val)){
+                return true;
+            }else{
+                return false;
+            }
         }
     }
 });

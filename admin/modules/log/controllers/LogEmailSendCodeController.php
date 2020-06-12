@@ -11,7 +11,6 @@ use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
 use kartik\grid\EditableColumnAction;
-use wodrow\yii2wtools\enum\Status;
 
 /**
  * LogEmailSendCodeController implements the CRUD actions for LogEmailSendCode model.
@@ -84,12 +83,12 @@ class LogEmailSendCodeController extends Controller
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'title' => "LogEmailSendCode #".$id,
+                    'title' => "LogEmailSendCode({$id})",
                     'content' => $this->renderAjax('view', [
                         'model' => $this->findModel($id),
                     ]),
-                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
-                            Html::a('Edit', ['update','id' => $id], ['class' => 'btn btn-primary','role' => 'modal-remote'])
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                            Html::a('编辑', ['update','id' => $id], ['class' => 'btn btn-primary','role' => 'modal-remote'])
                 ];    
         }else{
             return $this->render('view', [
@@ -113,12 +112,12 @@ class LogEmailSendCodeController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title' => "Create new LogEmailSendCode",
+                    'title' => "新建 LogEmailSendCode",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
-                                Html::button('Save', ['class' => 'btn btn-primary','type' => "submit"])
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                                Html::button('保存', ['class' => 'btn btn-primary','type' => "submit"])
         
                 ];         
             }else if($model->load($request->post()) && $model->save()){
@@ -126,18 +125,18 @@ class LogEmailSendCodeController extends Controller
                     'forceReload' => '#crud-datatable-pjax',
                     'title' => "Create new LogEmailSendCode",
                     'content' => '<span class="text-success">Create LogEmailSendCode success</span>',
-                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
-                            Html::a('Create More', ['create'], ['class' => 'btn btn-primary','role' => 'modal-remote'])
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                            Html::a('新建更多', ['create'], ['class' => 'btn btn-primary','role' => 'modal-remote'])
         
                 ];         
             }else{           
                 return [
-                    'title' => "Create new LogEmailSendCode",
+                    'title' => "新建 LogEmailSendCode",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
-                                Html::button('Save', ['class' => 'btn btn-primary','type' => "submit"])
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                                Html::button('保存', ['class' => 'btn btn-primary','type' => "submit"])
         
                 ];         
             }
@@ -171,12 +170,12 @@ class LogEmailSendCodeController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title' => "Update LogEmailSendCode #".$id,
+                    'title' => "修改 LogEmailSendCode({$id})",
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
-                                Html::button('Save', ['class' => 'btn btn-primary','type' => "submit"])
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                                Html::button('保存', ['class' => 'btn btn-primary','type' => "submit"])
                 ];         
             }else if($model->load($request->post()) && $model->save()){
                 return [
@@ -185,17 +184,17 @@ class LogEmailSendCodeController extends Controller
                     'content' => $this->renderAjax('view', [
                         'model' => $model,
                     ]),
-                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
-                            Html::a('Edit', ['update','id' => $id], ['class' => 'btn btn-primary','role' => 'modal-remote'])
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                            Html::a('编辑', ['update','id' => $id], ['class' => 'btn btn-primary','role' => 'modal-remote'])
                 ];    
             }else{
                  return [
-                    'title' => "Update LogEmailSendCode #".$id,
+                    'title' => "修改 LogEmailSendCode #".$id,
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
-                                Html::button('Save', ['class' => 'btn btn-primary','type' => "submit"])
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                                Html::button('保存', ['class' => 'btn btn-primary','type' => "submit"])
                 ];        
             }
         }else{
@@ -228,7 +227,7 @@ class LogEmailSendCodeController extends Controller
                 $model->delete();
                 break;
             case 'soft':
-                $model->status = Status::STATUS_DEL;
+                $model->status = LogEmailSendCode::STATUS_DELETE;
                 $model->save();
                 break;
             default:
@@ -261,7 +260,7 @@ class LogEmailSendCodeController extends Controller
                     $model->delete();
                     break;
                 case 'soft':
-                    $model->status = Status::STATUS_DEL;
+                    $model->status = LogEmailSendCode::STATUS_DELETE;
                     $model->save();
                     break;
                 default:
@@ -286,12 +285,12 @@ class LogEmailSendCodeController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                'title' => "test LogEmailSendCode #".$id,
+                'title' => "test LogEmailSendCode({$id})",
                     'content' => $this->renderAjax('test', [
                     'model' => $model,
                 ]),
                 'footer' =>
-                    Html::button('Close', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                    Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
                     Html::button('test', ['class' => 'btn btn-primary', 'type' => "submit"]),
                 ];
             }elseif($model->load($request->post()) && $model->validate()){
@@ -299,12 +298,12 @@ class LogEmailSendCodeController extends Controller
                 return ['forceClose' => true,'forceReload' => '#crud-datatable-pjax'];
             }else{
                 return [
-                    'title' => "test LogEmailSendCode #".$id,
+                    'title' => "test LogEmailSendCode({$id})",
                     'content' => $this->renderAjax('test', [
                     'model' => $model,
                 ]),
                 'footer' =>
-                    Html::button('Close', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                    Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
                     Html::button('test', ['class' => 'btn btn-primary', 'type' => "submit"]),
                 ];
             }
@@ -316,6 +315,29 @@ class LogEmailSendCodeController extends Controller
                     'model' => $model,
                 ]);
             }
+        }
+    }
+
+    /**
+     * Delete multiple existing LogEmailSendCode model.
+     * For ajax request will return json object
+     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionBulktest()
+    {
+        $request = Yii::$app->request;
+        $pks = explode(',', $request->post( 'pks' ));
+        foreach ( $pks as $pk ) {
+            $model = $this->findModel($pk);
+            # TO DO
+        }
+        if($request->isAjax){
+        Yii::$app->response->format = Response::FORMAT_JSON;
+            return ['forceClose' => true,'forceReload' => '#crud-datatable-pjax'];
+        }else{
+            return $this->redirect(['index']);
         }
     }
 

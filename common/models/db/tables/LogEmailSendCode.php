@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "{{%log_email_send_code}}".
  *
  * @property int $id
- * @property int $created_by
+ * @property int|null $created_by
  * @property int $created_at
  * @property int $type 类型
  * @property string $from 发件邮箱

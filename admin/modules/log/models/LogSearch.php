@@ -2,6 +2,7 @@
 
 namespace admin\modules\log\models;
 
+use common\components\Tools;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -32,8 +33,7 @@ class LogSearch extends Log
     public function rules()
     {
         return [
-            [['id', 'level'], 'integer'],
-            [['category', 'prefix', 'message'], 'safe'],
+            [['id', 'level', 'category', 'prefix', 'message'], 'safe'],
             [['log_time'], 'match', 'pattern' => '/^.+\s\-\s.+$/'],
         ];
     }
@@ -47,21 +47,17 @@ class LogSearch extends Log
     {
         $query = self::find();
         $this->load($params);
-        if ( ! is_null($this->log_time) && strpos($this->log_time, ' - ') !== false ) {
-            list($s, $e) = explode(' - ', $this->log_time);
-            $query->andFilterWhere(['between', 'log_time', strtotime($s), strtotime($e)]);
-        }
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'level' => $this->level,
-        ]);
-        $this->filterLike($query, 'category');
-        $this->filterLike($query, 'prefix');
-        $this->filterLike($query, 'message');;
+//        $this->_timeFilter($query, 'log_time');
+        $this->_rangeFilter($query, 'log_time', true);
+        $this->_fieldFilter($query, 'id', 'id', '=');
+        $this->_fieldFilter($query, 'level', 'level', '=');
+        $this->_fieldFilter($query, 'category', 'category', 'like');
+        $this->_fieldFilter($query, 'prefix', 'prefix', 'like');
+        $this->_fieldFilter($query, 'message', 'message', 'like');;
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => ['defaultOrder' => ['id' => SORT_DESC]],
-        ]);
+            'sort' => ['defaultOrder' => ['id' => SORT_DESC, ]],
+            ]);
         if (!$this->validate()) {
             return $dataProvider;
         }
@@ -72,21 +68,38 @@ class LogSearch extends Log
      * @param ActiveQuery $query
      * @param $attribute
      */
-    protected function filterLike(&$query, $attribute)
+    protected function _rangeFilter(&$query, $attribute, $isDate = false)
+    {
+        if ( ! is_null($this->$attribute) && strpos($this->$attribute, ' - ') !== false ) {
+            list($s, $e) = explode(' - ', $this->$attribute);
+            if ($isDate){
+                $s = strtotime($s);
+                $e = strtotime($e);
+            }
+            if ($s)$query->andFilterWhere(['>=', $attribute, $s]);
+            if ($e)$query->andFilterWhere(['<=', $attribute, $e]);
+        }
+    }
+
+    /**
+     * @param ActiveQuery $query
+     * @param $attribute
+     */
+    protected function _fieldFilter(&$query, $field, $attribute, $filter_type)
     {
         $this->$attribute = trim($this->$attribute);
         switch($this->$attribute){
             case \Yii::t('yii', '(not set)'):
-                $query->andFilterWhere(['IS', $attribute, new Expression('NULL')]);
+                $query->andFilterWhere(['IS', $field, new Expression('NULL')]);
                 break;
             case self::EMPTY_STRING:
-                $query->andWhere([$attribute=>'']);
+                $query->andWhere([$field => '']);
                 break;
             case self::NO_EMPTY:
-                $query->andWhere(['IS NOT', $attribute, new Expression('NULL')])->andWhere(['<>', $attribute, '']);
+                $query->andWhere(['IS NOT', $field, new Expression('NULL')])->andWhere(['<>', $field, '']);
                 break;
             default:
-                $query->andFilterWhere(['like', $attribute, $this->$attribute]);
+                $query->andFilterWhere([$filter_type, $field, $this->$attribute]);
                 break;
         }
     }

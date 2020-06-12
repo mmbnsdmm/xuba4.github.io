@@ -13,8 +13,8 @@ use yii\helpers\Html;
 use yii\bootstrap\Modal;
 use wodrow\wajaxcrud\CrudAsset;
 use wodrow\wajaxcrud\BulkButtonWidget;
-use wodrow\yii2wtools\enum\Status;
 use wodrow\yii2wtools\tools\JsBlock;
+use yii\web\JsExpression;
 
 /* @var $this yii\web\View */
 /* @var $searchModel admin\modules\log\models\LogEmailSendCodeSearch */
@@ -51,7 +51,7 @@ CrudAsset::register($this);
                     'width' => "40px",
                     'pageSummary' => "合计",
                 ],
-                [
+                /*[
                     'class' => ExpandRowColumn::class,
                     'value' => function ($model, $key, $index, $column) {
                         return GridView::ROW_COLLAPSED;
@@ -60,7 +60,7 @@ CrudAsset::register($this);
                         return $this->render('view', ['model' => $model]);
                     },
                     'expandOneOnly' => true,
-                ],
+                ],*/
                 [
                     'class' => DataColumn::class,
                     'attribute' => "id",
@@ -78,24 +78,6 @@ CrudAsset::register($this);
                     'attribute' => "created_at",
                     'hAlign' => GridView::ALIGN_CENTER,
                     'vAlign' => GridView::ALIGN_MIDDLE,
-                    'format' => ['date', 'php:Y-m-d H:i'],
-                    'filter' => DateRangePicker::widget([
-                        'model' => $searchModel,
-                        'attribute' => "created_at",
-                        'convertFormat' => true,
-                        'pluginOptions' => [
-                            'opens' => "left",
-                            'timePicker' => true,
-                            'timePickerIncrement' => 30,
-                            'locale' => [
-                                'format' => "Y-m-d H:i",
-                                'cancelLabel' => "清除",
-                            ],
-                        ],
-//                        'useWithAddon' => true,
-//                        'presetDropdown' => true,
-                        'pjaxContainerId' => "crud-datatable-pjax",
-                    ]),
                 ],
                 [
                     'class' => DataColumn::class,
@@ -138,7 +120,7 @@ CrudAsset::register($this);
                     'attribute' => "status",
                     'hAlign' => GridView::ALIGN_CENTER,
                     'vAlign' => GridView::ALIGN_MIDDLE,
-                    'enum' => Status::getStatus(),
+                    'enum' => $searchModel->statusDesc,
                 ],
                 [
                     'class' => ActionColumn::class,
@@ -152,7 +134,7 @@ CrudAsset::register($this);
                     'updateOptions' => ['role' => 'modal-remote', 'title' => "Update", 'data-toggle' => "tooltip"],
                     'deleteOptions' => [
                         'role' => 'modal-remote',
-                        'title' => "Delete",
+                        'title' => "删除",
                         'data-confirm' => false,
                         'data-method' => false, // for overide yii data api
                         'data-request-method' => "post",
@@ -162,24 +144,28 @@ CrudAsset::register($this);
                     ],
                 ],
                 [
-                    'class' => DataColumn::class,
-                    'label' => '更多操作',
-                    'format' => 'raw',
+                    'class' => ActionColumn::class,
+                    'header' => '其他操作',
+                    'template' => '{test}',
                     'mergeHeader' => true,
-                    'value' => function ($m) {
-                        return Html::a('操作名test', ['test', 'id' => $m->id], [
-                            'title' => 'title',
-                            'role' => 'modal-remote',
-                            'data-toggle' => 'tooltip',
-                        ]);
-                    },
+                    'buttons' => [
+                        'test' => function ($url, $model, $key) {
+                            return Html::a('Test', $url, [
+                                'title' => Yii::t('yii', 'Test'),
+                                'aria-label' => Yii::t('yii', 'Test'),
+                                'data-pjax' => '0',
+                                'role' => 'modal-remote',
+                                'data-toggle' => 'tooltip',
+                            ]);
+                        },
+                    ],
                     'contentOptions' => ['style' => 'vertical-align: middle;'],
                 ],
             ],
             'toolbar' => [
                 ['content' =>
                     Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'],
-                    ['role' => "modal-remote", 'title' => "Create new Log Email Send Codes", 'class' => "btn btn-default"]).
+                    ['role' => "modal-remote", 'title' => "新建 Log Email Send Codes", 'class' => "btn btn-default"]).
                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
                     ['data-pjax' => 1, 'class' => "btn btn-default", 'title' => "Reset Grid"]).
                     '{toggleData}'.
@@ -198,6 +184,14 @@ CrudAsset::register($this);
                         'data-request-method' => "post",
                         'data-confirm-title' => "删除数据提示!",
                         'data-confirm-message' => "你确认要删除这些数据吗?"
+                    ])." ".
+                    Html::a('<i class="glyphicon glyphicon-wrench"></i> test选择', ["bulktest"], [
+                        "class" => "btn btn-warning btn-xs",
+                        'role' => "modal-remote-bulk",
+                        'data-confirm' => false, 'data-method' => false,
+                        'data-request-method' => "post",
+                        'data-confirm-title' => "test数据提示!",
+                        'data-confirm-message' => "你确认要test这些数据吗?"
                     ]),
                 ]).
                 '<div class="clearfix"></div>',
@@ -207,6 +201,7 @@ CrudAsset::register($this);
 </div>
 <?php Modal::begin([
     'id' => "ajaxCrudModal",
+    'size' => Modal::SIZE_LARGE,
     'footer' => "", // always need it for jquery plugin
 ]); ?>
 <?php Modal::end(); ?>
