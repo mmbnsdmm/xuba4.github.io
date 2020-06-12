@@ -64,6 +64,7 @@ return [
         'yiichina-username' => "",
         'yiichina-password' => "",
         'adminRoleOrdinaryUserName' => "普通用户",
+        'adminRoleAdminUserName' => "管理员",
         'console-username' => "",
         'console-password' => "",
     ],

@@ -24,18 +24,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                /*'rules' => [
-                    [
-                        'actions' => ['login', 'error', 'captcha'],
-                        'allow' => true,
-                    ],
-                    [
-                        'actions' => ['index', 'logout', 'test'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],*/
-                'only' => ['index', 'login', 'captcha', 'logout', 'error', 'test', 'info'],
+                'only' => ['index', 'login', 'captcha', 'logout', 'error', 'test', 'info', 'clean-cache'],
                 'rules' => [
                     [
                         'actions' => ['login', 'captcha'],
@@ -43,7 +32,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['index', 'logout', 'test', 'info'],
+                        'actions' => ['index', 'logout', 'test', 'info', 'clean-cache'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -132,6 +121,15 @@ class SiteController extends Controller
             'attachment_size' => $attachmentSize ?? 0,
             'disable_functions' => $disableFunctions,
         ]);
+    }
+
+    public function actionCleanCache()
+    {
+        if (Yii::$app->request->post()){
+            Yii::$app->cache->flush();
+            Yii::$app->session->addFlash("success", "清理成功");
+        }
+        return $this->render('clean-cache');
     }
 
     public function actionTest()

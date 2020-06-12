@@ -43,17 +43,15 @@ use yii\helpers\Html;
                         <li class="user-footer">
                             <div class="row">
                                 <div class="col-xs-4 text-center">
-                                    <?= Html::a(
+                                    <?= Html::button(
                                         '个人中心',
-                                        ['/ucenter/profile'],
-                                        ['class' => 'btn btn-default btn-flat']
+                                        ['class' => 'btn btn-default btn-flat', 'onclick' => "addTabs({id:'-10',title: '个人中心',close: true,url: '/ucenter/profile',urlType: 'relative'})"]
                                     ) ?>
                                 </div>
                                 <div class="col-xs-4 text-center">
-                                    <?= Html::a(
+                                    <?= Html::button(
                                         '清理缓存',
-                                        ['/ucenter/profile'],
-                                        ['data-confirm' => "确认清理缓存?", 'class' => 'btn btn-default btn-flat']
+                                        ['class' => 'btn btn-default btn-flat', 'onclick' => "addTabs({id:'-11',title: '清理缓存',close: true,url: '/site/clean-cache',urlType: 'relative'})"]
                                     ) ?>
                                 </div>
                                 <div class="col-xs-4 text-center">
