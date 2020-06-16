@@ -43,10 +43,11 @@ $config = [
 //            'mainLayout' => "@admin/views/layouts/main.php",
 //            'layout' => 'left-menu',
             'menus' => [
-                'assignment' => [
+                /*'assignment' => [
                     'label' => '权限分配', // change label
-                ],
+                ],*/
                 'user' => false,
+                'assignment' => false,
             ],
             'controllerMap' => [
                 'assignment' => [
