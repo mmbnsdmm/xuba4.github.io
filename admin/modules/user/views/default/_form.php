@@ -15,25 +15,7 @@ use kartik\form\ActiveForm;
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'pwd_back')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'status')->textInput() ?>
-
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'token')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'key')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'auth_key')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'amount')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'frozen')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
+    <?= $form->field($model, 'status')->dropDownList($model->statusDesc) ?>
 
     <?= $form->field($model, 'nickname')->textInput(['maxlength' => true]) ?>
 

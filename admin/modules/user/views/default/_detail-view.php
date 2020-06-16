@@ -21,16 +21,22 @@ use kartik\detail\DetailView;
             'id',
             'username',
             'email:email',
-            'password',
-            'pwd_back',
+//            'password',
+//            'pwd_back',
             'status',
-            'created_at',
+            [
+                'attribute' => "status",
+                'value' => function()use($model){
+                    return $model->statusDesc[$model->status];
+                }
+            ],
             'token',
             'key',
             'auth_key',
             'amount',
             'frozen',
-            'updated_at',
+            'created_at:datetime',
+            'updated_at:datetime',
             'nickname',
             'avatar',
         ],

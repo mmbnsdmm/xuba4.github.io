@@ -62,7 +62,7 @@ $config = [
                             },
                         ],
                     ],
-                    'searchClass' => \admin\modules\user\models\UserSearch::class,
+                    'searchClass' => \mdm\admin\models\searchs\User::class,
                 ],
             ],
         ],
