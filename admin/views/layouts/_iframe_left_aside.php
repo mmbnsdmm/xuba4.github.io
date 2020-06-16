@@ -3,10 +3,10 @@ use wodrow\yii2wtools\tools\JsBlock;
 use yii\helpers\Url;
 
 $items = [
-    ['options' => [], 'order' => -1000, 'isHeader' => true, 'id' => -1, 'text' => "菜单"],
+    ['order' => -1000, 'isHeader' => true, 'id' => -1, 'text' => "菜单"],
 ];
 if (YII_ENV_DEV){
-    $items[] = ['icon' => 'fa fa-file-code-o', 'url' => Url::to(['/gii']), 'id' => -2, 'text' => "Gii", 'targetType' => "", 'urlType' => "abosulte"];
+    $items[] = ['icon' => 'fa fa-file-code-o', 'url' => Url::to(['/gii']), 'id' => -2, 'text' => "Gii", 'targetType' => "blank", 'urlType' => "abosulte"];
     $items[] = ['icon' => 'fa fa-dashboard', 'url' => '/debug', 'id' => -3, 'text' => "Dubeg", 'targetType' => "iframe-tab", 'urlType' => "relative"];
 }
 $mdm_items = \mdm\admin\components\MenuHelper::getAssignedMenu(Yii::$app->user->id, null, function ($menu){
@@ -17,7 +17,7 @@ $mdm_items = \mdm\admin\components\MenuHelper::getAssignedMenu(Yii::$app->user->
     $options = json_decode($menu['data'], true);
     if ($menu['children'])$item['children'] = $menu['children'];
     $item['icon'] = isset($options['icon'])?"fa fa-{$options['icon']}":"fa fa-circle-o";
-    $item['targetType'] = "iframe-tab";
+    $item['targetType'] = isset($menu['targetType'])?$menu['targetType']:"iframe-tab";
     $item['urlType'] = isset($item['urlType'])?$item['urlType']:"relative";
     return $item;
 });
