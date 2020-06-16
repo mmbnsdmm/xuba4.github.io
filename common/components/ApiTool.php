@@ -29,7 +29,7 @@ class ApiTool extends Component
      */
     public function post($uri, $form_params)
     {
-        $client = new Client(['base_uri' => $this->baseUri.$this->apiUri.$uri, 'verify'=>false]);
+        $client = new Client(['base_uri' => $this->getFullUrl($uri), 'verify'=>false]);
         $form_params = $this->signFormParams($form_params);
         $resp = $client->request("POST", "", [
             'form_params' => $form_params,
@@ -109,7 +109,7 @@ class ApiTool extends Component
         $log->from = json_encode($mail->getFrom(), JSON_UNESCAPED_UNICODE);
         $log->to = $email;
         $log->type = $typeKey;
-        $log->code = \Yii::$app->security->generateRandomString();
+        $log->code = rand(100000, 999999);
         if (YII_ENV_DEV){
             $log->status = LogEmailSendCode::STATUS_SEND_SUCCESS;
             $r['is_ok'] = 1;
@@ -163,7 +163,7 @@ class ApiTool extends Component
 
     /**
      * @param User $user
-     * @return array {'token': "令牌", 'key': "秘钥， 不要泄露", 'username': "用户名", 'email': "邮箱", 'amount': "余额", 'frozen': "冻结资金", 'deposit': 保证金"}
+     * @return array {'token': "令牌", 'key': "秘钥， 不要泄露", 'username': "用户名", 'email': "邮箱", 'amount': "余额", 'frozen': "冻结资金"}
      *
      */
     public function authReturn($user)
@@ -175,7 +175,6 @@ class ApiTool extends Component
             'email' => $user->email,
             'amount' => $user->amount,
             'frozen' => $user->frozen,
-            'deposit' => $user->deposit,
         ];
     }
 

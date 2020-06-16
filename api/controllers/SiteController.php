@@ -33,8 +33,9 @@ class SiteController extends Controller
      */
     public function actionSendEmailCode($email, $typeKey)
     {
-        $r = $this->return;
+        $r = $this->data;
         $rules = [
+            ['email', 'trim'],
             ['email', 'string', 'max' => 150],
             ['email', 'email'],
         ];
@@ -74,11 +75,13 @@ class SiteController extends Controller
      */
     public function actionSignup($username, $email, $password, $code)
     {
-        $r = $this->return;
+        $r = $this->data;
         $rules = [
+            [['username', 'password'], 'trim'],
             [['username', 'password'], 'string', 'min' => 6, 'max' => 150],
+            ['username', 'unique', 'targetClass' => User::class, 'targetAttribute' => 'username'],
         ];
-        $model = DynamicModel::validateData(['password' => $password], $rules);
+        $model = DynamicModel::validateData(['username' => $username, 'password' => $password], $rules);
         if (!$model->validate()){
             $r['is_ok'] = 0;
             $r['msg'] = Model::getModelError($model);

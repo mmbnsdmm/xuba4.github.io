@@ -14,7 +14,7 @@ use Yii;
  * @property string $from 发件邮箱
  * @property string $to 目标邮箱
  * @property string $subject 主题
- * @property string $code 验证码
+ * @property int $code 验证码
  * @property string $params 其他参数
  * @property int $status 状态
  *
@@ -37,11 +37,10 @@ class LogEmailSendCode extends \yii\db\ActiveRecord
     {
         return [
             [['created_by'], 'default'],
-            [['created_by', 'created_at', 'type', 'status'], 'integer'],
+            [['created_by', 'created_at', 'type', 'code', 'status'], 'integer'],
             [['created_at', 'type', 'from', 'to', 'subject', 'code', 'params', 'status'], 'required'],
             [['params'], 'string'],
             [['from', 'to', 'subject'], 'string', 'max' => 150],
-            [['code'], 'string', 'max' => 32],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
         ];
     }

@@ -41,13 +41,13 @@ class FormSignup extends Model
             ['username', 'unique', 'targetClass' => User::class, 'targetAttribute' => 'username'],
             [['username', 'password'], 'string', 'min' => 6, 'max' => 150],
             ['repassword', 'compare', 'compareAttribute' => 'password'],
-            ['code', 'string', 'min' => 32, 'max' => 32],
+            ['code', 'integer', 'min' => 100000, 'max' => 999999],
         ];
     }
 
     public function signUp()
     {
-        $r = \Yii::$app->apiTool->post('site/signup', ['email' => $this->email, 'username' => $this->username, 'password' => $this->password, 'code' => $this->code]);
+        $r = \Yii::$app->apiTool->post('/site/signup', ['email' => $this->email, 'username' => $this->username, 'password' => $this->password, 'code' => $this->code]);
         if ($r['code'] != 200){
             \Yii::$app->session->addFlash('error', $r['message']);
             return false;

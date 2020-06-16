@@ -96,7 +96,7 @@ CrudAsset::register($this);
                     'attribute' => "status",
                     'hAlign' => GridView::ALIGN_CENTER,
                     'vAlign' => GridView::ALIGN_MIDDLE,
-                    'enum' => \common\models\db\User::getStatus(),
+                    'enum' => $searchModel->statusDesc,
                 ],
                 [
                     'class' => DataColumn::class,

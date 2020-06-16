@@ -44,13 +44,13 @@ $this->params['breadcrumbs'][] = $this->title;
             methods: {
                 sendCode:function () {
                     let _this = this;
-                    let email_reg = vue_body.reg_email;
+                    let email_reg = VueBody.reg_email;
                     if (!email_reg.test(this.email)){
                         alert("邮箱地址错误");
                         return ;
                     }
                     $.ajax({
-                        url: "<?=Yii::$app->apiTool->baseUri ?>/site/send-email-code",
+                        url: "<?=Yii::$app->apiTool->getFullUrl('/site/send-email-code') ?>",
                         type: "post",
                         data: {
                             email: this.email,
