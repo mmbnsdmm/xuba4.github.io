@@ -33,7 +33,11 @@ use kartik\form\ActiveForm;
 
     <?= $form->field($model, 'frozen')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'deposit')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'updated_at')->textInput() ?>
+
+    <?= $form->field($model, 'nickname')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'avatar')->textInput(['maxlength' => true]) ?>
 
   
 	<?php if (!Yii::$app->request->isAjax){ ?>

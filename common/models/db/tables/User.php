@@ -20,6 +20,8 @@ use Yii;
  * @property float $amount 余额
  * @property float $frozen 冻结资金
  * @property int $updated_at 修改时间
+ * @property string|null $nickname 昵称
+ * @property string|null $avatar 头像
  *
  * @property AdminAuthAssignment[] $adminAuthAssignments
  * @property AdminAuthItem[] $itemNames
@@ -45,14 +47,16 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['username', 'email', 'password', 'pwd_back', 'status', 'created_at', 'token', 'key', 'auth_key', 'amount', 'frozen', 'updated_at'], 'trim'],
+            [['username', 'email', 'password', 'pwd_back', 'status', 'created_at', 'token', 'key', 'auth_key', 'amount', 'frozen', 'updated_at', 'nickname', 'avatar'], 'trim'],
             [['username', 'email', 'password', 'pwd_back', 'created_at', 'token', 'key', 'auth_key', 'updated_at'], 'required'],
             [['status', 'created_at', 'updated_at'], 'integer'],
             [['amount', 'frozen'], 'number'],
             [['username', 'password', 'token', 'key', 'auth_key'], 'string', 'max' => 32],
             [['email', 'pwd_back'], 'string', 'max' => 150],
+            [['nickname', 'avatar'], 'string', 'max' => 180],
             [['status'], 'default', 'value' => 10],
             [['amount', 'frozen'], 'default', 'value' => 0.00],
+            [['nickname', 'avatar'], 'default', 'value' => null],
             [['token'], 'unique'],
             [['email'], 'unique'],
             [['username'], 'unique'],
@@ -78,6 +82,8 @@ class User extends \yii\db\ActiveRecord
             'amount' => Yii::t('app', '余额'),
             'frozen' => Yii::t('app', '冻结资金'),
             'updated_at' => Yii::t('app', '修改时间'),
+            'nickname' => Yii::t('app', '昵称'),
+            'avatar' => Yii::t('app', '头像'),
         ];
     }
 
