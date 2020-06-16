@@ -2,6 +2,9 @@
 
 namespace admin\modules\user\controllers;
 
+use admin\modules\user\models\forms\UserRoles;
+use common\components\Tools;
+use common\models\db\AdminAuthAssignment;
 use Yii;
 use common\models\db\User;
 use admin\modules\user\models\searchs\User as UserSearch;
@@ -273,6 +276,50 @@ class DefaultController extends Controller
             return ['forceClose' => true,'forceReload' => '#crud-datatable-pjax'];
         }else{
             return $this->redirect(['index']);
+        }
+    }
+
+    public function actionAllocRoles($id)
+    {
+        $request = Yii::$app->request;
+        $model = new UserRoles();
+        $model->user_id = $id;
+        $model->role_names = AdminAuthAssignment::getRoleNamesMapByUser($id);
+
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($request->isGet){
+                return [
+                    'title' => "分配权限({$id})",
+                    'content' => $this->renderAjax('alloc-roles', [
+                        'model' => $model,
+                    ]),
+                    'footer' =>
+                        Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                        Html::button('分配权限', ['class' => 'btn btn-primary', 'type' => "submit"]),
+                ];
+            }elseif($model->load($request->post()) && $model->validate()){
+                $model->alloc();
+                return ['forceClose' => true,'forceReload' => '#crud-datatable-pjax'];
+            }else{
+                return [
+                    'title' => "分配权限({$id})",
+                    'content' => $this->renderAjax('alloc-roles', [
+                        'model' => $model,
+                    ]),
+                    'footer' =>
+                        Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                        Html::button('分配权限', ['class' => 'btn btn-primary', 'type' => "submit"]),
+                ];
+            }
+        }else{
+            if ($model->load($request->post())) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('alloc-roles', [
+                    'model' => $model,
+                ]);
+            }
         }
     }
 

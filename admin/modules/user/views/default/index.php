@@ -257,13 +257,13 @@ CrudAsset::register($this);
                 [
                     'class' => ActionColumn::class,
                     'header' => '其他操作',
-                    'template' => '{test}',
+                    'template' => '{alloc-roles}',
                     'mergeHeader' => true,
                     'buttons' => [
-                        'test' => function ($url, $model, $key) {
-                            return Html::a('Test', $url, [
-                                'title' => Yii::t('yii', 'Test'),
-                                'aria-label' => Yii::t('yii', 'Test'),
+                        'alloc-roles' => function ($url, $model, $key) {
+                            return Html::a('分配角色', $url, [
+                                'title' => Yii::t('yii', '分配角色'),
+                                'aria-label' => Yii::t('yii', '分配角色'),
                                 'data-pjax' => '0',
                                 'role' => 'modal-remote',
                                 'data-toggle' => 'tooltip',

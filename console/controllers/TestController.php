@@ -9,6 +9,8 @@
 namespace console\controllers;
 
 
+use common\models\db\AdminAuthAssignment;
+use common\models\db\AdminAuthItem;
 use QL\QueryList;
 use wodrow\yii2wtools\tools\Tools;
 use yii\console\Controller;
@@ -102,5 +104,15 @@ class TestController extends Controller
         ])->queryData();
         var_dump($data);
         var_dump(\Yii::$app->user->identity->toArray());
+    }
+
+    public function actionTest2()
+    {
+        $x = AdminAuthItem::findOne(['name' => "测试"]);
+        $x->description = date("Y-m-d H:i:s");
+//        $x->name = "测试";
+        $x->save();
+        var_dump(AdminAuthItem::getAllRoles());
+        var_dump(AdminAuthAssignment::getRoleNamesByUser(4));
     }
 }
