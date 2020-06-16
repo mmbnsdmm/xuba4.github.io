@@ -32,7 +32,8 @@
         "vlucas/phpdotenv": "^4.1",
         "2amigos/qrcode-library": "^2.0",
         "kartik-v/yii2-widget-rangeinput": "^1.0",
-        "kartik-v/yii2-money": "^1.2"
+        "kartik-v/yii2-money": "^1.2",
+        "kartik-v/yii2-widget-datetimepicker": "^1.4"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "^2.1.13",

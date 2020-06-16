@@ -23,7 +23,6 @@ use kartik\detail\DetailView;
             'email:email',
 //            'password',
 //            'pwd_back',
-            'status',
             [
                 'attribute' => "status",
                 'value' => function()use($model){
