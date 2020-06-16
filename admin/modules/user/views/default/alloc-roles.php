@@ -16,7 +16,7 @@ use wodrow\yii2wtools\tools\ArrayHelper;
 
         <?= $form->field($model, 'user_id')->hiddenInput()->label(false) ?>
 
-        <?= $form->field($model, 'role_names')->checkboxList(ArrayHelper::map(AdminAuthItem::getAllRoles(), 'name', "name")) ?>
+        <?= $form->field($model, 'role_names')->checkboxList(ArrayHelper::map(AdminAuthItem::getAllRoles(), 'name', "name"), ['inline' => true]) ?>
 
         <?php if (!Yii::$app->request->isAjax){ ?>
             <div class="form-group">
