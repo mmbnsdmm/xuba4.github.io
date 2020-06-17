@@ -84,7 +84,7 @@ class AdminAuthItem extends \common\models\db\tables\AdminAuthItem
         $childs = Yii::$app->cache->get("AdminAuthItemChild-getChilds{$get_type}ByRole-{$role}");
         if (!$childs){
             $query = AdminAuthItemChild::find()->alias('item_p_c')
-                ->joinWith('child child')
+                ->joinWith('childAdminAuthItem child')
                 ->where(['item_p_c.parent' => $role]);
             switch ($get_type){
                 case self::GET_TYPE_PERMISSIONS:

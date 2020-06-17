@@ -14,8 +14,10 @@ use wodrow\yii2wtools\behaviors\Uuid;
  *
  * @author
  *
- * @property AdminAuthItem $parent
- * @property AdminAuthItem $child
+ * @property AdminAuthItemChild $p
+ * @property AdminAuthItemChild $c
+ * @property AdminAuthItem $parentAdminAuthItem
+ * @property AdminAuthItem $childAdminAuthItem
  */
 class AdminAuthItemChild extends \common\models\db\tables\AdminAuthItemChild
 {
@@ -48,7 +50,7 @@ class AdminAuthItemChild extends \common\models\db\tables\AdminAuthItemChild
             }
         }*/
         return ArrayHelper::merge($rules, [
-            ['parent', Loop::class, 'parentForAttribute' => "child", 'parentModelLinkname' => "parent"]
+            ['parent', Loop::class, 'parentForAttribute' => "child", 'parentModelLinkname' => "p"],
         ]);
     }
 
@@ -64,7 +66,23 @@ class AdminAuthItemChild extends \common\models\db\tables\AdminAuthItemChild
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getParent()
+    public function getP()
+    {
+        return $this->hasOne(self::className(), ['child' => 'parent']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getC()
+    {
+        return $this->hasOne(self::className(), ['parent' => 'child']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getParentAdminAuthItem()
     {
         return $this->hasOne(AdminAuthItem::className(), ['name' => 'parent']);
     }
@@ -72,7 +90,7 @@ class AdminAuthItemChild extends \common\models\db\tables\AdminAuthItemChild
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getChild()
+    public function getChildAdminAuthItem()
     {
         return $this->hasOne(AdminAuthItem::className(), ['name' => 'child']);
     }
