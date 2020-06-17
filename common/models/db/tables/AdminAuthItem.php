@@ -9,20 +9,20 @@ use Yii;
  *
  * @property string $name
  * @property int $type
- * @property string $description
- * @property string $rule_name
- * @property resource $data
- * @property int $created_at
- * @property int $updated_at
+ * @property string|null $description
+ * @property string|null $rule_name
+ * @property resource|null $data
+ * @property int|null $created_at
+ * @property int|null $updated_at
  *
  * @property AdminAuthAssignment[] $adminAuthAssignments
- * @property User[] $users
- * @property AdminAuthRule $ruleName
  * @property AdminAuthItemChild[] $adminAuthItemChildren
  * @property AdminAuthItemChild[] $adminAuthItemChildren0
+ * @property AdminMenu[] $adminMenus
  * @property AdminAuthItem[] $children
  * @property AdminAuthItem[] $parents
- * @property AdminMenu[] $adminMenus
+ * @property AdminAuthRule $ruleName
+ * @property User[] $users
  */
 class AdminAuthItem extends \yii\db\ActiveRecord
 {
@@ -40,11 +40,12 @@ class AdminAuthItem extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['name', 'type', 'description', 'rule_name', 'data', 'created_at', 'updated_at'], 'trim'],
             [['name', 'type'], 'required'],
             [['type', 'created_at', 'updated_at'], 'integer'],
-            [['description', 'rule_name', 'data', 'created_at', 'updated_at'], 'default'],
             [['description', 'data'], 'string'],
             [['name', 'rule_name'], 'string', 'max' => 64],
+            [['description', 'rule_name', 'data', 'created_at', 'updated_at'], 'default', 'value' => null],
             [['name'], 'unique'],
             [['rule_name'], 'exist', 'skipOnError' => true, 'targetClass' => AdminAuthRule::className(), 'targetAttribute' => ['rule_name' => 'name']],
         ];
@@ -77,22 +78,6 @@ class AdminAuthItem extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUsers()
-    {
-        return $this->hasMany(User::className(), ['id' => 'user_id'])->viaTable('{{%admin_auth_assignment}}', ['item_name' => 'name']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRuleName()
-    {
-        return $this->hasOne(AdminAuthRule::className(), ['name' => 'rule_name']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getAdminAuthItemChildren()
     {
         return $this->hasMany(AdminAuthItemChild::className(), ['parent' => 'name']);
@@ -104,6 +89,14 @@ class AdminAuthItem extends \yii\db\ActiveRecord
     public function getAdminAuthItemChildren0()
     {
         return $this->hasMany(AdminAuthItemChild::className(), ['child' => 'name']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAdminMenus()
+    {
+        return $this->hasMany(AdminMenu::className(), ['route' => 'name']);
     }
 
     /**
@@ -125,8 +118,16 @@ class AdminAuthItem extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAdminMenus()
+    public function getRuleName()
     {
-        return $this->hasMany(AdminMenu::className(), ['route' => 'name']);
+        return $this->hasOne(AdminAuthRule::className(), ['name' => 'rule_name']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsers()
+    {
+        return $this->hasMany(User::className(), ['id' => 'user_id'])->viaTable('{{%admin_auth_assignment}}', ['item_name' => 'name']);
     }
 }
