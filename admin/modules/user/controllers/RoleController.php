@@ -2,6 +2,7 @@
 
 namespace admin\modules\user\controllers;
 
+use admin\modules\user\models\forms\RoleAlloc;
 use Yii;
 use common\models\db\AdminAuthItem;
 use admin\modules\user\models\searchs\AdminAuthItem as AdminAuthItemSearch;
@@ -271,7 +272,11 @@ class RoleController extends Controller
     public function actionAlloc($id)
     {
         $request = Yii::$app->request;
-        $model = $this->findModel($id);
+        $model = new RoleAlloc();
+        $model->role_id = $id;
+        $model->alloc_roles = AdminAuthItem::getChildsMapByRole($id, AdminAuthItem::GET_TYPE_ROLES);
+        $model->alloc_permissions = AdminAuthItem::getChildsMapByRole($id, AdminAuthItem::GET_TYPE_PERMISSIONS);
+        $model->alloc_routes = AdminAuthItem::getChildsMapByRole($id, AdminAuthItem::GET_TYPE_ROUTES);
 
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -283,10 +288,10 @@ class RoleController extends Controller
                     ]),
                     'footer' =>
                         Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]) .
-                        Html::button('分配', ['class' => 'btn btn-primary', 'type' => "submit"]),
+                        Html::button('保存', ['class' => 'btn btn-primary', 'type' => "submit"]),
                 ];
             }elseif($model->load($request->post()) && $model->validate()){
-                # TO DO test
+                $model->alloc();
                 return ['forceClose' => true,'forceReload' => '#crud-datatable-pjax'];
             }else{
                 return [
@@ -296,7 +301,7 @@ class RoleController extends Controller
                     ]),
                     'footer' =>
                         Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
-                        Html::button('分配', ['class' => 'btn btn-primary', 'type' => "submit"]),
+                        Html::button('保存', ['class' => 'btn btn-primary', 'type' => "submit"]),
                 ];
             }
         }else{

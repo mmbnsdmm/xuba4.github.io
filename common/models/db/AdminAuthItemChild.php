@@ -2,6 +2,7 @@
 
 namespace common\models\db;
 
+use wodrow\yii2wtools\validators\Loop;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\behaviors\BlameableBehavior;
@@ -13,8 +14,8 @@ use wodrow\yii2wtools\behaviors\Uuid;
  *
  * @author
  *
- * @property AdminAuthItem $parent0
- * @property AdminAuthItem $child0
+ * @property AdminAuthItem $parent
+ * @property AdminAuthItem $child
  */
 class AdminAuthItemChild extends \common\models\db\tables\AdminAuthItemChild
 {
@@ -46,7 +47,9 @@ class AdminAuthItemChild extends \common\models\db\tables\AdminAuthItemChild
                 $rules[$k][0] = array_diff($rules[$k][0], ['created_at', 'updated_at', 'created_by', 'updated_by']);
             }
         }*/
-        return ArrayHelper::merge($rules, []);
+        return ArrayHelper::merge($rules, [
+            ['parent', Loop::class, 'parentForAttribute' => "child", 'parentModelLinkname' => "parent"]
+        ]);
     }
 
     /**
@@ -61,7 +64,7 @@ class AdminAuthItemChild extends \common\models\db\tables\AdminAuthItemChild
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getParent0()
+    public function getParent()
     {
         return $this->hasOne(AdminAuthItem::className(), ['name' => 'parent']);
     }
@@ -69,7 +72,7 @@ class AdminAuthItemChild extends \common\models\db\tables\AdminAuthItemChild
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getChild0()
+    public function getChild()
     {
         return $this->hasOne(AdminAuthItem::className(), ['name' => 'child']);
     }

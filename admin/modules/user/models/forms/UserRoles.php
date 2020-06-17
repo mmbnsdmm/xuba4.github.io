@@ -36,6 +36,7 @@ class UserRoles extends Model
 
     public function alloc()
     {
+        $this->role_names = $this->role_names?:[];
         $trans = \Yii::$app->db->beginTransaction();
         try{
             $olds = AdminAuthAssignment::getRoleNamesByUser($this->user_id);

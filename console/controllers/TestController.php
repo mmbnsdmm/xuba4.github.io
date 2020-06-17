@@ -11,6 +11,7 @@ namespace console\controllers;
 
 use common\models\db\AdminAuthAssignment;
 use common\models\db\AdminAuthItem;
+use common\models\db\AdminAuthItemChild;
 use QL\QueryList;
 use wodrow\yii2wtools\tools\Tools;
 use yii\console\Controller;
@@ -114,5 +115,13 @@ class TestController extends Controller
         $x->save();
         var_dump(AdminAuthItem::getAllRoles());
         var_dump(AdminAuthAssignment::getRoleNamesByUser(4));
+    }
+
+    public function actionTest3()
+    {
+        $x = AdminAuthItem::getRolesByRole("t1");
+        foreach ($x as $k => $v){
+            var_dump($v->toArray());
+        }
     }
 }
