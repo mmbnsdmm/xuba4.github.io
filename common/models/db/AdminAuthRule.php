@@ -22,8 +22,8 @@ class AdminAuthRule extends \common\models\db\tables\AdminAuthRule
         return ArrayHelper::merge(parent::behaviors(), [
             'timestamp' => [
                 'class' => TimestampBehavior::class,
-                'createdAtAttribute' => false,
-                'updatedAtAttribute' => false,
+//                'createdAtAttribute' => false,
+//                'updatedAtAttribute' => false,
             ],
             'blameable' => [
                 'class' => BlameableBehavior::class,
