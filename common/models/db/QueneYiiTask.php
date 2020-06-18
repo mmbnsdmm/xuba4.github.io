@@ -65,10 +65,6 @@ class QueneYiiTask extends \common\models\db\tables\QueneYiiTask
         foreach ($quenes as $k => $v){
             $locked['taskID'] = $v->id;
             \Yii::$app->cache->set("QueneYiiTask-doQuene", $locked, 86400*365*10);
-            $v->status = static::STATUS_RUNNING;
-            if (!$v->save()){
-                throw new ApiException(201910151600, "执行任务更新失败:".Model::getModelError($v));
-            }
             if ($v->run_at){
                 $time_diff = YII_BT_TIME - $v->run_at;
                 if ($time_diff > 300){
@@ -85,6 +81,10 @@ class QueneYiiTask extends \common\models\db\tables\QueneYiiTask
                 }elseif($time_diff < 0){
                     continue;
                 }
+            }
+            $v->status = static::STATUS_RUNNING;
+            if (!$v->save()){
+                throw new ApiException(201910151600, "执行任务更新失败:".Model::getModelError($v));
             }
             $v->run();
             if ($v->status != static::STATUS_DONE){

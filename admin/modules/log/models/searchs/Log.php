@@ -1,20 +1,19 @@
 <?php
 
-namespace admin\modules\log\models;
+namespace admin\modules\log\models\searchs;
 
-use common\components\Tools;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
-use common\models\db\Log;
+use common\models\db\Log as LogModel;
 
 /**
- * LogSearch represents the model behind the search form about `common\models\db\Log`.
+ * Log represents the model behind the search form about `common\models\db\Log`.
  */
-class LogSearch extends Log
+class Log extends LogModel
 {
     const EMPTY_STRING = "(空字符)";
     const NO_EMPTY = "(非空)";
@@ -47,7 +46,6 @@ class LogSearch extends Log
     {
         $query = self::find();
         $this->load($params);
-//        $this->_timeFilter($query, 'log_time');
         $this->_rangeFilter($query, 'log_time', true);
         $this->_fieldFilter($query, 'id', 'id', '=');
         $this->_fieldFilter($query, 'level', 'level', '=');
