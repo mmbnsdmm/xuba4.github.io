@@ -22,6 +22,8 @@ use wodrow\yii2wtools\behaviors\Uuid;
  * @property AdminAuthItem[] $children
  * @property AdminAuthItem[] $parents
  * @property AdminMenu[] $adminMenus
+ *
+ * @property-read array $typeDesc
  */
 class AdminAuthItem extends \common\models\db\tables\AdminAuthItem
 {
@@ -152,8 +154,8 @@ class AdminAuthItem extends \common\models\db\tables\AdminAuthItem
         return ArrayHelper::merge(parent::behaviors(), [
             'timestamp' => [
                 'class' => TimestampBehavior::class,
-                'createdAtAttribute' => false,
-                'updatedAtAttribute' => false,
+//                'createdAtAttribute' => false,
+//                'updatedAtAttribute' => false,
             ],
             'blameable' => [
                 'class' => BlameableBehavior::class,

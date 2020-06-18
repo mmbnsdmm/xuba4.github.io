@@ -2,6 +2,7 @@
 
 namespace admin\modules\user\models\searchs;
 
+use common\components\Tools;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -37,14 +38,41 @@ class AdminAuthItem extends AdminAuthItemModel
         ];
     }
 
+    public function searchRole($params)
+    {
+        return $this->_search($params, self::GET_TYPE_ROLES);
+    }
+
+    public function searchPermission($params)
+    {
+        return $this->_search($params, self::GET_TYPE_PERMISSIONS);
+    }
+
     /**
      * Creates data provider instance with search query applied
      * @param array $params
+     * @param string $get_type
      * @return ActiveDataProvider
      */
-    public function search($params)
+    protected function _search($params, $get_type)
     {
-        $query = self::find()->where(['type' => self::TYPE_ROLE]);
+        $query = self::find();
+        switch ($get_type){
+            case self::GET_TYPE_PERMISSIONS:
+                $query->andWhere(['type' => AdminAuthItem::TYPE_ROUTE])
+                    ->andWhere(['not like', 'name', '/%', false]);
+                break;
+            case self::GET_TYPE_ROUTES:
+                $query->andWhere(['type' => AdminAuthItem::TYPE_ROUTE])
+                    ->andWhere(['like', 'name', '/%', false]);
+                break;
+            case self::GET_TYPE_ROLES:
+                $query->andWhere(['type' => AdminAuthItem::TYPE_ROLE]);
+                break;
+            default:
+                Tools::yiiLog($get_type);
+                break;
+        }
         $this->load($params);
         $this->_rangeFilter($query, 'created_at', true);
         $this->_rangeFilter($query, 'updated_at', true);
@@ -56,7 +84,7 @@ class AdminAuthItem extends AdminAuthItemModel
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => ['defaultOrder' => ['name' => SORT_DESC, ]],
-            ]);
+        ]);
         if (!$this->validate()) {
             return $dataProvider;
         }
