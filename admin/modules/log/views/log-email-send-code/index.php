@@ -7,7 +7,9 @@ use kartik\grid\CheckboxColumn;
 use kartik\grid\ExpandRowColumn;
 use kartik\grid\EnumColumn;
 use kartik\grid\ActionColumn;
+use kartik\grid\FormulaColumn;
 use kartik\daterange\DateRangePicker;
+use wodrow\wajaxcrud\rangecolumn\RangeColumn;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap\Modal;
@@ -17,7 +19,7 @@ use wodrow\yii2wtools\tools\JsBlock;
 use yii\web\JsExpression;
 
 /* @var $this yii\web\View */
-/* @var $searchModel admin\modules\log\models\LogEmailSendCodeSearch */
+/* @var $searchModel admin\modules\log\models\searchs\LogEmailSendCode */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Log Email Send Codes');
@@ -78,6 +80,37 @@ CrudAsset::register($this);
                     'attribute' => "created_at",
                     'hAlign' => GridView::ALIGN_CENTER,
                     'vAlign' => GridView::ALIGN_MIDDLE,
+                    'format' => ['date', 'php:Y-m-d H:i:s'],
+                    'filter' => DateRangePicker::widget([
+                        'model' => $searchModel,
+                        'attribute' => "created_at",
+                        'convertFormat' => true,
+                        'pluginOptions' => [
+                            'opens' => "center",
+                            'timePicker' => true,
+                            'timePicker24Hour' => true,
+                            'timePickerSeconds' => true,
+                            'showWeekNumbers' => true,
+                            'showDropdowns' => true,
+                            'timePickerIncrement' => 1,
+                            'locale' => [
+                                'format' => "Y-m-d H:i:s",
+                                'applyLabel' => "确认",
+                                'cancelLabel' => "清除",
+                                'fromLabel' => "开始时间",
+                                'toLabel' => "结束时间",
+                                'daysOfWeek' => ["日","一","二","三","四","五","六"],
+                                'monthNames' => ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
+                            ],
+                        ],
+                        'presetDropdown' => true,
+                        'autoUpdateOnInit' => false,
+                        'useWithAddon' => true,
+                        'pjaxContainerId' => "crud-datatable-pjax",
+                        'pluginEvents' => [
+                            'cancel.daterangepicker' => new JsExpression("function(ev, picker) {let e13=$.Event('keydown');e13.keyCode=13;let _input=$(this);if(!$(this).is('input')){_input=$(this).parent().find('input:hidden');}_input.val('').trigger(e13);}"),
+                        ],
+                    ]),
                 ],
                 [
                     'class' => DataColumn::class,

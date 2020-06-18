@@ -4,7 +4,7 @@ namespace admin\modules\log\controllers;
 
 use Yii;
 use common\models\db\LogEmailSendCode;
-use admin\modules\log\models\LogEmailSendCodeSearch;
+use admin\modules\log\models\searchs\LogEmailSendCode as LogEmailSendCodeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

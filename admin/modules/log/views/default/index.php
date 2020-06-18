@@ -9,6 +9,7 @@ use kartik\grid\EnumColumn;
 use kartik\grid\ActionColumn;
 use kartik\grid\FormulaColumn;
 use kartik\daterange\DateRangePicker;
+use wodrow\wajaxcrud\rangecolumn\RangeColumn;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap\Modal;
@@ -18,7 +19,7 @@ use wodrow\yii2wtools\tools\JsBlock;
 use yii\web\JsExpression;
 
 /* @var $this yii\web\View */
-/* @var $searchModel admin\modules\log\models\LogSearch */
+/* @var $searchModel admin\modules\log\models\searchs\Log */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Logs');
@@ -80,12 +81,6 @@ CrudAsset::register($this);
                     'hAlign' => GridView::ALIGN_CENTER,
                     'vAlign' => GridView::ALIGN_MIDDLE,
                 ],
-                /*[
-                    'class' => \common\wodrow\rangecolumn\RangeColumn::class,
-                    'attribute' => "log_time",
-                    'hAlign' => GridView::ALIGN_CENTER,
-                    'vAlign' => GridView::ALIGN_MIDDLE,
-                ],*/
                 [
                     'class' => DataColumn::class,
                     'attribute' => "log_time",
@@ -134,7 +129,6 @@ CrudAsset::register($this);
                     'attribute' => "message",
                     'hAlign' => GridView::ALIGN_CENTER,
                     'vAlign' => GridView::ALIGN_MIDDLE,
-                    'visible' => false,
                 ],
                 [
                     'class' => ActionColumn::class,

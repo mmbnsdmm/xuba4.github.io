@@ -33,7 +33,8 @@
         "2amigos/qrcode-library": "^2.0",
         "kartik-v/yii2-widget-rangeinput": "^1.0",
         "kartik-v/yii2-money": "^1.2",
-        "kartik-v/yii2-widget-datetimepicker": "^1.4"
+        "kartik-v/yii2-widget-datetimepicker": "^1.4",
+        "jianyan74/yii2-treegrid": "^1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "^2.1.13",

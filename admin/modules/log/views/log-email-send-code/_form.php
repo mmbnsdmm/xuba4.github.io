@@ -23,7 +23,7 @@ use kartik\form\ActiveForm;
 
     <?= $form->field($model, 'subject')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'code')->textInput() ?>
 
     <?= $form->field($model, 'params')->textarea(['rows' => 6]) ?>
 
