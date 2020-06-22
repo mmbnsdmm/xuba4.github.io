@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\db\Log */
+/* @var $model admin\modules\log\models\forms\Log */
 ?>
 <div class="log-update">
 

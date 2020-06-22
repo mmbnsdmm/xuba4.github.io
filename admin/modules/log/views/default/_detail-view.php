@@ -4,7 +4,7 @@ use wodrow\yii2wtools\tools\ArrayHelper;
 use kartik\detail\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\db\Log */
+/* @var $model admin\modules\log\models\forms\Log */
 ?>
 <div class="log-_detail-view">
 

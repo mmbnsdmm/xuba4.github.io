@@ -5,6 +5,8 @@ namespace admin\modules\log\controllers;
 use Yii;
 use common\models\db\Log;
 use admin\modules\log\models\searchs\Log as LogSearch;
+use admin\modules\log\models\forms\Log as LogForm;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -98,7 +100,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * Creates a new Log model.
+     * Creates a new LogForm model.
      * For ajax request will return json object
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -106,13 +108,13 @@ class DefaultController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
-        $model = new Log();  
+        $model = new LogForm();
 
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title' => "新建 Log",
+                    'title' => "新建 LogForm",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -152,7 +154,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * Updates an existing Log model.
+     * Updates an existing LogForm model.
      * For ajax request will return json object
      * and for non-ajax request if update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -334,15 +336,15 @@ class DefaultController extends Controller
     }
 
     /**
-     * Finds the Log model based on its primary key value.
+     * Finds the LogForm model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Log the loaded model
+     * @return LogForm the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Log::findOne($id)) !== null) {
+        if (($model = LogForm::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
