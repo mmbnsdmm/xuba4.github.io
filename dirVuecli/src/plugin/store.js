@@ -54,7 +54,7 @@ export default new Vuex.Store({
         login: function({commit}, user){
             return new Promise((resolve, reject) => {
                 Axios.post('/site/login', user).then(resp => {
-                    if (resp.data.data.is_ok !== 1){
+                    if (resp.data.data.status !== 200){
                         commit('logout');
                         resolve(resp);
                     }else{
@@ -69,7 +69,7 @@ export default new Vuex.Store({
         loginByEmail: function({commit}, data){
             return new Promise((resolve, reject) => {
                 Axios.post('/site/login-by-email', data).then(resp => {
-                    if (resp.data.data.is_ok !== 1){
+                    if (resp.data.data.status !== 200){
                         commit('logout');
                         resolve(resp);
                     }else{
@@ -84,7 +84,7 @@ export default new Vuex.Store({
         signup: function({commit}, user){
             return new Promise((resolve, reject) => {
                 Axios.post('/site/signup', user).then(resp => {
-                    if (resp.data.data.is_ok !== 1){
+                    if (resp.data.data.status !== 200){
                         commit('logout');
                         resolve(resp);
                     }else{

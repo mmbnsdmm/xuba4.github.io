@@ -27,13 +27,14 @@ class PublicController extends Controller
     {
         $enums = [
             'logEmailSendCode' => [
-                'TypeDesc' => LogEmailSendCode::instance()->typeDesc
+                'TypeDesc' => LogEmailSendCode::instance()->typeDesc,
             ],
         ];
-        $this->data['enums'] = $enums;
-        $this->data['status'] = 200;
-        $this->data['msg'] = "获取成功";
-        return $this->data;
+        $data = $this->data;
+        $data['status'] = 200;
+        $data['msg'] = "获取成功";
+        $data['enums'] = $enums;
+        return $data;
     }
 
     /**

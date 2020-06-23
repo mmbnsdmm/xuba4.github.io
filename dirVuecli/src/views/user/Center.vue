@@ -15,7 +15,7 @@
             </van-grid-item>
         </van-grid>
         <van-cell-group class="user-group">
-            <van-cell :title="user.username" :value="this.$conf.data.uclasses[user.uclass]" />
+            <van-cell :title="user.username" :value="user.username" />
             <van-cell v-if="canRumenApply" icon="award-o" title="申请入门" :label="applyReplyedMsg" is-link to="/user/ru-men-apply">
                 <van-tag :type="applyTagType" v-if="canRumenApply">{{applyTagMsg}}</van-tag>
             </van-cell>

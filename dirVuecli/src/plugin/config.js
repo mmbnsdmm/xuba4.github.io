@@ -33,9 +33,7 @@ let config = {
             diskFreeSpace: "",
             qqqs: []
         },
-        emailSendCodeTypes: {},
-        uclasses: {},
-        ctypes: {}
+        emailSendCodeTypes: {}
     },
     syncPost: function(uri, formParams = {}) {
         let data = null;
@@ -101,29 +99,11 @@ let config = {
         });
         $.ajax({
             type: "post",
-            url: _this.data.apiUrl + "/public/get-email-send-code-types",
+            url: _this.data.apiUrl + "/public/get-enums",
             async: false,
             dataType: "json",
             success: function (resp) {
-                _this.data.emailSendCodeTypes = resp.data.types || {};
-            }
-        });
-        $.ajax({
-            type: "post",
-            url: this.data.apiUrl + "/public/get-uclasses",
-            async: false,
-            dataType: "json",
-            success: function (resp) {
-                _this.data.uclasses = resp.data.uclasses || {};
-            }
-        });
-        $.ajax({
-            type: "post",
-            url: this.data.apiUrl + "/public/get-article-ctypes",
-            async: false,
-            dataType: "json",
-            success: function (resp) {
-                _this.data.ctypes = resp.data.ctypes || {};
+                _this.data.emailSendCodeTypes = resp.data.enums.logEmailSendCode.TypeDesc || {};
             }
         });
         Tool.setCache("APP_CONFIG_CACHE_KEY", _this.data, 3600);

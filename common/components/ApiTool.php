@@ -86,10 +86,10 @@ class ApiTool extends Component
     public function sendEmailCode($email, $typeKey, $timeout = 10)
     {
         $r = [
-            'is_ok' => 0,
+            'status' => 0,
             'msg' => "",
         ];
-        $types = LogEmailSendCode::getTypes();
+        $types = LogEmailSendCode::instance()->typeDesc;
         $val = $types[$typeKey];
         $query = LogEmailSendCode::find()->where(['to' => $email, 'type' => $typeKey]);
         $send_total_in24 = $query->andWhere(['>', 'created_at', YII_BT_TIME - 86400])->count();
@@ -112,7 +112,7 @@ class ApiTool extends Component
         $log->code = rand(100000, 999999);
         if (YII_ENV_DEV){
             $log->status = LogEmailSendCode::STATUS_SEND_SUCCESS;
-            $r['is_ok'] = 1;
+            $r['status'] = 200;
             $r['msg'] = "测试环境{$val}验证码为：{$log->code}，正式环境会直接把验证码发送到邮箱";
         }else{
             $mail->setTo($log->to);
@@ -120,11 +120,11 @@ class ApiTool extends Component
             $mail->setTextBody($log->code);
             $_r = $mail->send();
             if ($_r){
-                $r['is_ok'] = 1;
+                $r['status'] = 200;
                 $r['msg'] = "发送{$val}验证码成功";
                 $log->status = LogEmailSendCode::STATUS_SEND_SUCCESS;
             }else{
-                $r['is_ok'] = 0;
+                $r['status'] = 0;
                 $r['msg'] = "发送{$val}验证码失败";
             }
         }
@@ -133,7 +133,7 @@ class ApiTool extends Component
             'msg' => $r['msg'],
         ], JSON_UNESCAPED_UNICODE);
         if (!$log->save()){
-            $r['is_ok'] = 0;
+            $r['status'] = 0;
             $r['msg'] = Model::getModelError($log);
         }
         return $r;

@@ -10,7 +10,7 @@
             <van-tabbar-item replace to="/signup" icon="home-o" v-if="!this.$store.getters.isAuth">注册</van-tabbar-item>
             <van-tabbar-item replace to="/reset-password" icon="home-o" v-if="!this.$store.getters.isAuth">重置密码</van-tabbar-item>
             <van-tabbar-item replace to="/" icon="home-o" v-if="this.$store.getters.isAuth">主页</van-tabbar-item>
-            <van-tabbar-item replace to="/article/list" icon="paid" v-if="this.$store.getters.isLgRumen">文章</van-tabbar-item>
+            <van-tabbar-item replace to="/article/list" icon="paid" v-if="this.$store.getters.isAuth">文章</van-tabbar-item>
             <van-tabbar-item replace to="/user/center" icon="manager-o" v-if="this.$store.getters.isAuth">个人中心</van-tabbar-item>
         </van-tabbar>
     </div>
