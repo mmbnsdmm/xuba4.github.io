@@ -22,8 +22,8 @@ class VueApp extends Component
     public $iosAppDownloadUrl;
     public $webAppUrl;
     public $qqqs = [
-        ['qqq' => "test", 'isFull' => true, 'canJoin' => false, 'checkCode' => "15xag4ae"],
-        ['qqq' => "test1", 'isFull' => false, 'canJoin' => true, 'checkCode' => "gasd451h"],
+        ['k' => 1, 'qqq' => "test", 'isFull' => true, 'canJoin' => false, 'checkCode' => "15xag4ae"],
+        ['k' => 2, 'qqq' => "test1", 'isFull' => false, 'canJoin' => true, 'checkCode' => "gasd451h"],
     ];
     public $sysInfo = [];
     public $howToUse = [];

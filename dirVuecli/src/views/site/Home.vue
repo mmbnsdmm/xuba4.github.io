@@ -21,7 +21,7 @@
             </van-collapse-item>
             <van-collapse-item title="QQ群" name="4">
                 <p>请加一个qq群</p>
-                <p v-for="item in this.$conf.data.datas.qqqs" :key="item.qqq">
+                <p v-for="item in this.$conf.data.datas.qqqs" :key="item.k">
                     {{item.qqq}}
                     <van-tag :type="item.isFull === true?'default':'primary'">{{item.isFull === true?"已满":"未满"}}</van-tag>
                     <van-tag :type="item.canJoin === true?'primary':'default'">{{item.canJoin === true?"可加入":"不可加入"}}</van-tag>
