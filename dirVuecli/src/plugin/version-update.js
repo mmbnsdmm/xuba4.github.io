@@ -1,15 +1,15 @@
 import Config from './config'
 import {Dialog} from 'vant'
-let lastVersion = Config.data.versionUpdate.lastVersion;
-let forceUpdate = Config.data.versionUpdate.forceUpdate;
-let appDownloadUrl = Config.data.versionUpdate.androidAppDownloadUrl;
+let lastVersion = Config.data.lastVueApp.lastVersion;
+let forceUpdate = Config.data.lastVueApp.forceUpdate;
+let appDownloadUrl = Config.data.lastVueApp.androidAppDownloadUrl;
 if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-    appDownloadUrl = Config.data.versionUpdate.iosAppDownloadUrl;
+    appDownloadUrl = Config.data.lastVueApp.iosAppDownloadUrl;
 }
-let updateLog = Config.data.versionUpdate.updateLog;
+let updateLog = Config.data.lastVueApp.updateLog;
 document.addEventListener('plusready', function () {
     let plus = plus || window.plus;
-    let versionUpdate = {
+    let lastVueApp = {
         download: function(url) {
             if (plus) {
                 plus.nativeUI.showWaiting("下载中...");
@@ -58,7 +58,7 @@ document.addEventListener('plusready', function () {
                 title: "版本强制更新",
                 message: updateLog
             }).then(() => {
-                versionUpdate.download(appDownloadUrl);
+                lastVueApp.download(appDownloadUrl);
             }).catch(() => {
                 plus.runtime.quit();
             });
@@ -67,7 +67,7 @@ document.addEventListener('plusready', function () {
                 title: "版本更新",
                 message: updateLog
             }).then(() => {
-                versionUpdate.download(appDownloadUrl);
+                lastVueApp.download(appDownloadUrl);
             }).catch(() => {});
         }
     }

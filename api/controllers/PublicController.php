@@ -74,25 +74,25 @@ class PublicController extends Controller
     }
 
     /**
-     * 服务配置
+     * 获取信息
      * @desc post
      * @return array
-     * @return string adminEmail
-     * @return string diskFreeSpace
+     * @return object datas
+     * @return string datas.adminEmail
+     * @return array datas.sysInfo
+     * @return array datas.qqqs
      */
-    public function actionGetServerData()
+    public function actionGetDatas()
     {
         $params = \Yii::$app->params;
-        $diskFreeSpace = disk_free_space(\Yii::getAlias('@uploads_root'))/1024/1024/1024;
-        $diskFreeSpace = round($diskFreeSpace, 2);
-        $diskFreeSpace = $diskFreeSpace."GB";
         $this->data['status'] = 200;
         $this->data['msg'] = "正常";
-        $this->data['serverData'] = [
-            'adminEmail' => $params['adminEmail'],
-            'diskFreeSpace' => $diskFreeSpace,
-            'qqqs' => \Yii::$app->vueApp->qqqs,
-        ];
+        $this->data['datas'] = [];
+        $this->data['datas']['adminEmail'] = $params['adminEmail'];
+        $this->data['datas']['sysInfo'] = \Yii::$app->vueApp->sysInfo;
+        $this->data['datas']['howToUse'] = \Yii::$app->vueApp->howToUse;
+        $this->data['datas']['warnings'] = \Yii::$app->vueApp->warnings;
+        $this->data['datas']['qqqs'] = \Yii::$app->vueApp->qqqs;
         return $this->data;
     }
 }

@@ -19,7 +19,7 @@ window.onresize = function () {
 let config = {
     data: {
         apiUrl: "",
-        versionUpdate: {
+        lastVueApp: {
             noticeMsg: "",
             lastVersion: "",
             forceUpdate: false,
@@ -28,9 +28,11 @@ let config = {
             iosAppDownloadUrl: "",
             webAppUrl: ""
         },
-        apiServer: {
+        datas: {
             adminEmail: "",
-            diskFreeSpace: "",
+            sysInfo: [],
+            howToUse: [],
+            warnings: [],
             qqqs: []
         },
         emailSendCodeTypes: {}
@@ -54,7 +56,7 @@ let config = {
     },
     checkApiUrl: function () {
         $.ajax({
-            url: config.data.apiUrl + "/public/get-server-data",
+            url: config.data.apiUrl + "/public/get-last-vue-app",
             type: 'GET',
             async: false,
             complete: function(response) {
@@ -85,16 +87,16 @@ let config = {
             async: false,
             dataType: "json",
             success: function (resp) {
-                _this.data.versionUpdate = resp.data || {};
+                _this.data.lastVueApp = resp.data || {};
             }
         });
         $.ajax({
             type: "post",
-            url: _this.data.apiUrl + "/public/get-server-data",
+            url: _this.data.apiUrl + "/public/get-datas",
             async: false,
             dataType: "json",
             success: function (resp) {
-                _this.data.apiServer = resp.data.serverData || {};
+                _this.data.datas = resp.data.datas || {};
             }
         });
         $.ajax({
