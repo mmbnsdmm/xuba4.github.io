@@ -54,9 +54,9 @@ let config = {
         });
         return data;
     },
-    checkApiDomain: function () {
+    checkApiUrl: function () {
         $.ajax({
-            url: config.data.apiUrl,
+            url: config.data.apiUrl + "/public/get-server-data",
             type: 'GET',
             async: false,
             complete: function(response) {
@@ -83,7 +83,7 @@ let config = {
         });
         $.ajax({
             type: "post",
-            url: _this.data.apiUrl + "/public/get-last-app-version",
+            url: _this.data.apiUrl + "/public/get-last-vue-app",
             async: false,
             dataType: "json",
             success: function (resp) {
@@ -137,6 +137,6 @@ if (!data || !data.apiUrl){
 }else{
     config.data = data;
 }
-config.checkApiDomain();
-setInterval(config.checkApiDomain, 300000);
+config.checkApiUrl();
+setInterval(config.checkApiUrl, 300000);
 export default config

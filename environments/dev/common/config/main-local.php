@@ -27,6 +27,9 @@ return [
             'baseUri' => getenv("BASE_URl"),
             'apiUri' => "/api",
         ],
+        'vueApp' => [
+            'class' => \common\components\VueApp::class,
+        ],
         'sftpFileProd' => [
             'class' => \creocoder\flysystem\SftpFilesystem::class,
             'host' => '',
@@ -67,5 +70,6 @@ return [
         'adminRoleAdminUserName' => "管理员",
         'console-username' => "",
         'console-password' => "",
+        'qqqs' => [],
     ],
 ];

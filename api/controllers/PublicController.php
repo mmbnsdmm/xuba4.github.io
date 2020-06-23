@@ -46,12 +46,12 @@ class PublicController extends Controller
     {
         $this->onlyDataOut = true;
         return [
-            "apiDomain" => \Yii::$app->apiTool->getFullUrl(),
+            "apiUrl" => \Yii::$app->vueApp->apiUrl,
         ];
     }
 
     /**
-     * app最新版本
+     * 最新版本VueApp
      * @desc post
      * @return array
      * @return string lastVersion
@@ -59,16 +59,16 @@ class PublicController extends Controller
      * @return string updateLog
      * @return string appDownloadUrl
      */
-    public function actionGetLastApp()
+    public function actionGetLastVueApp()
     {
         return [
-            "noticeMsg" => \Yii::$app->params['appNoticeMsg'],
-            "lastVersion" => \Yii::$app->params['appLastVersion'],
-            "forceUpdate" => \Yii::$app->params['appForceUpdate'],
-            "updateLog" => \Yii::$app->params['appUpdateLog'],
-            "androidAppDownloadUrl" => \Yii::$app->request->hostInfo.\Yii::$app->params['androidAppDownloadPath'],
-            "iosAppDownloadUrl" => \Yii::$app->request->hostInfo.\Yii::$app->params['iosAppDownloadPath'],
-            "webAppUrl" => \Yii::$app->params['webAppUrl'],
+            "noticeMsg" => \Yii::$app->vueApp->noticeMsg,
+            "lastVersion" => \Yii::$app->vueApp->lastVersion,
+            "forceUpdate" => \Yii::$app->vueApp->forceUpdate,
+            "updateLog" => \Yii::$app->vueApp->updateLog,
+            "androidAppDownloadUrl" => \Yii::$app->vueApp->androidAppDownloadUrl,
+            "iosAppDownloadUrl" => \Yii::$app->vueApp->iosAppDownloadUrl,
+            "webAppUrl" => \Yii::$app->vueApp->webAppUrl,
         ];
     }
 
@@ -82,13 +82,16 @@ class PublicController extends Controller
     public function actionGetServerData()
     {
         $params = \Yii::$app->params;
-        $diskFreeSpace = substr(disk_free_space(\Yii::$app->params['useDisk'])/1024/1024/1024, 0, 4)."GB";
-        return [
-            'serverData' => [
-                'adminEmail' => $params['adminEmail'],
-                'diskFreeSpace' => $diskFreeSpace,
-                'qqqs' => $params['qqqs'],
-            ],
+        $diskFreeSpace = disk_free_space(\Yii::getAlias('@uploads_root'))/1024/1024/1024;
+        $diskFreeSpace = round($diskFreeSpace, 2);
+        $diskFreeSpace = $diskFreeSpace."GB";
+        $this->data['status'] = 200;
+        $this->data['msg'] = "正常";
+        $this->data['serverData'] = [
+            'adminEmail' => $params['adminEmail'],
+            'diskFreeSpace' => $diskFreeSpace,
+            'qqqs' => $params['qqqs'],
         ];
+        return $this->data;
     }
 }
