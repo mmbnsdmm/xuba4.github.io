@@ -74,7 +74,7 @@ class PublicController extends Controller
     }
 
     /**
-     * 服务器配置
+     * 服务配置
      * @desc post
      * @return array
      * @return string adminEmail
@@ -91,7 +91,7 @@ class PublicController extends Controller
         $this->data['serverData'] = [
             'adminEmail' => $params['adminEmail'],
             'diskFreeSpace' => $diskFreeSpace,
-            'qqqs' => $params['qqqs'],
+            'qqqs' => \Yii::$app->vueApp->qqqs,
         ];
         return $this->data;
     }

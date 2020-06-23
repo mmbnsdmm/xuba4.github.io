@@ -76,62 +76,6 @@ let routes = [
         meta: {
             requiresAuth: true
         }
-    },
-    {
-        path: '/user/ru-men-apply',
-        name: '入门申请',
-        component: () => import('../views/user/RuMenApply.vue'),
-        meta: {
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/user/article-publish',
-        name: '发布文章',
-        component: () => import('../views/user/ArticlePublish.vue'),
-        meta: {
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/article/list',
-        name: '文章',
-        component: () => import('../views/article/List.vue'),
-        meta: {
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/article/info/:id/:isUpdate/:from',
-        name: '文章',
-        component: () => import('../views/article/Info.vue'),
-        meta: {
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/tag/my-circle',
-        name: '圈子',
-        component: () => import('../views/tag/MyCircle.vue'),
-        meta: {
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/tag/add-circle',
-        name: '创建圈子',
-        component: () => import('../views/tag/AddCircle.vue'),
-        meta: {
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/tag/info-circle/:id',
-        name: '圈内文章',
-        component: () => import('../views/tag/InfoCircle.vue'),
-        meta: {
-            requiresAuth: true
-        }
     }
 ];
 

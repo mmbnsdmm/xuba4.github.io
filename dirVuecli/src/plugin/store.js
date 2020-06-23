@@ -12,13 +12,6 @@ function _resetUser(){
         email: "",
         amount: 0.00,
         frozen: 0.00,
-        availableAmount: 0.00,
-        deposit: 0.00,
-        level: 0,
-        integral: 0,
-        uclass: 1,
-        alipay_income_image: "",
-        weixin_income_image: ""
     };
 }
 
@@ -27,17 +20,12 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         isAuth: Tool.getStorage('isAuth') || false,
-        isLgRumen: Tool.getStorage('isLgRumen') || false,
         user: Tool.getStorage('user') || _resetUser()
     },
     mutations: {
         authSuccess: function(state, user){
             Tool.setStorage('isAuth', true);
             Tool.setStorage('user', user);
-            if (user.uclass > 1){
-                Tool.setStorage('isLgRumen', true);
-                state.isLgRumen = true;
-            }
             state.isAuth = true;
             state.user = user;
         },
@@ -126,9 +114,6 @@ export default new Vuex.Store({
         },
         user: function (state) {
             return state.user;
-        },
-        isLgRumen: function (state) {
-            return state.isLgRumen;
         }
     },
     modules: {}

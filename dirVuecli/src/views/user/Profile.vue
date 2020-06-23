@@ -3,9 +3,6 @@
         <van-cell-group>
             <van-cell title="用户名" :value="user.username" label="" />
             <van-cell title="邮箱" :value="user.email" label="" />
-            <van-cell title="等级" :value="user.level" label="" />
-            <van-cell title="积分" :value="user.integral" label="" />
-            <van-cell title="认证级别" :value="this.$conf.data.uclasses[user.uclass]" label="" />
         </van-cell-group>
     </div>
 </template>
