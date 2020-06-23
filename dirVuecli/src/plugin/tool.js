@@ -11,7 +11,7 @@ export default {
     },
     foreach: function(x, fn) {
         for (let k in x) {
-            if (x.hasOwnProperty(k)) {
+            if (x.prototype.hasOwnProperty.call(x, k)) {
                 let result = fn.call(x, k, x[k]);
                 if (result === false) {
                     break;
