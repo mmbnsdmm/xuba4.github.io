@@ -14,6 +14,7 @@ use yii\behaviors\TimestampBehavior;
  *
  * @property User $createdBy
  * @property-read array $statusDesc
+ * @property-read array $typeDesc
  */
 class LogEmailSendCode extends \common\models\db\tables\LogEmailSendCode
 {
@@ -26,7 +27,7 @@ class LogEmailSendCode extends \common\models\db\tables\LogEmailSendCode
     const STATUS_DELETE = -10;
     const STATUS_SEND_SUCCESS = "10";
 
-    public static function getTypes()
+    public function getTypeDesc()
     {
         return [
             self::TYPE_SIGNUP => "注册",

@@ -18,7 +18,7 @@ window.onresize = function () {
 };
 let config = {
     data: {
-        apiDomain: "",
+        apiUrl: "",
         versionUpdate: {
             noticeMsg: "",
             lastVersion: "",
@@ -41,7 +41,7 @@ let config = {
         let data = null;
         $.ajax({
             type: "post",
-            url: this.data.apiDomain + uri,
+            url: this.data.apiUrl + uri,
             data: formParams,
             async: false,
             dataType: "json",
@@ -56,7 +56,7 @@ let config = {
     },
     checkApiDomain: function () {
         $.ajax({
-            url: config.data.apiDomain,
+            url: config.data.apiUrl,
             type: 'GET',
             async: false,
             complete: function(response) {
@@ -78,12 +78,12 @@ let config = {
             async: false,
             dataType: "json",
             success: function (resp) {
-                _this.data.apiDomain = resp.apiDomain || "";
+                _this.data.apiUrl = resp.apiUrl || "";
             }
         });
         $.ajax({
             type: "post",
-            url: _this.data.apiDomain + "/public/get-last-app-version",
+            url: _this.data.apiUrl + "/public/get-last-app-version",
             async: false,
             dataType: "json",
             success: function (resp) {
@@ -92,7 +92,7 @@ let config = {
         });
         $.ajax({
             type: "post",
-            url: _this.data.apiDomain + "/public/get-server-data",
+            url: _this.data.apiUrl + "/public/get-server-data",
             async: false,
             dataType: "json",
             success: function (resp) {
@@ -101,7 +101,7 @@ let config = {
         });
         $.ajax({
             type: "post",
-            url: _this.data.apiDomain + "/public/get-email-send-code-types",
+            url: _this.data.apiUrl + "/public/get-email-send-code-types",
             async: false,
             dataType: "json",
             success: function (resp) {
@@ -110,7 +110,7 @@ let config = {
         });
         $.ajax({
             type: "post",
-            url: this.data.apiDomain + "/public/get-uclasses",
+            url: this.data.apiUrl + "/public/get-uclasses",
             async: false,
             dataType: "json",
             success: function (resp) {
@@ -119,7 +119,7 @@ let config = {
         });
         $.ajax({
             type: "post",
-            url: this.data.apiDomain + "/public/get-article-ctypes",
+            url: this.data.apiUrl + "/public/get-article-ctypes",
             async: false,
             dataType: "json",
             success: function (resp) {
@@ -132,7 +132,7 @@ let config = {
 };
 if (process.env.VUE_APP_ENV === "dev") Tool.delCache("APP_CONFIG_CACHE_KEY"); // 测试
 let data = Tool.getCache("APP_CONFIG_CACHE_KEY");
-if (!data || !data.apiDomain){
+if (!data || !data.apiUrl){
     config.data = config.init();
 }else{
     config.data = data;

@@ -17,12 +17,26 @@
 </template>
 
 <script>
+    import $ from 'jquery';
+
     export default {
         computed: {},
         data() {
             return {}
         },
-        methods: {}
+        methods: {},
+        mounted: function () {
+            let _this = this;
+            $.ajax({
+                type: "get",
+                url: "http://inityii.tc/api/public/get-app-config",
+                async: false,
+                dataType: "json",
+                success: function (resp) {
+                    _this.$tool.log(resp);
+                }
+            });
+        }
     }
 </script>
 
