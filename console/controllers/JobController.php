@@ -117,4 +117,33 @@ class JobController extends Controller
         BackUp::fileSysBackup(\Yii::$app->sftpFileProd, \Yii::$app->sftpFileBackup);
         BackUp::fileSysBackup(\Yii::$app->sftpFileDev, \Yii::$app->sftpFileBackup);
     }
+
+    /**
+     * php yii job/db-backup
+     * @param int $keep
+     * @throws
+     */
+    public function actionDbBackup($keep = 10)
+    {
+        $backDir = \Yii::getAlias("@storage_root/db");
+        $backTDir = $backDir. DIRECTORY_SEPARATOR . YII_BT_TIME;
+        if (!is_dir($backTDir))FileHelper::createDirectory($backTDir);
+        BackUp::dbBackup($backTDir, \Yii::$app->db);
+        $files = \common\components\Tools::listDir($backDir, false);
+        $_files = [];
+        foreach ($files as $k => $v){
+            $t = basename($v);
+            if (!\common\components\Tools::isTimestamp($t)){
+                \common\components\Tools::removeDir($v);
+            }else{
+                $_files[$t] = $v;
+            }
+        }
+        krsort($_files);
+        $bl = array_slice($_files, 0, $keep);
+        $rms = array_diff($_files, $bl);
+        foreach ($rms as $k => $v) {
+            \common\components\Tools::removeDir($v);
+        }
+    }
 }
