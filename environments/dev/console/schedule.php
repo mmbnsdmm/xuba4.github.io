@@ -32,3 +32,6 @@ $schedule->exec('php yii job/php-la-sign')->daily();
 // 备份
 $schedule->exec('php yii job/backup')->daily();
 $schedule->exec('php yii job/db-backup')->sundays();
+
+// 清理
+$schedule->exec('php yii job/log-clear')->sundays();

@@ -9,6 +9,7 @@
 namespace console\controllers;
 
 
+use common\models\db\Log;
 use QL\QueryList;
 use wodrow\yii2wtools\tools\ArrayHelper;
 use wodrow\yii2wtools\tools\BackUp;
@@ -145,5 +146,14 @@ class JobController extends Controller
         foreach ($rms as $k => $v) {
             \common\components\Tools::removeDir($v);
         }
+    }
+
+    /**
+     * php yii job/log-clear
+     * @param int $keep
+     */
+    public function actionLogClear($keep = 86400 * 365)
+    {
+        Log::deleteAll(['<', 'log_time', YII_BT_TIME - $keep]);
     }
 }
