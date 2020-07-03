@@ -24,8 +24,11 @@ return [
         ],
         'apiTool' => [
             'class' => \common\components\ApiTool::class,
-            'baseUri' => "http://",
+            'baseUri' => getenv("BASE_URl"),
             'apiUri' => "/api",
+        ],
+        'vueApp' => [
+            'class' => \common\components\VueApp::class,
         ],
         'sftpFileProd' => [
             'class' => \creocoder\flysystem\SftpFilesystem::class,
@@ -64,7 +67,9 @@ return [
         'yiichina-username' => "",
         'yiichina-password' => "",
         'adminRoleOrdinaryUserName' => "普通用户",
+        'adminRoleAdminUserName' => "管理员",
         'console-username' => "",
         'console-password' => "",
+        'qqqs' => [],
     ],
 ];

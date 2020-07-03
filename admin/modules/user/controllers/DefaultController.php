@@ -2,16 +2,18 @@
 
 namespace admin\modules\user\controllers;
 
+use admin\modules\user\models\forms\UserRoles;
+use common\components\Tools;
+use common\models\db\AdminAuthAssignment;
 use Yii;
 use common\models\db\User;
-use admin\modules\user\models\UserSearch;
+use admin\modules\user\models\searchs\User as UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
 use kartik\grid\EditableColumnAction;
-use wodrow\yii2wtools\enum\Status;
 
 /**
  * DefaultController implements the CRUD actions for User model.
@@ -84,12 +86,12 @@ class DefaultController extends Controller
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'title' => "User #".$id,
+                    'title' => "User({$id})",
                     'content' => $this->renderAjax('view', [
                         'model' => $this->findModel($id),
                     ]),
-                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
-                            Html::a('Edit', ['update','id' => $id], ['class' => 'btn btn-primary','role' => 'modal-remote'])
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                            Html::a('编辑', ['update','id' => $id], ['class' => 'btn btn-primary','role' => 'modal-remote'])
                 ];    
         }else{
             return $this->render('view', [
@@ -113,12 +115,12 @@ class DefaultController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title' => "Create new User",
+                    'title' => "新建 User",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
-                                Html::button('Save', ['class' => 'btn btn-primary','type' => "submit"])
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                                Html::button('保存', ['class' => 'btn btn-primary','type' => "submit"])
         
                 ];         
             }else if($model->load($request->post()) && $model->save()){
@@ -126,18 +128,18 @@ class DefaultController extends Controller
                     'forceReload' => '#crud-datatable-pjax',
                     'title' => "Create new User",
                     'content' => '<span class="text-success">Create User success</span>',
-                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
-                            Html::a('Create More', ['create'], ['class' => 'btn btn-primary','role' => 'modal-remote'])
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                            Html::a('新建更多', ['create'], ['class' => 'btn btn-primary','role' => 'modal-remote'])
         
                 ];         
             }else{           
                 return [
-                    'title' => "Create new User",
+                    'title' => "新建 User",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
-                                Html::button('Save', ['class' => 'btn btn-primary','type' => "submit"])
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                                Html::button('保存', ['class' => 'btn btn-primary','type' => "submit"])
         
                 ];         
             }
@@ -171,12 +173,12 @@ class DefaultController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title' => "Update User #".$id,
+                    'title' => "修改 User({$id})",
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
-                                Html::button('Save', ['class' => 'btn btn-primary','type' => "submit"])
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                                Html::button('保存', ['class' => 'btn btn-primary','type' => "submit"])
                 ];         
             }else if($model->load($request->post()) && $model->save()){
                 return [
@@ -185,17 +187,17 @@ class DefaultController extends Controller
                     'content' => $this->renderAjax('view', [
                         'model' => $model,
                     ]),
-                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
-                            Html::a('Edit', ['update','id' => $id], ['class' => 'btn btn-primary','role' => 'modal-remote'])
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                            Html::a('编辑', ['update','id' => $id], ['class' => 'btn btn-primary','role' => 'modal-remote'])
                 ];    
             }else{
                  return [
-                    'title' => "Update User #".$id,
+                    'title' => "修改 User #".$id,
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
-                                Html::button('Save', ['class' => 'btn btn-primary','type' => "submit"])
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                                Html::button('保存', ['class' => 'btn btn-primary','type' => "submit"])
                 ];        
             }
         }else{
@@ -228,7 +230,7 @@ class DefaultController extends Controller
                 $model->delete();
                 break;
             case 'soft':
-                $model->status = Status::STATUS_DEL;
+                $model->status = User::STATUS_DELETE;
                 $model->save();
                 break;
             default:
@@ -261,7 +263,7 @@ class DefaultController extends Controller
                     $model->delete();
                     break;
                 case 'soft':
-                    $model->status = Status::STATUS_DEL;
+                    $model->status = User::STATUS_DELETE;
                     $model->save();
                     break;
                 default:
@@ -277,6 +279,50 @@ class DefaultController extends Controller
         }
     }
 
+    public function actionAllocRoles($id)
+    {
+        $request = Yii::$app->request;
+        $model = new UserRoles();
+        $model->user_id = $id;
+        $model->role_names = AdminAuthAssignment::getRoleNamesMapByUser($id);
+
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($request->isGet){
+                return [
+                    'title' => "分配权限({$id})",
+                    'content' => $this->renderAjax('alloc-roles', [
+                        'model' => $model,
+                    ]),
+                    'footer' =>
+                        Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                        Html::button('分配权限', ['class' => 'btn btn-primary', 'type' => "submit"]),
+                ];
+            }elseif($model->load($request->post()) && $model->validate()){
+                $model->alloc();
+                return ['forceClose' => true,'forceReload' => '#crud-datatable-pjax'];
+            }else{
+                return [
+                    'title' => "分配权限({$id})",
+                    'content' => $this->renderAjax('alloc-roles', [
+                        'model' => $model,
+                    ]),
+                    'footer' =>
+                        Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                        Html::button('分配权限', ['class' => 'btn btn-primary', 'type' => "submit"]),
+                ];
+            }
+        }else{
+            if ($model->load($request->post())) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('alloc-roles', [
+                    'model' => $model,
+                ]);
+            }
+        }
+    }
+
     public function actionTest($id)
     {
         $request = Yii::$app->request;
@@ -286,12 +332,12 @@ class DefaultController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                'title' => "test User #".$id,
+                'title' => "test User({$id})",
                     'content' => $this->renderAjax('test', [
                     'model' => $model,
                 ]),
                 'footer' =>
-                    Html::button('Close', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                    Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
                     Html::button('test', ['class' => 'btn btn-primary', 'type' => "submit"]),
                 ];
             }elseif($model->load($request->post()) && $model->validate()){
@@ -299,12 +345,12 @@ class DefaultController extends Controller
                 return ['forceClose' => true,'forceReload' => '#crud-datatable-pjax'];
             }else{
                 return [
-                    'title' => "test User #".$id,
+                    'title' => "test User({$id})",
                     'content' => $this->renderAjax('test', [
                     'model' => $model,
                 ]),
                 'footer' =>
-                    Html::button('Close', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                    Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
                     Html::button('test', ['class' => 'btn btn-primary', 'type' => "submit"]),
                 ];
             }
@@ -316,6 +362,29 @@ class DefaultController extends Controller
                     'model' => $model,
                 ]);
             }
+        }
+    }
+
+    /**
+     * Delete multiple existing User model.
+     * For ajax request will return json object
+     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionBulktest()
+    {
+        $request = Yii::$app->request;
+        $pks = explode(',', $request->post( 'pks' ));
+        foreach ( $pks as $pk ) {
+            $model = $this->findModel($pk);
+            # TO DO
+        }
+        if($request->isAjax){
+        Yii::$app->response->format = Response::FORMAT_JSON;
+            return ['forceClose' => true,'forceReload' => '#crud-datatable-pjax'];
+        }else{
+            return $this->redirect(['index']);
         }
     }
 

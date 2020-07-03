@@ -4,7 +4,9 @@ namespace admin\modules\log\controllers;
 
 use Yii;
 use common\models\db\Log;
-use admin\modules\log\models\LogSearch;
+use admin\modules\log\models\searchs\Log as LogSearch;
+use admin\modules\log\models\forms\Log as LogForm;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -83,12 +85,12 @@ class DefaultController extends Controller
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'title'=> "Log #".$id,
-                    'content'=>$this->renderAjax('view', [
+                    'title' => "Log({$id})",
+                    'content' => $this->renderAjax('view', [
                         'model' => $this->findModel($id),
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                            Html::a('编辑', ['update','id' => $id], ['class' => 'btn btn-primary','role' => 'modal-remote'])
                 ];    
         }else{
             return $this->render('view', [
@@ -98,7 +100,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * Creates a new Log model.
+     * Creates a new LogForm model.
      * For ajax request will return json object
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -106,47 +108,41 @@ class DefaultController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
-        $model = new Log();  
+        $model = new LogForm();
 
         if($request->isAjax){
-            /*
-            *   Process for ajax request
-            */
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Create new Log",
-                    'content'=>$this->renderAjax('create', [
+                    'title' => "新建 LogForm",
+                    'content' => $this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                                Html::button('保存', ['class' => 'btn btn-primary','type' => "submit"])
         
                 ];         
             }else if($model->load($request->post()) && $model->save()){
                 return [
-                    'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Create new Log",
-                    'content'=>'<span class="text-success">Create Log success</span>',
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Create More',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    'forceReload' => '#crud-datatable-pjax',
+                    'title' => "Create new Log",
+                    'content' => '<span class="text-success">Create Log success</span>',
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                            Html::a('新建更多', ['create'], ['class' => 'btn btn-primary','role' => 'modal-remote'])
         
                 ];         
             }else{           
                 return [
-                    'title'=> "Create new Log",
-                    'content'=>$this->renderAjax('create', [
+                    'title' => "新建 Log",
+                    'content' => $this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                                Html::button('保存', ['class' => 'btn btn-primary','type' => "submit"])
         
                 ];         
             }
         }else{
-            /*
-            *   Process for non-ajax request
-            */
             if ($model->load($request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
@@ -155,11 +151,10 @@ class DefaultController extends Controller
                 ]);
             }
         }
-       
     }
 
     /**
-     * Updates an existing Log model.
+     * Updates an existing LogForm model.
      * For ajax request will return json object
      * and for non-ajax request if update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -177,31 +172,31 @@ class DefaultController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Update Log #".$id,
-                    'content'=>$this->renderAjax('update', [
+                    'title' => "修改 Log({$id})",
+                    'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                                Html::button('保存', ['class' => 'btn btn-primary','type' => "submit"])
                 ];         
             }else if($model->load($request->post()) && $model->save()){
                 return [
-                    'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Log #".$id,
-                    'content'=>$this->renderAjax('view', [
+                    'forceReload' => '#crud-datatable-pjax',
+                    'title' => "Log #".$id,
+                    'content' => $this->renderAjax('view', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                            Html::a('编辑', ['update','id' => $id], ['class' => 'btn btn-primary','role' => 'modal-remote'])
                 ];    
             }else{
                  return [
-                    'title'=> "Update Log #".$id,
-                    'content'=>$this->renderAjax('update', [
+                    'title' => "修改 Log #".$id,
+                    'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                                Html::button('保存', ['class' => 'btn btn-primary','type' => "submit"])
                 ];        
             }
         }else{
@@ -238,19 +233,11 @@ class DefaultController extends Controller
         }
 
         if($request->isAjax){
-            /*
-            *   Process for ajax request
-            */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
+            return ['forceClose' => true,'forceReload' => '#crud-datatable-pjax'];
         }else{
-            /*
-            *   Process for non-ajax request
-            */
             return $this->redirect(['index']);
         }
-
-
     }
 
      /**
@@ -276,30 +263,88 @@ class DefaultController extends Controller
         }
 
         if($request->isAjax){
-            /*
-            *   Process for ajax request
-            */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
+            return ['forceClose' => true,'forceReload' => '#crud-datatable-pjax'];
         }else{
-            /*
-            *   Process for non-ajax request
-            */
             return $this->redirect(['index']);
         }
-       
+    }
+
+    public function actionTest($id)
+    {
+        $request = Yii::$app->request;
+        $model = $this->findModel($id);
+
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($request->isGet){
+                return [
+                'title' => "test Log({$id})",
+                    'content' => $this->renderAjax('test', [
+                    'model' => $model,
+                ]),
+                'footer' =>
+                    Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                    Html::button('test', ['class' => 'btn btn-primary', 'type' => "submit"]),
+                ];
+            }elseif($model->load($request->post()) && $model->validate()){
+                # TO DO test
+                return ['forceClose' => true,'forceReload' => '#crud-datatable-pjax'];
+            }else{
+                return [
+                    'title' => "test Log({$id})",
+                    'content' => $this->renderAjax('test', [
+                    'model' => $model,
+                ]),
+                'footer' =>
+                    Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                    Html::button('test', ['class' => 'btn btn-primary', 'type' => "submit"]),
+                ];
+            }
+        }else{
+            if ($model->load($request->post())) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('test', [
+                    'model' => $model,
+                ]);
+            }
+        }
     }
 
     /**
-     * Finds the Log model based on its primary key value.
+     * Delete multiple existing Log model.
+     * For ajax request will return json object
+     * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionBulktest()
+    {
+        $request = Yii::$app->request;
+        $pks = explode(',', $request->post( 'pks' ));
+        foreach ( $pks as $pk ) {
+            $model = $this->findModel($pk);
+            # TO DO
+        }
+        if($request->isAjax){
+        Yii::$app->response->format = Response::FORMAT_JSON;
+            return ['forceClose' => true,'forceReload' => '#crud-datatable-pjax'];
+        }else{
+            return $this->redirect(['index']);
+        }
+    }
+
+    /**
+     * Finds the LogForm model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Log the loaded model
+     * @return LogForm the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Log::findOne($id)) !== null) {
+        if (($model = LogForm::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

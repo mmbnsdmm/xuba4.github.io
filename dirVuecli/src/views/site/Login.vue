@@ -30,11 +30,11 @@
                 let password = _this.password;
                 _this.isLoginBtnDisabled = true;
                 _this.$store.dispatch('login', { username, password }).then(resp => {
-                    if (resp.data.code != 200){
+                    if (resp.data.code !== 200){
                         Toast(resp.data.message);
                         _this.isLoginBtnDisabled = false;
                     }else{
-                        if (resp.data.data.is_ok != 1){
+                        if (resp.data.data.status !== 200){
                             Toast(resp.data.data.msg);
                             _this.isLoginBtnDisabled = false;
                         }else{

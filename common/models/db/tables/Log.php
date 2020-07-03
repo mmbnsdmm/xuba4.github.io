@@ -8,11 +8,11 @@ use Yii;
  * This is the model class for table "{{%log}}".
  *
  * @property int $id
- * @property int $level
- * @property string $category
- * @property double $log_time
- * @property string $prefix
- * @property string $message
+ * @property int|null $level
+ * @property string|null $category
+ * @property float|null $log_time
+ * @property string|null $prefix
+ * @property string|null $message
  */
 class Log extends \yii\db\ActiveRecord
 {

@@ -49,8 +49,8 @@
                     typeKey: 2
                 }).then(resp => {
                     let msg = resp.data;
-                    if (msg.code == 200){
-                        if (msg.data.is_ok == 1){
+                    if (msg.code === 200){
+                        if (msg.data.status === 200){
                             Toast("发送成功");
                             _this.countDownSendLogin = 120;
                             _this.isBtnSendLoginEmaildisabled = true;
@@ -88,11 +88,11 @@
                 let data = {email, code};
                 _this.isLoginBtnDisabled = true;
                 _this.$store.dispatch('loginByEmail', data).then(resp => {
-                    if (resp.data.code != 200){
+                    if (resp.data.code !== 200){
                         Toast(resp.data.message);
                         _this.isLoginBtnDisabled = false;
                     }else{
-                        if (resp.data.data.is_ok != 1){
+                        if (resp.data.data.status !== 200){
                             Toast(resp.data.data.msg);
                             _this.isLoginBtnDisabled = false;
                         }else{

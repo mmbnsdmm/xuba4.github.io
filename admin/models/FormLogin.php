@@ -19,6 +19,10 @@ class FormLogin extends Model
     public $username;
     public $password;
     public $code;
+    /**
+     * @var bool
+     */
+    public $rememberMe = true;
 
     public function attributeLabels()
     {
@@ -26,6 +30,7 @@ class FormLogin extends Model
             'username' => "用户名",
             'password' => "密码",
             'code' => "验证码",
+            'rememberMe' => '记住我',
         ];
     }
 
@@ -36,6 +41,7 @@ class FormLogin extends Model
             [['username', 'password', 'code'], 'required'],
             ['password', 'validatePassword'],
             ['code', 'captcha'],
+            ['rememberMe', 'boolean'],
         ];
     }
 
@@ -69,7 +75,7 @@ class FormLogin extends Model
         $log->from_ip = \Yii::$app->request->remoteIP;
         $user = User::findOne(['username' => $this->username]);
         if ($user) {
-            if (\Yii::$app->user->login($user, 3600 * 2)) {
+            if (\Yii::$app->user->login($user, $this->rememberMe?3600*24*30:0)) {
                 $log->is_login = LogUserLogin::IS_LOGIN_Y;
                 $log->created_by = $user->id;
             }

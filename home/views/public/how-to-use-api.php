@@ -8,7 +8,7 @@
  */
 $this->title = "如何对接api平台";
 $this->params['breadcrumbs'][] = $this->title;
-$dev_url = \Yii::$app->apiTool->baseUri;
+$dev_url = \Yii::$app->apiTool->getFullUrl();
 $markdown = <<<STR
 ### 环境配置
 
@@ -36,11 +36,6 @@ if(responseCode.code === 200){
         if(json.data.is_ok == 1){
             pm.environment.set('token', json.data.user.token);
             pm.environment.set('key', json.data.user.key);
-            pm.environment.set('username', json.data.user.username);
-            pm.environment.set('email', json.data.user.email);
-            pm.environment.set('amount', json.data.user.amount);
-            pm.environment.set('frozen', json.data.user.frozen);
-            pm.environment.set('deposit', json.data.user.deposit);
         }
     }
 }

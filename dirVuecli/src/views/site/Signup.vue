@@ -71,8 +71,8 @@
                     typeKey: 1
                 }).then(resp => {
                     let msg = resp.data;
-                    if (msg.code == 200){
-                        if (msg.data.is_ok == 1){
+                    if (msg.code === 200){
+                        if (msg.data.status === 200){
                             Toast("发送成功");
                             _this.countDownSendSignup = 120;
                             _this.isBtnSendSignupEmaildisabled = true;
@@ -133,22 +133,22 @@
                 let data = {username, email, password, code, signup_message};
                 _this.isBtnSendSignupEmaildisabled = true;
                 _this.$store.dispatch('signup', data).then(resp => {
-                    if (resp.data.code != 200){
+                    if (resp.data.code !== 200){
                         Toast(resp.data.message);
                         _this.isBtnSendSignupEmaildisabled = false;
                     }else{
-                        if (resp.data.data.is_ok != 1){
+                        if (resp.data.data.status !== 200){
                             Toast(resp.data.data.msg);
                             _this.isBtnSendSignupEmaildisabled = false;
                         }else{
                             let username = this.username;
                             let password = this.password;
                             _this.$store.dispatch('login', { username, password }).then(resp => {
-                                if (resp.data.code != 200){
+                                if (resp.data.code !== 200){
                                     Toast(resp.data.message);
                                     _this.isBtnSendSignupEmaildisabled = false;
                                 }else{
-                                    if (resp.data.data.is_ok != 1){
+                                    if (resp.data.data.status !== 200){
                                         Toast(resp.data.data.msg);
                                         _this.isBtnSendSignupEmaildisabled = false;
                                     }else{

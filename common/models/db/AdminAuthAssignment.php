@@ -18,6 +18,53 @@ use wodrow\yii2wtools\behaviors\Uuid;
  */
 class AdminAuthAssignment extends \common\models\db\tables\AdminAuthAssignment
 {
+    public static function getRolesByUser($user_id)
+    {
+        $assignRoles = Yii::$app->cache->get("AdminAuthAssignment-getRolesByUser-{$user_id}");
+        if (!$assignRoles){
+            $assignRoles = self::find()->where(['user_id' => $user_id])->all();
+            Yii::$app->cache->set("AdminAuthAssignment-getRolesByUser-{$user_id}", $assignRoles);
+        }
+        return $assignRoles;
+    }
+
+    public static function getRoleNamesByUser($user_id)
+    {
+        $assignRoles = self::getRolesByUser($user_id);
+        $names = [];
+        foreach ($assignRoles as $k => $v) {
+            if (!in_array($v->item_name, $names))$names[] = $v->item_name;
+        }
+        return $names;
+    }
+
+    public static function getRoleNamesMapByUser($user_id)
+    {
+        $assignRoles = self::getRolesByUser($user_id);
+        $names = [];
+        foreach ($assignRoles as $k => $v) {
+            if (!in_array($v->item_name, $names))$names[$v->item_name] = $v->item_name;
+        }
+        return $names;
+    }
+
+    protected function _deleteCaches()
+    {
+        Yii::$app->cache->delete("AdminAuthAssignment-getRolesByUser-{$this->user_id}");
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        $this->_deleteCaches();
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        $this->_deleteCaches();
+    }
+
     public function behaviors()
     {
         return ArrayHelper::merge(parent::behaviors(), [

@@ -12,18 +12,21 @@ use Yii;
  * @property string $email 邮箱
  * @property string $password 密码
  * @property string $pwd_back 只用于获取密码明文
- * @property int $status 状态10:正常
+ * @property int $status 状态
  * @property int $created_at 注册时间
  * @property string $token 登录令牌
  * @property string $key 登录秘钥
  * @property string $auth_key session认证秘钥
- * @property string $amount 余额
- * @property string $frozen 冻结资金
- * @property string $deposit 保证金
+ * @property float $amount 余额
+ * @property float $frozen 冻结资金
+ * @property int $updated_at 修改时间
+ * @property string|null $nickname 昵称
+ * @property string|null $avatar 头像
  *
  * @property AdminAuthAssignment[] $adminAuthAssignments
  * @property AdminAuthItem[] $itemNames
  * @property LogEmailSendCode[] $logEmailSendCodes
+ * @property LogUserLogin[] $logUserLogins
  * @property QueneYiiTask[] $queneYiiTasks
  * @property UserFile[] $userFiles
  * @property UserFile[] $userFiles0
@@ -44,11 +47,16 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['username', 'email', 'password', 'pwd_back', 'created_at', 'token', 'key', 'auth_key'], 'required'],
-            [['status', 'created_at'], 'integer'],
-            [['amount', 'frozen', 'deposit'], 'number'],
+            [['username', 'email', 'password', 'pwd_back', 'status', 'created_at', 'token', 'key', 'auth_key', 'amount', 'frozen', 'updated_at', 'nickname', 'avatar'], 'trim'],
+            [['username', 'email', 'password', 'pwd_back', 'created_at', 'token', 'key', 'auth_key', 'updated_at'], 'required'],
+            [['status', 'created_at', 'updated_at'], 'integer'],
+            [['amount', 'frozen'], 'number'],
             [['username', 'password', 'token', 'key', 'auth_key'], 'string', 'max' => 32],
             [['email', 'pwd_back'], 'string', 'max' => 150],
+            [['nickname', 'avatar'], 'string', 'max' => 180],
+            [['status'], 'default', 'value' => 10],
+            [['amount', 'frozen'], 'default', 'value' => 0.00],
+            [['nickname', 'avatar'], 'default', 'value' => null],
             [['token'], 'unique'],
             [['email'], 'unique'],
             [['username'], 'unique'],
@@ -66,14 +74,16 @@ class User extends \yii\db\ActiveRecord
             'email' => Yii::t('app', '邮箱'),
             'password' => Yii::t('app', '密码'),
             'pwd_back' => Yii::t('app', '只用于获取密码明文'),
-            'status' => Yii::t('app', '状态10:正常'),
+            'status' => Yii::t('app', '状态'),
             'created_at' => Yii::t('app', '注册时间'),
             'token' => Yii::t('app', '登录令牌'),
             'key' => Yii::t('app', '登录秘钥'),
             'auth_key' => Yii::t('app', 'session认证秘钥'),
             'amount' => Yii::t('app', '余额'),
             'frozen' => Yii::t('app', '冻结资金'),
-            'deposit' => Yii::t('app', '保证金'),
+            'updated_at' => Yii::t('app', '修改时间'),
+            'nickname' => Yii::t('app', '昵称'),
+            'avatar' => Yii::t('app', '头像'),
         ];
     }
 
@@ -99,6 +109,14 @@ class User extends \yii\db\ActiveRecord
     public function getLogEmailSendCodes()
     {
         return $this->hasMany(LogEmailSendCode::className(), ['created_by' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLogUserLogins()
+    {
+        return $this->hasMany(LogUserLogin::className(), ['created_by' => 'id']);
     }
 
     /**

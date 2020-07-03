@@ -59,8 +59,8 @@
                     typeKey: 3
                 }).then(resp => {
                     let msg = resp.data;
-                    if (msg.code == 200){
-                        if (msg.data.is_ok == 1){
+                    if (msg.code === 200){
+                        if (msg.data.status === 200){
                             Toast("发送成功");
                             _this.countDownSendResetPassword = 120;
                             _this.isBtnSendResetPasswordEmaildisabled = true;
@@ -111,15 +111,16 @@
                 let data = {email, password, code};
                 _this.isResetBtnDisabled = true;
                 _this.$http.post('/site/reset-password', data).then(resp => {
-                    if (resp.data.code != 200){
+                    if (resp.data.code !== 200){
                         Toast(resp.data.message);
                         _this.isResetBtnDisabled = false;
                     }else{
-                        if (resp.data.data.is_ok != 1){
+                        if (resp.data.data.status !== 200){
                             Toast(resp.data.data.msg);
                             _this.isResetBtnDisabled = false;
                         }else{
                             Toast("密码重置成功");
+                            _this.$router.push('/login');
                         }
                     }
                 });

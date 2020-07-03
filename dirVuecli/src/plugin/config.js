@@ -18,8 +18,8 @@ window.onresize = function () {
 };
 let config = {
     data: {
-        apiDomain: "",
-        versionUpdate: {
+        apiUrl: "",
+        lastVueApp: {
             noticeMsg: "",
             lastVersion: "",
             forceUpdate: false,
@@ -28,20 +28,20 @@ let config = {
             iosAppDownloadUrl: "",
             webAppUrl: ""
         },
-        apiServer: {
+        datas: {
             adminEmail: "",
-            diskFreeSpace: "",
+            sysInfo: [],
+            howToUse: [],
+            warnings: [],
             qqqs: []
         },
-        emailSendCodeTypes: {},
-        uclasses: {},
-        ctypes: {}
+        emailSendCodeTypes: {}
     },
     syncPost: function(uri, formParams = {}) {
         let data = null;
         $.ajax({
             type: "post",
-            url: this.data.apiDomain + uri,
+            url: this.data.apiUrl + uri,
             data: formParams,
             async: false,
             dataType: "json",
@@ -54,9 +54,9 @@ let config = {
         });
         return data;
     },
-    checkApiDomain: function () {
+    checkApiUrl: function () {
         $.ajax({
-            url: config.data.apiDomain,
+            url: config.data.apiUrl + "/public/get-last-vue-app",
             type: 'GET',
             async: false,
             complete: function(response) {
@@ -78,52 +78,34 @@ let config = {
             async: false,
             dataType: "json",
             success: function (resp) {
-                _this.data.apiDomain = resp.apiDomain || "";
+                _this.data.apiUrl = resp.apiUrl || "";
             }
         });
         $.ajax({
             type: "post",
-            url: _this.data.apiDomain + "/public/get-last-app-version",
+            url: _this.data.apiUrl + "/public/get-last-vue-app",
             async: false,
             dataType: "json",
             success: function (resp) {
-                _this.data.versionUpdate = resp.data || {};
+                _this.data.lastVueApp = resp.data || {};
             }
         });
         $.ajax({
             type: "post",
-            url: _this.data.apiDomain + "/public/get-server-data",
+            url: _this.data.apiUrl + "/public/get-datas",
             async: false,
             dataType: "json",
             success: function (resp) {
-                _this.data.apiServer = resp.data.serverData || {};
+                _this.data.datas = resp.data.datas || {};
             }
         });
         $.ajax({
             type: "post",
-            url: _this.data.apiDomain + "/public/get-email-send-code-types",
+            url: _this.data.apiUrl + "/public/get-enums",
             async: false,
             dataType: "json",
             success: function (resp) {
-                _this.data.emailSendCodeTypes = resp.data.types || {};
-            }
-        });
-        $.ajax({
-            type: "post",
-            url: this.data.apiDomain + "/public/get-uclasses",
-            async: false,
-            dataType: "json",
-            success: function (resp) {
-                _this.data.uclasses = resp.data.uclasses || {};
-            }
-        });
-        $.ajax({
-            type: "post",
-            url: this.data.apiDomain + "/public/get-article-ctypes",
-            async: false,
-            dataType: "json",
-            success: function (resp) {
-                _this.data.ctypes = resp.data.ctypes || {};
+                _this.data.emailSendCodeTypes = resp.data.enums.logEmailSendCode.TypeDesc || {};
             }
         });
         Tool.setCache("APP_CONFIG_CACHE_KEY", _this.data, 3600);
@@ -132,11 +114,11 @@ let config = {
 };
 if (process.env.VUE_APP_ENV === "dev") Tool.delCache("APP_CONFIG_CACHE_KEY"); // 测试
 let data = Tool.getCache("APP_CONFIG_CACHE_KEY");
-if (!data || !data.apiDomain){
+if (!data || !data.apiUrl){
     config.data = config.init();
 }else{
     config.data = data;
 }
-config.checkApiDomain();
-setInterval(config.checkApiDomain, 300000);
+config.checkApiUrl();
+setInterval(config.checkApiUrl, 300000);
 export default config

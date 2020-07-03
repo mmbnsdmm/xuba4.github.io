@@ -43,10 +43,11 @@ $config = [
 //            'mainLayout' => "@admin/views/layouts/main.php",
 //            'layout' => 'left-menu',
             'menus' => [
-                'assignment' => [
+                /*'assignment' => [
                     'label' => '权限分配', // change label
-                ],
+                ],*/
                 'user' => false,
+                'assignment' => false,
             ],
             'controllerMap' => [
                 'assignment' => [
@@ -62,10 +63,11 @@ $config = [
                             },
                         ],
                     ],
-                    'searchClass' => \admin\modules\user\models\UserSearch::class,
+                    'searchClass' => \mdm\admin\models\searchs\User::class,
                 ],
             ],
         ],
+        'system' => \admin\modules\system\SystemModule::class,
         'log' => \admin\modules\log\LogModule::class,
         'user' => \admin\modules\user\UserModule::class,
         'ucenter' => \admin\modules\ucenter\UcenterModule::class,

@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?=$form->field($model, 'password')->passwordInput() ?>
             <?=$form->field($model, 'repassword')->passwordInput() ?>
             <?=$form->field($model, 'code')->textInput(['placeholder' => "验证码"]) ?>
-            <?=Html::button("发送验证码{{count}}", ['class' => "btn btn-default", '@click' => "sendCode", ':disabled'=>"is_disabled"]) ?>
+            <?=Html::button("发送验证码{{count}}", ['class' => "btn btn-default", '@click' => "sendCode", ':disabled'=>"isDisabled"]) ?>
             <?=Html::submitButton("注册", ['class' => "btn btn-primary"]) ?>
             <?php ActiveForm::end(); ?>
         </div>
@@ -40,18 +40,18 @@ $this->params['breadcrumbs'][] = $this->title;
             data: {
                 email: "<?=$model->email ?>",
                 count: "",
-                is_disabled: false,
+                isDisabled: false,
             },
             methods: {
                 sendCode:function () {
                     let _this = this;
-                    let email_reg = vue_body.reg_email;
+                    let email_reg = VueBody.regs.email;
                     if (!email_reg.test(this.email)){
                         alert("邮箱错误");
                         return ;
                     }
                     $.ajax({
-                        url: "<?=Yii::$app->apiTool->baseUri ?>/site/send-email-code",
+                        url: "<?=Yii::$app->apiTool->getFullUrl('/site/send-email-code') ?>",
                         type: "post",
                         data: {
                             email: this.email,
@@ -63,12 +63,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                 if (msg.data.is_ok == 1){
                                     alert("发送成功");
                                     _this.count = 120;
-                                    _this.is_disabled = true;
+                                    _this.isDisabled = true;
                                     let timer_sendCode = setInterval(() => {
                                         _this.count--;
                                         if (_this.count <= 0) {
                                             _this.count = '';
-                                            _this.is_disabled = false;
+                                            _this.isDisabled = false;
                                             clearInterval(timer_sendCode);
                                         }
                                     }, 1000);

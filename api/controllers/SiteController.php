@@ -33,8 +33,9 @@ class SiteController extends Controller
      */
     public function actionSendEmailCode($email, $typeKey)
     {
-        $r = $this->return;
+        $r = $this->data;
         $rules = [
+            ['email', 'trim'],
             ['email', 'string', 'max' => 150],
             ['email', 'email'],
         ];
@@ -52,7 +53,7 @@ class SiteController extends Controller
         }
         $model = DynamicModel::validateData(['email' => $email], $rules);
         if (!$model->validate()){
-            $r['is_ok'] = 0;
+            $r['status'] = 0;
             $r['msg'] = Model::getModelError($model);
             return $r;
         }
@@ -69,18 +70,20 @@ class SiteController extends Controller
      * @param string $code 详见发送验证码
      * @throws
      * @return array
-     * @return int is_ok 是否注册成功0:失败;1:成功
+     * @return int status 是否注册成功0:失败;1:成功
      * @return string msg 提示信息
      */
     public function actionSignup($username, $email, $password, $code)
     {
-        $r = $this->return;
+        $r = $this->data;
         $rules = [
+            [['username', 'password'], 'trim'],
             [['username', 'password'], 'string', 'min' => 6, 'max' => 150],
+            ['username', 'unique', 'targetClass' => User::class, 'targetAttribute' => 'username'],
         ];
-        $model = DynamicModel::validateData(['password' => $password], $rules);
+        $model = DynamicModel::validateData(['username' => $username, 'password' => $password], $rules);
         if (!$model->validate()){
-            $r['is_ok'] = 0;
+            $r['status'] = 0;
             $r['msg'] = Model::getModelError($model);
             return $r;
         }
@@ -127,7 +130,7 @@ class SiteController extends Controller
             $trans->rollBack();
             throw $e;
         }
-        $r['is_ok'] = 1;
+        $r['status'] = 200;
         $r['msg'] = "注册成功";
         return $r;
     }
@@ -139,7 +142,7 @@ class SiteController extends Controller
      * @param string $password
      * @throws
      * @return array
-     * @return int is_ok 是否登录成功0:失败;1:成功
+     * @return int status 是否登录成功0:失败;200:成功
      * @return string msg 提示信息
      * @return object user 用户信息示例 {'token': "令牌", 'key': "秘钥， 不要泄露", 'username': "用户名", 'email': "邮箱", 'amount': "余额", 'frozen': "冻结资金", 'deposit': 保证金"}
      *
@@ -152,35 +155,90 @@ class SiteController extends Controller
         $log->param_username = $username;
         $user = User::findOne(['username' => $username]);
         if (!$user || !$user->validatepassword($password)){
-            $this->return['msg'] = "用户名或密码错误";
+            $this->data['msg'] = "用户名或密码错误";
             $log->is_login = LogUserLogin::IS_LOGIN_N;
             if (!$log->save()){
                 throw new ApiException(201911121530, "登录日志保存失败");
+            }
+            return $this->data;
+        }
+        $log->created_by = $user->id;
+        switch ($user->status){
+            case User::STATUS_ACTIVE:
+                $this->data['status'] = 200;
+                $this->data['msg'] = "登录成功";
+                break;
+            default:
+                $this->data['msg'] = "用户状态异常";
+                $log->is_login = LogUserLogin::IS_LOGIN_N;
+                if (!$log->save()){
+                    throw new ApiException(201911121531, "登录日志保存失败");
+                }
+                return $this->data;
+                break;
+        }
+        $this->data['user'] = \Yii::$app->apiTool->authReturn($user);
+        $log->is_login = LogUserLogin::IS_LOGIN_Y;
+        $log->from_ip = \Yii::$app->request->remoteIP;
+        if (!$log->save()){
+            throw new ApiException(201911121532, "登录日志保存失败");
+        }
+        return $this->data;
+    }
+
+    /**
+     * 邮箱登录
+     * @desc post
+     * @param string $email
+     * @param string $code
+     * @throws
+     * @return array
+     * @return int is_ok 是否登录成功0:失败;1:成功
+     * @return string msg 提示信息
+     * @return object user 用户信息示例 {'id': id, 'token': "令牌", 'key': "秘钥， 不要泄露", 'username': "用户名", 'email': "邮箱", 'amount': "余额", 'frozen': "冻结资金", 'availableAmount' => "可用余额", 'deposit': 保证金", 'level': 级别", 'integral': 积分", 'uclass' => "", 'alipay_income_image' => "", 'weixin_income_image' => "", 'qq' => "QQ号", 'weiixn' => "微信号"}
+     *
+     */
+    public function actionLoginByEmail($email, $code)
+    {
+        $log = new LogUserLogin();
+        $log->from_app = YII_APP_ID;
+        $log->created_at = YII_BT_TIME;
+        $log->param_email = $email;
+        if (!\Yii::$app->apiTool->validateEmailCode($email, LogEmailSendCode::TYPE_LOGIN, $code)){
+            $r['msg'] = "验证码错误或失效";
+            return $r;
+        }
+        $user = User::findOne(['email' => $email]);
+        if (!$user){
+            $this->data['msg'] = "邮箱未找到";
+            $log->is_login = LogUserLogin::IS_LOGIN_N;
+            if (!$log->save()){
+                throw new ApiException(201911270928, "登录日志保存失败");
             }
             return $this->return;
         }
         $log->created_by = $user->id;
         switch ($user->status){
             case User::STATUS_ACTIVE:
-                $this->return['is_ok'] = 1;
-                $this->return['msg'] = "登录成功";
+                $this->data['status'] = 200;
+                $this->data['msg'] = "登录成功";
                 break;
             default:
-                $this->return['msg'] = "用户状态异常";
+                $this->data['msg'] = "用户状态异常";
                 $log->is_login = LogUserLogin::IS_LOGIN_N;
                 if (!$log->save()){
-                    throw new ApiException(201911121531, "登录日志保存失败");
+                    throw new ApiException(201911270929, "登录日志保存失败");
                 }
-                return $this->return;
+                return $this->data;
                 break;
         }
-        $this->return['user'] = \Yii::$app->apiTool->authReturn($user);
+        $this->data['user'] = \Yii::$app->apiTool->authReturn($user);
         $log->is_login = LogUserLogin::IS_LOGIN_Y;
         $log->from_ip = \Yii::$app->request->remoteIP;
         if (!$log->save()){
             throw new ApiException(201911121532, "登录日志保存失败");
         }
-        return $this->return;
+        return $this->data;
     }
 
     /**
@@ -190,19 +248,19 @@ class SiteController extends Controller
      * @param string $password 新密码
      * @param string $code 验证码
      * @return array
-     * @return int is_ok 是否重置成功0:失败;1:成功
+     * @return int status 是否重置成功0:失败;200:成功
      * @return string msg 提示信息
      * @throws
      */
     public function actionResetPassword($email, $password, $code)
     {
-        $r = $this->return;
+        $r = $this->data;
         $rules = [
             ['password', 'string', 'min' => 6, 'max' => 150],
         ];
         $model = DynamicModel::validateData(['password' => $password], $rules);
         if (!$model->validate()){
-            $r['is_ok'] = 0;
+            $r['status'] = 0;
             $r['msg'] = Model::getModelError($model);
             return $r;
         }
@@ -223,7 +281,7 @@ class SiteController extends Controller
         if (!$user->save()){
             throw new ApiException(201911121541, Model::getModelError($user));
         }
-        $r['is_ok'] = 1;
+        $r['status'] = 200;
         $r['msg'] = "密码重置成功";
         return $r;
     }

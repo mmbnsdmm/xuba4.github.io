@@ -10,10 +10,12 @@ namespace admin\controllers;
 
 
 use admin\models\FormLogin;
+use common\components\Tools;
 use yii\captcha\CaptchaAction;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
+use Yii;
 
 class SiteController extends Controller
 {
@@ -22,13 +24,15 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
+                'only' => ['index', 'login', 'captcha', 'logout', 'error', 'test', 'info', 'clean-cache'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'error', 'captcha'],
+                        'actions' => ['login', 'captcha'],
                         'allow' => true,
+                        'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['index', 'logout'],
+                        'actions' => ['index', 'logout', 'test', 'info', 'clean-cache'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -59,6 +63,19 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
+        Yii::$container->set(\yii\web\JqueryAsset::class, [
+            'sourcePath' => '@static_root/iframe-adminlte/plugins/jQuery',
+            'js' => [
+                'jquery-2.2.3.min.js',
+            ],
+        ]);
+        Yii::$container->set(\yii\bootstrap\BootstrapAsset::class, [
+            'sourcePath' => '@static_root/iframe-adminlte/bootstrap',
+        ]);
+        Yii::$container->set(\yii\bootstrap\BootstrapPluginAsset::class, [
+            'sourcePath' => '@static_root/iframe-adminlte/bootstrap',
+        ]);
+        $this->layout = 'iframe-main';
         return $this->render('index');
     }
 
@@ -67,7 +84,7 @@ class SiteController extends Controller
         $model = new FormLogin();
         if ($model->load(\Yii::$app->request->post()) && $model->validate()){
             if ($model->login()){
-                return $this->goBack();
+                return $this->goHome();
             }
         }
         return $this->renderPartial('login', [
@@ -79,5 +96,44 @@ class SiteController extends Controller
     {
         \Yii::$app->user->logout();
         return $this->redirect(['site/login']);
+    }
+
+    public function actionInfo()
+    {
+        // 禁用函数
+        $disableFunctions = ini_get('disable_functions');
+        $disableFunctions = !empty($disableFunctions) ? explode(',', $disableFunctions) : '未禁用';
+        // 附件大小
+        $attachmentDir = \Yii::getAlias('@storage_root/uploads');
+        $attachmentSize = Tools::getDirSize($attachmentDir);
+
+        $models = \Yii::$app->db->createCommand('SHOW TABLE STATUS')->queryAll();
+        $models = array_map('array_change_key_case', $models);
+        // 数据库大小
+        $mysqlSize = 0;
+        foreach ($models as $model) {
+            $mysqlSize += $model['data_length'];
+        }
+
+        return $this->render('info', [
+            'mysql_size' => $mysqlSize,
+            'attachment_dir' => $attachmentDir,
+            'attachment_size' => $attachmentSize ?? 0,
+            'disable_functions' => $disableFunctions,
+        ]);
+    }
+
+    public function actionCleanCache()
+    {
+        if (Yii::$app->request->post()){
+            Yii::$app->cache->flush();
+            Yii::$app->session->addFlash("success", "清理成功");
+        }
+        return $this->render('clean-cache');
+    }
+
+    public function actionTest()
+    {
+        return $this->renderPartial('test');
     }
 }

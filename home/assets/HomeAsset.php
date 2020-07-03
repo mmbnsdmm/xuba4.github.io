@@ -12,6 +12,7 @@ namespace home\assets;
 use common\assets\Common;
 use common\assets\Md5;
 use common\assets\Normalize;
+use common\assets\Vue;
 use kartik\base\AssetBundle;
 use yii\bootstrap\BootstrapPluginAsset;
 use yii\web\YiiAsset;
