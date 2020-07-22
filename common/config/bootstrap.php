@@ -57,3 +57,7 @@ Yii::$container->set(\yii\widgets\LinkPager::class, [
     'prevPageLabel'=>'上一页',
     'nextPageLabel'=>'下一页',
 ]);
+
+Yii::$container->set(\yii\data\Pagination::class, [
+    'defaultPageSize' => 10,
+]);
