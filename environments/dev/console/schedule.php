@@ -26,12 +26,12 @@ $schedule->exec('php yii task/do-quene 1')->cron('* * * * *');
 $schedule->exec('git pull')->cron('* * * * *');
 
 // yii-china-sign
-$schedule->exec('php yii job/yiichina-sign')->daily();
-$schedule->exec('php yii job/php-la-sign')->daily();
+$schedule->exec('php yii job/yiichina-sign')->cron('0 2 * * *');
+$schedule->exec('php yii job/php-la-sign')->cron('0 2 * * *');
 
 // 备份
-$schedule->exec('php yii job/backup')->daily();
-$schedule->exec('php yii job/db-backup')->sundays();
+$schedule->exec('php yii job/backup')->cron('0 2 * * *');
+$schedule->exec('php yii job/db-backup')->cron('0 2 * * 0');
 
 // 清理
-$schedule->exec('php yii job/log-clear')->sundays();
+$schedule->exec('php yii job/log-clear')->cron('0 2 * * 0');
