@@ -17,8 +17,34 @@ $config = [
                 ],
             ],
         ],
+        'cdn' => [
+            'class' => \yiizh\cdn\CDN::class,
+            'assets' => [
+                [
+                    'class' => \yii\web\JqueryAsset::class,
+                    'js' => [
+                        "https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js",
+                    ],
+                ],
+                [
+                    'class' => \yii\bootstrap\BootstrapPluginAsset::class,
+                    'js' => [
+                        "https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js",
+                    ],
+                    'css' => [
+                        "https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css",
+                    ],
+                ],
+                [
+                    'class' => \common\assets\Vue::class,
+                    'js' => [
+                        "https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js",
+                    ],
+                ],
+            ],
+        ],
     ],
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', 'cdn'],
     'params' => [
         'icon-framework' => \kartik\icons\Icon::FA,
     ],
