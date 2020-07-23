@@ -36,6 +36,18 @@ $config = [
                     ],
                 ],
                 [
+                    'class' => \yii\bootstrap\BootstrapAsset::class,
+                    'css' => [
+                        "https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css",
+                    ],
+                ],
+                [
+                    'class' => \common\assets\Normalize::class,
+                    'css' => [
+                        "https://cdn.bootcdn.net/ajax/libs/normalize/8.0.1/normalize.min.css",
+                    ],
+                ],
+                [
                     'class' => \common\assets\Vue::class,
                     'js' => [
                         "https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js",

@@ -27,10 +27,10 @@ class ApiTool extends Component
      * @return mixed
      * @throws
      */
-    public function post($uri, $form_params)
+    public function post($uri, $form_params, $user = null)
     {
         $client = new Client(['base_uri' => $this->getFullUrl($uri), 'verify'=>false]);
-        $form_params = $this->signFormParams($form_params);
+        $form_params = $this->signFormParams($form_params, $user);
         $resp = $client->request("POST", "", [
             'form_params' => $form_params,
         ]);
@@ -42,10 +42,9 @@ class ApiTool extends Component
      * @param $form_params
      * @return array
      */
-    public function signFormParams($form_params)
+    public function signFormParams($form_params, $user = null)
     {
-        if (!\Yii::$app->user->isGuest){
-            $user = \Yii::$app->user->identity;
+        if ($user){
             $form_params = $this->generateFormParams($user, $form_params);
         }
         return $form_params;

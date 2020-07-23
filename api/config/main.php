@@ -15,6 +15,7 @@ $config = [
     ],
     'modules' => [
         'user' => \api\modules\user\UserModule::class,
+        'test' => \api\modules\test\TestModule::class,
     ],
     'as token check' => [
         'class' => \api\behaviors\TokenCheck::class,
