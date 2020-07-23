@@ -41,16 +41,19 @@ $config = [
                         "https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css",
                     ],
                 ],
+//                [
+//                    'class' => \dmstr\web\AdminLteAsset::class,
+//                    'css' => [
+//                        "https://cdn.bootcdn.net/ajax/libs/admin-lte/3.0.5/css/adminlte.min.css",
+//                    ],
+//                    'js' => [
+//                        "https://cdn.bootcdn.net/ajax/libs/admin-lte/2.4.18/js/adminlte.min.js"
+//                    ],
+//                ],
                 [
-                    'class' => \common\assets\Normalize::class,
+                    'class' => \rmrevin\yii\fontawesome\AssetBundle::class,
                     'css' => [
-                        "https://cdn.bootcdn.net/ajax/libs/normalize/8.0.1/normalize.min.css",
-                    ],
-                ],
-                [
-                    'class' => \common\assets\Vue::class,
-                    'js' => [
-                        "https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js",
+                        'https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css',
                     ],
                 ],
             ],

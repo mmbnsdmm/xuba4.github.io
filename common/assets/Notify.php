@@ -13,9 +13,7 @@ use kartik\base\AssetBundle;
 
 class Notify extends AssetBundle
 {
-    public $sourcePath = '@static_root/notify';
-
     public $js = [
-        "bootstrap-notify.min.js",
+        "https://cdn.bootcdn.net/ajax/libs/bootstrap-notify/0.2.0/css/bootstrap-notify.min.css",
     ];
 }
