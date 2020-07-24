@@ -25,6 +25,7 @@ use yii\web\IdentityInterface;
  * @property QueneYiiTask[] $queneYiiTasks
  *
  * @property-read array $statusDesc
+ * @property-read string $nickName
  */
 class User extends \common\models\db\tables\User implements IdentityInterface
 {
@@ -141,9 +142,9 @@ class User extends \common\models\db\tables\User implements IdentityInterface
     /**
      * @return string
      */
-    public function getNickname()
+    public function getNickName()
     {
-        return $this->username;
+        return $this->nickname?:$this->username;
     }
 
 
