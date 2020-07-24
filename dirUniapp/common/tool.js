@@ -27,6 +27,23 @@ let tool = {
                 window.console.log(value);
                 break;
         }
+    },
+    foreach: function(x, fn) {
+        for (let k in x) {
+            if (x.prototype.hasOwnProperty.call(x, k)) {
+                let result = fn.call(x, k, x[k]);
+                if (result === false) {
+                    break;
+                }
+            }
+        }
+    },
+    getTimestamp: function(isMicro = false) {
+        let _timestamp = (new Date()).valueOf();
+        if (isMicro)return _timestamp;
+        _timestamp = _timestamp/1000;
+        _timestamp = Math.floor(_timestamp);
+        return _timestamp
     }
 }
 export default tool
