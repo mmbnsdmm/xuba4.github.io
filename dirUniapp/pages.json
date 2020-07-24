@@ -9,7 +9,7 @@
         {
         	"path": "pages/index/testui",
         	"style": {
-        		"navigationBarTitleText": "uni-app"
+        		"navigationBarTitleText": "testui"
         	}
         }
 	],
