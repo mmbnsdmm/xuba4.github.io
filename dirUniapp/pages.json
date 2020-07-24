@@ -5,7 +5,13 @@
 			"style": {
 				"navigationBarTitleText": "uni-app"
 			}
-		}
+		},
+        {
+        	"path": "pages/index/testui",
+        	"style": {
+        		"navigationBarTitleText": "uni-app"
+        	}
+        }
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

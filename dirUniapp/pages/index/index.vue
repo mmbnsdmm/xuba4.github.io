@@ -4,6 +4,9 @@
 		<image class="logo" src="/static/logo.png"></image>
 		<view class="text-area">
 			<text class="title">{{title}}</text>
+            <navigator url="testui">
+                <button type="default">testui</button>
+            </navigator>
 		</view>
 	</view>
 </template>
