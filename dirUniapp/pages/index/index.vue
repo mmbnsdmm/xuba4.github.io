@@ -1,5 +1,6 @@
 <template>
 	<view class="content">
+        <page-head :title="title"></page-head>
 		<image class="logo" src="/static/logo.png"></image>
 		<view class="text-area">
 			<text class="title">{{title}}</text>
@@ -14,9 +15,7 @@
 				title: 'Hello'
 			}
 		},
-		onLoad() {
-
-		},
+		onLoad() {},
 		methods: {
 
 		}
