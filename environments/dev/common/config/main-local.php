@@ -30,6 +30,9 @@ return [
         'vueApp' => [
             'class' => \common\components\VueApp::class,
         ],
+        'uniApp' => [
+            'class' => \common\components\UniApp::class,
+        ],
         'sftpFileProd' => [
             'class' => \creocoder\flysystem\SftpFilesystem::class,
             'host' => '',
