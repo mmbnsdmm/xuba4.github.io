@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import store from '@/common/store'
+Vue.prototype.$store = store
 import App from './App'
 
 import Tool from '@/common/tool';
