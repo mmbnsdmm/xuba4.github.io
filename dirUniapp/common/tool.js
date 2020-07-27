@@ -44,6 +44,58 @@ let tool = {
         _timestamp = _timestamp/1000;
         _timestamp = Math.floor(_timestamp);
         return _timestamp
+    },
+    setStorage: function (key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+    },
+    getStorage: function (key) {
+        let value = localStorage.getItem(key);
+        if (value){
+            value = JSON.parse(value);
+        }
+        return value;
+    },
+    deleteStorage: function (key) {
+        localStorage.setItem(key, JSON.stringify(null));
+    },
+    clearStorage: function() {
+        localStorage.clear();
+    },
+    setCache: function (key, value, duration = 0) {
+        let _timestamp = this.getTimestamp();
+        let endTimestamp = Number(_timestamp) + Number(duration);
+        if (duration === 0){
+            endTimestamp = 0;
+        }
+        let data = {
+            value: value,
+            endTimestamp: endTimestamp
+        };
+        this.setStorage(key, data);
+    },
+    getCache: function (key) {
+        let data = this.getStorage(key);
+        if (!data){
+            return null;
+        }
+        let endTimestamp = data.endTimestamp;
+        if (endTimestamp !== 0){
+            let _timestamp = this.getTimestamp();
+            if (_timestamp > endTimestamp){
+                return null;
+            }
+        }
+        return data.value;
+    },
+    delCache: function (key) {
+        this.deleteStorage(key);
+    },
+    delAllCache: function () {
+        this.clearStorage();
+    },
+    clone: function (v) {
+        this.setCache("clone", v);
+        return this.getCache("clone");
     }
 }
 export default tool

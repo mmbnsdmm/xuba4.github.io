@@ -3,7 +3,7 @@
     "appid" : "__UNI__AA12107",
     "description" : "test",
     "versionName" : "1.0.1",
-    "versionCode" : 100,
+    "versionCode" : 1,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
