@@ -8,9 +8,13 @@ Vue.prototype.$tool = Tool;
 import Conf from '@/common/conf';
 Vue.prototype.$conf = Conf;
 
-import pageHead from '@/pages/layouts/page-head.vue'
-
 Vue.config.productionTip = Conf.productionTip
+
+uni.request({
+    url:Conf.apiUrl + "/public/get-last-vue-app"
+})
+
+import pageHead from '@/pages/layouts/page-head.vue'
 
 Vue.component('page-head', pageHead)
 

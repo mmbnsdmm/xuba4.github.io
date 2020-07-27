@@ -12,12 +12,18 @@ use yii\behaviors\TimestampBehavior;
  *
  * @author
  * @property-read array $statusDesc
+ * @property-read array $typeDesc
+ * @property-read array $isForceUpdateDesc
  */
 class AppVersion extends \common\models\db\tables\AppVersion
 {
     const SCENARIO_TEST = 'test';
     const STATUS_DELETE = -10;
     const STATUS_ACTIVE = 10;
+    const TYPE_ANDROID = 1;
+    const TYPE_APPLE = 2;
+    const IS_FORCE_UPDATE_Y = 1;
+    const IS_FORCE_UPDATE_N = 0;
 
     public function getStatusDesc()
     {
@@ -27,13 +33,29 @@ class AppVersion extends \common\models\db\tables\AppVersion
         ];
     }
 
+    public function getTypeDesc()
+    {
+        return [
+            self::TYPE_ANDROID => "安卓",
+            self::TYPE_APPLE => "苹果",
+        ];
+    }
+
+    public function getIsForceUpdateDesc()
+    {
+        return [
+            self::IS_FORCE_UPDATE_Y => "强制更新",
+            self::IS_FORCE_UPDATE_N => "不强制更新",
+        ];
+    }
+
     public function behaviors()
     {
         $behaviors = parent::behaviors();
         $behaviors = ArrayHelper::merge($behaviors, [
             'timestamp' => [
                 'class' => TimestampBehavior::class,
-                'createdAtAttribute' => false,
+//                'createdAtAttribute' => false,
                 'updatedAtAttribute' => false,
             ],
             'blameable' => [
@@ -57,11 +79,11 @@ class AppVersion extends \common\models\db\tables\AppVersion
     public function rules()
     {
         $rules = parent::rules();
-        /*foreach ($rules as $k => $v) {
+        foreach ($rules as $k => $v) {
             if ($v[1] == 'required'){
                 $rules[$k][0] = array_diff($rules[$k][0], ['created_at', 'updated_at', 'created_by', 'updated_by']);
             }
-        }*/
+        }
         $rules = ArrayHelper::merge($rules, [
 //            [[], 'required', 'on' => self::SCENARIO_TEST],
         ]);

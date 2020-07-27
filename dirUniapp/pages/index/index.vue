@@ -7,6 +7,9 @@
             <navigator url="testui">
                 <button type="default">testui</button>
             </navigator>
+            <navigator url="testui">
+                <button type="default">testui1</button>
+            </navigator>
 		</view>
 	</view>
 </template>

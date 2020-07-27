@@ -2,6 +2,7 @@
 
 namespace admin\modules\app\controllers;
 
+use wodrow\yii2wtools\tools\FileHelper;
 use Yii;
 use common\models\db\AppVersion;
 use admin\modules\app\models\searchs\Version;
@@ -13,6 +14,7 @@ use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
 use kartik\grid\EditableColumnAction;
+use yii\web\UploadedFile;
 
 /**
  * VersionController implements the CRUD actions for Version model.
@@ -122,7 +124,8 @@ class VersionController extends Controller
                                 Html::button('保存', ['class' => 'btn btn-primary','type' => "submit"])
         
                 ];         
-            }else if($model->load($request->post()) && $model->save()){
+            }else if($model->load($request->post()) && $model->validate()){
+                $model->uploadAndSave();
                 return [
                     'forceReload' => '#crud-datatable-pjax',
                     'title' => "Create new VersionForm",
@@ -179,7 +182,8 @@ class VersionController extends Controller
                     'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
                                 Html::button('保存', ['class' => 'btn btn-primary','type' => "submit"])
                 ];         
-            }else if($model->load($request->post()) && $model->save()){
+            }else if($model->load($request->post()) && $model->validate()){
+                $model->uploadAndSave();
                 return [
                     'forceReload' => '#crud-datatable-pjax',
                     'title' => "VersionForm #".$id,
