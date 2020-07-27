@@ -22,9 +22,7 @@
 			}
 		},
 		onLoad() {},
-		methods: {
-
-		}
+		methods: {}
 	}
 </script>
 

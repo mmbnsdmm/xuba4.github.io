@@ -76,6 +76,8 @@ class PublicController extends Controller
      * @desc post
      * @param int $type
      * @return array
+     * @return int status
+     * @return string msg
      * @return object model
      * @return int model.type app类型
      * @return int model.v_id 版本号
@@ -92,15 +94,19 @@ class PublicController extends Controller
             ->andWhere(['status' => AppVersion::STATUS_ACTIVE])
             ->orderBy(['id' => SORT_DESC])
             ->one();
-        return [
-            'model' => $model,
-        ];
+        $data = $this->data;
+        $data['status'] = 200;
+        $data['msg'] = "获取成功";
+        $data['model'] = $model;
+        return $data;
     }
 
     /**
      * 获取信息
      * @desc post
      * @return array
+     * @return int status
+     * @return string msg
      * @return object datas
      * @return string datas.adminEmail
      * @return array datas.sysInfo
