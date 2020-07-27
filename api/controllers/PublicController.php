@@ -8,6 +8,7 @@
 
 namespace api\controllers;
 
+use common\models\db\AppVersion;
 use common\models\db\LogEmailSendCode;
 use wodrow\yii\rest\Controller;
 
@@ -22,12 +23,17 @@ class PublicController extends Controller
      * @return object enums
      * @return object enums.logEmailSendCode
      * @return array enums.logEmailSendCode.TypeDesc 验证码类型
+     * @return object enums.appVersion
+     * @return array enums.appVersion.TypeDesc 版本app类型
      */
     public function actionGetEnums()
     {
         $enums = [
             'logEmailSendCode' => [
-                'TypeDesc' => LogEmailSendCode::instance()->typeDesc,
+                'typeDesc' => LogEmailSendCode::instance()->typeDesc,
+            ],
+            'appVersion' => [
+                'typeDesc' => AppVersion::instance()->typeDesc,
             ],
         ];
         $data = $this->data;
@@ -68,22 +74,26 @@ class PublicController extends Controller
     /**
      * 最新版本VueApp
      * @desc post
+     * @param int $type
      * @return array
-     * @return string lastVersion
-     * @return string forceUpdate
-     * @return string updateLog
-     * @return string appDownloadUrl
+     * @return object model
+     * @return int model.type app类型
+     * @return int model.v_id 版本号
+     * @return int model.version 版本
+     * @return int model.is_force_update 是否强制更新
+     * @return int model.pkg_url 安装包
+     * @return int model.wgt_url 升级包
+     * @return int model.desc 说明
      */
-    public function actionGetLastVueApp()
+    public function actionGetLastVueApp($type)
     {
+        $model = AppVersion::find()
+            ->where(['type' => $type])
+            ->andWhere(['status' => AppVersion::STATUS_ACTIVE])
+            ->orderBy(['id' => SORT_DESC])
+            ->one();
         return [
-            "noticeMsg" => \Yii::$app->vueApp->noticeMsg,
-            "lastVersion" => \Yii::$app->vueApp->lastVersion,
-            "forceUpdate" => \Yii::$app->vueApp->forceUpdate,
-            "updateLog" => \Yii::$app->vueApp->updateLog,
-            "androidAppDownloadUrl" => \Yii::$app->vueApp->androidAppDownloadUrl,
-            "iosAppDownloadUrl" => \Yii::$app->vueApp->iosAppDownloadUrl,
-            "webAppUrl" => \Yii::$app->vueApp->webAppUrl,
+            'model' => $model,
         ];
     }
 
