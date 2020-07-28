@@ -1,1 +1,0 @@
-<view class="content"><page-head vue-id="8ddcb540-1" title="{{title}}" bind:__l="__l"></page-head><image class="logo" src="/static/logo.png"></image><view class="text-area"><text class="title">{{title}}</text><navigator url="testui"><button type="default">testui</button></navigator></view></view>

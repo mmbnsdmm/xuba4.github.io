@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "uni-app",
-  "usingComponents": {
-    "page-head": "/pages/layouts/page-head"
-  }
-}
