@@ -19,7 +19,7 @@ Vue.prototype.$http = Http
 import Auth from '@/common/auth'
 Vue.prototype.$auth = Auth
 
-import '@/common/version/update'
+// import '@/common/version/update'
 // import '@/common/version/hot-update'
 
 import pageHead from '@/pages/layouts/page-head.vue'

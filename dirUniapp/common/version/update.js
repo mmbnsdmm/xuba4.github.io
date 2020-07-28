@@ -1,5 +1,9 @@
 import Tool from '../tool'
 import Conf from '../conf'
+let appTypeMap = {
+    android: "安卓",
+    ios: "苹果"
+}
 uni.request({  
     url: Conf.apiUrl + "/public/get-last-vue-app",
     data: {

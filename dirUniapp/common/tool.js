@@ -27,20 +27,24 @@ let tool = {
         return _timestamp
     },
     setStorage: function (key, value) {
-        localStorage.setItem(key, JSON.stringify(value));
+        // localStorage.setItem(key, JSON.stringify(value));
+        uni.setStorageSync(key, JSON.stringify(value))
     },
     getStorage: function (key) {
-        let value = localStorage.getItem(key);
+        // let value = localStorage.getItem(key);
+        let value = uni.getStorageSync(key)
         if (value){
             value = JSON.parse(value);
         }
         return value;
     },
     deleteStorage: function (key) {
-        localStorage.setItem(key, JSON.stringify(null));
+        // localStorage.setItem(key, JSON.stringify(null));
+        uni.setStorageSync(key, JSON.stringify(null))
     },
     clearStorage: function() {
-        localStorage.clear();
+        // localStorage.clear();
+        uni.clearStorageSync();
     },
     setCache: function (key, value, duration = 0) {
         let _timestamp = this.getTimestamp();
