@@ -13,9 +13,9 @@
         	}
         },
         {
-        	"path": "pages/index/testui",
+        	"path": "pages/site/Login",
         	"style": {
-        		"navigationBarTitleText": "test-ui"
+        		"navigationBarTitleText": "登陆"
         	}
         }
 	],

@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import App from './App'
 
+//防多次点击，重复提交
+import preventReClick from '@/common/preventReClick'
+
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min'
 

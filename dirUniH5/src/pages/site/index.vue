@@ -3,6 +3,7 @@
         <navigator url="/pages/site/testui">
             <button class="btn btn-primary">testui</button>
         </navigator>
+        <van-button size="large" type="info" v-preventReClick>test</van-button>
     </view>
 </template>
 
