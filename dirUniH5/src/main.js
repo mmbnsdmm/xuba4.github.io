@@ -1,6 +1,4 @@
 import Vue from 'vue'
-import jquery from 'jquery'
-Vue.prototype.$jquery = jquery
 import store from '@/common/store'
 Vue.prototype.$store = store
 import App from './App'

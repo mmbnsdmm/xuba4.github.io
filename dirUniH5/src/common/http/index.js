@@ -1,14 +1,13 @@
 import Conf from '../conf.js'
-import jquery from 'jquery'
 let http = {
-    syncPost: function(uri = null, formParams = {}){
+    syncPost: function(uri = null, formParams = {}, isAsync = true){
         let url = Conf.apiUrl + uri
         let res = {}
-        jquery.ajax({
+        $.ajax({
             url: url,
             data: formParams,
             method: Conf.ajax.method,
-            async: Conf.ajax.async,
+            async: isAsync,
             datatype: Conf.ajax.dataType,
             success: function(data){
                 if(data.code !== Conf.ajax.normalCode){}else{

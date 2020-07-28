@@ -1,5 +1,4 @@
 import Conf from '../conf'
-import Http from '../http'
 import CryptoJS from 'crypto-js'
 let auth = {
     generateFormParams: function (params = {}) {
@@ -25,9 +24,9 @@ let auth = {
         delete params.key;
         return params;
     },
-    authPost: function(uri, formParams = {}) {
+    authPost: function(uri, formParams = {}, isAsync = true) {
         formParams = this.generateFormParams(formParams);
-        return Http.syncPost(uri, formParams);
+        return Http.syncPost(uri, formParams, isAsync);
     },
     updateUser: function () {
         Store.dispatch('updateUser', this.generateFormData({}));
