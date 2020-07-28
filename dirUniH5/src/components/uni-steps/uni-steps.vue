@@ -136,13 +136,13 @@
 	}
 
 	.uni-steps__row-title {
-		font-size: 14px;
+		font-size: 28rpx;
 		line-height: 16px;
 		text-align: center;
 	}
 
 	.uni-steps__column-title {
-		font-size: 14px;
+		font-size: 28rpx;
 		text-align: left;
 		line-height: 18px;
 	}
@@ -154,7 +154,7 @@
 	}
 
 	.uni-steps__column-desc {
-		font-size: 12px;
+		font-size: 24rpx;
 		text-align: left;
 		line-height: 18px;
 	}

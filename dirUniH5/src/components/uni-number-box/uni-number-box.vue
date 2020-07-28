@@ -136,7 +136,7 @@
 		width: 40px;
 		height: 35px;
 		text-align: center;
-		font-size: 16;
+		font-size: 32rpx;
 		border-width: 1rpx;
 		border-style: solid;
 		border-color: #e5e5e5;
@@ -163,8 +163,8 @@
 		border-width: 1rpx;
 		border-style: solid;
 		border-color: #e5e5e5;
-		border-top-left-radius: 3px;
-		border-bottom-left-radius: 3px;
+		border-top-left-radius: 6rpx;
+		border-bottom-left-radius: 6rpx;
 		border-right-width: 0;
 	}
 
@@ -180,8 +180,8 @@
 		border-width: 1rpx;
 		border-style: solid;
 		border-color: #e5e5e5;
-		border-top-right-radius: 3px;
-		border-bottom-right-radius: 3px;
+		border-top-right-radius: 6rpx;
+		border-bottom-right-radius: 6rpx;
 		background-color: #f8f8f8;
 		border-left-width: 0;
 	}

@@ -1,29 +1,31 @@
 import Vue from 'vue'
+import jquery from 'jquery'
+Vue.prototype.$jquery = jquery
+import store from '@/common/store'
+Vue.prototype.$store = store
 import App from './App'
 
-import pageHead from './components/page-head.vue'
-import pageFoot from './components/page-foot.vue'
-import uLink from '@/components/uLink.vue'
-import store from './store'
+import Tool from '@/common/tool'
+Vue.prototype.$tool = Tool
 
-Vue.config.productionTip = false
+import Conf from '@/common/conf'
+Vue.prototype.$conf = Conf
 
-Vue.prototype.$store = store
-Vue.prototype.$backgroundAudioData = {
-	playing: false,
-	playTime: 0,
-	formatedPlayTime: '00:00:00'
-}
-Vue.prototype.$adpid = "1111111111"
+Vue.config.productionTip = Conf.productionTip
+
+import Http from '@/common/http'
+Vue.prototype.$http = Http
+
+import Auth from '@/common/auth'
+Vue.prototype.$auth = Auth
+
+import pageHead from '@/pages/layouts/page-head.vue'
 
 Vue.component('page-head', pageHead)
-Vue.component('page-foot', pageFoot)
-Vue.component('uLink', uLink)
 
 App.mpType = 'app'
 
 const app = new Vue({
-	store,
-	...App
+    ...App
 })
 app.$mount()

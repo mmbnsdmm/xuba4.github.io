@@ -155,11 +155,11 @@
 
 <style scoped>
 	.uni-list-item {
-		font-size: 16;
+		font-size: 32rpx;
 		position: relative;
 		flex-direction: column;
 		justify-content: space-between;
-		padding-left: 15px;
+		padding-left: 30rpx;
 	}
 
 	.uni-list-item--disabled {
@@ -176,7 +176,7 @@
 		display: flex;
 		/* #endif */
 		flex-direction: row;
-		padding: 12px 15px;
+		padding: 24rpx 30rpx;
 		padding-left: 0;
 		flex: 1;
 		position: relative;
@@ -228,7 +228,7 @@
 	}
 
 	.uni-list-item__content-title {
-		font-size: 14px;
+		font-size: 28rpx;
 		color: #3b4144;
 		overflow: hidden;
 	}
@@ -236,7 +236,7 @@
 	.uni-list-item__content-note {
 		margin-top: 6rpx;
 		color: #999;
-		font-size: 12px;
+		font-size: 24rpx;
 		overflow: hidden;
 	}
 
@@ -259,12 +259,12 @@
 	}
 
 	.uni-list-item__icon-img {
-		height: 26px;
-		width: 26px;
+		height: 52rpx;
+		width: 52rpx;
 	}
 
 	.uni-list-item__extra-text {
 		color: #999;
-		font-size: 12px;
+		font-size: 24rpx;
 	}
 </style>

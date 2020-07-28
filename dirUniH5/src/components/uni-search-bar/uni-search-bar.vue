@@ -143,7 +143,7 @@
 		/* #endif */
 		flex-direction: row;
 		position: relative;
-		padding: 8px;
+		padding: 16rpx;
 		background-color: #ffffff;
 	}
 
@@ -178,7 +178,7 @@
 
 	.uni-searchbar__box-search-input {
 		flex: 1;
-		font-size: 14px;
+		font-size: 28rpx;
 		color: #333;
 	}
 
@@ -189,7 +189,7 @@
 	}
 
 	.uni-searchbar__text-placeholder {
-		font-size: 14px;
+		font-size: 28rpx;
 		color: #808080;
 		margin-left: 5px;
 	}

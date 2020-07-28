@@ -115,13 +115,12 @@
 	}
 
 	.uni-section__content {
-		flex-direction: column;
 		flex: 1;
 		color: #333;
 	}
 
 	.uni-section__content-title {
-		font-size: 14px;
+		font-size: 28rpx;
 		color: #333;
 	}
 
@@ -131,7 +130,7 @@
 	}
 
 	.uni-section__content-sub {
-		font-size: 12px;
+		font-size: 24rpx;
 		color: #999;
 	}
 </style>

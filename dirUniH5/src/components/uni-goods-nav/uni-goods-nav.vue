@@ -11,14 +11,13 @@
 					</view>
 					<text class="uni-tab__text">{{ item.text }}</text>
 					<view class="flex uni-tab__dot-box">
-						<text v-if="item.info" :class="{ 'uni-tab__dots': item.info > 9 }" class="uni-tab__dot " :style="{'backgroundColor':item.infoBackgroundColor?item.infoBackgroundColor:'#ff0000',
-						color:item.infoColor?item.infoColor:'#fff'
-						}">{{ item.info }}</text>
+						<text v-if="item.info" :class="{ 'uni-tab__dots': item.info > 9 }" class="uni-tab__dot ">{{ item.info }}</text>
 					</view>
 				</view>
 			</view>
 			<view :class="{'uni-tab__right':fill}" class="flex uni-tab__cart-sub-right ">
-				<view v-for="(item,index) in buttonGroup" :key="index" :style="{backgroundColor:item.backgroundColor,color:item.color}" class="flex uni-tab__cart-button-right" @click="buttonClick(index,item)"><text :style="{color:item.color}" class="uni-tab__cart-button-right-text">{{ item.text }}</text></view>
+				<view v-for="(item,index) in buttonGroup" :key="index" :style="{backgroundColor:item.backgroundColor,color:item.color}" class="flex uni-tab__cart-button-right" @click="buttonClick(index,item)"><text class="uni-tab__cart-button-right-text">{{ item.text }}</text></view>
+				<!-- <view class="flex uni-tab__cart-button-right uni-tab__color-y ">立即购买</view> -->
 			</view>
 		</view>
 	</view>
@@ -48,7 +47,7 @@
 				default () {
 					return [{
 						icon: 'shop',
-						text: '店铺',
+						text: '店铺'
 					}, {
 						icon: 'cart',
 						text: '购物车'
@@ -160,7 +159,7 @@
 
 	.uni-tab__text {
 		margin-top: 3px;
-		font-size: 12px;
+		font-size: 24rpx;
 		color: #646566;
 	}
 
@@ -175,7 +174,7 @@
 	}
 
 	.uni-tab__cart-button-right-text {
-		font-size: 14px;
+		font-size: 28rpx;
 		color: #fff;
 	}
 
