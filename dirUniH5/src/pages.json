@@ -1,22 +1,50 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/index/index",
+			"path": "pages/site/index",
 			"style": {
 				"navigationBarTitleText": "uni-app"
 			}
 		},
         {
+        	"path": "pages/site/testui",
+        	"style": {
+        		"navigationBarTitleText": "test-ui"
+        	}
+        },
+        {
         	"path": "pages/index/testui",
         	"style": {
-        		"navigationBarTitleText": "testui"
+        		"navigationBarTitleText": "test-ui"
         	}
         }
 	],
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
-	}
+        "pageOrientation": "portrait",
+        "navigationBarTextStyle": "white",
+        "navigationBarBackgroundColor": "#007AFF",
+        "backgroundColor": "#F8F8F8",
+        "backgroundColorTop": "#F4F5F6",
+        "backgroundColorBottom": "#F4F5F6",
+		"navigationBarTitleText": "Hello uniapp title text"
+	},
+    "tabBar": {
+    	"color": "#C0C4CC",
+    	"selectedColor": "#fa436a",
+    	"borderStyle": "black",
+    	"backgroundColor": "#ffffff",
+    	"list": [{
+    			"pagePath": "pages/site/index",
+    			"iconPath": "static/logo.png",
+    			"selectedIconPath": "static/logo.png",
+    			"text": "首页"
+    		},
+    		{
+    			"pagePath": "pages/index/testui",
+    			"iconPath": "static/logo.png",
+    			"selectedIconPath": "static/logo.png",
+    			"text": "分类"
+    		}
+    	]
+    }
 }

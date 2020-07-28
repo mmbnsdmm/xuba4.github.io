@@ -1,7 +1,19 @@
 import Vue from 'vue'
+import App from './App'
+
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.min'
+
+import Vant from 'vant'
+import 'vant/lib/index.less'
+Vue.use(Vant)
+
+import "colorui/colorui/main.css";
+import "colorui/colorui/icon.css";
+import "colorui/colorui/animation.css";
+
 import store from '@/common/store'
 Vue.prototype.$store = store
-import App from './App'
 
 import Tool from '@/common/tool'
 Vue.prototype.$tool = Tool
@@ -18,7 +30,6 @@ import Auth from '@/common/auth'
 Vue.prototype.$auth = Auth
 
 import pageHead from '@/pages/layouts/page-head.vue'
-
 Vue.component('page-head', pageHead)
 
 App.mpType = 'app'

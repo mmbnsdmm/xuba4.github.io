@@ -1,16 +1,12 @@
 <template>
 	<view class="content">
-        <page-head :title="title"></page-head>
 		<image class="logo" src="/static/logo.png"></image>
 		<view class="text-area">
 			<text class="title">{{title}}</text>
-            <navigator url="testui">
-                <button type="default">testui</button>
-            </navigator>
-            <navigator url="testui">
-                <button type="default">testui1</button>
-            </navigator>
 		</view>
+        <navigator url="testui">
+            <button class="btn btn-primary">testui</button>
+        </navigator>
 	</view>
 </template>
 
