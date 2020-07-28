@@ -33,7 +33,8 @@
     	"selectedColor": "#fa436a",
     	"borderStyle": "black",
     	"backgroundColor": "#ffffff",
-    	"list": [{
+    	"list": [
+            {
     			"pagePath": "pages/site/index",
     			"iconPath": "static/logo.png",
     			"selectedIconPath": "static/logo.png",
@@ -43,7 +44,7 @@
     			"pagePath": "pages/index/testui",
     			"iconPath": "static/logo.png",
     			"selectedIconPath": "static/logo.png",
-    			"text": "分类"
+    			"text": "个人中心"
     		}
     	]
     }
