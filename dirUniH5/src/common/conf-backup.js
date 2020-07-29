@@ -1,4 +1,5 @@
 import Tool from '@/common/tool'
+import { Toast } from 'vant'
 
 let conf = {
     apiUrl: null,
@@ -17,19 +18,20 @@ let conf = {
         enums: {}
     },
     unConnected: function(){
-        Tool.delCache('API_URL')
+        Tool.delCache('API_URL');
+        Tool.setCache('API_URL', conf.apiUrl, 86400 * 3)
     }
-}
+};
 
 // conf.unConnected()
-conf.apiUrl = Tool.getCache('API_URL')
+conf.apiUrl = Tool.getCache('API_URL');
 if(!conf.apiUrl){
     $.ajax({
         url:conf.mapApiUrl,
         async: false,
         datatype: "json",
         success: function(msg){
-            conf.apiUrl = msg.apiUrl
+            conf.apiUrl = msg.apiUrl;
             Tool.setCache('API_URL', conf.apiUrl, 86400 * 3)
         },
         error: function(){
@@ -59,8 +61,8 @@ $.ajax({
         conf.serverData.enums = msg.data.enums
     },
     error: function(){
-        conf.serverData = {}
+        conf.serverData = {};
         conf.unConnected()
     }
-})
+});
 export default conf
