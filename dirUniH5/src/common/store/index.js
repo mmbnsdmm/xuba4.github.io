@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 const store = new Vuex.Store({
 	state: {
 		hasLogin: false,
-		userInfo: {},
+		userInfo: {}
 	},
 	mutations: {
 		login(state, provider) {
@@ -15,7 +15,7 @@ const store = new Vuex.Store({
 			uni.setStorage({//缓存用户登陆状态
 			    key: 'userInfo',  
 			    data: provider  
-			}) 
+			});
 			console.log(state.userInfo);
 		},
 		logout(state) {
@@ -29,6 +29,6 @@ const store = new Vuex.Store({
 	actions: {
 	
 	}
-})
+});
 
 export default store

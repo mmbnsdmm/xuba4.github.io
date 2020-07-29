@@ -2,18 +2,48 @@
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
 			"path": "pages/site/index",
+			"name":"t0",
+			"meta":{
+				"title": "首页"
+			},
+			"authType": "*",
+			"data": {},
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "首页"
 			}
 		},
         {
         	"path": "pages/site/testui",
+			"name":"t1",
+			"meta":{
+				"title": "t1"
+			},
+			"authType": "*",
+			"data": {},
         	"style": {
         		"navigationBarTitleText": "test-ui"
         	}
         },
+		{
+			"path": "pages/user/Center",
+			"name":"t2",
+			"meta":{
+				"title": "t2"
+			},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "个人中心"
+			}
+		},
         {
         	"path": "pages/site/Login",
+			"name":"t3",
+			"meta":{
+				"title": "t3"
+			},
+			"authType": "?",
+			"data": {},
         	"style": {
         		"navigationBarTitleText": "登陆"
         	}
@@ -41,7 +71,7 @@
     			"text": "首页"
     		},
     		{
-    			"pagePath": "pages/index/testui",
+    			"pagePath": "pages/user/Center",
     			"iconPath": "static/logo.png",
     			"selectedIconPath": "static/logo.png",
     			"text": "个人中心"

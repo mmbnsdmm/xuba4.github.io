@@ -28,6 +28,14 @@ let auth = {
         formParams = this.generateFormParams(formParams);
         return Http.syncPost(uri, formParams, isAsync);
     },
+    navTo(url){
+        if(!this.hasLogin){
+            url = '/pages/public/login';
+        }
+        uni.navigateTo({
+            url
+        })
+    },
     updateUser: function () {
         Store.dispatch('updateUser', this.generateFormData({}));
     }

@@ -9,35 +9,49 @@ import 'bootstrap/dist/js/bootstrap.min'
 
 import Vant from 'vant'
 import 'vant/lib/index.less'
-Vue.use(Vant)
+Vue.use(Vant);
 
-import "colorui/colorui/main.css";
-import "colorui/colorui/icon.css";
-import "colorui/colorui/animation.css";
+import "colorui/colorui/main.css"
+import "colorui/colorui/icon.css"
+import "colorui/colorui/animation.css"
 
 import store from '@/common/store'
-Vue.prototype.$store = store
+Vue.prototype.$store = store;
+
+import router from '@/common/router'
+import { RouterMount } from 'uni-simple-router'
 
 import Tool from '@/common/tool'
-Vue.prototype.$tool = Tool
+Vue.prototype.$tool = Tool;
 
 import Conf from '@/common/conf'
-Vue.prototype.$conf = Conf
+Vue.prototype.$conf = Conf;
 
-Vue.config.productionTip = Conf.productionTip
+Vue.config.productionTip = Conf.productionTip;
 
 import Http from '@/common/http'
-Vue.prototype.$http = Http
+Vue.prototype.$http = Http;
 
 import Auth from '@/common/auth'
-Vue.prototype.$auth = Auth
+Vue.prototype.$auth = Auth;
 
 import pageHead from '@/pages/layouts/page-head.vue'
-Vue.component('page-head', pageHead)
+Vue.component('page-head', pageHead);
 
-App.mpType = 'app'
+App.mpType = 'app';
 
 const app = new Vue({
+    store,
+    // render: function (h) {
+    //     return h(App)
+    // },
     ...App
-})
-app.$mount()
+});
+
+// #ifdef H5
+RouterMount(app, '#app');
+// #endif
+
+// #ifndef H5
+app.$mount("#app");
+// #endif

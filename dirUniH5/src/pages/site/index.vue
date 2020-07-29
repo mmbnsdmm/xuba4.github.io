@@ -14,7 +14,9 @@
     			title: 'Hello'
     		}
     	},
-    	onLoad() {},
+    	onLoad() {
+    	    console.log(123)
+        },
     	methods: {}
     }
 </script>

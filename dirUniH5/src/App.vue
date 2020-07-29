@@ -1,10 +1,14 @@
 <script>
 	export default {
 		onLaunch: function() {
-			// console.log('App Launch')
+			console.log('App Launch');
+            // let x = ROUTES;
+            // x.forEach(function (v) {
+            //     console.log(v.path);
+            // })
 		},
 		onShow: function() {
-			// console.log('App Show')
+			console.log('App Show')
 		},
 		onHide: function() {
 			// console.log('App Hide')
