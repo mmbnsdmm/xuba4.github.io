@@ -1,6 +1,5 @@
 import Tool from '@/common/tool'
 import { Toast } from 'vant'
-
 let conf = {
     apiUrl: null,
     mapApiUrl: "http://inityii.tc/api/public/get-api-url",
@@ -22,7 +21,6 @@ let conf = {
         Toast('服务器连接失败');
     }
 };
-
 // conf.unConnected()
 conf.apiUrl = Tool.getCache('API_URL');
 if(!conf.apiUrl){
