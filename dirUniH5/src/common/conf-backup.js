@@ -19,7 +19,7 @@ let conf = {
     },
     unConnected: function(){
         Tool.delCache('API_URL');
-        Tool.setCache('API_URL', conf.apiUrl, 86400 * 3)
+        Toast('服务器连接失败');
     }
 };
 
