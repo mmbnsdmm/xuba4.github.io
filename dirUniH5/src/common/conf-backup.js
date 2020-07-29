@@ -1,6 +1,5 @@
 import Tool from '@/common/tool'
 import { Toast } from 'vant'
-
 let conf = {
     apiUrl: null,
     mapApiUrl: "http://inityii.tc/api/public/get-api-url",
