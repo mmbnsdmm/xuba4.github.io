@@ -21,7 +21,6 @@ let conf = {
         Tool.setCache('API_URL', conf.apiUrl, 86400 * 3)
     }
 };
-
 // conf.unConnected()
 conf.apiUrl = Tool.getCache('API_URL');
 if(!conf.apiUrl){
