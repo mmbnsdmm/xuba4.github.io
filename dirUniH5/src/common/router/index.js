@@ -4,6 +4,10 @@ import Vue from 'vue'
 import Router from 'uni-simple-router'
 Vue.use(Router);
 
+import Tool from '../tool'
+
+import Store from '../store'
+
 //初始化
 const router = new Router({
     // routes: [...modules]//路由表
@@ -12,10 +16,16 @@ const router = new Router({
 
 //全局路由前置守卫
 router.beforeEach((to, from, next) => {
-    if (to.authType == "@"){
-        next('/pages/site/Login')
+    if (Store.getters.hasLogin){
+        if (to.authType === "?"){
+            next('/')
+        }
+    } else{
+        if (to.authType === "@"){
+            Tool.setCache('beforeLoginPath', to.path);
+            next('/pages/site/Login')
+        }
     }
-    console.log(to.authType);
     next()
 });
 

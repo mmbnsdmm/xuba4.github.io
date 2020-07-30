@@ -26,7 +26,7 @@ let auth = {
     },
     authPost: function(uri, formParams = {}, isAsync = true) {
         formParams = this.generateFormParams(formParams);
-        return Http.syncPost(uri, formParams, isAsync);
+        return Http.post(uri, formParams, isAsync);
     },
     navTo(url){
         if(!this.hasLogin){

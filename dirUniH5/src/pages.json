@@ -3,9 +3,7 @@
 		{
 			"path": "pages/site/index",
 			"name":"t0",
-			"meta":{
-				"title": "首页"
-			},
+			"meta":{},
 			"authType": "*",
 			"data": {},
 			"style": {
@@ -15,9 +13,7 @@
         {
         	"path": "pages/site/testui",
 			"name":"t1",
-			"meta":{
-				"title": "t1"
-			},
+			"meta":{},
 			"authType": "*",
 			"data": {},
         	"style": {
@@ -25,11 +21,9 @@
         	}
         },
 		{
-			"path": "pages/user/Center",
+			"path": "pages/user/center/Index",
 			"name":"t2",
-			"meta":{
-				"title": "t2"
-			},
+			"meta":{},
 			"authType": "@",
 			"data": {},
 			"style": {
@@ -39,9 +33,7 @@
         {
         	"path": "pages/site/Login",
 			"name":"t3",
-			"meta":{
-				"title": "t3"
-			},
+			"meta":{},
 			"authType": "?",
 			"data": {},
         	"style": {
@@ -71,7 +63,7 @@
     			"text": "首页"
     		},
     		{
-    			"pagePath": "pages/user/Center",
+    			"pagePath": "pages/user/center/Index",
     			"iconPath": "static/logo.png",
     			"selectedIconPath": "static/logo.png",
     			"text": "个人中心"

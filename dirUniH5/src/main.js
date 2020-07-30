@@ -15,17 +15,17 @@ import "colorui/colorui/main.css"
 import "colorui/colorui/icon.css"
 import "colorui/colorui/animation.css"
 
-import store from '@/common/store'
-Vue.prototype.$store = store;
-
-import router from '@/common/router'
-import { RouterMount } from 'uni-simple-router'
-
 import Tool from '@/common/tool'
 Vue.prototype.$tool = Tool;
 
 import Conf from '@/common/conf'
 Vue.prototype.$conf = Conf;
+
+import store from '@/common/store'
+Vue.prototype.$store = store;
+
+import router from '@/common/router'
+import { RouterMount } from 'uni-simple-router'
 
 Vue.config.productionTip = Conf.productionTip;
 
@@ -42,9 +42,6 @@ App.mpType = 'app';
 
 const app = new Vue({
     store,
-    // render: function (h) {
-    //     return h(App)
-    // },
     ...App
 });
 

@@ -1,8 +1,8 @@
 import Conf from '../conf.js'
 let http = {
-    syncPost: function(uri = null, formParams = {}, isAsync = true){
-        let url = Conf.apiUrl + uri
-        let res = {}
+    post: function(uri = null, formParams = {}, isAsync = true, successBack, errorBack){
+        let url = Conf.apiUrl + uri;
+        let res = {};
         $.ajax({
             url: url,
             data: formParams,
@@ -10,15 +10,23 @@ let http = {
             async: isAsync,
             datatype: Conf.ajax.dataType,
             success: function(data){
-                if(data.code !== Conf.ajax.normalCode){}else{
-                    let _data = data.data
-                    if(_data.status !== Conf.ajax.successStatus){}else{
-                        res = _data
+                if(data.code !== Conf.ajax.normalCode){
+                    errorBack()
+                }else{
+                    let _data = data.data;
+                    if(_data.status !== Conf.ajax.successStatus){
+                        errorBack()
+                    }else{
+                        res = _data;
+                        successBack(res)
                     }
                 }
+            },
+            error: function () {
+                errorBack()
             }
-        })
+        });
         return res
     }
-}
+};
 export default http

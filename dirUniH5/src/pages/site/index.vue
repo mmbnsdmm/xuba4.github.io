@@ -9,13 +9,14 @@
 
 <script>
     export default {
+        name : "SiteHome",
     	data() {
     		return {
     			title: 'Hello'
     		}
     	},
     	onLoad() {
-    	    console.log(123)
+    	    // console.log(123)
         },
     	methods: {}
     }

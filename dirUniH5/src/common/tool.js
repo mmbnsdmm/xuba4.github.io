@@ -32,7 +32,7 @@ let tool = {
     },
     getStorage: function (key) {
         // let value = localStorage.getItem(key);
-        let value = uni.getStorageSync(key)
+        let value = uni.getStorageSync(key);
         if (value){
             value = JSON.parse(value);
         }
@@ -82,5 +82,5 @@ let tool = {
         this.setCache("clone", v);
         return this.getCache("clone");
     }
-}
+};
 export default tool
