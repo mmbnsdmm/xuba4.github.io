@@ -1,5 +1,7 @@
 <?php
 define("YII_BT_TIME", time());
+define("YII_BT_DATE", date("Y-m-d", YII_BT_TIME));
+define("YII_BT_DATETIME", date("Y-m-d H:i:s", YII_BT_TIME));
 define("YII_BT_MTIME", microtime(true));
 define("YII_PROJECT_ROOT", dirname(dirname(__DIR__))); // 根目录
 
