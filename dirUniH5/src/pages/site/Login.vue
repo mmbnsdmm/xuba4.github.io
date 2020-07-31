@@ -33,10 +33,14 @@
                 // _this.isLoginBtnDisabled = true;
                 _this.$http.post("/site/login", {username: username, password: password}, true, function (res) {
                     _this.login(res.user);
-                    if (_this.$tool.getCache('beforeLoginPath')){
-                        _this.$router.push(_this.$tool.getCache('beforeLoginPath'));
-                    } else{
-                        _this.$router.go(-1);
+                    if (!_this.$store.getters.hasLogin){
+                        Toast("登陆失败，请联系管理员")
+                    } else {
+                        if (_this.$tool.getCache('beforeLoginPath')){
+                            _this.$router.push(_this.$tool.getCache('beforeLoginPath'));
+                        } else{
+                            _this.$router.go(-1);
+                        }
                     }
                 }, function () {
                     Toast("用户名或密码错误")

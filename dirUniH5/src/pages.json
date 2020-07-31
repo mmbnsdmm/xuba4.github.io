@@ -1,8 +1,8 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	"pages": [
 		{
-			"path": "pages/site/index",
-			"name":"t0",
+			"path": "pages/site/Home",
+			"name":"首页",
 			"meta":{},
 			"authType": "*",
 			"data": {},
@@ -11,18 +11,18 @@
 			}
 		},
         {
-        	"path": "pages/site/testui",
-			"name":"t1",
+        	"path": "pages/site/About",
+			"name":"关于",
 			"meta":{},
 			"authType": "*",
 			"data": {},
         	"style": {
-        		"navigationBarTitleText": "test-ui"
+        		"navigationBarTitleText": "关于"
         	}
         },
 		{
 			"path": "pages/user/center/Index",
-			"name":"t2",
+			"name":"个人中心",
 			"meta":{},
 			"authType": "@",
 			"data": {},
@@ -30,9 +30,19 @@
 				"navigationBarTitleText": "个人中心"
 			}
 		},
+		{
+			"path": "pages/user/profile/Index",
+			"name":"用户信息",
+			"meta":{},
+			"authType": "*",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "用户信息"
+			}
+		},
         {
         	"path": "pages/site/Login",
-			"name":"t3",
+			"name":"登陆",
 			"meta":{},
 			"authType": "?",
 			"data": {},
@@ -57,7 +67,7 @@
     	"backgroundColor": "#ffffff",
     	"list": [
             {
-    			"pagePath": "pages/site/index",
+    			"pagePath": "pages/site/Home",
     			"iconPath": "static/logo.png",
     			"selectedIconPath": "static/logo.png",
     			"text": "首页"
