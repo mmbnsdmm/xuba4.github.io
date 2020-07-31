@@ -1,16 +1,30 @@
 <template>
     <div class="login-by-email">
-        <van-panel title="" desc="邮箱登录" status="">
-            <van-cell-group>
-                <van-field v-model="email" v-verify.sendLoginEmailCode="email" v-verify.login="email" :error-message="emailErrMsg" required type="email" placeholder="请输入邮箱">
-                    <van-button slot="button" size="small" type="primary" @click="sendLoginCode" :disabled="isBtnSendLoginEmaildisabled">发送验证码{{countDownSendLogin}}</van-button>
-                </van-field>
-                <van-field v-model="code" v-verify.login="code" :error-message="codeErrMsg" required placeholder="邮箱验证码" />
-            </van-cell-group>
-            <div slot="footer">
-                <van-button size="large" type="info" @click="loginByEmail" :disabled="isLoginBtnDisabled">登录</van-button>
+        <div class="container">
+            <div class="col-row">
+                <div class="col-xs-12">
+                    <h4>邮箱登录</h4>
+                    <div class="form-group">
+                        <label>邮箱</label>
+                        <input type="email" class="form-control" v-model="email" placeholder="请输入邮箱" required>
+                    </div>
+                    <div class="help-block">
+                        <navigator url="/pages/site/Login" class="float-left">
+                            <text class="text-blue">用户名登陆</text>
+                        </navigator>
+                        <text :decode="false" class="float-left">&nbsp; | &nbsp;</text>
+                        <navigator url="/pages/site/About" class="float-left">
+                            <text class="text-blue">注册</text>
+                        </navigator>
+                        <navigator url="/pages/site/About" class="float-right">
+                            <text class="text-blue">忘记密码</text>
+                        </navigator>
+                        <div class="clearfix"></div>
+                    </div>
+                    <button class="btn btn-primary btn-block" @click="toLogin" v-preventReClick>登录</button>
+                </div>
             </div>
-        </van-panel>
+        </div>
     </div>
 </template>
 

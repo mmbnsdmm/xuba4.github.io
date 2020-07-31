@@ -1,4 +1,7 @@
 {
+	"easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+	},
 	"pages": [
 		{
 			"path": "pages/site/Home",
@@ -31,6 +34,16 @@
 			}
 		},
 		{
+			"path": "pages/user/center/UpdatePassword",
+			"name":"修改密码",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "修改密码"
+			}
+		},
+		{
 			"path": "pages/user/profile/Index",
 			"name":"用户信息",
 			"meta":{},
@@ -49,7 +62,37 @@
         	"style": {
         		"navigationBarTitleText": "登录"
         	}
-        }
+        },
+		{
+			"path": "pages/site/LoginByEmail",
+			"name":"邮箱登录",
+			"meta":{},
+			"authType": "?",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "邮箱登录"
+			}
+		},
+		{
+			"path": "pages/site/ResetPassword",
+			"name":"重置密码",
+			"meta":{},
+			"authType": "?",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "重置密码"
+			}
+		},
+		{
+			"path": "pages/site/Signup",
+			"name":"注册",
+			"meta":{},
+			"authType": "?",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
+		}
 	],
 	"globalStyle": {
         "pageOrientation": "portrait",

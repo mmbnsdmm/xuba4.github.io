@@ -6,13 +6,25 @@
                     <h4>用户登录</h4>
                     <div class="form-group">
                         <label>用户名</label>
-                        <input type="email" class="form-control" v-model="username" placeholder="请输入用户名" required>
+                        <input type="text" class="form-control" v-model="username" placeholder="请输入用户名" required>
                     </div>
                     <div class="form-group">
                         <label>密码</label>
                         <input type="password" class="form-control" v-model="password" placeholder="请输入密码">
                     </div>
-                    <p class="help-block">Example block-level help text here.</p>
+                    <div class="help-block">
+                        <navigator url="/pages/site/LoginByEmail" class="float-left">
+                            <text class="text-blue">邮箱登陆</text>
+                        </navigator>
+                        <text :decode="false" class="float-left">&nbsp; | &nbsp;</text>
+                        <navigator url="/pages/site/About" class="float-left">
+                            <text class="text-blue">注册</text>
+                        </navigator>
+                        <navigator url="/pages/site/About" class="float-right">
+                            <text class="text-blue">忘记密码</text>
+                        </navigator>
+                        <div class="clearfix"></div>
+                    </div>
                     <button class="btn btn-primary btn-block" @click="toLogin" v-preventReClick>登录</button>
                 </div>
             </div>
@@ -38,6 +50,10 @@
                 let _this = this;
                 let username = _this.username;
                 let password = _this.password;
+                if (username.length <=6 ){
+                    Toast("用户名至少6位");
+                    return;
+                }
                 _this.isLoginBtnDisabled = true;
                 _this.$http.post("/site/login", {username: username, password: password}, true, function (res) {
                     _this.login(res.user);

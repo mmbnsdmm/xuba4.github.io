@@ -14,6 +14,9 @@ import "colorui/colorui/main.css"
 import "colorui/colorui/icon.css"
 import "colorui/colorui/animation.css"
 
+import uView from "uview-ui";
+Vue.use(uView);
+
 //防多次点击，重复提交
 import preventReClick from '@/common/preventReClick'
 

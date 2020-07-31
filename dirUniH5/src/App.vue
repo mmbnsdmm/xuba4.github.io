@@ -12,7 +12,7 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
 	/*每个页面公共css */
     /* 解决头条小程序组件内引入字体不生效的问题 */
     /* #ifdef MP-TOUTIAO */
@@ -21,6 +21,7 @@
     	src: url('/static/uni.ttf');
     }
     /* #endif */
+    @import "uview-ui/index.scss";
     uni-page-wrapper {
         background: #ffffff;
     }
