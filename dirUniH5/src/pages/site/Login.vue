@@ -3,28 +3,17 @@
         <div class="container">
             <div class="col-row">
                 <div class="col-xs-12">
-                    <form>
-                        <h4>用户登录</h4>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Email address</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputFile">File input</label>
-                            <input type="file" id="exampleInputFile">
-                            <p class="help-block">Example block-level help text here.</p>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox"> Check me out
-                            </label>
-                        </div>
-                        <button type="submit" class="btn btn-default">Submit</button>
-                    </form>
+                    <h4>用户登录</h4>
+                    <div class="form-group">
+                        <label>用户名</label>
+                        <input type="email" class="form-control" v-model="username" placeholder="请输入用户名" required>
+                    </div>
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="password" class="form-control" v-model="password" placeholder="请输入密码">
+                    </div>
+                    <p class="help-block">Example block-level help text here.</p>
+                    <button class="btn btn-primary btn-block" @click="toLogin" v-preventReClick>登录</button>
                 </div>
             </div>
         </div>
@@ -33,7 +22,7 @@
 
 <script>
     import {Toast} from 'vant'
-    import { mapState, mapMutations } from 'vuex'
+    import {mapState, mapMutations} from 'vuex'
     export default {
         name: "SiteLogin",
         data(){
@@ -49,11 +38,12 @@
                 let _this = this;
                 let username = _this.username;
                 let password = _this.password;
-                // _this.isLoginBtnDisabled = true;
+                _this.isLoginBtnDisabled = true;
                 _this.$http.post("/site/login", {username: username, password: password}, true, function (res) {
                     _this.login(res.user);
                     if (!_this.hasLogin){
-                        Toast("登陆失败，请联系管理员")
+                        Toast("登陆失败，请联系管理员");
+                        _this.isLoginBtnDisabled = false;
                     } else {
                         if (_this.$tool.getCache('beforeLoginPath')){
                             _this.$router.push(_this.$tool.getCache('beforeLoginPath'));
@@ -62,7 +52,8 @@
                         }
                     }
                 }, function () {
-                    Toast("用户名或密码错误")
+                    Toast("用户名或密码错误");
+                    _this.isLoginBtnDisabled = false;
                 });
             }
         },
