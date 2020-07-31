@@ -1,6 +1,9 @@
 <template>
-    <div class="about">
-        <h2 class="block-title">UserCenterIndex</h2>
+    <div class="user-center-index">
+        <div class="container">
+            123
+        </div>
+
         <van-cell-group>
             <van-cell title="退出登录" class="cell-logout" @click="toLogout"/>
         </van-cell-group>
@@ -24,7 +27,7 @@
                     message: '你确认要退出登录吗？'
                 }).then(() => {
                     _this.logout();
-                    if (_this.$store.getters.hasLogin){
+                    if (_this.hasLogin){
                         Toast("退出失败，请联系管理员")
                     }else{
                         this.$router.push('/')
@@ -34,10 +37,13 @@
         },
         computed: {
             ...mapState(['hasLogin'])
+        },
+        mounted: function () {
+            
         }
     }
 </script>
 
-<style scoped>
+<style>
 
 </style>

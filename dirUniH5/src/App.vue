@@ -21,7 +21,7 @@
     	src: url('/static/uni.ttf');
     }
     /* #endif */
-    /* uni-page-wrapper {
+    uni-page-wrapper {
         background: #ffffff;
-    } */
+    }
 </style>

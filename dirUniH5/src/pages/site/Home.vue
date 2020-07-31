@@ -11,7 +11,14 @@
 <script>
     export default {
         name: 'SiteHome',
-        mounted: function() {},
+        mounted: function() {
+            let _this = this;
+            _this.$_.forEach({a: "test", b: 123}, function (v, k) {
+                console.log(v)
+            });
+            let x = _this.$moment().format('LLL');
+            console.log(x)
+        },
         data() {
             return {};
         }

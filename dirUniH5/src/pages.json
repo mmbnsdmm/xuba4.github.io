@@ -42,12 +42,12 @@
 		},
         {
         	"path": "pages/site/Login",
-			"name":"登陆",
+			"name":"登录",
 			"meta":{},
 			"authType": "?",
 			"data": {},
         	"style": {
-        		"navigationBarTitleText": "登陆"
+        		"navigationBarTitleText": "登录"
         	}
         }
 	],

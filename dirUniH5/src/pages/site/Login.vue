@@ -1,14 +1,33 @@
 <template>
-    <div class="login">
-        <van-panel title="" desc="用户登录" status="">
-            <van-cell-group>
-                <van-field v-model="username" required placeholder="请输入用户名" />
-                <van-field v-model="password" required type="password" placeholder="请输入密码" />
-            </van-cell-group>
-            <div slot="footer">
-                <van-button size="large" type="info" @click="toLogin" :disabled="isLoginBtnDisabled">登录</van-button>
+    <div class="site-login">
+        <div class="container">
+            <div class="col-row">
+                <div class="col-xs-12">
+                    <form>
+                        <h4>用户登录</h4>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Email address</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Password</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputFile">File input</label>
+                            <input type="file" id="exampleInputFile">
+                            <p class="help-block">Example block-level help text here.</p>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"> Check me out
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                </div>
             </div>
-        </van-panel>
+        </div>
     </div>
 </template>
 
@@ -33,7 +52,7 @@
                 // _this.isLoginBtnDisabled = true;
                 _this.$http.post("/site/login", {username: username, password: password}, true, function (res) {
                     _this.login(res.user);
-                    if (!_this.$store.getters.hasLogin){
+                    if (!_this.hasLogin){
                         Toast("登陆失败，请联系管理员")
                     } else {
                         if (_this.$tool.getCache('beforeLoginPath')){
@@ -57,6 +76,8 @@
     }
 </script>
 
-<style lang="stylus">
-
+<style>
+     uni-page-wrapper {
+        background: #ffffff;
+     }
 </style>

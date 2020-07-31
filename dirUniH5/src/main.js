@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 
-//防多次点击，重复提交
-import preventReClick from '@/common/preventReClick'
+import 'tailwindcss/tailwind.css'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min'
@@ -14,6 +13,16 @@ Vue.use(Vant);
 import "colorui/colorui/main.css"
 import "colorui/colorui/icon.css"
 import "colorui/colorui/animation.css"
+
+//防多次点击，重复提交
+import preventReClick from '@/common/preventReClick'
+
+import Lodash from 'lodash'
+Vue.prototype.$_ = Lodash;
+
+import Moment from 'moment'
+import 'moment/locale/zh-cn'
+Vue.prototype.$moment = Moment;
 
 import Tool from '@/common/tool'
 Vue.prototype.$tool = Tool;
