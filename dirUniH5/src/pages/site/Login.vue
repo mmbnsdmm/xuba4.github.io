@@ -84,7 +84,4 @@
 </script>
 
 <style>
-     uni-page-wrapper {
-        background: #ffffff;
-     }
 </style>
