@@ -23,6 +23,8 @@
                         <navigator url="/pages/site/About" class="float-right">
                             <text class="text-blue">忘记密码</text>
                         </navigator>
+                        <text :decode="false" class="float-right">&nbsp; | &nbsp;</text>
+                        <text class="text-blue float-right" @click="$router.push('/')">首页</text>
                         <div class="clearfix"></div>
                     </div>
                     <button class="btn btn-primary btn-block" @click="toLogin" v-preventReClick>登录</button>
@@ -79,6 +81,7 @@
         mounted: function () {
             let _this = this;
             console.log(_this.$router.beforeHooks.from);
+            console.log(ROUTES)
         }
     }
 </script>

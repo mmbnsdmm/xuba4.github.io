@@ -8,6 +8,16 @@
                         <label>邮箱</label>
                         <input type="email" class="form-control" v-model="email" placeholder="请输入邮箱" required>
                     </div>
+                    <div class="row">
+                        <div class="col-xs-7">
+                            <div class="form-group">
+                                <input type="text" class="form-control" v-model="emailVerifyCode" placeholder="请输入验证码" required>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <button class="btn btn-warning btn-block" @click="sendVerifyCode" v-preventReClick>发送验证码</button>
+                        </div>
+                    </div>
                     <div class="help-block">
                         <navigator url="/pages/site/Login" class="float-left">
                             <text class="text-blue">用户名登陆</text>
@@ -19,6 +29,8 @@
                         <navigator url="/pages/site/About" class="float-right">
                             <text class="text-blue">忘记密码</text>
                         </navigator>
+                        <text :decode="false" class="float-right">&nbsp; | &nbsp;</text>
+                        <text class="text-blue float-right" @click="$router.push('/')">首页</text>
                         <div class="clearfix"></div>
                     </div>
                     <button class="btn btn-primary btn-block" @click="toLogin" v-preventReClick>登录</button>
@@ -35,20 +47,21 @@
         name: "LoginByEmail",
         data(){
             return {
-                countDownSendLogin: "",
-                isBtnSendLoginEmaildisabled: false,
                 email : "",
+                emailVerifyCode : "",
+                countDownSendLogin: "",
+                isBtnSendVerifyCodedisabled: false,
                 emailErrMsg : "",
-                code : "",
                 codeErrMsg : "",
                 isLoginBtnDisabled: false
             }
         },
-        verify: {
-            email: ["required", "email"],
-            code: ["required"]
-        },
+        mounted: function() {},
         methods: {
+            sendVerifyCode: function() {
+                let _this = this;
+                console.log(_this.email);
+            },
             sendLoginCode: function(){
                 let _this = this;
                 _this.emailErrMsg = "";
