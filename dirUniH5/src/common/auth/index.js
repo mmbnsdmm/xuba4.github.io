@@ -1,8 +1,20 @@
-import Conf from '../conf'
+import Store from '../store'
+import Tool from '../tool'
+import Http from '../http'
 import CryptoJS from 'crypto-js'
+import {Toast} from 'vant'
+
 let auth = {
+    initUser: function () {
+        let user = Store.getters.userInfo;
+        if (!user || !user.token || !user.key){
+            Toast("获取用户认证数据失败，请重新登陆");
+            return;
+        }
+        return user;
+    },
     generateFormParams: function (params = {}) {
-        let user = Store.getters.user;
+        let user = this.initUser();
         let _timestamp = Tool.getTimestamp();
         let _nonce = _timestamp + "_nonce_" + Math.random() + Math.random() + Math.random() + Math.random();
         params.token = user.token;
@@ -24,20 +36,17 @@ let auth = {
         delete params.key;
         return params;
     },
-    authPost: function(uri, formParams = {}, isAsync = true) {
+    post: function(uri, formParams = {}, isAsync = true, successBack, errorBack) {
         formParams = this.generateFormParams(formParams);
-        return Http.post(uri, formParams, isAsync);
+        return Http.post(uri, formParams, isAsync, successBack, errorBack);
     },
-    navTo(url){
-        if(!this.hasLogin){
-            url = '/pages/public/login';
-        }
-        uni.navigateTo({
-            url
+    updateUserInfo: function () {
+        this.post("/user/center/user-info", {}, true, function (res) {
+            let user = res.user;
+            Store.commit("login", user);
+        }, function (msg) {
+            Toast(msg);
         })
-    },
-    updateUser: function () {
-        Store.dispatch('updateUser', this.generateFormData({}));
     }
-}
+};
 export default auth

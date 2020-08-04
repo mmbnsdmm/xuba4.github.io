@@ -1,7 +1,7 @@
 <template>
     <div class="site-signup">
-        <view class="content">
-            <div class="col-row">
+        <view class="container">
+            <div class="row">
                 <div class="col-xs-12">
                     <h4>注册</h4>
                     <div class="form-group">
@@ -46,7 +46,7 @@
                         <text class="text-blue float-right" @click="$router.push('/')">首页</text>
                         <div class="clearfix"></div>
                     </div>
-                    <button class="btn btn-primary btn-block" :disabled="isBtnDisabled" @click="toSignup" v-preventReClick>注册</button>
+                    <button class="btn btn-primary btn-block btn-lg" :disabled="isBtnDisabled" @click="toSignup">注册</button>
                 </div>
             </div>
         </view>

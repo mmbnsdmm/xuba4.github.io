@@ -30,7 +30,8 @@
 			"authType": "@",
 			"data": {},
 			"style": {
-				"navigationBarTitleText": "个人中心"
+				"navigationBarTitleText": "个人中心",
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -41,6 +42,16 @@
 			"data": {},
 			"style": {
 				"navigationBarTitleText": "修改密码"
+			}
+		},
+		{
+			"path": "pages/user/center/UpdateAvatar",
+			"name":"修改头像",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "修改头像"
 			}
 		},
 		{
@@ -111,16 +122,19 @@
     	"list": [
             {
     			"pagePath": "pages/site/Home",
-    			"iconPath": "static/logo.png",
-    			"selectedIconPath": "static/logo.png",
+    			"iconPath": "static/home02.jpg",
+    			"selectedIconPath": "static/home02.jpg",
     			"text": "首页"
     		},
     		{
     			"pagePath": "pages/user/center/Index",
-    			"iconPath": "static/logo.png",
-    			"selectedIconPath": "static/logo.png",
+    			"iconPath": "static/user01.jpg",
+    			"selectedIconPath": "static/user01.jpg",
     			"text": "个人中心"
     		}
-    	]
+    	],
+		"midButton": {
+			"iconPath": "static/logo.png"
+		}
     }
 }

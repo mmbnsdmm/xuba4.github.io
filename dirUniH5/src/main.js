@@ -6,6 +6,8 @@ import 'tailwindcss/tailwind.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min'
 
+import 'font-awesome/css/font-awesome.css'
+
 import Vant from 'vant'
 import 'vant/lib/index.less'
 Vue.use(Vant);

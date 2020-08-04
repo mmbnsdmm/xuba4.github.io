@@ -24,8 +24,12 @@ const store = new Vuex.Store({
 	},
 	mutations: {
 		login(state, provider) {
+			let userInfo = provider;
+            if (!userInfo.avatar){
+                userInfo.avatar = "/static/defaultavatar.jpg"
+            }
 			state.hasLogin = true;
-			state.userInfo = provider;
+			state.userInfo = userInfo;
 			Tool.setCache('hasLogin', state.hasLogin);
 			Tool.setCache('userInfo', state.userInfo);
 		},

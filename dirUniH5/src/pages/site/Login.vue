@@ -1,7 +1,7 @@
 <template>
     <div class="site-login">
-        <view class="content">
-            <div class="col-row">
+        <view class="container">
+            <div class="row">
                 <div class="col-xs-12">
                     <h4>用户登录</h4>
                     <div class="form-group">
@@ -27,7 +27,7 @@
                         <text class="text-blue float-right" @click="$router.push('/')">首页</text>
                         <div class="clearfix"></div>
                     </div>
-                    <button class="btn btn-primary btn-block" :disabled="isBtnDisabled" @click="toLogin" v-preventReClick>登录</button>
+                    <button class="btn btn-primary btn-block btn-lg" :disabled="isBtnDisabled" @click="toLogin">登录</button>
                 </div>
             </div>
         </view>

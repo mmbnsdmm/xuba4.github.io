@@ -1,7 +1,7 @@
 <template>
     <div class="site-reset-password">
-        <view class="content">
-            <div class="col-row">
+        <view class="container">
+            <div class="row">
                 <div class="col-xs-12">
                     <h4>重置密码</h4>
                     <div class="form-group">

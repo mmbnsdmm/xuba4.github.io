@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <view class="content">
+        <view class="container">
             <navigator url="/pages/site/About">
                 <button class="btn btn-primary">about</button>
             </navigator>

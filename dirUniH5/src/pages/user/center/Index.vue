@@ -1,12 +1,31 @@
 <template>
     <div class="user-center-index">
-        <view class="content">
-            123
+        <view class="userinfo">
+            <div class="container-fluid" style="height: 7rem;">
+                <div class="row" style="padding-top: 1rem;padding-bottom: 1rem;">
+                    <div class="col-xs-4">
+                        <img class="img img-rounded img-responsive" :src="userInfo.avatar" @click="$router.push('/pages/user/center/UpdateAvatar')"/>
+                    </div>
+                    <div class="col-xs-6" style="height: 5rem;">
+                        <div>
+                            <text style="position: absolute;bottom: 1rem;">{{userInfo.nickName}}</text>
+                            <text style="position: absolute;bottom: 0;">{{userInfo.email}}</text>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </view>
-
-        <van-cell-group>
-            <van-cell title="退出登录" class="cell-logout" @click="toLogout"/>
-        </van-cell-group>
+        <u-cell-group>
+            <u-cell-item icon="setting-fill" title="修改登录密码" arrow-direction="right" @click="$router.push('/pages/user/center/UpdatePassword')"></u-cell-item>
+        </u-cell-group>
+        <u-gap></u-gap>
+        <view class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <button class="btn btn-warning btn-block"  @click="toLogout" v-preventReClick>退出登录</button>
+                </div>
+            </div>
+        </view>
     </div>
 </template>
 
@@ -18,6 +37,17 @@
         data(){
             return {}
         },
+        computed: {
+            ...mapState(['hasLogin', 'userInfo'])
+        },
+        onPullDownRefresh() {
+            let _this = this;
+            _this.$auth.updateUserInfo();
+            setTimeout(function () {
+                uni.stopPullDownRefresh();
+            }, 1000);
+        },
+        mounted: function () {},
         methods: {
             ...mapMutations(['logout']),
             toLogout: function () {
@@ -34,16 +64,15 @@
                     }
                 }).catch(() => {});
             }
-        },
-        computed: {
-            ...mapState(['hasLogin'])
-        },
-        mounted: function () {
-            
         }
     }
 </script>
 
 <style>
-
+    .userinfo{
+        background-image: url('~@/static/userinfo-background.jpg');
+    }
+    .userinfo text{
+        color: #fff
+    }
 </style>

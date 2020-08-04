@@ -167,14 +167,20 @@ class ApiTool extends Component
      */
     public function authReturn($user)
     {
-        return [
+        $r = [
+            'id' => $user->id,
             'token' => $user->token,
             'key' => $user->key,
             'username' => $user->username,
+            'nickName' => $user->nickName,
             'email' => $user->email,
             'amount' => $user->amount,
             'frozen' => $user->frozen,
+            'status' => $user->status,
+            'created_at' => $user->created_at,
+            'avatar' => $user->avatar,
         ];
+        return $r;
     }
 
     /**
