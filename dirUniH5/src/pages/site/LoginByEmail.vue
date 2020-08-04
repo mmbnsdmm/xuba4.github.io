@@ -1,5 +1,5 @@
 <template>
-    <div class="login-by-email">
+    <div class="site-login-by-email">
         <div class="container">
             <div class="col-row">
                 <div class="col-xs-12">
@@ -15,7 +15,7 @@
                             </div>
                         </div>
                         <div class="col-xs-5">
-                            <button class="btn btn-warning btn-block" @click="sendVerifyCode" v-preventReClick>发送验证码</button>
+                            <button class="btn btn-warning btn-block" :disabled="isBtnSendVerifyCodedisabled" @click="sendVerifyCode" v-preventReClick>发送验证码{{countDownSendCode}}</button>
                         </div>
                     </div>
                     <div class="help-block">
@@ -23,7 +23,7 @@
                             <text class="text-blue">用户名登陆</text>
                         </navigator>
                         <text :decode="false" class="float-left">&nbsp; | &nbsp;</text>
-                        <navigator url="/pages/site/About" class="float-left">
+                        <navigator url="/pages/site/Signup" class="float-left">
                             <text class="text-blue">注册</text>
                         </navigator>
                         <navigator url="/pages/site/About" class="float-right">
@@ -33,7 +33,7 @@
                         <text class="text-blue float-right" @click="$router.push('/')">首页</text>
                         <div class="clearfix"></div>
                     </div>
-                    <button class="btn btn-primary btn-block" @click="toLogin" v-preventReClick>登录</button>
+                    <button class="btn btn-primary btn-block" :disabled="isBtnDisabled" @click="toLoginByEmail" v-preventReClick>登录</button>
                 </div>
             </div>
         </div>
@@ -42,91 +42,81 @@
 
 <script>
     import {Toast} from 'vant';
-
+    import {mapState, mapMutations} from 'vuex'
     export default {
-        name: "LoginByEmail",
+        name: "SiteLoginByEmail",
         data(){
             return {
                 email : "",
                 emailVerifyCode : "",
-                countDownSendLogin: "",
+                countDownSendCode: "",
                 isBtnSendVerifyCodedisabled: false,
-                emailErrMsg : "",
-                codeErrMsg : "",
-                isLoginBtnDisabled: false
+                isBtnDisabled: false
             }
+        },
+        computed: {
+            ...mapState(['hasLogin'])
         },
         mounted: function() {},
         methods: {
+            ...mapMutations(['login']),
             sendVerifyCode: function() {
                 let _this = this;
-                console.log(_this.email);
-            },
-            sendLoginCode: function(){
-                let _this = this;
-                _this.emailErrMsg = "";
-                if (!_this.$verify.check('sendLoginEmailCode')) {
-                    if (_this.$verify.$errors.email) {
-                        _this.emailErrMsg = _this.$verify.$errors.email[0];
-                    }
+                if (!/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(_this.email)){
+                    Toast("邮箱格式不正确");
                     return ;
                 }
                 _this.$http.post('/site/send-email-code', {
                     email: this.email,
                     typeKey: 2
-                }).then(resp => {
-                    let msg = resp.data;
-                    if (msg.code === 200){
-                        if (msg.data.status === 200){
-                            Toast("发送成功");
-                            _this.countDownSendLogin = 120;
-                            _this.isBtnSendLoginEmaildisabled = true;
-                            let timerSendCode = setInterval(() => {
-                                _this.countDownSendLogin--;
-                                if (_this.countDownSendLogin <= 0) {
-                                    _this.countDownSendLogin = '';
-                                    _this.isBtnSendLoginEmaildisabled = false;
-                                    clearInterval(timerSendCode);
-                                }
-                            }, 1000);
-                        }else{
-                            Toast(msg.data.msg);
+                }, true, function (res) {
+                    Toast(res.msg);
+                    _this.countDownSendCode = 120;
+                    _this.isBtnSendVerifyCodedisabled = true;
+                    let timerSendCode = setInterval(() => {
+                        _this.countDownSendCode--;
+                        if (_this.countDownSendCode <= 0) {
+                            _this.countDownSendCode = '';
+                            _this.isBtnSendVerifyCodedisabled = false;
+                            clearInterval(timerSendCode);
                         }
-                    }else{
-                        Toast(msg.message);
-                    }
-                });
+                    }, 1000);
+                }, function (msg) {
+                    Toast(msg);
+                    _this.isBtnDisabled = false;
+                    return ;
+                })
             },
-            loginByEmail: function () {
+            toLoginByEmail: function () {
                 let _this = this;
-                _this.emailErrMsg = "";
-                _this.codeErrMsg = "";
-                if (!_this.$verify.check('login')) {
-                    if (_this.$verify.$errors.email) {
-                        _this.emailErrMsg = _this.$verify.$errors.email[0];
-                    }
-                    if (_this.$verify.$errors.code) {
-                        _this.codeErrMsg = _this.$verify.$errors.code[0];
-                    }
+                if (!/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(_this.email)){
+                    Toast("邮箱格式不正确");
                     return ;
                 }
-                let email = _this.email,
-                    code = _this.code;
-                let data = {email, code};
-                _this.isLoginBtnDisabled = true;
-                _this.$store.dispatch('loginByEmail', data).then(resp => {
-                    if (resp.data.code !== 200){
-                        Toast(resp.data.message);
-                        _this.isLoginBtnDisabled = false;
-                    }else{
-                        if (resp.data.data.status !== 200){
-                            Toast(resp.data.data.msg);
-                            _this.isLoginBtnDisabled = false;
-                        }else{
-                            Toast("登录成功");
-                            this.$router.push('/');
+                if (!_this.emailVerifyCode){
+                    Toast("验证码不能为空");
+                    return;
+                }
+                _this.isBtnDisabled = true;
+                _this.$http.post('/site/login-by-email', {
+                    email: _this.email,
+                    code: _this.emailVerifyCode
+                }, true, function (res) {
+                    Toast(res.msg);
+                    _this.login(res.user);
+                    if (!_this.hasLogin){
+                        Toast("登陆失败，请联系管理员");
+                        _this.isBtnDisabled = false;
+                    } else {
+                        if (_this.$tool.getCache('beforeLoginPath')){
+                            _this.$router.push(_this.$tool.getCache('beforeLoginPath'));
+                        } else{
+                            _this.$router.go(-1);
                         }
                     }
+                }, function (msg) {
+                    Toast(msg);
+                    return ;
                 })
             }
         }

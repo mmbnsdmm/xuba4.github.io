@@ -1,165 +1,151 @@
 <template>
-    <div class="signup">
-        <van-panel title="" desc="用户注册" status="">
-            <van-cell-group>
-                <van-field v-model="email" v-verify.sendSignupEmailCode="email" v-verify.signup="email" :error-message="emailErrMsg" required type="email" placeholder="请输入邮箱">
-                    <van-button slot="button" size="small" type="primary" @click="sendSignupCode" :disabled="isBtnSendSignupEmaildisabled">发送验证码{{countDownSendSignup}}</van-button>
-                </van-field>
-                <van-field v-model="username" v-verify.signup="username" :error-message="usernameErrMsg" required placeholder="请输入用户名" />
-                <van-field v-model="password" v-verify.signup="password" :error-message="passwordErrMsg" required type="password" placeholder="请输入密码" />
-                <van-field v-model="passwordConfirmation" v-verify.signup="passwordConfirmation" :error-message="passwordConfirmationErrMsg" required type="password" placeholder="请再次输入密码" />
-                <van-field v-model="code" v-verify.signup="code" :error-message="codeErrMsg" required placeholder="邮箱验证码" />
-                <van-field v-model="joinMsg" v-verify.signup="joinMsg" :error-message="joinMsgErrMsg" required rows="2" autosize label="注册理由" type="textarea" maxlength="50" placeholder="请输入爱好或为什么注册信息" show-word-limit/>
-            </van-cell-group>
-            <div slot="footer">
-                <van-button size="large" type="info" @click="signup" :disabled="isSignupBtnDisabled">注册</van-button>
+    <div class="site-signup">
+        <div class="container">
+            <div class="col-row">
+                <div class="col-xs-12">
+                    <h4>注册</h4>
+                    <div class="form-group">
+                        <label>邮箱</label>
+                        <input type="email" class="form-control" v-model="email" placeholder="请输入邮箱" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-7">
+                            <div class="form-group">
+                                <input type="text" class="form-control" v-model="emailVerifyCode" placeholder="请输入验证码" required>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <button class="btn btn-warning btn-block" :disabled="isBtnSendVerifyCodedisabled" @click="sendVerifyCode" v-preventReClick>发送验证码{{countDownSendCode}}</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>用户名</label>
+                        <input type="text" class="form-control" v-model="username" placeholder="请输入用户名" required>
+                    </div>
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="password" class="form-control" v-model="password" placeholder="请输入密码">
+                    </div>
+                    <div class="form-group">
+                        <label>确认密码</label>
+                        <input type="password" class="form-control" v-model="passwordConfirmation" placeholder="再次确认密码">
+                    </div>
+                    <div class="help-block">
+                        <navigator url="/pages/site/Login" class="float-left">
+                            <text class="text-blue">用户名登陆</text>
+                        </navigator>
+                        <text :decode="false" class="float-left">&nbsp; | &nbsp;</text>
+                        <navigator url="/pages/site/LoginByEmail" class="float-left">
+                            <text class="text-blue">邮箱登陆</text>
+                        </navigator>
+                        <navigator url="/pages/site/Signup" class="float-right">
+                            <text class="text-blue">忘记密码</text>
+                        </navigator>
+                        <text :decode="false" class="float-right">&nbsp; | &nbsp;</text>
+                        <text class="text-blue float-right" @click="$router.push('/')">首页</text>
+                        <div class="clearfix"></div>
+                    </div>
+                    <button class="btn btn-primary btn-block" :disabled="isBtnDisabled" @click="toSignup" v-preventReClick>注册</button>
+                </div>
             </div>
-        </van-panel>
+        </div>
     </div>
 </template>
 
 <script>
     import {Toast} from 'vant';
-
     export default {
-        name: "Signup",
+        name: "SiteSignup",
         data(){
             return {
-                countDownSendSignup: "",
-                isBtnSendSignupEmaildisabled: false,
-                username : "",
-                usernameErrMsg : "",
                 email : "",
-                emailErrMsg : "",
+                emailVerifyCode : "",
+                username: "",
                 password : "",
-                passwordErrMsg : "",
                 passwordConfirmation : "",
-                passwordConfirmationErrMsg : "",
-                joinMsg: "",
-                joinMsgErrMsg: "",
-                code : "",
-                codeErrMsg : "",
-                isSignupBtnDisabled: false
+                countDownSendCode: "",
+                isBtnSendVerifyCodedisabled: false,
+                isBtnDisabled: false
             }
         },
-        verify: {
-            email: ["required", "email"],
-            username: ["required", {
-                minLength: 6
-            }],
-            password: ["required", {
-                minLength: 6
-            }],
-            passwordConfirmation: ["required"],
-            code: ["required"],
-            joinMsg: ["required", {
-                maxLength: 50
-            }]
-        },
+        mounted: function() {},
         methods: {
-            sendSignupCode: function(){
+            sendVerifyCode: function() {
                 let _this = this;
-                _this.emailErrMsg = "";
-                if (!_this.$verify.check('sendSignupEmailCode')) {
-                    if (_this.$verify.$errors.email) {
-                        _this.emailErrMsg = _this.$verify.$errors.email[0];
-                    }
+                if (!/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(_this.email)){
+                    Toast("邮箱格式不正确");
                     return ;
                 }
                 _this.$http.post('/site/send-email-code', {
                     email: this.email,
                     typeKey: 1
-                }).then(resp => {
-                    let msg = resp.data;
-                    if (msg.code === 200){
-                        if (msg.data.status === 200){
-                            Toast("发送成功");
-                            _this.countDownSendSignup = 120;
-                            _this.isBtnSendSignupEmaildisabled = true;
-                            let timerSendCode = setInterval(() => {
-                                _this.countDownSendSignup--;
-                                if (_this.countDownSendSignup <= 0) {
-                                    _this.countDownSendSignup = '';
-                                    _this.isBtnSendSignupEmaildisabled = false;
-                                    clearInterval(timerSendCode);
-                                }
-                            }, 1000);
-                        }else{
-                            Toast(msg.data.msg);
+                }, true, function (res) {
+                    Toast(res.msg);
+                    _this.countDownSendCode = 120;
+                    _this.isBtnSendVerifyCodedisabled = true;
+                    let timerSendCode = setInterval(() => {
+                        _this.countDownSendCode--;
+                        if (_this.countDownSendCode <= 0) {
+                            _this.countDownSendCode = '';
+                            _this.isBtnSendVerifyCodedisabled = false;
+                            clearInterval(timerSendCode);
                         }
-                    }else{
-                        Toast(msg.message);
-                    }
-                });
+                    }, 1000);
+                }, function (msg) {
+                    Toast(msg);
+                    return ;
+                })
             },
-            signup: function () {
+            toSignup: function () {
                 let _this = this;
-                _this.emailErrMsg = "";
-                _this.usernameErrMsg = "";
-                _this.passwordConfirmationErrMsg = "";
-                _this.passwordErrMsg = "";
-                _this.codeErrMsg = "";
-                _this.joinMsgErrMsg = "";
-                if (!_this.$verify.check('signup')) {
-                    if (_this.$verify.$errors.email) {
-                        _this.emailErrMsg = _this.$verify.$errors.email[0];
-                    }
-                    if (_this.$verify.$errors.username) {
-                        _this.usernameErrMsg = _this.$verify.$errors.username[0];
-                    }
-                    if (_this.$verify.$errors.password) {
-                        _this.passwordErrMsg = _this.$verify.$errors.password[0];
-                    }
-                    if (_this.$verify.$errors.passwordConfirmation) {
-                        _this.passwordConfirmationErrMsg = _this.$verify.$errors.passwordConfirmation[0];
-                    }
-                    if (_this.$verify.$errors.code) {
-                        _this.codeErrMsg = _this.$verify.$errors.code[0];
-                    }
-                    if (_this.$verify.$errors.joinMsg) {
-                        _this.joinMsgErrMsg = this.$verify.$errors.joinMsg[0];
-                    }
+                if (!/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(_this.email)){
+                    Toast("邮箱格式不正确");
                     return ;
                 }
-                if (_this.password !== this.passwordConfirmation){
-                    _this.passwordConfirmationErrMsg = "确认密码和密码不一致";
+                if (!_this.emailVerifyCode){
+                    Toast("验证码不能为空");
+                    return;
+                }
+                if (!_this.username){
+                    Toast("用户名不能为空");
+                    return;
+                }
+                if (_this.username.length < 6){
+                    Toast("用户名至少6位");
+                    return;
+                }
+                if (!_this.password){
+                    Toast("密码不能为空");
+                    return;
+                }
+                if (_this.password.length < 6){
+                    Toast("密码至少6位");
                     return ;
                 }
-                let username = _this.username,
-                    email = _this.email,
-                    password = _this.password,
-                    code = _this.code,
-                    signup_message = _this.joinMsg;
-                let data = {username, email, password, code, signup_message};
-                _this.isBtnSendSignupEmaildisabled = true;
-                _this.$store.dispatch('signup', data).then(resp => {
-                    if (resp.data.code !== 200){
-                        Toast(resp.data.message);
-                        _this.isBtnSendSignupEmaildisabled = false;
-                    }else{
-                        if (resp.data.data.status !== 200){
-                            Toast(resp.data.data.msg);
-                            _this.isBtnSendSignupEmaildisabled = false;
-                        }else{
-                            let username = this.username;
-                            let password = this.password;
-                            _this.$store.dispatch('login', { username, password }).then(resp => {
-                                if (resp.data.code !== 200){
-                                    Toast(resp.data.message);
-                                    _this.isBtnSendSignupEmaildisabled = false;
-                                }else{
-                                    if (resp.data.data.status !== 200){
-                                        Toast(resp.data.data.msg);
-                                        _this.isBtnSendSignupEmaildisabled = false;
-                                    }else{
-                                        Toast("注册成功");
-                                        _this.$router.push('/');
-                                    }
-                                }
-                            })
-                        }
-                    }
-                });
+                if (!_this.passwordConfirmation){
+                    Toast("确认密码不能为空");
+                    return;
+                }
+                if (_this.passwordConfirmation !== _this.password){
+                    Toast("确认密码必须和密码一致");
+                    return;
+                }
+                _this.isBtnDisabled = true;
+                _this.$http.post('/site/signup', {
+                    email: _this.email,
+                    code: _this.emailVerifyCode,
+                    username: _this.username,
+                    password: _this.password
+                }, true, function (res) {
+                    Toast(res.msg);
+                    _this.$tool.setCache('beforeLoginPath', "/");
+                    _this.$router.push("/pages/site/Login");
+                    _this.isBtnDisabled = false;
+                }, function (msg) {
+                    Toast(msg);
+                    _this.isBtnDisabled = false;
+                    return ;
+                })
             }
         }
     }

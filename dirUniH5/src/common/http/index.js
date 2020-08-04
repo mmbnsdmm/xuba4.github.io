@@ -11,19 +11,19 @@ let http = {
             datatype: Conf.ajax.dataType,
             success: function(data){
                 if(data.code !== Conf.ajax.normalCode){
-                    errorBack()
+                    errorBack(data.message)
                 }else{
                     let _data = data.data;
                     if(_data.status !== Conf.ajax.successStatus){
-                        errorBack()
+                        errorBack(_data.msg)
                     }else{
                         res = _data;
                         successBack(res)
                     }
                 }
             },
-            error: function () {
-                errorBack()
+            error: function (jqXHR, textStatus, errorThrown) {
+                errorBack(errorThrown)
             }
         });
         return res

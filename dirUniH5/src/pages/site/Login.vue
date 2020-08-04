@@ -17,7 +17,7 @@
                             <text class="text-blue">邮箱登陆</text>
                         </navigator>
                         <text :decode="false" class="float-left">&nbsp; | &nbsp;</text>
-                        <navigator url="/pages/site/About" class="float-left">
+                        <navigator url="/pages/site/Signup" class="float-left">
                             <text class="text-blue">注册</text>
                         </navigator>
                         <navigator url="/pages/site/About" class="float-right">
@@ -27,7 +27,7 @@
                         <text class="text-blue float-right" @click="$router.push('/')">首页</text>
                         <div class="clearfix"></div>
                     </div>
-                    <button class="btn btn-primary btn-block" @click="toLogin" v-preventReClick>登录</button>
+                    <button class="btn btn-primary btn-block" :disabled="isBtnDisabled" @click="toLogin" v-preventReClick>登录</button>
                 </div>
             </div>
         </div>
@@ -43,25 +43,23 @@
             return {
                 username : "",
                 password : "",
-                isLoginBtnDisabled: false
+                isBtnDisabled: false
             }
         },
         methods: {
             ...mapMutations(['login']),
             toLogin: function () {
                 let _this = this;
-                let username = _this.username;
-                let password = _this.password;
-                if (username.length <=6 ){
+                if (_this.username.length < 6){
                     Toast("用户名至少6位");
                     return;
                 }
-                _this.isLoginBtnDisabled = true;
-                _this.$http.post("/site/login", {username: username, password: password}, true, function (res) {
+                _this.isBtnDisabled = true;
+                _this.$http.post("/site/login", {username: _this.username, password: _this.password}, true, function (res) {
                     _this.login(res.user);
                     if (!_this.hasLogin){
                         Toast("登陆失败，请联系管理员");
-                        _this.isLoginBtnDisabled = false;
+                        _this.isBtnDisabled = false;
                     } else {
                         if (_this.$tool.getCache('beforeLoginPath')){
                             _this.$router.push(_this.$tool.getCache('beforeLoginPath'));
@@ -69,9 +67,10 @@
                             _this.$router.go(-1);
                         }
                     }
-                }, function () {
-                    Toast("用户名或密码错误");
-                    _this.isLoginBtnDisabled = false;
+                }, function (msg) {
+                    Toast(msg);
+                    _this.isBtnDisabled = false;
+                    return ;
                 });
             }
         },
@@ -80,8 +79,6 @@
         },
         mounted: function () {
             let _this = this;
-            console.log(_this.$router.beforeHooks.from);
-            console.log(ROUTES)
         }
     }
 </script>

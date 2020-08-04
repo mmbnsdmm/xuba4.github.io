@@ -41,11 +41,11 @@ class SiteController extends Controller
         ];
         switch ($typeKey){
             case LogEmailSendCode::TYPE_SIGNUP:
-                $rules[] = ['email', 'unique', 'targetClass' => User::class, 'targetAttribute' => "email"];
+                $rules[] = ['email', 'unique', 'targetClass' => User::class, 'targetAttribute' => "email", 'message' => "邮箱已存在"];
                 break;
             case LogEmailSendCode::TYPE_LOGIN:
             case LogEmailSendCode::TYPE_RESET_PASSWORD:
-            $rules[] = ['email', 'exist', 'targetClass' => User::class, 'targetAttribute' => "email"];
+            $rules[] = ['email', 'exist', 'targetClass' => User::class, 'targetAttribute' => "email", 'message' => "邮箱不存在"];
                 break;
             default:
                 throw new ApiException(201911121120, "验证码类型未设置");
