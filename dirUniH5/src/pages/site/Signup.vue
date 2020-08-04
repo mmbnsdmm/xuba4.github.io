@@ -1,6 +1,6 @@
 <template>
     <div class="site-signup">
-        <div class="container">
+        <view class="content">
             <div class="col-row">
                 <div class="col-xs-12">
                     <h4>注册</h4>
@@ -9,11 +9,12 @@
                         <input type="email" class="form-control" v-model="email" placeholder="请输入邮箱" required>
                     </div>
                     <div class="row">
-                        <div class="col-xs-7">
+                        <div class="col-xs-6">
                             <div class="form-group">
                                 <input type="text" class="form-control" v-model="emailVerifyCode" placeholder="请输入验证码" required>
                             </div>
                         </div>
+                        <div class="col-xs-1"></div>
                         <div class="col-xs-5">
                             <button class="btn btn-warning btn-block" :disabled="isBtnSendVerifyCodedisabled" @click="sendVerifyCode" v-preventReClick>发送验证码{{countDownSendCode}}</button>
                         </div>
@@ -38,7 +39,7 @@
                         <navigator url="/pages/site/LoginByEmail" class="float-left">
                             <text class="text-blue">邮箱登陆</text>
                         </navigator>
-                        <navigator url="/pages/site/Signup" class="float-right">
+                        <navigator url="/pages/site/ResetPassword" class="float-right">
                             <text class="text-blue">忘记密码</text>
                         </navigator>
                         <text :decode="false" class="float-right">&nbsp; | &nbsp;</text>
@@ -48,7 +49,7 @@
                     <button class="btn btn-primary btn-block" :disabled="isBtnDisabled" @click="toSignup" v-preventReClick>注册</button>
                 </div>
             </div>
-        </div>
+        </view>
     </div>
 </template>
 

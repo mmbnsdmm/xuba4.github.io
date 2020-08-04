@@ -1,8 +1,8 @@
 <template>
     <div class="user-center-index">
-        <div class="container">
+        <view class="content">
             123
-        </div>
+        </view>
 
         <van-cell-group>
             <van-cell title="退出登录" class="cell-logout" @click="toLogout"/>

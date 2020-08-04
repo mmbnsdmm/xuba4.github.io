@@ -1,129 +1,138 @@
 <template>
-    <div class="resetPassword">
-        <van-panel title="" desc="重置密码" status="">
-            <van-cell-group>
-                <van-field v-model="email" v-verify.sendResetPasswordEmailCode="email" v-verify.resetPassword="email" :error-message="emailErrMsg" required type="email" placeholder="请输入邮箱">
-                    <van-button slot="button" size="small" type="primary" @click="sendResetPasswordCode" :disabled="isBtnSendResetPasswordEmaildisabled">发送验证码{{countDownSendResetPassword}}</van-button>
-                </van-field>
-                <van-field v-model="password" v-verify.resetPassword="password" :error-message="passwordErrMsg" required type="password" placeholder="请输入密码" />
-                <van-field v-model="passwordConfirmation" v-verify.resetPassword="passwordConfirmation" :error-message="passwordConfirmationErrMsg" required type="password" placeholder="请再次输入密码" />
-                <van-field v-model="code" v-verify.resetPassword="code" :error-message="codeErrMsg" required placeholder="邮箱验证码" />
-            </van-cell-group>
-            <div slot="footer">
-                <van-button size="large" type="info" @click="resetPassword" :disabled="isResetBtnDisabled">重置密码</van-button>
+    <div class="site-reset-password">
+        <view class="content">
+            <div class="col-row">
+                <div class="col-xs-12">
+                    <h4>重置密码</h4>
+                    <div class="form-group">
+                        <label>邮箱</label>
+                        <input type="email" class="form-control" v-model="email" placeholder="请输入邮箱" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-7">
+                            <div class="form-group">
+                                <input type="text" class="form-control" v-model="emailVerifyCode" placeholder="请输入验证码" required>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <button class="btn btn-warning btn-block" :disabled="isBtnSendVerifyCodedisabled" @click="sendVerifyCode" v-preventReClick>发送验证码{{countDownSendCode}}</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="password" class="form-control" v-model="password" placeholder="请输入密码">
+                    </div>
+                    <div class="form-group">
+                        <label>确认密码</label>
+                        <input type="password" class="form-control" v-model="passwordConfirmation" placeholder="再次确认密码">
+                    </div>
+                    <div class="help-block">
+                        <navigator url="/pages/site/Login" class="float-left">
+                            <text class="text-blue">用户名登陆</text>
+                        </navigator>
+                        <text :decode="false" class="float-left">&nbsp; | &nbsp;</text>
+                        <navigator url="/pages/site/LoginByEmail" class="float-left">
+                            <text class="text-blue">邮箱登陆</text>
+                        </navigator>
+                        <navigator url="/pages/site/Signup" class="float-right">
+                            <text class="text-blue">注册</text>
+                        </navigator>
+                        <text :decode="false" class="float-right">&nbsp; | &nbsp;</text>
+                        <text class="text-blue float-right" @click="$router.push('/')">首页</text>
+                        <div class="clearfix"></div>
+                    </div>
+                    <button class="btn btn-primary btn-block btn-lg" :disabled="isBtnDisabled" @click="toResetPassword" v-preventReClick>重置</button>
+                </div>
             </div>
-        </van-panel>
+        </view>
     </div>
 </template>
 
 <script>
     import {Toast} from 'vant';
-
     export default {
-        name: "ResetPassword",
+        name: "SiteResetPassword",
         data(){
             return {
-                countDownSendResetPassword: "",
-                isBtnSendResetPasswordEmaildisabled: false,
                 email : "",
-                emailErrMsg : "",
+                emailVerifyCode : "",
+                countDownSendCode: "",
                 password : "",
-                passwordErrMsg : "",
                 passwordConfirmation : "",
-                passwordConfirmationErrMsg : "",
-                code : "",
-                codeErrMsg : "",
-                isResetBtnDisabled: false
+                isBtnSendVerifyCodedisabled: false,
+                isBtnDisabled: false
             }
         },
-        verify: {
-            email: ["required", "email"],
-            password: ["required", {
-                minLength: 6
-            }],
-            passwordConfirmation: ["required"],
-            code: ["required"]
-        },
+        mounted: function() {},
         methods: {
-            sendResetPasswordCode: function(){
+            sendVerifyCode: function() {
                 let _this = this;
-                _this.emailErrMsg = "";
-                if (!_this.$verify.check('sendResetPasswordEmailCode')) {
-                    if (_this.$verify.$errors.email) {
-                        _this.emailErrMsg = _this.$verify.$errors.email[0];
-                    }
+                if (!/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(_this.email)){
+                    Toast("邮箱格式不正确");
                     return ;
                 }
                 _this.$http.post('/site/send-email-code', {
                     email: this.email,
                     typeKey: 3
-                }).then(resp => {
-                    let msg = resp.data;
-                    if (msg.code === 200){
-                        if (msg.data.status === 200){
-                            Toast("发送成功");
-                            _this.countDownSendResetPassword = 120;
-                            _this.isBtnSendResetPasswordEmaildisabled = true;
-                            let timerSendCode = setInterval(() => {
-                                _this.countDownSendResetPassword--;
-                                if (_this.countDownSendResetPassword <= 0) {
-                                    _this.countDownSendResetPassword = '';
-                                    _this.isBtnSendResetPasswordEmaildisabled = false;
-                                    clearInterval(timerSendCode);
-                                }
-                            }, 1000);
-                        }else{
-                            Toast(msg.data.msg);
+                }, true, function (res) {
+                    Toast(res.msg);
+                    _this.countDownSendCode = 120;
+                    _this.isBtnSendVerifyCodedisabled = true;
+                    let timerSendCode = setInterval(() => {
+                        _this.countDownSendCode--;
+                        if (_this.countDownSendCode <= 0) {
+                            _this.countDownSendCode = '';
+                            _this.isBtnSendVerifyCodedisabled = false;
+                            clearInterval(timerSendCode);
                         }
-                    }else{
-                        Toast(msg.message);
-                    }
-                });
+                    }, 1000);
+                }, function (msg) {
+                    Toast(msg);
+                    _this.isBtnDisabled = false;
+                    return ;
+                })
             },
-            resetPassword: function () {
+            toResetPassword: function () {
                 let _this = this;
-                _this.emailErrMsg = "";
-                _this.passwordConfirmationErrMsg = "";
-                _this.passwordErrMsg = "";
-                _this.codeErrMsg = "";
-                if (!_this.$verify.check('resetPassword')) {
-                    if (_this.$verify.$errors.email) {
-                        _this.emailErrMsg = _this.$verify.$errors.email[0];
-                    }
-                    if (_this.$verify.$errors.password) {
-                        _this.passwordErrMsg = _this.$verify.$errors.password[0];
-                    }
-                    if (_this.$verify.$errors.passwordConfirmation) {
-                        _this.passwordConfirmationErrMsg = _this.$verify.$errors.passwordConfirmation[0];
-                    }
-                    if (_this.$verify.$errors.code) {
-                        _this.codeErrMsg = _this.$verify.$errors.code[0];
-                    }
+                if (!/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(_this.email)){
+                    Toast("邮箱格式不正确");
                     return ;
                 }
-                if (_this.password !== _this.passwordConfirmation){
-                    _this.passwordConfirmationErrMsg = "确认密码和密码不一致";
+                if (!_this.emailVerifyCode){
+                    Toast("验证码不能为空");
+                    return;
+                }
+                if (!_this.password){
+                    Toast("密码不能为空");
+                    return;
+                }
+                if (_this.password.length < 6){
+                    Toast("密码至少6位");
                     return ;
                 }
-                let email = _this.email,
-                    password = _this.password,
-                    code = _this.code;
-                let data = {email, password, code};
-                _this.isResetBtnDisabled = true;
-                _this.$http.post('/site/reset-password', data).then(resp => {
-                    if (resp.data.code !== 200){
-                        Toast(resp.data.message);
-                        _this.isResetBtnDisabled = false;
-                    }else{
-                        if (resp.data.data.status !== 200){
-                            Toast(resp.data.data.msg);
-                            _this.isResetBtnDisabled = false;
-                        }else{
-                            Toast("密码重置成功");
-                            _this.$router.push('/login');
-                        }
-                    }
-                });
+                if (!_this.passwordConfirmation){
+                    Toast("确认密码不能为空");
+                    return;
+                }
+                if (_this.passwordConfirmation !== _this.password){
+                    Toast("确认密码必须和密码一致");
+                    return;
+                }
+                _this.isBtnDisabled = true;
+                _this.$http.post('/site/reset-password', {
+                    email: _this.email,
+                    code: _this.emailVerifyCode,
+                    password: _this.password
+                }, true, function (res) {
+                    Toast(res.msg);
+                    _this.$tool.setCache('beforeLoginPath', "/");
+                    _this.$router.push("/pages/site/Login");
+                    _this.isBtnDisabled = false;
+                }, function (msg) {
+                    Toast(msg);
+                    _this.isBtnDisabled = false;
+                    return ;
+                })
             }
         }
     }

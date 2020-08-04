@@ -1,6 +1,6 @@
 <template>
     <div class="site-login">
-        <div class="container">
+        <view class="content">
             <div class="col-row">
                 <div class="col-xs-12">
                     <h4>用户登录</h4>
@@ -20,7 +20,7 @@
                         <navigator url="/pages/site/Signup" class="float-left">
                             <text class="text-blue">注册</text>
                         </navigator>
-                        <navigator url="/pages/site/About" class="float-right">
+                        <navigator url="/pages/site/ResetPassword" class="float-right">
                             <text class="text-blue">忘记密码</text>
                         </navigator>
                         <text :decode="false" class="float-right">&nbsp; | &nbsp;</text>
@@ -30,7 +30,7 @@
                     <button class="btn btn-primary btn-block" :disabled="isBtnDisabled" @click="toLogin" v-preventReClick>登录</button>
                 </div>
             </div>
-        </div>
+        </view>
     </div>
 </template>
 
