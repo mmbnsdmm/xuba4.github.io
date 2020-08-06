@@ -66,6 +66,8 @@ return [
     'params' => [
         'adminEmail' => "",
         'adminMobile' => "",
+        'adminQQ' => "",
+        'adminWX' => "",
         'quenYiiTaskCacheKey' => "quenYiiTaskCacheKey",
         'yiichina-username' => "",
         'yiichina-password' => "",

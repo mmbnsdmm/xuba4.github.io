@@ -24,10 +24,10 @@
                             <text class="text-blue">忘记密码</text>
                         </navigator>
                         <text :decode="false" class="float-right">&nbsp; | &nbsp;</text>
-                        <text class="text-blue float-right" @click="$router.push('/')">首页</text>
+                        <text class="text-blue float-right" @tap="$router.push('/')">首页</text>
                         <div class="clearfix"></div>
                     </div>
-                    <button class="btn btn-primary btn-block btn-lg" :disabled="isBtnDisabled" @click="toLogin">登录</button>
+                    <button class="btn btn-primary btn-block btn-lg" :disabled="isBtnDisabled" @tap="toLogin">登录</button>
                 </div>
             </div>
         </view>

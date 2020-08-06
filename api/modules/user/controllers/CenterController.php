@@ -21,7 +21,7 @@ class CenterController extends Controller
      * @param string $oldPassword
      * @param string $newPassword
      * @return array
-     * @return int is_ok 是否发送成功
+     * @return int status 是否成功
      * @return string msg
      */
     public function actionUpdatePassword($oldPassword, $newPassword)
@@ -38,10 +38,28 @@ class CenterController extends Controller
     }
 
     /**
+     * 修改头像
+     * @desc post
+     * @param string $newPassword
+     * @return array
+     * @return int status 是否成功
+     * @return string msg
+     */
+    public function actionUpdateAvatar($newAvatarUrl)
+    {
+        $user = \Yii::$app->user->identity;
+        $user->avatar = $newAvatarUrl;
+        if (!$user->save()){
+            throw new ApiException(202008041504, "修改密码失败:".Model::getModelError($user));
+        }
+        return $this->success("修改成功");
+    }
+
+    /**
      * 获取用户信息
      * @desc post
      * @return array
-     * @return int is_ok 是否成功
+     * @return int status 是否成功
      * @return string msg
      * @return object user 用户信息
      */

@@ -18,7 +18,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
     if (Store.getters.hasLogin){
         if (to.authType === "?"){
-            next('/')
+            next('/pages/site/Home')
         }
     } else{
         if (to.authType === "@"){

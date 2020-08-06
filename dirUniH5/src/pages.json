@@ -24,6 +24,46 @@
         	}
         },
 		{
+			"path": "pages/site/Login",
+			"name":"登录",
+			"meta":{},
+			"authType": "?",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/site/LoginByEmail",
+			"name":"邮箱登录",
+			"meta":{},
+			"authType": "?",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "邮箱登录"
+			}
+		},
+		{
+			"path": "pages/site/ResetPassword",
+			"name":"重置密码",
+			"meta":{},
+			"authType": "?",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "重置密码"
+			}
+		},
+		{
+			"path": "pages/site/Signup",
+			"name":"注册",
+			"meta":{},
+			"authType": "?",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
+		},
+		{
 			"path": "pages/user/center/Index",
 			"name":"个人中心",
 			"meta":{},
@@ -64,44 +104,24 @@
 				"navigationBarTitleText": "用户信息"
 			}
 		},
-        {
-        	"path": "pages/site/Login",
-			"name":"登录",
-			"meta":{},
-			"authType": "?",
-			"data": {},
-        	"style": {
-        		"navigationBarTitleText": "登录"
-        	}
-        },
 		{
-			"path": "pages/site/LoginByEmail",
-			"name":"邮箱登录",
+			"path": "pages/search/Search",
+			"name":"搜索",
 			"meta":{},
-			"authType": "?",
+			"authType": "@",
 			"data": {},
 			"style": {
-				"navigationBarTitleText": "邮箱登录"
+				"navigationBarTitleText": "搜索"
 			}
 		},
 		{
-			"path": "pages/site/ResetPassword",
-			"name":"重置密码",
+			"path": "pages/search/Scan",
+			"name":"扫一扫",
 			"meta":{},
-			"authType": "?",
+			"authType": "*",
 			"data": {},
 			"style": {
-				"navigationBarTitleText": "重置密码"
-			}
-		},
-		{
-			"path": "pages/site/Signup",
-			"name":"注册",
-			"meta":{},
-			"authType": "?",
-			"data": {},
-			"style": {
-				"navigationBarTitleText": "注册"
+				"navigationBarTitleText": "扫一扫"
 			}
 		}
 	],

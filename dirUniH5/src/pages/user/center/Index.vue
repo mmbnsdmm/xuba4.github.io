@@ -4,7 +4,7 @@
             <div class="container-fluid" style="height: 7rem;">
                 <div class="row" style="padding-top: 1rem;padding-bottom: 1rem;">
                     <div class="col-xs-4">
-                        <img class="img img-rounded img-responsive" :src="userInfo.avatar" @click="$router.push('/pages/user/center/UpdateAvatar')"/>
+                        <img class="img img-rounded img-responsive" :src="userInfo.avatar" @tap="$router.push('/pages/user/center/UpdateAvatar')"/>
                     </div>
                     <div class="col-xs-6" style="height: 5rem;">
                         <div>
@@ -16,13 +16,13 @@
             </div>
         </view>
         <u-cell-group>
-            <u-cell-item icon="setting-fill" title="修改登录密码" arrow-direction="right" @click="$router.push('/pages/user/center/UpdatePassword')"></u-cell-item>
+            <u-cell-item icon="setting-fill" title="修改登录密码" arrow-direction="right" @tap="$router.push('/pages/user/center/UpdatePassword')"></u-cell-item>
         </u-cell-group>
         <u-gap></u-gap>
         <view class="container">
             <div class="row">
                 <div class="col-xs-12">
-                    <button class="btn btn-warning btn-block"  @click="toLogout" v-preventReClick>退出登录</button>
+                    <button class="btn btn-warning btn-block"  @tap="toLogout" v-preventReClick>退出登录</button>
                 </div>
             </div>
         </view>

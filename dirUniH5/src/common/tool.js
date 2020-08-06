@@ -81,6 +81,16 @@ let tool = {
     clone: function (v) {
         this.setCache("clone", v);
         return this.getCache("clone");
+    },
+    arrayClear: function (arr) {
+        let length = arr.length;
+        arr.splice(0, length);
+    },
+    arrayReset: function (arr, arrVal) {
+        this.arrayClear(arr);
+        arrVal.forEach(function (v) {
+            arr.push(v);
+        })
     }
 };
 export default tool

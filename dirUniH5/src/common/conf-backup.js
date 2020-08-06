@@ -4,6 +4,7 @@ let conf = {
     apiUrl: null,
     mapApiUrl: "http://inityii.tc/api/public/get-api-url",
     // mapApiUrl: "https://bnsdmm.github.io",
+    appUrl: "",
     v_id: 1,
     version: "1.0.0",
     productionTip: false,

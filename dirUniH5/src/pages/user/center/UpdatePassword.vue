@@ -16,7 +16,7 @@
                         <label>确认密码</label>
                         <input type="password" class="form-control" v-model="passwordConfirmation" placeholder="再次确认新密码">
                     </div>
-                    <button class="btn btn-primary btn-block btn-lg" :disabled="isBtnDisabled" @click="toResetPassword">修改</button>
+                    <button class="btn btn-primary btn-block btn-lg" :disabled="isBtnDisabled" @tap="toResetPassword">修改</button>
                 </div>
             </div>
         </view>

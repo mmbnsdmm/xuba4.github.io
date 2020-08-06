@@ -24,7 +24,7 @@ class FileController extends Controller
      * @param file $ufile 表单上传必须有这个字段
      * @param int $url_file_download url文件是否保存到图床 1:保存到图床;0:不保存,用原有url
      * @return array
-     * @return int is_ok 是否成功
+     * @return int status 是否成功
      * @return string msg 返回信息
      * @return array urls 成功返回的所有文件链接
      * @throws

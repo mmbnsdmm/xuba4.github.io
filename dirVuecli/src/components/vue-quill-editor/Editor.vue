@@ -128,7 +128,7 @@
                     let quill = this.$refs.myQuillEditor.quill;
                     _this.$tool.foreach(_this.imageList, function (k, v) {
                         let data = _this.$auth.authPost("/user/file/upload", {base64: v.content});
-                        if (data.is_ok !== 1){
+                        if (data.status !== 200){
                             Toast(data.msg);
                             return ;
                         }
@@ -157,7 +157,7 @@
                     let quill = this.$refs.myQuillEditor.quill;
                     _this.$tool.foreach(_this.attachmentList, function (k, v) {
                         let data = _this.$auth.authPost("/user/file/upload", {base64: v.content});
-                        if (data.is_ok !== 1){
+                        if (data.status !== 200){
                             Toast(data.msg);
                             return ;
                         }

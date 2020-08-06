@@ -119,6 +119,8 @@ class PublicController extends Controller
         $this->data['msg'] = "正常";
         $this->data['datas'] = [];
         $this->data['datas']['adminEmail'] = $params['adminEmail'];
+        $this->data['datas']['adminQQ'] = $params['adminQQ'];
+        $this->data['datas']['adminWX'] = $params['adminWX'];
         $this->data['datas']['sysInfo'] = \Yii::$app->vueApp->sysInfo;
         $this->data['datas']['howToUse'] = \Yii::$app->vueApp->howToUse;
         $this->data['datas']['warnings'] = \Yii::$app->vueApp->warnings;

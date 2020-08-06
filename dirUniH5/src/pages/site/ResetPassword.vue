@@ -15,7 +15,7 @@
                             </div>
                         </div>
                         <div class="col-xs-5">
-                            <button class="btn btn-warning btn-block" :disabled="isBtnSendVerifyCodedisabled" @click="sendVerifyCode" v-preventReClick>发送验证码{{countDownSendCode}}</button>
+                            <button class="btn btn-warning btn-block" :disabled="isBtnSendVerifyCodedisabled" @tap="sendVerifyCode" v-preventReClick>发送验证码{{countDownSendCode}}</button>
                         </div>
                     </div>
                     <div class="form-group">
@@ -38,10 +38,10 @@
                             <text class="text-blue">注册</text>
                         </navigator>
                         <text :decode="false" class="float-right">&nbsp; | &nbsp;</text>
-                        <text class="text-blue float-right" @click="$router.push('/')">首页</text>
+                        <text class="text-blue float-right" @tap="$router.push('/')">首页</text>
                         <div class="clearfix"></div>
                     </div>
-                    <button class="btn btn-primary btn-block btn-lg" :disabled="isBtnDisabled" @click="toResetPassword" v-preventReClick>重置</button>
+                    <button class="btn btn-primary btn-block btn-lg" :disabled="isBtnDisabled" @tap="toResetPassword" v-preventReClick>重置</button>
                 </div>
             </div>
         </view>

@@ -50,7 +50,7 @@ class FormResetPassword extends Model
             \Yii::$app->session->addFlash('error', $r['message']);
             return false;
         }
-        if ($r['data']['is_ok'] != 1){
+        if ($r['data']['status'] != 200){
             \Yii::$app->session->addFlash('error', $r['data']['msg']);
             return false;
         }
