@@ -105,6 +105,38 @@
 			}
 		},
 		{
+			"path": "pages/article/List",
+			"name":"文章列表",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "文章列表",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/article/Add",
+			"name":"创建文章",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "创建文章"
+			}
+		},
+		{
+			"path": "pages/article/View",
+			"name":"文章详情",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "文章详情",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
 			"path": "pages/search/Search",
 			"name":"搜索",
 			"meta":{},

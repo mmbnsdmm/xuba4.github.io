@@ -52,6 +52,9 @@ Vue.prototype.$auth = Auth;
 import pageHead from '@/pages/layouts/page-head.vue'
 Vue.component('page-head', pageHead);
 
+import  Editor from './common/vue-quill-editor/Editor'
+Vue.component("Editor", Editor);
+
 App.mpType = 'app';
 
 const app = new Vue({

@@ -75,8 +75,10 @@
                 attentionSrc: '/static/search/attention.png'
             }
         },
-        onLoad() {
-            this.init();
+        onLoad(options) {
+            let _this = this;
+            _this.init();
+            if (options.keyword) _this.keyword = options.keyword
         },
         components: {
             //引用mSearch组件，如不需要删除即可

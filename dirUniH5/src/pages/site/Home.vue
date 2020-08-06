@@ -5,11 +5,11 @@
                 <u-icon name="scan" :size="46"></u-icon>
                 <view class="grid-text">扫一扫</view>
             </u-grid-item>
-            <u-grid-item @tap="toScan">
+            <u-grid-item @tap="toPublish">
                 <u-icon name="edit-pen" :size="46"></u-icon>
                 <view class="grid-text">发布</view>
             </u-grid-item>
-            <u-grid-item @tap="$router.push('/pages/search/Search')">
+            <u-grid-item @tap="toSearch">
                 <u-icon name="search" :size="46"></u-icon>
                 <view class="grid-text">搜索</view>
             </u-grid-item>
@@ -85,6 +85,20 @@
         methods: {
             toScan: function () {
                 Toast("该功能暂未实现");
+            },
+            toPublish: function () {
+                uni.navigateTo({
+                    url: "/pages/article/Add"
+                });
+                // let _this = this;
+                // _this.$router.push('/pages/article/Add')
+            },
+            toSearch: function () {
+                // let _this = this;
+                // _this.$router.push('/pages/search/Search?searchValue=""');
+                uni.navigateTo({
+                    url: "/pages/search/Search"
+                });
             }
         }
     }
