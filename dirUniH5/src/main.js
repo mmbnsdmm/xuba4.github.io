@@ -52,8 +52,13 @@ Vue.prototype.$auth = Auth;
 import pageHead from '@/pages/layouts/page-head.vue'
 Vue.component('page-head', pageHead);
 
-import  Editor from './common/vue-quill-editor/Editor'
-Vue.component("Editor", Editor);
+import tinymce from 'tinymce'
+Vue.prototype.$tinymce = tinymce;
+import VueTinymce from '@/plugins/tinymce/wodrow-tinymce'
+Vue.use(VueTinymce);
+
+// import AvueUeditor from 'avue-plugin-ueditor'
+// Vue.use(AvueUeditor);
 
 App.mpType = 'app';
 

@@ -2,22 +2,23 @@
     <div class="article-add">
         <u-field v-model="title" label="标题" placeholder="请填写标题"></u-field>
         <u-field v-model="getPassword" label="获取密码" placeholder="如果设置则用户必须验证密码后才能访问"></u-field>
-        <WodrowEditor placeholder="请输入内容" @editOk="editOk" uploadFileUrl="/#" :html="content"></WodrowEditor>
+        <jinEdit placeholder="请输入内容" @editOk="editOk" uploadFileUrl="/#"></jinEdit>
+        <view class="container"></view>
     </div>
 </template>
 
 <script>
-    import WodrowEditor from "@/plugins/wodrow-editor/WodrowEditor";
+    import jinEdit from '@/plugins/jin-edit/jin-edit.vue';
     export default {
         components: {
-            WodrowEditor
+            jinEdit
         },
         name: "ArticleAdd",
         data: function () {
             return {
                 title: "",
                 getPassword: "",
-                content: "123456"
+                content: ""
             }
         },
         mounted() {},
