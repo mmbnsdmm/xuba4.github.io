@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import App from './App'
 
-import 'tailwindcss/tailwind.css'
-
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min'
 

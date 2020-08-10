@@ -94,8 +94,6 @@
                 // _this.$router.push('/pages/article/Add')
             },
             toSearch: function () {
-                // let _this = this;
-                // _this.$router.push('/pages/search/Search?searchValue=""');
                 uni.navigateTo({
                     url: "/pages/search/Search"
                 });

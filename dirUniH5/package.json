@@ -72,7 +72,6 @@
     "sass-loader": "^9.0.2",
     "stylus": "^0.54.8",
     "stylus-loader": "^3.0.2",
-    "tailwindcss": "^1.6.2",
     "tinymce": "^5.4.1",
     "uni-read-pages": "^1.0.5",
     "uni-simple-router": "^1.5.5",
@@ -100,7 +99,7 @@
     "babel-plugin-import": "^1.11.0",
     "cross-env": "^7.0.2",
     "jest": "^25.4.0",
-    "mini-types": "*",
+    "mini-types": "^0.1.4",
     "miniprogram-api-typings": "^3.0.1",
     "postcss-comment": "^2.0.0",
     "vue-template-compiler": "^2.6.11"

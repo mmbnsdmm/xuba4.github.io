@@ -86,7 +86,7 @@ let tool = {
         let length = arr.length;
         arr.splice(0, length);
     },
-    VueArrayReset: function (arr, arrVal) {
+    vueArrayReset: function (arr, arrVal) {
         this.vueArrayClear(arr);
         arrVal.forEach(function (v) {
             arr.push(v);

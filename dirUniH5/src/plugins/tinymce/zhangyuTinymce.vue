@@ -9,11 +9,11 @@ import tinymce from 'tinymce/tinymce'
 import Editor from '@tinymce/tinymce-vue'
 
 import 'tinymce/themes/silver'
-import 'tinymce/plugins/image'// 插入上传图片插件
-import 'tinymce/plugins/media'// 插入视频插件
-import 'tinymce/plugins/table'// 插入表格插件
-import 'tinymce/plugins/lists'// 列表插件
-import 'tinymce/plugins/wordcount'// 字数统计插件
+import 'tinymce/plugins/image' // 插入上传图片插件
+import 'tinymce/plugins/media' // 插入视频插件
+import 'tinymce/plugins/table' // 插入表格插件
+import 'tinymce/plugins/lists' // 列表插件
+import 'tinymce/plugins/wordcount' // 字数统计插件
 import 'tinymce/icons/default/icons'
 
 export default {
