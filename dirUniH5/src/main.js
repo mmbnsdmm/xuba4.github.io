@@ -52,14 +52,6 @@ Vue.prototype.$auth = Auth;
 import pageHead from '@/pages/layouts/page-head.vue'
 Vue.component('page-head', pageHead);
 
-import tinymce from 'tinymce'
-Vue.prototype.$tinymce = tinymce;
-import VueTinymce from '@/plugins/tinymce/wodrow-tinymce'
-Vue.use(VueTinymce);
-
-// import AvueUeditor from 'avue-plugin-ueditor'
-// Vue.use(AvueUeditor);
-
 App.mpType = 'app';
 
 const app = new Vue({

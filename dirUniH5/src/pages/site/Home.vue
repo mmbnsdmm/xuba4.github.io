@@ -73,7 +73,7 @@
             _this.$http.post('/public/get-datas', {}, true, function (res) {
                 let qqqs = res.datas.qqqs;
                 let x = [1, 2, 3];
-                _this.$tool.arrayReset(_this.qqqs, qqqs);
+                _this.$tool.vueArrayReset(_this.qqqs, qqqs);
                 _this.adminEmail = res.datas.adminEmail;
                 _this.adminQQ = res.datas.adminQQ;
                 _this.adminWX = res.datas.adminWX;
