@@ -1,38 +1,27 @@
 <template>
     <div class="article-add">
-        <u-field v-model="title" label="标题" placeholder="请填写标题"></u-field>
-        <u-field v-model="getPassword" label="获取密码" placeholder="如果设置则用户必须验证密码后才能访问"></u-field>
-        <WodrowEditor id="article-edit" placeholder="请输入内容" :uploadFileUrl="$conf.apiUrl + '/user/file/upload'" v-model="content"></WodrowEditor>
-        <u-gap></u-gap>
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
-                    <button class="btn btn-primary btn-block" @tap="toPublish()">发布</button>
-                </div>
-            </div>
-        </div>
+        <ol class="breadcrumb">
+            <li>
+                <text class="text-blue" @tap="$router.push('/')">首页</text>
+            </li>
+            <li>
+                <text class="text-blue" @tap="$router.push('/pages/article/List')">文章列表</text>
+            </li>
+            <li class="active">创建文章</li>
+        </ol>
+        <Artilce_Form></Artilce_Form>
     </div>
 </template>
 
 <script>
-    import WodrowEditor from "@/plugins/wodrow-editor/WodrowEditor";
+    import Artilce_Form from './_Form'
     export default {
-        components: {
-            WodrowEditor
-        },
         name: "ArticleAdd",
-        data: function () {
-            return {
-                title: "",
-                getPassword: "",
-                content: ""
-            }
+        components: {
+            Artilce_Form
         },
-        mounted() {},
-        methods:{
-            toPublish: function () {
-                console.log(this.content);
-            }
+        data: function () {
+            return {}
         }
     }
 </script>

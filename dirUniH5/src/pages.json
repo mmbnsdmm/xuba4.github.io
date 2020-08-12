@@ -126,6 +126,16 @@
 			}
 		},
 		{
+			"path": "pages/article/Update",
+			"name":"修改文章",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "修改文章"
+			}
+		},
+		{
 			"path": "pages/article/View",
 			"name":"文章详情",
 			"meta":{},
@@ -164,7 +174,8 @@
         "backgroundColor": "#F8F8F8",
         "backgroundColorTop": "#F4F5F6",
         "backgroundColorBottom": "#F4F5F6",
-		"navigationBarTitleText": "Hello uniapp title text"
+		"navigationBarTitleText": "Hello uniapp title text",
+		"onReachBottomDistance": 50
 	},
     "tabBar": {
     	"color": "#C0C4CC",
@@ -178,6 +189,12 @@
     			"selectedIconPath": "static/home02.jpg",
     			"text": "首页"
     		},
+			{
+				"pagePath": "pages/article/List",
+				"iconPath": "static/article_list01.jpg",
+				"selectedIconPath": "static/article_list01.jpg",
+				"text": "文章列表"
+			},
     		{
     			"pagePath": "pages/user/center/Index",
     			"iconPath": "static/user01.jpg",

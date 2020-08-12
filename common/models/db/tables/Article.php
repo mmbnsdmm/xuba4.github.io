@@ -15,11 +15,10 @@ use Yii;
  * @property int $updated_at
  * @property int $created_by
  * @property int|null $updated_by
- * @property string $get_password
+ * @property string|null $get_password
  * @property int $min_level
  * @property int $min_integral
  * @property int $is_boutique 是否精品
- * @property int $is_publish 是否发布
  *
  * @property User $createdBy
  * @property User $updatedBy
@@ -40,12 +39,13 @@ class Article extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'content', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by', 'get_password', 'min_level', 'min_integral', 'is_boutique', 'is_publish'], 'trim'],
-            [['title', 'content', 'status', 'created_at', 'updated_at', 'created_by', 'get_password', 'is_boutique', 'is_publish'], 'required'],
+            [['title', 'content', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by', 'get_password', 'min_level', 'min_integral', 'is_boutique'], 'trim'],
+            [['title', 'content', 'status', 'created_at', 'updated_at', 'created_by'], 'required'],
             [['content'], 'string'],
-            [['status', 'created_at', 'updated_at', 'created_by', 'updated_by', 'min_level', 'min_integral', 'is_boutique', 'is_publish'], 'integer'],
+            [['status', 'created_at', 'updated_at', 'created_by', 'updated_by', 'min_level', 'min_integral', 'is_boutique'], 'integer'],
             [['title', 'get_password'], 'string', 'max' => 180],
-            [['updated_by', 'min_level', 'min_integral'], 'default', 'value' => null],
+            [['updated_by', 'get_password'], 'default', 'value' => null],
+            [['min_level', 'min_integral', 'is_boutique'], 'default', 'value' => 0],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
         ];
@@ -69,7 +69,6 @@ class Article extends \yii\db\ActiveRecord
             'min_level' => Yii::t('app', 'Min Level'),
             'min_integral' => Yii::t('app', 'Min Integral'),
             'is_boutique' => Yii::t('app', '是否精品'),
-            'is_publish' => Yii::t('app', '是否发布'),
         ];
     }
 

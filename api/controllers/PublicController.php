@@ -9,6 +9,7 @@
 namespace api\controllers;
 
 use common\models\db\AppVersion;
+use common\models\db\Article;
 use common\models\db\LogEmailSendCode;
 use wodrow\yii\rest\Controller;
 
@@ -23,8 +24,11 @@ class PublicController extends Controller
      * @return object enums
      * @return object enums.logEmailSendCode
      * @return array enums.logEmailSendCode.TypeDesc 验证码类型
-     * @return object enums.appVersion
+     * @return object enums.appVersion APP
      * @return array enums.appVersion.TypeDesc 版本app类型
+     * @return array enums.article 文章
+     * @return array enums.article.statusDesc 状态类型
+     * @return array enums.article.isBoutiqueDesc 是否精品
      */
     public function actionGetEnums()
     {
@@ -34,6 +38,10 @@ class PublicController extends Controller
             ],
             'appVersion' => [
                 'typeDesc' => AppVersion::instance()->typeDesc,
+            ],
+            'article' => [
+                'statusDesc' => Article::instance()->statusDesc,
+                'isBoutiqueDesc' => Article::instance()->isBoutiqueDesc,
             ],
         ];
         $data = $this->data;

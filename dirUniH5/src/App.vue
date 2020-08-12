@@ -24,7 +24,10 @@
     }
     /* #endif */
     @import "uview-ui/index.scss";
-    uni-page-wrapper {
-        background: #ffffff;
+    body {
+        background: #ffffff !important;
+    }
+    .breadcrumb{
+        margin-bottom: 0 !important;
     }
 </style>

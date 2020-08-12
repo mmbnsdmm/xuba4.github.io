@@ -25,6 +25,7 @@ Vue.prototype.$_ = Lodash;
 
 import Moment from 'moment'
 import 'moment/locale/zh-cn'
+Moment.locale('zh-cn');
 Vue.prototype.$moment = Moment;
 
 import Tool from '@/common/tool'

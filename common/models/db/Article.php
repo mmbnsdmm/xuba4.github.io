@@ -15,18 +15,32 @@ use yii\behaviors\TimestampBehavior;
  * @property User $createdBy
  * @property User $updatedBy
  * @property-read array $statusDesc
+ * @property-read array $isBoutiqueDesc
+ * @property array info
  */
 class Article extends \common\models\db\tables\Article
 {
     const SCENARIO_TEST = 'test';
     const STATUS_DELETE = -10;
     const STATUS_ACTIVE = 10;
+    const STATUS_SECRET = 5;
+    const IS_BOUTIQUE_Y = 1;
+    const IS_BOUTIQUE_N = 0;
 
     public function getStatusDesc()
     {
         return [
             self::STATUS_DELETE => "已删除",
             self::STATUS_ACTIVE => "正常",
+            self::STATUS_SECRET => "私密",
+        ];
+    }
+
+    public function getIsBoutiqueDesc()
+    {
+        return [
+            self::IS_BOUTIQUE_Y => "是",
+            self::IS_BOUTIQUE_N => "否",
         ];
     }
 
@@ -36,13 +50,13 @@ class Article extends \common\models\db\tables\Article
         $behaviors = ArrayHelper::merge($behaviors, [
             'timestamp' => [
                 'class' => TimestampBehavior::class,
-                'createdAtAttribute' => false,
-                'updatedAtAttribute' => false,
+//                'createdAtAttribute' => false,
+//                'updatedAtAttribute' => false,
             ],
             'blameable' => [
                 'class' => BlameableBehavior::class,
-                'createdByAttribute' => false,
-                'updatedByAttribute' => false,
+//                'createdByAttribute' => false,
+//                'updatedByAttribute' => false,
             ],
         ]);
         return $behaviors;
@@ -60,11 +74,11 @@ class Article extends \common\models\db\tables\Article
     public function rules()
     {
         $rules = parent::rules();
-        /*foreach ($rules as $k => $v) {
+        foreach ($rules as $k => $v) {
             if ($v[1] == 'required'){
                 $rules[$k][0] = array_diff($rules[$k][0], ['created_at', 'updated_at', 'created_by', 'updated_by']);
             }
-        }*/
+        }
         $rules = ArrayHelper::merge($rules, [
 //            [[], 'required', 'on' => self::SCENARIO_TEST],
         ]);
@@ -166,5 +180,16 @@ class Article extends \common\models\db\tables\Article
         $test->setScenario(self::SCENARIO_TEST);
         $test->save();
         var_dump($test->toArray());
+    }
+
+    /**
+     * @return array
+     */
+    public function getInfo()
+    {
+        $article = $this->toArray();
+        $createdBy = Yii::$app->apiTool->authReturn($this->createdBy);
+        $article['createdBy'] = $createdBy;
+        return $article;
     }
 }
