@@ -48,6 +48,9 @@ Vue.prototype.$http = Http;
 import Auth from '@/common/auth'
 Vue.prototype.$auth = Auth;
 
+import Models from '@/common/models'
+Vue.prototype.$models = Models;
+
 import pageHead from '@/pages/layouts/page-head.vue'
 Vue.component('page-head', pageHead);
 

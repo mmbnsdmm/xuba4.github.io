@@ -11,21 +11,21 @@
             <div class="col-xs-12">
                 <WLoadMore ref="WODROW_LOAD_MORE" @provider="provider" :pageSize="page_size" color="#66ccff">
                     <template v-slot:list="{ items }">
-                        <view class="solid-top" v-for="(item,index) in items" :key="index">
+                        <view class="solid-top" v-for="(item, index) in items" :key="index">
                             <u-card padding="10" margin="15rpx" :border="false" :head-border-bottom="false" :foot-border-top="false" title-size="15rpx"
                                     :title="item.createdBy.nickName" :sub-title="$moment(item.created_at*1000).fromNow()" :thumb="item.createdBy.avatar"
-                                    @body-click="toView(item.id)" @head-click="toAuthor(item.created_by)">
+                                    @body-click="toView(item.id, item.isUpdate)" @head-click="toAuthor(item.created_by)">
                                 <view class="" slot="body">
                                     <view>
                                         <text class="text-blue">{{item.title}}</text>
-                                        <small class="pull-right text-gray">有更新</small>
+                                        <small class="pull-right text-danger" v-if="item.isUpdate">有更新</small>
                                     </view>
                                     <view>
                                         <u-tag text="标签" mode="light" size="mini" @click.native.stop="toCircle(1)"/>
                                     </view>
                                 </view>
                                 <view class="" slot="foot">
-                                    <u-icon name="eye-fill" size="34" color="" label="查看" class="pull-right" @tap="toView(item.id)"></u-icon>
+                                    <u-icon name="eye-fill" size="34" color="" label="查看" class="pull-right" @tap="toView(item.id, item.isUpdate)"></u-icon>
                                     <div class="clearfix"></div>
                                 </view>
                             </u-card>
@@ -75,6 +75,11 @@
                 };
                 _this.$auth.post("/article/default/list", formParams, false, function (r) {
                     _this.$_.forEach(r.list, function (v, k) {
+                        v.isUpdate = false;
+                        let article = _this.$models.Article.getIsSetById(v.id);
+                        if (article && article.updated_at < v.updated_at) {
+                            v.isUpdate = true;
+                        }
                         res.push(v);
                     });
                 }, function (msg) {
@@ -88,9 +93,9 @@
                     scrollTop:0
                 })
             },
-            toView(articleId){
+            toView(articleId, isUpdate){
                 uni.navigateTo({
-                    url: "/pages/article/View?id=" + articleId
+                    url: "/pages/article/View?id=" + articleId + "&isLast=" + isUpdate
                 });
             },
             toAuthor(userId){

@@ -87,7 +87,7 @@
                     _this.id = newValue.id;
                     _this.title = newValue.title;
                     _this.get_password = newValue.get_password;
-                    // _this.content = newValue.content;
+                    _this.content = newValue.content;
                     _this.status = newValue.status;
                     _this.$refs.WODROW_ARTICLE_EDITOR.setContent(newValue.content);
                 },
@@ -125,7 +125,7 @@
                     _this.statas = 10;
                     let article = res.article;
                     uni.navigateTo({
-                        url: "/pages/article/View?id=" + article.id
+                        url: "/pages/article/View?id=" + article.id + "&isLast=" + true
                     });
                 }, function (msg) {
                     Toast(msg);

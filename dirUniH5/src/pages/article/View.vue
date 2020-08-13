@@ -63,16 +63,10 @@
                 Toast("参数id传递异常");
                 uni.navigateBack();
             }
-            let articleId = options.id;
-            _this.$auth.post("/article/default/view", {id: articleId}, true, function (res) {
-                let article = res.article;
-                _this.$set(_this.$data, "article", article);
-                _this.actionSheetList.push({
-                    name: "修改",
-                    action: "update"
-                })
-            }, function (msg) {
-                Toast(msg);
+            _this.$set(_this.$data, "article", _this.$models.Article.getById(options.id, options.isLast));
+            _this.actionSheetList.push({
+                name: "修改",
+                action: "update"
             });
         },
         mounted() {
@@ -106,6 +100,8 @@
             }
         },
         onPullDownRefresh(){
+            let _this = this;
+            _this.$set(_this.$data, "article", _this.$models.Article.getById(_this.article.id, true));
             setTimeout(function () {
                 uni.stopPullDownRefresh();
             }, 1000);

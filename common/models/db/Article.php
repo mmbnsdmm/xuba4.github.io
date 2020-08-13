@@ -16,7 +16,8 @@ use yii\behaviors\TimestampBehavior;
  * @property User $updatedBy
  * @property-read array $statusDesc
  * @property-read array $isBoutiqueDesc
- * @property array info
+ * @property-read  array $info
+ * @property-read  boolean $canYouOpt
  */
 class Article extends \common\models\db\tables\Article
 {
@@ -190,6 +191,32 @@ class Article extends \common\models\db\tables\Article
         $article = $this->toArray();
         $createdBy = Yii::$app->apiTool->authReturn($this->createdBy);
         $article['createdBy'] = $createdBy;
+        $article['canYouOpt'] = $this->canYouOpt;
         return $article;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getCanYouOpt()
+    {
+        if ($this->isNewRecord){
+            return true;
+        }
+        $user = \Yii::$app->user->identity;
+        $author = $this->createdBy;
+        if ($author->id == $user->id){
+            return true;
+        }else{
+            if ($user->isAdmin){
+                return true;
+            }else{
+                if (in_array($user->id, Yii::$app->params['apiAdminUserIds'])){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
     }
 }

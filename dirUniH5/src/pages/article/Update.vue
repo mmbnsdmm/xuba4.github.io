@@ -32,16 +32,7 @@
                 Toast("参数id传递异常");
                 uni.navigateBack();
             }
-            let articleId = options.id;
-            _this.$auth.post("/article/default/view", {id: articleId}, true, function (res) {
-                let article = res.article;
-                /*_this.$_.forEach(_this.article, function (v, k) {
-                    _this.$set(_this.article, k, article[k]);
-                });*/
-                _this.$set(_this.$data, "article", article);
-            }, function (msg) {
-                Toast(msg);
-            })
+            _this.$set(_this.$data, "article", _this.$models.Article.getById(options.id, options.isLast));
         }
     }
 </script>

@@ -36,6 +36,9 @@ class DefaultController extends Controller
         if (!$article){
             throw new ApiException(202008111057, "没有找到文章");
         }
+        if (!$article->canYouOpt){
+            throw new ApiException(202008131536, "你没有修改此文章权限");
+        }
         $article->title = $title;
         $article->get_password = $get_password;
         $article->content = $content;
@@ -106,7 +109,9 @@ class DefaultController extends Controller
         $articles = $query->limit($limit)->offset($offset)->all();
         $list = [];
         foreach ($articles as $k => $v) {
-            $list[] = $v->info;
+            $info =$v->info;
+            unset($info['content']);
+            $list[] = $info;
         }
         $r = $this->data;
         $r['status'] = 200;

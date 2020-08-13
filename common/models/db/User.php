@@ -26,6 +26,7 @@ use yii\web\IdentityInterface;
  *
  * @property-read array $statusDesc
  * @property-read string $nickName
+ * @property-read boolean $isAdmin
  */
 class User extends \common\models\db\tables\User implements IdentityInterface
 {
@@ -215,5 +216,18 @@ class User extends \common\models\db\tables\User implements IdentityInterface
         $test->setScenario(self::SCENARIO_TEST);
         $test->save();
         var_dump($test->toArray());
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsAdmin()
+    {
+        $adminName = \Yii::$app->params['adminRoleAdminUserName'];
+        if (AdminAuthAssignment::findOne(['user_id' => $this->id, 'item_name' => $adminName])){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

@@ -73,6 +73,7 @@ return [
         'yiichina-password' => "",
         'adminRoleOrdinaryUserName' => "普通用户",
         'adminRoleAdminUserName' => "管理员",
+        'apiAdminUserIds' => [],
         'console-username' => "",
         'console-password' => "",
         'qqqs' => [],

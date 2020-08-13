@@ -47,6 +47,22 @@ let auth = {
         }, function (msg) {
             Toast(msg);
         })
+    },
+    _getSessionKey: function (key) {
+        let user = this.initUser();
+        return user.token + "_" + key;
+    },
+    setSession: function (key, value, duration = 0) {
+        let _k = this._getSessionKey(key);
+        Tool.setCache(_k, value, duration);
+    },
+    getSession: function (key) {
+        let _k = this._getSessionKey(key);
+        return Tool.getCache(_k);
+    },
+    delSession: function (key) {
+        let _k = this._getSessionKey(key);
+        Tool.delCache(_k);
     }
 };
 export default auth
