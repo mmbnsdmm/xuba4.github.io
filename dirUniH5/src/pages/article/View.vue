@@ -21,17 +21,20 @@
                 </div>
             </div>
         </div>
+        <ScrollTopIcon @tapIcon="tapIcon"></ScrollTopIcon>
         <van-action-sheet v-model="actionSheetShow" :actions="actionSheetList" @select="sheetListSelect" />
     </view>
 </template>
 
 <script>
     import {Toast} from 'vant';
-    import WI from '@/plugins/wodrow/iconfont/WI'
+    import WI from '@/plugins/wodrow/iconfont/WI';
+    import ScrollTopIcon from '@/plugins/wodrow/list/ScrollTopIcon';
     export default {
         name: "ArticleView",
         components: {
-            WI
+            WI,
+            ScrollTopIcon
         },
         data() {
             return {
@@ -94,6 +97,12 @@
                         });
                         break;
                 }
+            },
+            tapIcon(e){
+                uni.pageScrollTo({
+                    duration:60,
+                    scrollTop:0
+                })
             }
         },
         onPullDownRefresh(){

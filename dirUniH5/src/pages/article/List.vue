@@ -10,24 +10,45 @@
         <div class="row">
             <div class="col-xs-12">
                 <WLoadMore ref="WODROW_LOAD_MORE" @provider="provider" :pageSize="page_size" color="#66ccff">
-                    <template v-slot:list="{ items }"> <!-- 此处为插槽，只能使用template或其他自定义component -->
+                    <template v-slot:list="{ items }">
                         <view class="solid-top" v-for="(item,index) in items" :key="index">
-                            <view class="item"> {{item.title}} </view>
+                            <u-card padding="10" margin="15rpx" :border="false" :head-border-bottom="false" :foot-border-top="false" title-size="15rpx"
+                                    :title="item.createdBy.nickName" :sub-title="$moment(item.created_at*1000).fromNow()" :thumb="item.createdBy.avatar"
+                                    @body-click="toView(item.id)" @head-click="toAuthor(item.created_by)">
+                                <view class="" slot="body">
+                                    <view>
+                                        <text class="text-blue">{{item.title}}</text>
+                                        <small class="pull-right text-gray">有更新</small>
+                                    </view>
+                                    <view>
+                                        <u-tag text="标签" mode="light" size="mini" @click.native.stop="toCircle(1)"/>
+                                    </view>
+                                </view>
+                                <view class="" slot="foot">
+                                    <u-icon name="eye-fill" size="34" color="" label="查看" class="pull-right" @tap="toView(item.id)"></u-icon>
+                                    <div class="clearfix"></div>
+                                </view>
+                            </u-card>
                         </view>
                     </template>
                 </WLoadMore>
             </div>
         </div>
+        <ScrollTopIcon @tapIcon="tapIcon"></ScrollTopIcon>
     </view>
 </template>
 
 <script>
     import WLoadMore from '@/plugins/wodrow/list/LoadMore';
+    import ScrollTopIcon from '@/plugins/wodrow/list/ScrollTopIcon';
+    import uniTag from "@/components/uni-tag/uni-tag.vue"
     import {Toast, Dialog} from 'vant'
     export default {
         name: "ArticleList",
         components: {
-            WLoadMore
+            WLoadMore,
+            ScrollTopIcon,
+            uniTag
         },
         data() {
             return {
@@ -46,74 +67,39 @@
                 }, 1000);
             },
             getData(pd) {
-                console.log(pd);
                 let _this = this;
                 let res = [];
                 let formParams = {
                     page: pd.pageNo,
                     page_size: pd.pageSize
                 };
-                _this.$auth.post("/article/default/list", formParams, true, function (r) {
+                _this.$auth.post("/article/default/list", formParams, false, function (r) {
                     _this.$_.forEach(r.list, function (v, k) {
                         res.push(v);
-                    })
+                    });
                 }, function (msg) {
                     Toast(msg);
                 });
                 return res;
             },
-            _getData(e){
-                //模拟接口返回的第pageNo页的页数据
-                let res = [];
-                for(let i = 0; i < e.pageSize; i ++){
-                    let s = {
-                        name:this.pre+'_'+e.pageNo+'_'+i,
-                    };
-                    res.push(s);
-                }
-                //模拟请求数据失败
-                if(!this.failFlag && e.pageNo === 3){
-                    uni.showModal({
-                        title: '模拟网络请求失败',
-                        content: '模拟网络请求失败，未获取到数据\n再次上拉即可',
-                        showCancel: false,
-                        cancelText: '',
-                        confirmText: '确定',
-                        success: res => {},
-                        fail: () => {},
-                        complete: () => {}
-                    });
-                    res = null; // 失败时请传null
-                    this.failFlag = true; // 清除模拟失败标志
-                }
-                //模拟尾页数据（尾页的数据可能一直在增加，但是不满一页）
-                if(e.pageNo === 4 ){
-                    uni.showModal({
-                        title: '模拟请求尾页',
-                        content: '清多次上拉模拟陆续有新数据加载',
-                        showCancel: false,
-                        cancelText: '',
-                        confirmText: '确定',
-                        success: res => {},
-                        fail: () => {},
-                        complete: () => {}
-                    });
-                    //模拟每次请求时，尾页新增了2条数据
-                    if(this.count < e.pageSize){
-                        this.count += 2; // 尾页总数据条数增加
-                    }
-
-                    //模拟尾页的数据
-                    res = [];
-                    for(let i=0;i<this.count;i++){
-                        let s = {
-                            name:this.pre+'_'+e.pageNo+'_'+i,
-                        };
-                        res.push(s);
-                    }
-                }
-                //返回当前这一页的数据（成功返回数组，失败返回null）
-                return res;
+            tapIcon(e){
+                uni.pageScrollTo({
+                    duration:60,
+                    scrollTop:0
+                })
+            },
+            toView(articleId){
+                uni.navigateTo({
+                    url: "/pages/article/View?id=" + articleId
+                });
+            },
+            toAuthor(userId){
+                uni.navigateTo({
+                    url: "/pages/user/profile/Index?id=" + userId
+                });
+            },
+            toCircle(circleId){
+                console.log(circleId);
             }
         },
         onReady() {
@@ -130,16 +116,5 @@
 </script>
 
 <style scoped>
-    .item{
-        display: flex;
-        justify-content: center;
-        align-content: center;
-        font-size: 60upx;
-        line-height: 150upx;
-        margin: 10upx 20upx;
-        border-radius: 20upx;
-        width: 710upx;
-        height: 150upx;
-        background: #CCCCCC;
-    }
+
 </style>

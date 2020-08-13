@@ -104,10 +104,14 @@ class DefaultController extends Controller
         $_query = clone $query;
         $total = $_query->count();
         $articles = $query->limit($limit)->offset($offset)->all();
+        $list = [];
+        foreach ($articles as $k => $v) {
+            $list[] = $v->info;
+        }
         $r = $this->data;
         $r['status'] = 200;
         $r['msg'] = "获取成功";
-        $r['list'] = $articles;
+        $r['list'] = $list;
         $r['page'] = $page;
         $r['page_size'] = $page_size;
         $r['total'] = $total;
