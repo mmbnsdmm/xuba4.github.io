@@ -27,18 +27,18 @@
                         <input type="password" class="form-control" v-model="passwordConfirmation" placeholder="再次确认密码">
                     </div>
                     <div class="help-block">
-                        <navigator url="/pages/site/Login" class="float-left">
+                        <navigator url="/pages/site/Login" class="pull-left">
                             <text class="text-blue">用户名登陆</text>
                         </navigator>
-                        <text :decode="false" class="float-left">&nbsp; | &nbsp;</text>
-                        <navigator url="/pages/site/LoginByEmail" class="float-left">
+                        <text :decode="false" class="pull-left">&nbsp; | &nbsp;</text>
+                        <navigator url="/pages/site/LoginByEmail" class="pull-left">
                             <text class="text-blue">邮箱登陆</text>
                         </navigator>
-                        <navigator url="/pages/site/Signup" class="float-right">
+                        <navigator url="/pages/site/Signup" class="pull-right">
                             <text class="text-blue">注册</text>
                         </navigator>
-                        <text :decode="false" class="float-right">&nbsp; | &nbsp;</text>
-                        <text class="text-blue float-right" @tap="$router.push('/')">首页</text>
+                        <text :decode="false" class="pull-right">&nbsp; | &nbsp;</text>
+                        <text class="text-blue pull-right" @tap="$router.push('/')">首页</text>
                         <div class="clearfix"></div>
                     </div>
                     <button class="btn btn-primary btn-block btn-lg" :disabled="isBtnDisabled" @tap="toResetPassword" v-preventReClick>重置</button>
