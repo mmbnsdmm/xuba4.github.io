@@ -122,4 +122,28 @@ class DefaultController extends Controller
         $r['total'] = $total;
         return $r;
     }
+
+    /**
+     * 删除文章
+     * @desc post
+     * @param int $id
+     * @throws
+     * @return array
+     * @return int status 是否成功
+     * @return string msg
+     */
+    public function actionDelete($id)
+    {
+        $article = Article::findOne(['id' => $id, 'status' => Article::STATUS_ACTIVE]);
+        if (!$article){
+            throw new ApiException(202008140907, "没有找到文章或文章已删除");
+        }
+        $article->status = Article::STATUS_DELETE;
+        if (!$article->save()){
+            throw new ApiException(202008140908, "删除失败:".Model::getModelError($article));
+        }
+        $this->data['status'] = 200;
+        $this->data['msg'] = "删除成功";
+        return $this->data;
+    }
 }

@@ -17,7 +17,7 @@
                                     @body-click="toView(item.id, item.isUpdate)" @head-click="toAuthor(item.created_by)">
                                 <view class="" slot="body">
                                     <view>
-                                        <text class="text-blue">{{item.title}}</text>
+                                        <text class="text-blue" style="font-size: 36rpx">{{item.title}}</text>
                                         <small class="pull-right text-danger" v-if="item.isUpdate">有更新</small>
                                     </view>
                                     <view>
@@ -25,7 +25,10 @@
                                     </view>
                                 </view>
                                 <view class="" slot="foot">
-                                    <u-icon name="eye-fill" size="34" color="" label="查看" class="pull-right" @tap="toView(item.id, item.isUpdate)"></u-icon>
+                                    <text class="text-green">原创文</text>
+                                    <u-icon name="eye-fill" size="34" color="" label="查看" class="pull-right text-blue" @tap="toView(item.id, item.isUpdate)"></u-icon>
+                                    <u-icon name="edit-pen-fill" size="34" color="" label="修改" class="pull-right text-warning" v-if="item.canYouOpt" @tap="toUpdate(item.id, item.isUpdate)"></u-icon>
+                                    <u-icon name="close" size="34" color="" label="删除" class="pull-right text-danger" v-if="item.canYouOpt" @tap="toDelete(item.id)"></u-icon>
                                     <div class="clearfix"></div>
                                 </view>
                             </u-card>
@@ -97,6 +100,25 @@
                 uni.navigateTo({
                     url: "/pages/article/View?id=" + articleId + "&isLast=" + isUpdate
                 });
+            },
+            toUpdate(articleId, isUpdate){
+                uni.navigateTo({
+                    url: "/pages/article/Update?id=" + articleId + "&isLast=" + isUpdate
+                });
+            },
+            toDelete(articleId){
+                let _this = this;
+                Dialog.confirm({
+                    title: '确认删除',
+                    message: '你确认要删除此条记录吗？'
+                }).then(() => {
+                    let formParams = {id: articleId};
+                    _this.$auth.post("/article/default/delete", formParams, true, function (res) {
+                        _this.$refs.WODROW_LOAD_MORE.reLoadData()
+                    }, function (msg) {
+                        Toast(msg);
+                    });
+                }).catch(() => {});
             },
             toAuthor(userId){
                 uni.navigateTo({
