@@ -24,13 +24,14 @@ class DefaultController extends Controller
      * @param null|string $get_password
      * @param string $content
      * @param int $status
+     * @param int $create_type
      * @throws
      * @return array
      * @return int status 是否成功
      * @return string msg
      * @return object article 文章信息
      */
-    public function actionPublish($id = null, $title, $get_password = null, $content, $status, $is_boutique = Article::IS_BOUTIQUE_N)
+    public function actionPublish($id = null, $title, $get_password = null, $content, $status, $is_boutique = Article::IS_BOUTIQUE_N, $create_type = Article::CREATE_TYPE_ORIGINAL)
     {
         $article = $id?Article::findOne($id):new Article();
         if (!$article){
@@ -44,6 +45,7 @@ class DefaultController extends Controller
         $article->content = $content;
         $article->status = $status;
         $article->is_boutique = $is_boutique;
+        $article->create_type = $create_type;
         if (!$article->save()){
             throw new ApiException(202008111100, "文章保存失败:".Model::getModelError($article));
         }

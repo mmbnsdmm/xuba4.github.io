@@ -11,8 +11,10 @@ namespace common\models\db;
 
 use common\Tools;
 use wodrow\yii2wtools\tools\ArrayHelper;
+use wodrow\yii2wtools\tools\Color;
 use wodrow\yii2wtools\tools\Model;
 use wodrow\yii2wtools\tools\Security;
+use wodrow\yii2wtools\tools\StrHelper;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\web\IdentityInterface;
@@ -130,6 +132,22 @@ class User extends \common\models\db\tables\User implements IdentityInterface
     {
         Model::setUniqueStrForModelKey($this, 'token');
         $this->key = \Yii::$app->security->generateRandomString();
+    }
+
+    public function generateAvatar($isRandom = false, $isReset = false)
+    {
+        if ($this->avatar && !$isReset){}else{
+            if ($isRandom){
+                $this->avatar = "http://placeimg.com/400/400";
+            }else{
+                $hex = StrHelper::strToHex(md5($this->nickName));
+                $colour = "#".substr($hex, 0, "6");
+                $_colour = Color::rgb2contrast($colour);
+                $c = str_replace("#", "", $colour);
+                $_c = str_replace("#", "", $_colour);
+                $this->avatar = "https://via.placeholder.com/400x400/{$c}/{$_c}?text={$this->nickName}";
+            }
+        }
     }
 
     /**

@@ -17,6 +17,17 @@
                         </u-radio>
                     </u-radio-group>
                 </div>
+                <div class="col-xs-12">
+                    <u-radio-group v-model="create_type">
+                        <u-radio
+                                v-for="(item, index) in createTypeList" :key="index"
+                                :name="item.v"
+                                :disabled="item.disabled"
+                        >
+                            {{item.name}}
+                        </u-radio>
+                    </u-radio-group>
+                </div>
             </div>
         </div>
         <u-gap></u-gap>
@@ -47,7 +58,8 @@
                         title: "",
                         get_password: "",
                         content: "",
-                        status: 10
+                        status: 10,
+                        create_type: 1
                     }
                 }
             }
@@ -60,6 +72,8 @@
                 content: "",
                 status: "",
                 statusList: [],
+                create_type: 1,
+                createTypeList: [],
                 isBtnDisabled: false
             }
         },
@@ -78,7 +92,18 @@
                     };
                     _this.statusList.push(item);
                 }
-            })
+            });
+            let createTypeList = _this.$conf.serverData.enums.article.createTypeDesc;
+            _this.$_.forEach(createTypeList, function (v, k) {
+                if (v !== -10){
+                    let item = {
+                        name: v,
+                        v: k,
+                        disabled: false
+                    };
+                    _this.createTypeList.push(item);
+                }
+            });
         },
         watch: {
             article:{
@@ -113,7 +138,8 @@
                 let formParams = {
                     title: _this.title,
                     content: _this.content,
-                    status: _this.status
+                    status: _this.status,
+                    create_type: _this.create_type
                 };
                 if (_this.id)formParams['id'] = _this.id;
                 if (_this.get_password)formParams['get_password'] = _this.get_password;
@@ -124,7 +150,7 @@
                     _this.$refs.WODROW_ARTICLE_EDITOR.setContent(_this.content);
                     _this.statas = 10;
                     let article = res.article;
-                    uni.navigateTo({
+                    uni.redirectTo({
                         url: "/pages/article/View?id=" + article.id + "&isLast=" + true
                     });
                 }, function (msg) {

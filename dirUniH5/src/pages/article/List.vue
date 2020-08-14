@@ -25,7 +25,8 @@
                                     </view>
                                 </view>
                                 <view class="" slot="foot">
-                                    <text class="text-green">原创文</text>
+                                    <text class="text-green" v-if="item.create_type === 1">{{$conf.serverData.enums.article.createTypeDesc[item.create_type]}}</text>
+                                    <text class="text-warning" v-if="item.create_type === 2">{{$conf.serverData.enums.article.createTypeDesc[item.create_type]}}</text>
                                     <u-icon name="eye-fill" size="34" color="" label="查看" class="pull-right text-blue" @tap="toView(item.id, item.isUpdate)"></u-icon>
                                     <u-icon name="edit-pen-fill" size="34" color="" label="修改" class="pull-right text-warning" v-if="item.canYouOpt" @tap="toUpdate(item.id, item.isUpdate)"></u-icon>
                                     <u-icon name="close" size="34" color="" label="删除" class="pull-right text-danger" v-if="item.canYouOpt" @tap="toDelete(item.id)"></u-icon>

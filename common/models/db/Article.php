@@ -16,6 +16,7 @@ use yii\behaviors\TimestampBehavior;
  * @property User $updatedBy
  * @property-read array $statusDesc
  * @property-read array $isBoutiqueDesc
+ * @property-read array $createTypeDesc
  * @property-read  array $info
  * @property-read  boolean $canYouOpt
  */
@@ -27,6 +28,8 @@ class Article extends \common\models\db\tables\Article
     const STATUS_SECRET = 5;
     const IS_BOUTIQUE_Y = 1;
     const IS_BOUTIQUE_N = 0;
+    const CREATE_TYPE_ORIGINAL = 1;
+    const CREATE_TYPE_REPRINTED = 2;
 
     public function getStatusDesc()
     {
@@ -42,6 +45,14 @@ class Article extends \common\models\db\tables\Article
         return [
             self::IS_BOUTIQUE_Y => "是",
             self::IS_BOUTIQUE_N => "否",
+        ];
+    }
+
+    public function getCreateTypeDesc()
+    {
+        return [
+            self::CREATE_TYPE_ORIGINAL => "原创",
+            self::CREATE_TYPE_REPRINTED => "转载",
         ];
     }
 

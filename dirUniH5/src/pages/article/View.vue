@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <h4>{{article.title}} <WI class="single pull-right" type="&#xe621;" font-size="44rpx" title="配置" @click.native="actionSheetShow= ! actionSheetShow"></WI></h4>
-                    <small>发布者:<code>{{article.createdBy.nickName}}</code>|发布时间:<code>{{$moment(article.created_at*1000).fromNow()}}</code>|最近更新:<code>{{$moment(article.updated_at*1000).fromNow()}}</code></small>
+                    <small><code>{{$conf.serverData.enums.article.createTypeDesc[article.create_type]}}</code>|发布者:<code>{{article.createdBy.nickName}}</code>|发布时间:<code>{{$moment(article.created_at*1000).fromNow()}}</code>|最近更新:<code>{{$moment(article.updated_at*1000).fromNow()}}</code></small>
                     <hr>
                     <view class="u-content">
                         <u-parse :html="article.content"></u-parse>
@@ -51,6 +51,7 @@
                     min_level: 0,
                     title: null,
                     status: null,
+                    create_type: 1,
                     createdBy: {}
                 },
                 actionSheetList: [],
@@ -63,11 +64,18 @@
                 Toast("参数id传递异常");
                 uni.navigateBack();
             }
-            _this.$set(_this.$data, "article", _this.$models.Article.getById(options.id, options.isLast));
-            _this.actionSheetList.push({
-                name: "修改",
-                action: "update"
-            });
+            let article = _this.$models.Article.getById(options.id, options.isLast);
+            if (!article.id) {
+                uni.reLaunch({
+                    url: "/pages/article/List"
+                });
+            }else{
+                _this.$set(_this.$data, "article", article);
+                _this.actionSheetList.push({
+                    name: "修改",
+                    action: "update"
+                });
+            }
         },
         mounted() {
             let _this = this;

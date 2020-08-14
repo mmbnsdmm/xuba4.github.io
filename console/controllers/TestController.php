@@ -12,7 +12,10 @@ namespace console\controllers;
 use common\models\db\AdminAuthAssignment;
 use common\models\db\AdminAuthItem;
 use common\models\db\AdminAuthItemChild;
+use common\models\db\User;
 use QL\QueryList;
+use wodrow\yii2wtools\tools\Color;
+use wodrow\yii2wtools\tools\StrHelper;
 use wodrow\yii2wtools\tools\Tools;
 use yii\console\Controller;
 use yii\helpers\Console;
@@ -121,6 +124,15 @@ class TestController extends Controller
     {
         $x = AdminAuthItem::getRolesByRole("t1");
         foreach ($x as $k => $v){
+            var_dump($v->toArray());
+        }
+    }
+
+    public function actionTest4()
+    {
+        foreach (User::find()->all() as $k => $v) {
+            $v->generateAvatar(false, true);
+            $v->save();
             var_dump($v->toArray());
         }
     }

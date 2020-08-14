@@ -19,6 +19,7 @@ use Yii;
  * @property int $min_level
  * @property int $min_integral
  * @property int $is_boutique 是否精品
+ * @property int $create_type 创作方式
  *
  * @property User $createdBy
  * @property User $updatedBy
@@ -39,13 +40,14 @@ class Article extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'content', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by', 'get_password', 'min_level', 'min_integral', 'is_boutique'], 'trim'],
+            [['title', 'content', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by', 'get_password', 'min_level', 'min_integral', 'is_boutique', 'create_type'], 'trim'],
             [['title', 'content', 'status', 'created_at', 'updated_at', 'created_by'], 'required'],
             [['content'], 'string'],
-            [['status', 'created_at', 'updated_at', 'created_by', 'updated_by', 'min_level', 'min_integral', 'is_boutique'], 'integer'],
+            [['status', 'created_at', 'updated_at', 'created_by', 'updated_by', 'min_level', 'min_integral', 'is_boutique', 'create_type'], 'integer'],
             [['title', 'get_password'], 'string', 'max' => 180],
             [['updated_by', 'get_password'], 'default', 'value' => null],
             [['min_level', 'min_integral', 'is_boutique'], 'default', 'value' => 0],
+            [['create_type'], 'default', 'value' => 1],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
         ];
@@ -69,6 +71,7 @@ class Article extends \yii\db\ActiveRecord
             'min_level' => Yii::t('app', 'Min Level'),
             'min_integral' => Yii::t('app', 'Min Integral'),
             'is_boutique' => Yii::t('app', '是否精品'),
+            'create_type' => Yii::t('app', '创作方式'),
         ];
     }
 

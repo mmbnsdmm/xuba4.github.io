@@ -42,6 +42,7 @@ class PublicController extends Controller
             'article' => [
                 'statusDesc' => Article::instance()->statusDesc,
                 'isBoutiqueDesc' => Article::instance()->isBoutiqueDesc,
+                'createTypeDesc' => Article::instance()->createTypeDesc,
             ],
         ];
         $data = $this->data;
