@@ -68,7 +68,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     .userinfo{
         background-image: url('~@/static/userinfo-background.jpg');
     }

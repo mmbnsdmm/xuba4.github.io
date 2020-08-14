@@ -5,7 +5,7 @@
 			<view class="content-box" :class="{'center':mode === 2}" >
 				<text class="icon icon-serach"></text>
 				<!-- HM修改 增加placeholder input confirm-type confirm-->
-				<input  :placeholder="placeholder" @input="inputChange" confirm-type="search" @confirm="triggerConfirm" class="input" :class="{'center':!active && mode === 2}" :focus="isFocus" v-model="inputVal" @focus="focus" @blur="blur"/>
+				<input :placeholder="placeholder" @input="inputChange" class="input" :class="{'center':!active && mode === 2}" :focus="isFocus" v-model.trim="inputVal" @focus="focus" @blur="blur" @keydown.enter="search"/>
 				<!-- <view v-if="!active && mode === 2" class="input sub" @tap="getFocus">请输入搜索内容</view> -->
 				<!-- HM修改 @tap换成@tap.stop阻止冒泡 -->
 				<text v-if="isDelShow" class="icon icon-del"  @tap.stop="clear"></text>
@@ -59,13 +59,9 @@ export default {
 		};
 	},
 	methods: {
-		//HM修改 触发组件confirm事件
-		triggerConfirm(){
-			this.$emit('confirm', false);
-		},
 		//HM修改 触发组件input事件
 		inputChange(event){
-			var keyword = event.detail.value;
+			let keyword = event.detail.value;
 			this.$emit('input', keyword);
 			if (this.inputVal) {
 				this.isDelShow = true;
@@ -79,7 +75,6 @@ export default {
 			}
 		},
 		blur() {
-			console.log('blur');
 			this.isFocus = false;
 			if (!this.inputVal) {
 				this.active = false;
@@ -96,24 +91,18 @@ export default {
 			//this.$emit('search', '');//HM修改 清空内容时候不进行搜索
 			
 		},
-		getFocus() {
-			if(!this.isFocus){
-				this.isFocus = true;
-			}
-			
-		},
 		search() {
 			//HM修改 增加点击取消时候退出输入状态，内容为空时，输入默认关键字
 			if (!this.inputVal) {
-				if(!this.show&&this.searchName == '取消'){
+				if(!this.show&&this.searchName === '取消'){
 					uni.hideKeyboard();
 					this.isFocus = false;
 					this.active = false;
 					return;
 				}
+			}else{
+                this.$emit('search', this.inputVal);
 			}
-			console.log(this.inputVal); 
-			this.$emit('search', this.inputVal?this.inputVal:this.placeholder);
 		}
 	},
 	watch: {

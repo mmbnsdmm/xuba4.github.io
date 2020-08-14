@@ -2,33 +2,11 @@
     <view class="search-search">
         <view class="search-box">
             <!-- mSearch组件 如果使用原样式，删除组件元素-->
-            <mSearch class="mSearch-input-box" :mode="2" button="inside" :placeholder="defaultKeyword" @search="doSearch(false)" @input="inputChange" @confirm="doSearch(false)" v-model="keyword"></mSearch>
-            <!-- 原样式 如果使用原样式，恢复下方注销代码 -->
-            <!--
-            <view class="input-box">
-                <input type="text" :adjust-position="true" :placeholder="defaultKeyword" @input="inputChange" v-model="keyword" @confirm="doSearch(false)"
-                 placeholder-class="placeholder-class" confirm-type="search">
-            </view>
-            <view class="search-btn" @tap="doSearch(false)">搜索</view>
-             -->
-            <!-- 原样式 end -->
+            <mSearch class="mSearch-input-box" :mode="2" button="inside" placeholder="关键字" @input="input" @search="doSearch" v-model.trim="keyword"></mSearch>
         </view>
-        <view class="search-keyword" >
-            <scroll-view class="keyword-list-box" v-show="isShowKeywordList" scroll-y>
-                <block v-for="(row,index) in keywordList" :key="index">
-                    <view class="keyword-entry" hover-class="keyword-entry-tap" >
-                        <view class="keyword-text" @tap.stop="doSearch(keywordList[index].keyword)">
-                            <rich-text :nodes="row.htmlStr"></rich-text>
-                        </view>
-                        <view class="keyword-img" @tap.stop="setKeyword(keywordList[index].keyword)">
-                            <image src="/static/search/back.png"></image>
-                        </view>
-                    </view>
-                </block>
-
-            </scroll-view>
-            <scroll-view class="keyword-box" v-show="!isShowKeywordList" scroll-y>
-                <view class="keyword-block" v-if="oldKeywordList.length>0">
+        <view class="search-keyword" v-if="keywordListShow">
+            <scroll-view class="keyword-box" scroll-y>
+                <view class="keyword-block" v-if="oldKeywordList.length > 0">
                     <view class="keyword-list-header">
                         <view>历史搜索</view>
                         <view>
@@ -59,101 +37,69 @@
 </template>
 
 <script>
-    //引用mSearch组件，如不需要删除即可
     import mSearch from '@/plugins/mehaotian-search-revision/mehaotian-search-revision.vue';
     export default {
         name: "SearchSearch",
         data() {
             return {
-                defaultKeyword: "",
                 keyword: "",
+                keywordListShow: true,
+                maxOldKeywordCount: 20,
                 oldKeywordList: [],
-                hotKeywordList: [],
-                keywordList: [],
+                hotKeywordList: ['键盘', '鼠标', '显示器', '电脑主机', '蓝牙音箱', '笔记本电脑', '鼠标垫', 'USB', 'USB3.0'],
                 forbid: '',
-                isShowKeywordList: false,
                 attentionSrc: '/static/search/attention.png'
             }
         },
         onLoad(options) {
             let _this = this;
             _this.init();
-            if (options.keyword) _this.keyword = options.keyword
+            if (options.keyword) _this.keyword = options.keyword;
+            if (_this.keyword) {
+                this.doSearch(_this.keyword);
+            }
         },
         components: {
-            //引用mSearch组件，如不需要删除即可
             mSearch
         },
         methods: {
+            //执行搜索
+            doSearch(keyword) {
+                keyword = keyword===false?"":keyword;
+                if (keyword){
+                    this.keyword = keyword;
+                    this.saveKeyword(keyword); //保存为历史
+                    uni.showToast({
+                        title: keyword,
+                        icon: 'none',
+                        duration: 2000
+                    });
+                    this.keywordListShow = false;
+                }else{
+                    uni.showToast({
+                        title: "关键字必填",
+                        icon: 'none',
+                        duration: 2000
+                    });
+                }
+            },
+            input(v) {
+                this.keywordListShow = true;
+            },
             init() {
-                this.loadDefaultKeyword();
                 this.loadOldKeyword();
-                this.loadHotKeyword();
-
             },
             blur(){
                 uni.hideKeyboard()
-            },
-            //加载默认搜索关键字
-            loadDefaultKeyword() {
-                //定义默认搜索关键字，可以自己实现ajax请求数据再赋值,用户未输入时，以水印方式显示在输入框，直接不输入内容搜索会搜索默认关键字
-                this.defaultKeyword = "默认关键字";
             },
             //加载历史搜索,自动读取本地Storage
             loadOldKeyword() {
                 uni.getStorage({
                     key: 'OldKeys',
                     success: (res) => {
-                        var OldKeys = JSON.parse(res.data);
-                        this.oldKeywordList = OldKeys;
+                        this.oldKeywordList = JSON.parse(res.data);
                     }
                 });
-            },
-            //加载热门搜索
-            loadHotKeyword() {
-                //定义热门搜索关键字，可以自己实现ajax请求数据再赋值
-                this.hotKeywordList = ['键盘', '鼠标', '显示器', '电脑主机', '蓝牙音箱', '笔记本电脑', '鼠标垫', 'USB', 'USB3.0'];
-            },
-            //监听输入
-            inputChange(event) {
-                //兼容引入组件时传入参数情况
-                var keyword = event.detail?event.detail.value:event;
-                if (!keyword) {
-                    this.keywordList = [];
-                    this.isShowKeywordList = false;
-                    return;
-                }
-                this.isShowKeywordList = true;
-                //以下示例截取淘宝的关键字，请替换成你的接口
-                uni.request({
-                    url: 'https://suggest.taobao.com/sug?code=utf-8&q=' + keyword, //仅为示例
-                    success: (res) => {
-                        this.keywordList = [];
-                        this.keywordList = this.drawCorrelativeKeyword(res.data.result, keyword);
-
-                    }
-                });
-            },
-            //高亮关键字
-            drawCorrelativeKeyword(keywords, keyword) {
-                var len = keywords.length,
-                    keywordArr = [];
-                for (var i = 0; i < len; i++) {
-                    var row = keywords[i];
-                    //定义高亮#9f9f9f
-                    var html = row[0].replace(keyword, "<span style='color: #9f9f9f;'>" + keyword + "</span>");
-                    html = '<div>' + html + '</div>';
-                    var tmpObj = {
-                        keyword: row[0],
-                        htmlStr: html
-                    };
-                    keywordArr.push(tmpObj)
-                }
-                return keywordArr;
-            },
-            //顶置关键字
-            setKeyword(index) {
-                this.keyword = this.keywordList[index].keyword;
             },
             //清除历史搜索
             oldDelete() {
@@ -161,13 +107,13 @@
                     content: '确定清除历史搜索记录？',
                     success: (res) => {
                         if (res.confirm) {
-                            console.log('用户点击确定');
+                            // console.log('用户点击确定');
                             this.oldKeywordList = [];
                             uni.removeStorage({
                                 key: 'OldKeys'
                             });
                         } else if (res.cancel) {
-                            console.log('用户点击取消');
+                            // console.log('用户点击取消');
                         }
                     }
                 });
@@ -177,41 +123,20 @@
                 this.forbid = this.forbid ? '' : '_forbid';
                 this.attentionSrc = '/static/search/attention' + this.forbid + '.png'
             },
-            //执行搜索
-            doSearch(keyword) {
-                keyword = keyword===false?this.keyword:keyword;
-                this.keyword = keyword;
-                this.saveKeyword(keyword); //保存为历史
-                uni.showToast({
-                    title: keyword,
-                    icon: 'none',
-                    duration: 2000
-                });
-                //以下是示例跳转淘宝搜索，可自己实现搜索逻辑
-                /*
-                //#ifdef APP-PLUS
-                plus.runtime.openURL(encodeURI('taobao://s.taobao.com/search?q=' + keyword));
-                //#endif
-                //#ifdef H5
-                window.location.href = 'taobao://s.taobao.com/search?q=' + keyword
-                //#endif
-                */
-            },
             //保存关键字到历史记录
             saveKeyword(keyword) {
                 uni.getStorage({
                     key: 'OldKeys',
                     success: (res) => {
-                        var OldKeys = JSON.parse(res.data);
-                        var findIndex = OldKeys.indexOf(keyword);
-                        if (findIndex == -1) {
+                        let OldKeys = JSON.parse(res.data);
+                        let findIndex = OldKeys.indexOf(keyword);
+                        if (findIndex === -1) {
                             OldKeys.unshift(keyword);
                         } else {
                             OldKeys.splice(findIndex, 1);
                             OldKeys.unshift(keyword);
                         }
-                        //最多10个纪录
-                        OldKeys.length > 10 && OldKeys.pop();
+                        OldKeys.length > this.maxOldKeywordCount && OldKeys.pop();
                         uni.setStorage({
                             key: 'OldKeys',
                             data: JSON.stringify(OldKeys)
@@ -219,7 +144,7 @@
                         this.oldKeywordList = OldKeys; //更新历史搜索
                     },
                     fail: (e) => {
-                        var OldKeys = [keyword];
+                        let OldKeys = [keyword];
                         uni.setStorage({
                             key: 'OldKeys',
                             data: JSON.stringify(OldKeys)

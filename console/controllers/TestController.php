@@ -12,6 +12,7 @@ namespace console\controllers;
 use common\models\db\AdminAuthAssignment;
 use common\models\db\AdminAuthItem;
 use common\models\db\AdminAuthItemChild;
+use common\models\db\SearchIndex;
 use common\models\db\User;
 use QL\QueryList;
 use wodrow\yii2wtools\tools\Color;
@@ -135,5 +136,10 @@ class TestController extends Controller
             $v->save();
             var_dump($v->toArray());
         }
+    }
+
+    public function actionTest5()
+    {
+        SearchIndex::initSearchIndex();
     }
 }

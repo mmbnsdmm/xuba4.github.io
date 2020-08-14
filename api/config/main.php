@@ -16,6 +16,7 @@ $config = [
     'modules' => [
         'user' => \api\modules\user\UserModule::class,
         'article' => \api\modules\article\ArticleModule::class,
+        'search' => \api\modules\search\SearchModule::class,
         'test' => \api\modules\test\TestModule::class,
     ],
     'as token check' => [

@@ -27,7 +27,7 @@
 </template>
 
 <script>
-    import {Toast} from 'vant';
+    import {Toast, Dialog} from 'vant';
     import WI from '@/plugins/wodrow/iconfont/WI';
     import ScrollTopIcon from '@/plugins/wodrow/list/ScrollTopIcon';
     export default {
@@ -71,10 +71,16 @@
                 });
             }else{
                 _this.$set(_this.$data, "article", article);
-                _this.actionSheetList.push({
-                    name: "修改",
-                    action: "update"
-                });
+                if (article.canYouOpt) {
+                    _this.actionSheetList.push({
+                        name: "修改",
+                        action: "update"
+                    });
+                    _this.actionSheetList.push({
+                        name: "删除",
+                        action: "delete"
+                    });
+                }
             }
         },
         mounted() {
@@ -97,6 +103,21 @@
                         uni.navigateTo({
                             url: "/pages/article/Update?id=" + _this.article.id
                         });
+                        break;
+                    case "delete":
+                        Dialog.confirm({
+                            title: '确认删除',
+                            message: '你确认要删除此条记录吗？'
+                        }).then(() => {
+                            let formParams = {id: _this.article.id};
+                            _this.$auth.post("/article/default/delete", formParams, true, function (res) {
+                                uni.reLaunch({
+                                    url: "/pages/article/List"
+                                });
+                            }, function (msg) {
+                                Toast(msg);
+                            });
+                        }).catch(() => {});
                         break;
                 }
             },

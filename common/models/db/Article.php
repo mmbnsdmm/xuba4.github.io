@@ -2,6 +2,7 @@
 
 namespace common\models\db;
 
+use common\models\interfaces\SearchIndexInterface;
 use Yii;
 use wodrow\yii2wtools\tools\ArrayHelper;
 use yii\behaviors\BlameableBehavior;
@@ -20,7 +21,7 @@ use yii\behaviors\TimestampBehavior;
  * @property-read  array $info
  * @property-read  boolean $canYouOpt
  */
-class Article extends \common\models\db\tables\Article
+class Article extends \common\models\db\tables\Article implements SearchIndexInterface
 {
     const SCENARIO_TEST = 'test';
     const STATUS_DELETE = -10;
@@ -168,7 +169,13 @@ class Article extends \common\models\db\tables\Article
     }
 
     protected function _deleteCaches()
-    {}
+    {
+        if ($this->status == self::STATUS_ACTIVE){
+            $this->setSearchIndex();
+        }else{
+            $this->delSearchIndex();
+        }
+    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -229,5 +236,24 @@ class Article extends \common\models\db\tables\Article
                 }
             }
         }
+    }
+
+    public function setSearchIndex()
+    {
+        SearchIndex::setSearchIndex(SearchIndex::TYPE_ARTICLE, $this->id, $this->title);
+    }
+
+    public function delSearchIndex()
+    {
+        SearchIndex::delSearchIndex(SearchIndex::TYPE_ARTICLE, $this->id);
+    }
+
+    public function getSearchIndexData()
+    {
+        return [
+            'type' => SearchIndex::TYPE_ARTICLE,
+            'type_model_id' => $this->id,
+            'title' => $this->title,
+        ];
     }
 }
