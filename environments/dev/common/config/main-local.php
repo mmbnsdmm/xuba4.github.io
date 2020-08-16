@@ -24,7 +24,7 @@ return [
         ],
         'apiTool' => [
             'class' => \common\components\ApiTool::class,
-            'baseUri' => getenv("BASE_URl"),
+            'baseUri' => getenv("BASE_URL"),
             'apiUri' => "/api",
         ],
         'vueApp' => [
