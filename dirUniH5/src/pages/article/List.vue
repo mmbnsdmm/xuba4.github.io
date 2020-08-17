@@ -27,6 +27,9 @@
                                 <view class="" slot="foot">
                                     <text class="text-green" v-if="item.create_type === 1">{{$conf.serverData.enums.article.createTypeDesc[item.create_type]}}</text>
                                     <text class="text-warning" v-if="item.create_type === 2">{{$conf.serverData.enums.article.createTypeDesc[item.create_type]}}</text>
+                                    <text v-if="item.get_password">|</text>
+                                    <text class="text-danger" v-if="item.get_password && !item.canView">有密码</text>
+                                    <text class="text-danger" v-if="item.get_password && item.canView">已验证密码</text>
                                     <u-icon name="eye-fill" size="34" color="" label="查看" class="pull-right text-blue" @tap="toView(item.id, item.isUpdate)"></u-icon>
                                     <u-icon name="edit-pen-fill" size="34" color="" label="修改" class="pull-right text-warning" v-if="item.canYouOpt" @tap="toUpdate(item.id, item.isUpdate)"></u-icon>
                                     <u-icon name="close" size="34" color="" label="删除" class="pull-right text-danger" v-if="item.canYouOpt" @tap="toDelete(item.id)"></u-icon>
@@ -45,14 +48,16 @@
 <script>
     import WLoadMore from '@/plugins/wodrow/list/LoadMore';
     import ScrollTopIcon from '@/plugins/wodrow/list/ScrollTopIcon';
-    import uniTag from "@/components/uni-tag/uni-tag.vue"
+    import uniTag from "@/components/uni-tag/uni-tag.vue";
+    import WI from '@/plugins/wodrow/iconfont/WI';
     import {Toast, Dialog} from 'vant'
     export default {
         name: "ArticleList",
         components: {
             WLoadMore,
             ScrollTopIcon,
-            uniTag
+            uniTag,
+            WI
         },
         data() {
             return {
@@ -81,8 +86,19 @@
                     _this.$_.forEach(r.list, function (v, k) {
                         v.isUpdate = false;
                         let article = _this.$models.Article.getIsSetById(v.id);
+                        console.log(article);
                         if (article && article.updated_at < v.updated_at) {
                             v.isUpdate = true;
+                        }
+                        if (v.canYouOpt){
+                            v.canView = true;
+                        }else{
+                            if (v.get_password){
+                                let password = _this.$auth.getSession("article-get-password-" + v.id);
+                                v.canView = password === v.get_password;
+                            }else{
+                                v.canView = false;
+                            }
                         }
                         res.push(v);
                     });

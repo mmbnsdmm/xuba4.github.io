@@ -31,6 +31,7 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
     const IS_BOUTIQUE_N = 0;
     const CREATE_TYPE_ORIGINAL = 1;
     const CREATE_TYPE_REPRINTED = 2;
+    const CREATE_TYPE_TRANSLATION = 3;
 
     public function getStatusDesc()
     {
@@ -54,6 +55,7 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
         return [
             self::CREATE_TYPE_ORIGINAL => "原创",
             self::CREATE_TYPE_REPRINTED => "转载",
+            self::CREATE_TYPE_TRANSLATION => "翻译",
         ];
     }
 

@@ -9,7 +9,21 @@
             </li>
             <li class="active">{{article.title}}</li>
         </ol>
-        <div class="container">
+        <div class="validate-password" v-if="!canView">
+            <view class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h4>验证密码</h4>
+                        <div class="form-group">
+                            <label>文章浏览密码</label>
+                            <input type="password" class="form-control" v-model="password" placeholder="密码">
+                        </div>
+                        <button class="btn btn-primary btn-block" :disabled="isBtnDisabled" @tap="toValidatePassword">确认</button>
+                    </div>
+                </div>
+            </view>
+        </div>
+        <div class="container" v-if="canView">
             <div class="row">
                 <div class="col-xs-12">
                     <h4>{{article.title}} <WI class="single pull-right" type="&#xe621;" font-size="44rpx" title="配置" @click.native="actionSheetShow= ! actionSheetShow"></WI></h4>
@@ -38,22 +52,10 @@
         },
         data() {
             return {
-                article: {
-                    id: null,
-                    created_by: null,
-                    created_at: null,
-                    updated_by: null,
-                    updated_at: null,
-                    content: null,
-                    get_password: null,
-                    is_boutique: 0,
-                    min_integral: 0,
-                    min_level: 0,
-                    title: null,
-                    status: null,
-                    create_type: 1,
-                    createdBy: {}
-                },
+                password: "",
+                isBtnDisabled: false,
+                canView: false,
+                article: {},
                 actionSheetList: [],
                 actionSheetShow: false
             }
@@ -80,6 +82,14 @@
                         name: "删除",
                         action: "delete"
                     });
+                    _this.canView = true;
+                }else{
+                    if (_this.article.get_password){
+                        let password = _this.$auth.getSession("article-get-password-" + _this.article.id);
+                        _this.canView = password === _this.article.get_password;
+                    } else {
+                        _this.canView = true;
+                    }
                 }
             }
         },
@@ -91,6 +101,16 @@
             })
         },
         methods: {
+            toValidatePassword() {
+                let _this = this;
+                if (_this.article.get_password === _this.password){
+                    _this.$auth.setSession("article-get-password-" + _this.article.id, _this.password);
+                    _this.canView = true;
+                } else {
+                    Toast("密码不正确，你可以联系文章发布者");
+                    _this.canView = false;
+                }
+            },
             sheetListSelect(item) {
                 let _this = this;
                 switch (item.action){
