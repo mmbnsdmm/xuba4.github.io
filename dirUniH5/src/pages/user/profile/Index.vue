@@ -1,6 +1,6 @@
 <template>
     <div class="user-profile-index">
-        <view class="userinfo">
+        <view class="userinfo-avatar">
             <div class="container-fluid" style="height: 7rem;">
                 <div class="row" style="padding-top: 1rem;padding-bottom: 1rem;">
                     <div class="col-xs-4">
@@ -46,10 +46,10 @@
 </script>
 
 <style scoped>
-    .userinfo{
+    .userinfo-avatar{
         background-image: url('~@/static/userinfo-background.jpg');
     }
-    .userinfo text{
+    .userinfo-avatar text{
         color: #fff
     }
 </style>

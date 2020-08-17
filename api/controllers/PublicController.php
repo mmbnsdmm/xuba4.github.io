@@ -11,6 +11,7 @@ namespace api\controllers;
 use common\models\db\AppVersion;
 use common\models\db\Article;
 use common\models\db\LogEmailSendCode;
+use common\models\db\SearchIndex;
 use wodrow\yii\rest\Controller;
 
 class PublicController extends Controller
@@ -29,6 +30,8 @@ class PublicController extends Controller
      * @return array enums.article 文章
      * @return array enums.article.statusDesc 状态类型
      * @return array enums.article.isBoutiqueDesc 是否精品
+     * @return array enums.searchIndex 搜索索引
+     * @return array enums.searchIndex.typeDesc 类型
      */
     public function actionGetEnums()
     {
@@ -44,12 +47,11 @@ class PublicController extends Controller
                 'isBoutiqueDesc' => Article::instance()->isBoutiqueDesc,
                 'createTypeDesc' => Article::instance()->createTypeDesc,
             ],
+            'searchIndex' => [
+                'typeDesc' => SearchIndex::instance()->typeDesc,
+            ],
         ];
-        $data = $this->data;
-        $data['status'] = 200;
-        $data['msg'] = "获取成功";
-        $data['enums'] = $enums;
-        return $data;
+        return $this->success("获取成功", ['enums' => $enums]);
     }
 
     /**

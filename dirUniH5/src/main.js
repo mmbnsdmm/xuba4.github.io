@@ -28,6 +28,12 @@ import 'moment/locale/zh-cn'
 Moment.locale('zh-cn');
 Vue.prototype.$moment = Moment;
 
+import GetImageData from "get-image-data";
+Vue.prototype.$getImageData = GetImageData;
+
+import jsQR from "jsqr";
+Vue.prototype.$jsQR = jsQR;
+
 import Tool from '@/common/tool'
 Vue.prototype.$tool = Tool;
 

@@ -22,9 +22,26 @@ use Yii;
  * @property int $updated_at 修改时间
  * @property string|null $nickname 昵称
  * @property string|null $avatar 头像
+ * @property string|null $weixin_exceptional_code 微信打赏码图片
+ * @property string|null $weixin_exceptional_url 微信打赏码链接
+ * @property string|null $alipay_exceptional_code 支付宝打赏码图片
+ * @property string|null $alipay_exceptional_url 支付宝打赏码链接
+ * @property string|null $mobile 手机
+ * @property string|null $qq QQ
+ * @property string|null $weixin 微信号
  *
  * @property AdminAuthAssignment[] $adminAuthAssignments
+ * @property Article[] $articles
+ * @property Article[] $articles0
+ * @property Collection[] $collections
+ * @property Collection[] $collections0
+ * @property Comments[] $comments
+ * @property Comments[] $comments0
+ * @property Fans[] $fans
+ * @property Fans[] $fans0
  * @property AdminAuthItem[] $itemNames
+ * @property LeaveMessage[] $leaveMessages
+ * @property LeaveMessage[] $leaveMessages0
  * @property LogEmailSendCode[] $logEmailSendCodes
  * @property LogUserLogin[] $logUserLogins
  * @property QueneYiiTask[] $queneYiiTasks
@@ -47,16 +64,17 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['username', 'email', 'password', 'pwd_back', 'status', 'created_at', 'token', 'key', 'auth_key', 'amount', 'frozen', 'updated_at', 'nickname', 'avatar'], 'trim'],
+            [['username', 'email', 'password', 'pwd_back', 'status', 'created_at', 'token', 'key', 'auth_key', 'amount', 'frozen', 'updated_at', 'nickname', 'avatar', 'weixin_exceptional_code', 'weixin_exceptional_url', 'alipay_exceptional_code', 'alipay_exceptional_url', 'mobile', 'qq', 'weixin'], 'trim'],
             [['username', 'email', 'password', 'pwd_back', 'created_at', 'token', 'key', 'auth_key', 'updated_at'], 'required'],
             [['status', 'created_at', 'updated_at'], 'integer'],
             [['amount', 'frozen'], 'number'],
             [['username', 'password', 'token', 'key', 'auth_key'], 'string', 'max' => 32],
             [['email', 'pwd_back'], 'string', 'max' => 150],
-            [['nickname', 'avatar'], 'string', 'max' => 180],
+            [['nickname', 'avatar', 'weixin_exceptional_code', 'weixin_exceptional_url', 'alipay_exceptional_code', 'alipay_exceptional_url', 'weixin'], 'string', 'max' => 180],
+            [['mobile', 'qq'], 'string', 'max' => 20],
             [['status'], 'default', 'value' => 10],
             [['amount', 'frozen'], 'default', 'value' => 0.00],
-            [['nickname', 'avatar'], 'default', 'value' => null],
+            [['nickname', 'avatar', 'weixin_exceptional_code', 'weixin_exceptional_url', 'alipay_exceptional_code', 'alipay_exceptional_url', 'mobile', 'qq', 'weixin'], 'default', 'value' => null],
             [['token'], 'unique'],
             [['email'], 'unique'],
             [['username'], 'unique'],
@@ -84,6 +102,13 @@ class User extends \yii\db\ActiveRecord
             'updated_at' => Yii::t('app', '修改时间'),
             'nickname' => Yii::t('app', '昵称'),
             'avatar' => Yii::t('app', '头像'),
+            'weixin_exceptional_code' => Yii::t('app', '微信打赏码图片'),
+            'weixin_exceptional_url' => Yii::t('app', '微信打赏码链接'),
+            'alipay_exceptional_code' => Yii::t('app', '支付宝打赏码图片'),
+            'alipay_exceptional_url' => Yii::t('app', '支付宝打赏码链接'),
+            'mobile' => Yii::t('app', '手机'),
+            'qq' => Yii::t('app', 'QQ'),
+            'weixin' => Yii::t('app', '微信号'),
         ];
     }
 
@@ -98,9 +123,89 @@ class User extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getArticles()
+    {
+        return $this->hasMany(Article::className(), ['created_by' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getArticles0()
+    {
+        return $this->hasMany(Article::className(), ['updated_by' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCollections()
+    {
+        return $this->hasMany(Collection::className(), ['created_by' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCollections0()
+    {
+        return $this->hasMany(Collection::className(), ['updated_by' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getComments()
+    {
+        return $this->hasMany(Comments::className(), ['created_by' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getComments0()
+    {
+        return $this->hasMany(Comments::className(), ['updated_by' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFans()
+    {
+        return $this->hasMany(Fans::className(), ['lender_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFans0()
+    {
+        return $this->hasMany(Fans::className(), ['fans_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getItemNames()
     {
         return $this->hasMany(AdminAuthItem::className(), ['name' => 'item_name'])->viaTable('{{%admin_auth_assignment}}', ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLeaveMessages()
+    {
+        return $this->hasMany(LeaveMessage::className(), ['created_by' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLeaveMessages0()
+    {
+        return $this->hasMany(LeaveMessage::className(), ['updated_by' => 'id']);
     }
 
     /**

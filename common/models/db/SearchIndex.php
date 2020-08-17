@@ -14,11 +14,20 @@ use yii\behaviors\TimestampBehavior;
  * This is the model class for table "{{%search_index}}".
  *
  * @author
+ * @property-read array $typeDesc
  */
 class SearchIndex extends \common\models\db\tables\SearchIndex
 {
     const TYPE_USER = 1;
     const TYPE_ARTICLE = 2;
+
+    public function getTypeDesc()
+    {
+        return [
+            self::TYPE_USER => "用户",
+            self::TYPE_ARTICLE => "文章",
+        ];
+    }
 
     public static function setSearchIndex($type, $type_model_id, $title)
     {

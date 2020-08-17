@@ -179,6 +179,13 @@ class ApiTool extends Component
             'status' => $user->status,
             'created_at' => $user->created_at,
             'avatar' => $user->avatar,
+            'mobile' => $user->mobile,
+            'weixin' => $user->weixin,
+            'qq' => $user->qq,
+            'alipay_exceptional_code' => $user->alipay_exceptional_code,
+            'alipay_exceptional_url' => $user->alipay_exceptional_url,
+            'weixin_exceptional_code' => $user->weixin_exceptional_code,
+            'weixin_exceptional_url' => $user->weixin_exceptional_url,
         ];
         return $r;
     }

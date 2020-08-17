@@ -75,6 +75,16 @@
 			}
 		},
 		{
+			"path": "pages/user/center/UpdateAvatar",
+			"name":"修改头像",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "修改头像"
+			}
+		},
+		{
 			"path": "pages/user/center/UpdatePassword",
 			"name":"修改密码",
 			"meta":{},
@@ -85,13 +95,63 @@
 			}
 		},
 		{
-			"path": "pages/user/center/UpdateAvatar",
-			"name":"修改头像",
+			"path": "pages/user/center/UpdateExceptionalCode",
+			"name":"修改打赏码",
 			"meta":{},
 			"authType": "@",
 			"data": {},
 			"style": {
-				"navigationBarTitleText": "修改头像"
+				"navigationBarTitleText": "修改打赏码"
+			}
+		},
+		{
+			"path": "pages/user/center/UpdateContact",
+			"name":"修改联系方式",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "修改联系方式"
+			}
+		},
+		{
+			"path": "pages/user/center/MyAttention",
+			"name":"我的关注",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "我的关注"
+			}
+		},
+		{
+			"path": "pages/user/center/MyFans",
+			"name":"我的粉丝",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "我的粉丝"
+			}
+		},
+		{
+			"path": "pages/user/center/MyArticle",
+			"name":"我的文章",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "我的文章"
+			}
+		},
+		{
+			"path": "pages/user/center/MyCollection",
+			"name":"我的收藏",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "我的收藏"
 			}
 		},
 		{
@@ -153,7 +213,8 @@
 			"authType": "@",
 			"data": {},
 			"style": {
-				"navigationBarTitleText": "搜索"
+				"navigationBarTitleText": "搜索",
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -164,6 +225,16 @@
 			"data": {},
 			"style": {
 				"navigationBarTitleText": "扫一扫"
+			}
+		},
+		{
+			"path": "pages/message/LeaveMessage",
+			"name":"留言区",
+			"meta":{},
+			"authType": "*",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "留言区"
 			}
 		}
 	],

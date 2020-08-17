@@ -9,7 +9,7 @@
         </ol>
         <div class="row">
             <div class="col-xs-12">
-                <WLoadMore ref="WODROW_LOAD_MORE" @provider="provider" :pageSize="page_size" color="#66ccff">
+                <WLoadMore ref="WODROW_LOAD_MORE_ARTICLE_LIST" @provider="provider" :pageSize="page_size" color="#66ccff">
                     <template v-slot:list="{ items }">
                         <view class="solid-top" v-for="(item, index) in items" :key="index">
                             <u-card padding="10" margin="15rpx" :border="false" :head-border-bottom="false" :foot-border-top="false" title-size="15rpx"
@@ -27,9 +27,8 @@
                                 <view class="" slot="foot">
                                     <text class="text-green" v-if="item.create_type === 1">{{$conf.serverData.enums.article.createTypeDesc[item.create_type]}}</text>
                                     <text class="text-warning" v-if="item.create_type === 2">{{$conf.serverData.enums.article.createTypeDesc[item.create_type]}}</text>
-                                    <text v-if="item.get_password">|</text>
-                                    <text class="text-danger" v-if="item.get_password && !item.canView">有密码</text>
-                                    <text class="text-danger" v-if="item.get_password && item.canView">已验证密码</text>
+                                    <u-icon name="lock-fill" v-if="item.get_password && !item.canView"></u-icon>
+                                    <u-icon name="lock-open" v-if="item.get_password && item.canView"></u-icon>
                                     <u-icon name="eye-fill" size="34" color="" label="查看" class="pull-right text-blue" @tap="toView(item.id, item.isUpdate)"></u-icon>
                                     <u-icon name="edit-pen-fill" size="34" color="" label="修改" class="pull-right text-warning" v-if="item.canYouOpt" @tap="toUpdate(item.id, item.isUpdate)"></u-icon>
                                     <u-icon name="close" size="34" color="" label="删除" class="pull-right text-danger" v-if="item.canYouOpt" @tap="toDelete(item.id)"></u-icon>
@@ -72,7 +71,7 @@
                 let _this = this;
                 setTimeout(function () {
                     let res = _this.getData(pd);
-                    _this.$refs.WODROW_LOAD_MORE.pushData(res);
+                    _this.$refs.WODROW_LOAD_MORE_ARTICLE_LIST.pushData(res);
                 }, 1000);
             },
             getData(pd) {
@@ -86,7 +85,6 @@
                     _this.$_.forEach(r.list, function (v, k) {
                         v.isUpdate = false;
                         let article = _this.$models.Article.getIsSetById(v.id);
-                        console.log(article);
                         if (article && article.updated_at < v.updated_at) {
                             v.isUpdate = true;
                         }
@@ -131,7 +129,7 @@
                 }).then(() => {
                     let formParams = {id: articleId};
                     _this.$auth.post("/article/default/delete", formParams, true, function (res) {
-                        _this.$refs.WODROW_LOAD_MORE.reLoadData()
+                        _this.$refs.WODROW_LOAD_MORE_ARTICLE_LIST.reLoadData()
                     }, function (msg) {
                         Toast(msg);
                     });
@@ -148,13 +146,13 @@
         },
         onReady() {
             //如果是H5，请一定使用onReady方法初次加载数据，否则不会触发
-            this.$refs.WODROW_LOAD_MORE.reLoadData()
+            this.$refs.WODROW_LOAD_MORE_ARTICLE_LIST.reLoadData()
         },
         onPullDownRefresh() {
-            this.$refs.WODROW_LOAD_MORE.pullDownRefresh();
+            this.$refs.WODROW_LOAD_MORE_ARTICLE_LIST.pullDownRefresh();
         },
         onReachBottom() {
-            this.$refs.WODROW_LOAD_MORE.reachBottom()
+            this.$refs.WODROW_LOAD_MORE_ARTICLE_LIST.reachBottom()
         }
     }
 </script>

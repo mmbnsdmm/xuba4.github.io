@@ -56,6 +56,52 @@ class CenterController extends Controller
     }
 
     /**
+     * 修改联系方式
+     * @desc post
+     * @param string $mobile
+     * @param string $weixin
+     * @param string $qq
+     * @return array
+     * @return int status 是否成功
+     * @return string msg
+     */
+    public function actionUpdateContact($mobile = null, $weixin = null, $qq = null)
+    {
+        $user = \Yii::$app->user->identity;
+        $user->mobile = $mobile;
+        $user->weixin = $weixin;
+        $user->qq = $qq;
+        if (!$user->save()){
+            throw new ApiException(202008171416, "修改联系方式失败:".Model::getModelError($user));
+        }
+        return $this->success("修改成功");
+    }
+
+    /**
+     * 修改打赏二维码
+     * @desc post
+     * @param string $alipay_exceptional_code 支付宝打赏二维码
+     * @param string $alipay_exceptional_url 支付宝打赏二维码链接
+     * @param string $weixin_exceptional_code 微信打赏二维码
+     * @param string $weixin_exceptional_url 微信打赏二维码链接
+     * @return array
+     * @return int status 是否成功
+     * @return string msg
+     */
+    public function actionUpdateExceptionalCode($alipay_exceptional_code = null, $alipay_exceptional_url = null, $weixin_exceptional_code = null, $weixin_exceptional_url = null)
+    {
+        $user = \Yii::$app->user->identity;
+        $user->alipay_exceptional_code = $alipay_exceptional_code;
+        $user->alipay_exceptional_url = $alipay_exceptional_url;
+        $user->weixin_exceptional_code = $weixin_exceptional_code;
+        $user->weixin_exceptional_url = $weixin_exceptional_url;
+        if (!$user->save()){
+            throw new ApiException(202008171454, "修改打赏二维码失败:".Model::getModelError($user));
+        }
+        return $this->success("修改成功");
+    }
+
+    /**
      * 获取用户信息
      * @desc post
      * @return array

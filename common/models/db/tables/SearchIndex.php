@@ -7,6 +7,7 @@ use Yii;
 /**
  * This is the model class for table "{{%search_index}}".
  *
+ * @property int $id
  * @property int $type 类型
  * @property int $type_model_id 类型模型id
  * @property string $title
@@ -43,6 +44,7 @@ class SearchIndex extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
+            'id' => Yii::t('app', 'ID'),
             'type' => Yii::t('app', '类型'),
             'type_model_id' => Yii::t('app', '类型模型id'),
             'title' => Yii::t('app', 'Title'),

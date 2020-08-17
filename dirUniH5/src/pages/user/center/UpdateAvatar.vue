@@ -5,13 +5,13 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="preview">
-                        <img :src="path" alt="" class="image" width="200" height="200">
+                        <img :src="path" alt="" class="image center-block" width="200" height="200">
                     </div>
                     <kps-image-cutter @ok="onok" @cancel="oncancle" :url="url" :fixed="true" :blob="false" :width="200" :height="200"></kps-image-cutter>
                     <u-gap></u-gap>
                     <button class="btn btn-info btn-block" @tap="chooseImage()">选择图片</button>
                     <button class="btn btn-warning btn-block" @tap="resetIt()">重置</button>
-                    <button class="btn btn-danger btn-block" @tap="selectIt()">确定修改</button>
+                    <button class="btn btn-danger btn-block btn-lg" @tap="selectIt()">确定修改</button>
                 </div>
             </div>
         </view>

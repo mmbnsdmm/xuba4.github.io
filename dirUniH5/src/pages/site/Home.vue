@@ -80,7 +80,7 @@
             }, function (msg) {
                 Toast(msg);
                 return ;
-            })
+            });
         },
         methods: {
             toScan: function () {

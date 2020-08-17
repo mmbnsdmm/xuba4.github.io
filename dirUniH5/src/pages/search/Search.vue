@@ -2,9 +2,9 @@
     <view class="search-search">
         <view class="search-box">
             <!-- mSearch组件 如果使用原样式，删除组件元素-->
-            <mSearch class="mSearch-input-box" :mode="2" button="inside" placeholder="关键字" @input="input" @search="doSearch" v-model.trim="keyword"></mSearch>
+            <mSearch class="mSearch-input-box" :mode="2" button="inside" placeholder="关键字，想要查看全部请输入: searchAll" @input="input" @search="doSearch" v-model.trim="keyword"></mSearch>
         </view>
-        <view class="search-keyword" v-if="keywordListShow">
+        <view class="search-keyword" v-show="keywordListShow">
             <scroll-view class="keyword-box" scroll-y>
                 <view class="keyword-block" v-if="oldKeywordList.length > 0">
                     <view class="keyword-list-header">
@@ -33,13 +33,47 @@
                 </view>
             </scroll-view>
         </view>
+        <view>
+            <div class="row" v-show="!keywordListShow">
+                <div class="col-xs-12">
+                    <WLoadMore ref="WODROW_LOAD_MORE_SEARCH_LIST" @provider="provider" :pageSize="page_size" color="#66ccff">
+                        <template v-slot:list="{items}">
+                            <view class="solid-top" v-for="(item, index) in items" :key="index">
+                                <u-card padding="10" margin="15rpx" :border="false" :show-head="false" :foot-border-top="false" title-size="15rpx"
+                                        @body-click="toView(item.type, item.type_model_id)">
+                                    <view class="" slot="body">
+                                        <view>
+                                            <text class="text-blue" style="font-size: 36rpx">{{item.title}}</text>
+                                        </view>
+                                    </view>
+                                    <view class="" slot="foot">
+                                        <text class="text-green">{{$conf.serverData.enums.searchIndex.typeDesc[item.type]}}</text>
+                                        <u-icon name="eye-fill" size="34" color="" label="查看" class="pull-right text-blue" @tap="toView(item.type, item.type_model_id)"></u-icon>
+                                        <div class="clearfix"></div>
+                                    </view>
+                                </u-card>
+                            </view>
+                        </template>
+                    </WLoadMore>
+                </div>
+            </div>
+            <ScrollTopIcon @tapIcon="tapIcon" v-show="!keywordListShow"></ScrollTopIcon>
+        </view>
     </view>
 </template>
 
 <script>
     import mSearch from '@/plugins/mehaotian-search-revision/mehaotian-search-revision.vue';
+    import WLoadMore from '@/plugins/wodrow/list/LoadMore';
+    import ScrollTopIcon from '@/plugins/wodrow/list/ScrollTopIcon';
+    import {Toast} from 'vant';
     export default {
         name: "SearchSearch",
+        components: {
+            mSearch,
+            WLoadMore,
+            ScrollTopIcon
+        },
         data() {
             return {
                 keyword: "",
@@ -48,7 +82,11 @@
                 oldKeywordList: [],
                 hotKeywordList: ['键盘', '鼠标', '显示器', '电脑主机', '蓝牙音箱', '笔记本电脑', '鼠标垫', 'USB', 'USB3.0'],
                 forbid: '',
-                attentionSrc: '/static/search/attention.png'
+                attentionSrc: '/static/search/attention.png',
+                page: 0,
+                page_size: 10,
+                total: 0,
+                list: []
             }
         },
         onLoad(options) {
@@ -59,8 +97,21 @@
                 this.doSearch(_this.keyword);
             }
         },
-        components: {
-            mSearch
+        onReady() {
+            //如果是H5，请一定使用onReady方法初次加载数据，否则不会触发
+            this.$refs.WODROW_LOAD_MORE_SEARCH_LIST.reLoadData();
+        },
+        onPullDownRefresh() {
+            if (!this.keywordListShow) {
+                this.$refs.WODROW_LOAD_MORE_SEARCH_LIST.pullDownRefresh();
+            }else{
+                setTimeout(function () {
+                    uni.stopPullDownRefresh();
+                }, 1000);
+            }
+        },
+        onReachBottom() {
+            if (!this.keywordListShow) this.$refs.WODROW_LOAD_MORE_SEARCH_LIST.reachBottom();
         },
         methods: {
             //执行搜索
@@ -69,18 +120,15 @@
                 if (keyword){
                     this.keyword = keyword;
                     this.saveKeyword(keyword); //保存为历史
-                    uni.showToast({
-                        title: keyword,
-                        icon: 'none',
-                        duration: 2000
-                    });
                     this.keywordListShow = false;
+                    this.$refs.WODROW_LOAD_MORE_SEARCH_LIST.reLoadData();
                 }else{
                     uni.showToast({
                         title: "关键字必填",
                         icon: 'none',
                         duration: 2000
                     });
+                    this.keywordListShow = true;
                 }
             },
             input(v) {
@@ -107,7 +155,6 @@
                     content: '确定清除历史搜索记录？',
                     success: (res) => {
                         if (res.confirm) {
-                            // console.log('用户点击确定');
                             this.oldKeywordList = [];
                             uni.removeStorage({
                                 key: 'OldKeys'
@@ -151,6 +198,53 @@
                         });
                         this.oldKeywordList = OldKeys; //更新历史搜索
                     }
+                });
+            },
+            provider(pd){
+                let _this = this;
+                setTimeout(function () {
+                    let res = _this.getData(pd);
+                    _this.$refs.WODROW_LOAD_MORE_SEARCH_LIST.pushData(res);
+                }, 1000);
+            },
+            getData(pd) {
+                let _this = this;
+                let res = [];
+                let formParams = {
+                    keyword: _this.keyword,
+                    page: pd.pageNo,
+                    page_size: pd.pageSize
+                };
+                _this.$auth.post("/search/index/list", formParams, false, function (r) {
+                    _this.$_.forEach(r.list, function (v, k) {
+                        res.push(v);
+                    });
+                }, function (msg) {
+                    Toast(msg);
+                });
+                return res;
+            },
+            tapIcon(e){
+                uni.pageScrollTo({
+                    duration:60,
+                    scrollTop:0
+                })
+            },
+            toView(type, type_model_id) {
+                let url = "";
+                switch (type){
+                    case 1:
+                        url = "/pages/user/profile/Index?id=" + type_model_id;
+                        break;
+                    case 2:
+                        url = "/pages/article/View?id=" + type_model_id;
+                        break;
+                    default:
+                        Toast("未定义搜索索引类型，请联系管理员");
+                        break;
+                }
+                uni.navigateTo({
+                    url: url
                 });
             }
         }

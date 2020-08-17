@@ -16,7 +16,14 @@
             </div>
         </view>
         <u-cell-group>
-            <u-cell-item icon="setting-fill" title="修改登录密码" arrow-direction="right" @tap="$router.push('/pages/user/center/UpdatePassword')"></u-cell-item>
+            <u-cell-item icon="setting-fill" title="修改密码" arrow-direction="right" @tap="$router.push('/pages/user/center/UpdatePassword')"></u-cell-item>
+            <u-cell-item icon="chat" title="修改联系方式" arrow-direction="right" @tap="$router.push('/pages/user/center/UpdateContact')"></u-cell-item>
+            <u-cell-item icon="red-packet-fill" title="修改打赏码" arrow-direction="right" @tap="$router.push('/pages/user/center/UpdateExceptionalCode')"></u-cell-item>
+            <u-cell-item icon="eye-fill" title="我的关注" arrow-direction="right" @tap="$router.push('/pages/user/center/MyAttention')"></u-cell-item>
+            <u-cell-item icon="eye" title="我的粉丝" arrow-direction="right" @tap="$router.push('/pages/user/center/MyFans')"></u-cell-item>
+            <u-cell-item icon="file-text-fill" title="我的文章" arrow-direction="right" @tap="$router.push('/pages/user/center/MyArticle')"></u-cell-item>
+            <u-cell-item icon="attach" title="我的收藏" arrow-direction="right" @tap="$router.push('/pages/user/center/MyCollection')"></u-cell-item>
+            <u-cell-item icon="chat-fill" title="留言区" arrow-direction="right" @tap="$router.push('/pages/message/LeaveMessage')"></u-cell-item>
         </u-cell-group>
         <u-gap></u-gap>
         <view class="container">
@@ -31,7 +38,7 @@
 
 <script>
     import {Toast, Dialog} from 'vant'
-    import { mapState, mapMutations } from 'vuex'
+    import {mapState, mapMutations} from 'vuex'
     export default {
         name: "UserCenterIndex",
         data(){
