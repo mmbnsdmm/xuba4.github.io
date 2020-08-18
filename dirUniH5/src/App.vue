@@ -30,4 +30,7 @@
     .breadcrumb{
         margin-bottom: 0 !important;
     }
+    uni-view{
+        word-break:break-all;
+    }
 </style>

@@ -234,7 +234,8 @@
 			"authType": "*",
 			"data": {},
 			"style": {
-				"navigationBarTitleText": "留言区"
+				"navigationBarTitleText": "留言区",
+                "enablePullDownRefresh": true
 			}
 		}
 	],

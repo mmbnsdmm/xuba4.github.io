@@ -15,6 +15,8 @@ use yii\behaviors\TimestampBehavior;
  * @property User $createdBy
  * @property User $updatedBy
  * @property-read array $statusDesc
+ * @property-read  array $info
+ * @property-read  boolean $canYouOpt
  */
 class LeaveMessage extends \common\models\db\tables\LeaveMessage
 {
@@ -36,13 +38,13 @@ class LeaveMessage extends \common\models\db\tables\LeaveMessage
         $behaviors = ArrayHelper::merge($behaviors, [
             'timestamp' => [
                 'class' => TimestampBehavior::class,
-                'createdAtAttribute' => false,
-                'updatedAtAttribute' => false,
+//                'createdAtAttribute' => false,
+//                'updatedAtAttribute' => false,
             ],
             'blameable' => [
                 'class' => BlameableBehavior::class,
-                'createdByAttribute' => false,
-                'updatedByAttribute' => false,
+//                'createdByAttribute' => false,
+//                'updatedByAttribute' => false,
             ],
         ]);
         return $behaviors;
@@ -60,11 +62,11 @@ class LeaveMessage extends \common\models\db\tables\LeaveMessage
     public function rules()
     {
         $rules = parent::rules();
-        /*foreach ($rules as $k => $v) {
+        foreach ($rules as $k => $v) {
             if ($v[1] == 'required'){
                 $rules[$k][0] = array_diff($rules[$k][0], ['created_at', 'updated_at', 'created_by', 'updated_by']);
             }
-        }*/
+        }
         $rules = ArrayHelper::merge($rules, [
 //            [[], 'required', 'on' => self::SCENARIO_TEST],
         ]);
@@ -166,5 +168,42 @@ class LeaveMessage extends \common\models\db\tables\LeaveMessage
         $test->setScenario(self::SCENARIO_TEST);
         $test->save();
         var_dump($test->toArray());
+    }
+
+    /**
+     * @return array
+     */
+    public function getInfo()
+    {
+        $arr = $this->toArray();
+        $createdBy = Yii::$app->apiTool->authReturn($this->createdBy);
+        $arr['createdBy'] = $createdBy;
+        $arr['canYouOpt'] = $this->canYouOpt;
+        return $arr;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getCanYouOpt()
+    {
+        if ($this->isNewRecord){
+            return true;
+        }
+        $user = \Yii::$app->user->identity;
+        $author = $this->createdBy;
+        if ($author->id == $user->id){
+            return true;
+        }else{
+            if ($user->isAdmin){
+                return true;
+            }else{
+                if (in_array($user->id, Yii::$app->params['apiAdminUserIds'])){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
     }
 }

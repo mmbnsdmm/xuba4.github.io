@@ -17,7 +17,7 @@
                                     @body-click="toView(item.id, item.isUpdate)" @head-click="toAuthor(item.created_by)">
                                 <view class="" slot="body">
                                     <view>
-                                        <text class="text-blue" style="font-size: 36rpx">{{item.title}}</text>
+                                        <u-parse class="text-blue" style="font-size: 36rpx" :html="item.title"></u-parse>
                                         <small class="pull-right text-danger" v-if="item.isUpdate">有更新</small>
                                     </view>
                                     <view>

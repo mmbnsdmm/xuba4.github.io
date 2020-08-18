@@ -30,7 +30,7 @@
                     <small><code>{{$conf.serverData.enums.article.createTypeDesc[article.create_type]}}</code>|发布者:<code>{{article.createdBy.nickName}}</code>|发布时间:<code>{{$moment(article.created_at*1000).fromNow()}}</code>|最近更新:<code>{{$moment(article.updated_at*1000).fromNow()}}</code></small>
                     <hr>
                     <view class="u-content">
-                        <u-parse :html="article.content"></u-parse>
+                        <u-parse :html="article.content" :lazy-load="true" loading-img="@/static/loading1.jpg"></u-parse>
                     </view>
                 </div>
             </div>

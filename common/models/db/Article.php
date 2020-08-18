@@ -208,11 +208,11 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
      */
     public function getInfo()
     {
-        $article = $this->toArray();
+        $arr = $this->toArray();
         $createdBy = Yii::$app->apiTool->authReturn($this->createdBy);
-        $article['createdBy'] = $createdBy;
-        $article['canYouOpt'] = $this->canYouOpt;
-        return $article;
+        $arr['createdBy'] = $createdBy;
+        $arr['canYouOpt'] = $this->canYouOpt;
+        return $arr;
     }
 
     /**
