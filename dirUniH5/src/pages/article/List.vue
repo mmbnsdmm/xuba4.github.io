@@ -17,7 +17,7 @@
                                     @body-click="toView(item.id, item.isUpdate)" @head-click="toAuthor(item.created_by)">
                                 <view class="" slot="body">
                                     <view>
-                                        <u-parse class="text-blue" style="font-size: 36rpx" :html="item.title"></u-parse>
+                                        <text class="text-blue" style="font-size: 36rpx" v-html="item.title"></text>
                                         <small class="pull-right text-danger" v-if="item.isUpdate">有更新</small>
                                     </view>
                                     <view>
@@ -26,7 +26,11 @@
                                 </view>
                                 <view class="" slot="foot">
                                     <text class="text-green" v-if="item.create_type === 1">{{$conf.serverData.enums.article.createTypeDesc[item.create_type]}}</text>
-                                    <text class="text-warning" v-if="item.create_type === 2">{{$conf.serverData.enums.article.createTypeDesc[item.create_type]}}</text>
+                                    <text class="text-danger" v-if="item.create_type === 2">{{$conf.serverData.enums.article.createTypeDesc[item.create_type]}}</text>
+                                    <text class="text-warning" v-if="item.create_type === 3">{{$conf.serverData.enums.article.createTypeDesc[item.create_type]}}</text>
+                                    <WI class="single" type="&#xe62b;" font-size="34rpx" v-if="item.created_by !== userInfo.id"></WI>
+                                    <u-icon name="star" v-if="item.created_by !== userInfo.id && !item.isYouCollection" @tap="collect(index)"></u-icon>
+                                    <u-icon name="star-fill" v-if="item.created_by !== userInfo.id && item.isYouCollection" @tap="unCollect(index)"></u-icon>
                                     <u-icon name="lock-fill" v-if="item.get_password && !item.canView"></u-icon>
                                     <u-icon name="lock-open" v-if="item.get_password && item.canView"></u-icon>
                                     <u-icon name="eye-fill" size="34" color="" label="查看" class="pull-right text-blue" @tap="toView(item.id, item.isUpdate)"></u-icon>
@@ -49,6 +53,7 @@
     import ScrollTopIcon from '@/plugins/wodrow/list/ScrollTopIcon';
     import uniTag from "@/components/uni-tag/uni-tag.vue";
     import WI from '@/plugins/wodrow/iconfont/WI';
+    import {mapState} from 'vuex'
     import {Toast, Dialog} from 'vant'
     export default {
         name: "ArticleList",
@@ -58,13 +63,18 @@
             uniTag,
             WI
         },
+        computed: {
+            ...mapState(['userInfo'])
+        },
         data() {
             return {
                 page: 0,
                 page_size: 10,
-                total: 0,
-                list: []
+                total: 0
             }
+        },
+        mounted() {
+            this.$refs.WODROW_LOAD_MORE_ARTICLE_LIST.reLoadData()
         },
         methods: {
             provider(pd){
@@ -142,6 +152,28 @@
             },
             toCircle(circleId){
                 console.log(circleId);
+            },
+            collect(index){
+                let _this = this;
+                let formParams = {
+                    id: _this.$refs.WODROW_LOAD_MORE_ARTICLE_LIST.getItem(index).id
+                };
+                _this.$auth.post("/article/default/collection", formParams, true, function (res) {
+                    _this.$refs.WODROW_LOAD_MORE_ARTICLE_LIST.updateItem(index, res.info);
+                }, function (msg) {
+                    Toast(msg);
+                });
+            },
+            unCollect(index){
+                let _this = this;
+                let formParams = {
+                    id: _this.$refs.WODROW_LOAD_MORE_ARTICLE_LIST.getItem(index).id
+                };
+                _this.$auth.post("/article/default/un-collection", formParams, true, function (res) {
+                    _this.$refs.WODROW_LOAD_MORE_ARTICLE_LIST.updateItem(index, res.info);
+                }, function (msg) {
+                    Toast(msg);
+                });
             }
         },
         onReady() {

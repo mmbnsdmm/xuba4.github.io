@@ -70,17 +70,10 @@
         },
         mounted: function() {
             let _this = this;
-            _this.$http.post('/public/get-datas', {}, true, function (res) {
-                let qqqs = res.datas.qqqs;
-                let x = [1, 2, 3];
-                _this.$tool.vueArrayReset(_this.qqqs, qqqs);
-                _this.adminEmail = res.datas.adminEmail;
-                _this.adminQQ = res.datas.adminQQ;
-                _this.adminWX = res.datas.adminWX;
-            }, function (msg) {
-                Toast(msg);
-                return ;
-            });
+            _this.$tool.vueArrayReset(_this.qqqs, _this.$conf.serverData.datas.qqqs);
+            _this.adminEmail = _this.$conf.serverData.datas.adminEmail;
+            _this.adminQQ = _this.$conf.serverData.datas.adminQQ;
+            _this.adminWX = _this.$conf.serverData.datas.adminWX;
         },
         methods: {
             toScan: function () {

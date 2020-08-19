@@ -17,6 +17,12 @@ use yii\behaviors\TimestampBehavior;
  * @property-read array $statusDesc
  * @property-read  array $info
  * @property-read  boolean $canYouOpt
+ * @property  LeaveMessagePraise $praise
+ * @property  LeaveMessagePraise $trample
+ * @property-read  boolean $isYouPraise
+ * @property-read  boolean $isYouTrample
+ * @property-read  int $praiseTotal
+ * @property-read  int $trampleTotal
  */
 class LeaveMessage extends \common\models\db\tables\LeaveMessage
 {
@@ -179,6 +185,10 @@ class LeaveMessage extends \common\models\db\tables\LeaveMessage
         $createdBy = Yii::$app->apiTool->authReturn($this->createdBy);
         $arr['createdBy'] = $createdBy;
         $arr['canYouOpt'] = $this->canYouOpt;
+        $arr['isYouPraise'] = $this->isYouPraise;
+        $arr['isYouTrample'] = $this->isYouTrample;
+        $arr['praiseTotal'] = $this->praiseTotal;
+        $arr['trampleTotal'] = $this->trampleTotal;
         return $arr;
     }
 
@@ -204,6 +214,92 @@ class LeaveMessage extends \common\models\db\tables\LeaveMessage
                     return false;
                 }
             }
+        }
+    }
+
+    public function getPraiseTotal()
+    {
+        return LeaveMessagePraise::find()->where(['leave_message_id' => $this->id, 'praise_type' => LeaveMessagePraise::PRAISE_TYPE_PRAISE])->count();
+    }
+
+    public function getTrampleTotal()
+    {
+        return LeaveMessagePraise::find()->where(['leave_message_id' => $this->id, 'praise_type' => LeaveMessagePraise::PRAISE_TYPE_TRAMPLE])->count();
+    }
+
+    public function getIsYouPraise()
+    {
+        if ($this->praise){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function getPraise()
+    {
+        $user = \Yii::$app->user->identity;
+        $praise = LeaveMessagePraise::findOne(['created_by' => $user->id, 'leave_message_id' => $this->id, 'praise_type' => LeaveMessagePraise::PRAISE_TYPE_PRAISE]);
+        return $praise;
+    }
+
+    public function praise()
+    {
+        $user = \Yii::$app->user->identity;
+        if (!$this->isYouPraise){
+            $praise = new LeaveMessagePraise();
+            $praise->created_by = $user->id;
+            $praise->leave_message_id = $this->id;
+            $praise->praise_type = LeaveMessagePraise::PRAISE_TYPE_PRAISE;
+            $praise->created_at = YII_BT_TIME;
+            $praise->status = LeaveMessagePraise::STATUS_ACTIVE;
+            $praise->save();
+        }
+    }
+
+    public function unPraise()
+    {
+        if ($this->isYouPraise){
+            $praise = $this->praise;
+            $praise->delete();
+        }
+    }
+
+    public function getIsYouTrample()
+    {
+        if ($this->trample){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function getTrample()
+    {
+        $user = \Yii::$app->user->identity;
+        $trample = LeaveMessagePraise::findOne(['created_by' => $user->id, 'leave_message_id' => $this->id, 'praise_type' => LeaveMessagePraise::PRAISE_TYPE_TRAMPLE]);
+        return $trample;
+    }
+
+    public function trample()
+    {
+        $user = \Yii::$app->user->identity;
+        if (!$this->trample){
+            $trample = new LeaveMessagePraise();
+            $trample->created_by = $user->id;
+            $trample->leave_message_id = $this->id;
+            $trample->praise_type = LeaveMessagePraise::PRAISE_TYPE_TRAMPLE;
+            $trample->created_at = YII_BT_TIME;
+            $trample->status = LeaveMessagePraise::STATUS_ACTIVE;
+            $trample->save();
+        }
+    }
+
+    public function unTrample()
+    {
+        if ($this->isYouTrample){
+            $trample = $this->trample;
+            $trample->delete();
         }
     }
 }

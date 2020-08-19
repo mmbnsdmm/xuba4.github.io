@@ -132,10 +132,11 @@ class PublicController extends Controller
         $this->data['datas']['adminEmail'] = $params['adminEmail'];
         $this->data['datas']['adminQQ'] = $params['adminQQ'];
         $this->data['datas']['adminWX'] = $params['adminWX'];
-        $this->data['datas']['sysInfo'] = \Yii::$app->vueApp->sysInfo;
-        $this->data['datas']['howToUse'] = \Yii::$app->vueApp->howToUse;
-        $this->data['datas']['warnings'] = \Yii::$app->vueApp->warnings;
-        $this->data['datas']['qqqs'] = \Yii::$app->vueApp->qqqs;
+        $this->data['datas']['sysInfo'] = \Yii::$app->uniApp->sysInfo;
+        $this->data['datas']['howToUse'] = \Yii::$app->uniApp->howToUse;
+        $this->data['datas']['warnings'] = \Yii::$app->uniApp->warnings;
+        $this->data['datas']['qqqs'] = \Yii::$app->uniApp->qqqs;
+        $this->data['datas']['searchAllKeyword'] = \Yii::$app->uniApp->searchAllKeyword;
         return $this->data;
     }
 }

@@ -21,6 +21,8 @@ use Yii;
  * @property int $is_boutique 是否精品
  * @property int $create_type 创作方式
  *
+ * @property Collection[] $collections
+ * @property Comments[] $comments
  * @property User $createdBy
  * @property User $updatedBy
  */
@@ -73,6 +75,22 @@ class Article extends \yii\db\ActiveRecord
             'is_boutique' => Yii::t('app', '是否精品'),
             'create_type' => Yii::t('app', '创作方式'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCollections()
+    {
+        return $this->hasMany(Collection::className(), ['article_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getComments()
+    {
+        return $this->hasMany(Comments::className(), ['article_id' => 'id']);
     }
 
     /**

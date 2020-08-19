@@ -39,7 +39,7 @@ class IndexController extends Controller
         $limit = $page_size;
         $offset = $limit * ($page - 1);
         $query = SearchIndex::find();
-        if ("searchAll" == $keyword){}else{
+        if (\Yii::$app->uniApp->searchAllKeyword == $keyword){}else{
             $query->andWhere(['like', 'title', $keyword]);
         }
         if ($json_filter_params){

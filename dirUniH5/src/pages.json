@@ -121,7 +121,8 @@
 			"authType": "@",
 			"data": {},
 			"style": {
-				"navigationBarTitleText": "我的关注"
+				"navigationBarTitleText": "我的关注",
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -131,7 +132,8 @@
 			"authType": "@",
 			"data": {},
 			"style": {
-				"navigationBarTitleText": "我的粉丝"
+				"navigationBarTitleText": "我的粉丝",
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -141,7 +143,8 @@
 			"authType": "@",
 			"data": {},
 			"style": {
-				"navigationBarTitleText": "我的文章"
+				"navigationBarTitleText": "我的文章",
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -151,7 +154,8 @@
 			"authType": "@",
 			"data": {},
 			"style": {
-				"navigationBarTitleText": "我的收藏"
+				"navigationBarTitleText": "我的收藏",
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -161,7 +165,8 @@
 			"authType": "*",
 			"data": {},
 			"style": {
-				"navigationBarTitleText": "用户信息"
+				"navigationBarTitleText": "用户信息",
+				"enablePullDownRefresh": true
 			}
 		},
 		{

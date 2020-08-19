@@ -2,7 +2,7 @@
     <view class="search-search">
         <view class="search-box">
             <!-- mSearch组件 如果使用原样式，删除组件元素-->
-            <mSearch class="mSearch-input-box" :mode="2" button="inside" placeholder="关键字，想要查看全部请输入: searchAll" @input="input" @search="doSearch" v-model.trim="keyword"></mSearch>
+            <mSearch class="mSearch-input-box" :mode="2" button="inside" :placeholder="placeholder" @input="input" @search="doSearch" v-model.trim="keyword"></mSearch>
         </view>
         <view class="search-keyword" v-show="keywordListShow">
             <scroll-view class="keyword-box" scroll-y>
@@ -76,11 +76,12 @@
         },
         data() {
             return {
+                placeholder: "",
                 keyword: "",
                 keywordListShow: true,
                 maxOldKeywordCount: 20,
                 oldKeywordList: [],
-                hotKeywordList: ['键盘', '鼠标', '显示器', '电脑主机', '蓝牙音箱', '笔记本电脑', '鼠标垫', 'USB', 'USB3.0'],
+                hotKeywordList: ['search@All', '键盘', '鼠标', '显示器', '电脑主机', '蓝牙音箱', '笔记本电脑', '鼠标垫', 'USB', 'USB3.0'],
                 forbid: '',
                 attentionSrc: '/static/search/attention.png',
                 page: 0,
@@ -136,6 +137,7 @@
             },
             init() {
                 this.loadOldKeyword();
+                this.placeholder = "关键字，想要查看全部请输入: " + this.$conf.serverData.datas.searchAllKeyword;
             },
             blur(){
                 uni.hideKeyboard()

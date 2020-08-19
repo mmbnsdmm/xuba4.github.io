@@ -33,9 +33,13 @@ class DefaultController extends Controller
      */
     public function actionPublish($id = null, $title, $get_password = null, $content, $status, $is_boutique = Article::IS_BOUTIQUE_N, $create_type = Article::CREATE_TYPE_ORIGINAL)
     {
-        $article = $id?Article::findOne($id):new Article();
-        if (!$article){
-            throw new ApiException(202008111057, "没有找到文章");
+        if ($id === null){
+            $article = new Article();
+        }else{
+            $article = Article::findOne($id);
+            if (!$article){
+                throw new ApiException(202008111057, "没有找到文章");
+            }
         }
         if (!$article->canYouOpt){
             throw new ApiException(202008131536, "你没有修改此文章权限");
@@ -67,10 +71,7 @@ class DefaultController extends Controller
      */
     public function actionView($id)
     {
-        $article = Article::findOne(['id' => $id, 'status' => Article::STATUS_ACTIVE]);
-        if (!$article){
-            throw new ApiException(202008111550, "没有找到文章或文章已删除");
-        }
+        $article = $this->_getModel($id);
         $this->data['status'] = 200;
         $this->data['msg'] = "获取成功";
         $this->data['article'] = $article->info;
@@ -132,9 +133,9 @@ class DefaultController extends Controller
      */
     public function actionDelete($id)
     {
-        $article = Article::findOne(['id' => $id, 'status' => Article::STATUS_ACTIVE]);
-        if (!$article){
-            throw new ApiException(202008140907, "没有找到文章或文章已删除");
+        $article = $this->_getModel($id);
+        if (!$article->canYouOpt){
+            throw new ApiException(202008140909, "你没有修改此留言权限");
         }
         $article->status = Article::STATUS_DELETE;
         if (!$article->save()){
@@ -143,5 +144,46 @@ class DefaultController extends Controller
         $this->data['status'] = 200;
         $this->data['msg'] = "删除成功";
         return $this->data;
+    }
+
+    /**
+     * 收藏
+     * @desc post
+     * @param int $id
+     * @return array
+     * @return int status 是否成功
+     * @return string msg
+     * @throws
+     */
+    public function actionCollection($id)
+    {
+        $article = $this->_getModel($id);
+        $article->collection();
+        return $this->success("收藏成功", ['info' => $article->info]);
+    }
+
+    /**
+     * 取消收藏
+     * @desc post
+     * @param int $id
+     * @return array
+     * @return int status 是否成功
+     * @return string msg
+     * @throws ApiException
+     */
+    public function actionUnCollection($id)
+    {
+        $article = $this->_getModel($id);
+        $article->unCollection();
+        return $this->success("取消收藏成功", ['info' => $article->info]);
+    }
+
+    private function _getModel($id)
+    {
+        $leaveMessage = Article::findOne(['id' => $id, 'status' => Article::STATUS_ACTIVE]);
+        if (!$leaveMessage){
+            throw new ApiException(202008191739, "没有找到文章或文章已删除");
+        }
+        return $leaveMessage;
     }
 }

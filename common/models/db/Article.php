@@ -2,9 +2,12 @@
 
 namespace common\models\db;
 
+use common\components\Tools;
 use common\models\interfaces\SearchIndexInterface;
+use wodrow\yii2wtools\tools\Model;
 use Yii;
 use wodrow\yii2wtools\tools\ArrayHelper;
+use yii\base\Exception;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 
@@ -20,6 +23,9 @@ use yii\behaviors\TimestampBehavior;
  * @property-read array $createTypeDesc
  * @property-read  array $info
  * @property-read  boolean $canYouOpt
+ * @property Collection[] $collections
+ * @property Collection $yourCollection
+ * @property-read  boolean $isYouCollection
  */
 class Article extends \common\models\db\tables\Article implements SearchIndexInterface
 {
@@ -212,6 +218,8 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
         $createdBy = Yii::$app->apiTool->authReturn($this->createdBy);
         $arr['createdBy'] = $createdBy;
         $arr['canYouOpt'] = $this->canYouOpt;
+        $arr['collections'] = $this->collections;
+        $arr['isYouCollection'] = $this->isYouCollection;
         return $arr;
     }
 
@@ -237,6 +245,50 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
                     return false;
                 }
             }
+        }
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCollections()
+    {
+        return $this->hasMany(Collection::className(), ['article_id' => 'id']);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsYouCollection()
+    {
+        return $this->yourCollection?true:false;
+    }
+
+    public function getYourCollection()
+    {
+        return Collection::findOne(['article_id' => $this->id, 'created_by' => Yii::$app->user->id]);
+    }
+
+    public function collection()
+    {
+        $user = \Yii::$app->user->identity;
+        if (!$this->isYouCollection){
+            $collection = new Collection();
+            $collection->created_by = $collection->updated_by = $user->id;
+            $collection->article_id = $this->id;
+            $collection->created_at = $collection->updated_at = YII_BT_TIME;
+            $collection->status = Collection::STATUS_ACTIVE;
+            if (!$collection->save()){
+                throw new Exception("收藏失败:".Model::getModelError($collection));
+            }
+        }
+    }
+
+    public function unCollection()
+    {
+        if ($this->isYouCollection){
+            $collection = $this->yourCollection;
+            $collection->delete();
         }
     }
 

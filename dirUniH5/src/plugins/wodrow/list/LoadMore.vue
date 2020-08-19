@@ -76,7 +76,7 @@
                 state: 0,
                 dataList: [],
                 lastPage: [],
-                pageNo: 1,
+                pageNo: 1
             }
         },
         methods: {
@@ -121,6 +121,17 @@
                 setTimeout(function () {
                     uni.stopPullDownRefresh();
                 }, 1000);
+            },
+            getItem(index){
+                return this.items[index];
+            },
+            updateItem(index, v){
+                let _this = this;
+                _this.dataList.splice(index, 1, v);
+            },
+            deleteItem(index){
+                let _this = this;
+                _this.dataList.splice(index, 1);
             }
         }
     }

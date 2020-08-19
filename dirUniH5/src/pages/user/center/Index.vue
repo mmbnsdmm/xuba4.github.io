@@ -22,7 +22,7 @@
             <u-cell-item icon="eye-fill" title="我的关注" arrow-direction="right" @tap="$router.push('/pages/user/center/MyAttention')"></u-cell-item>
             <u-cell-item icon="eye" title="我的粉丝" arrow-direction="right" @tap="$router.push('/pages/user/center/MyFans')"></u-cell-item>
             <u-cell-item icon="file-text-fill" title="我的文章" arrow-direction="right" @tap="$router.push('/pages/user/center/MyArticle')"></u-cell-item>
-            <u-cell-item icon="attach" title="我的收藏" arrow-direction="right" @tap="$router.push('/pages/user/center/MyCollection')"></u-cell-item>
+            <u-cell-item icon="star-fill" title="我的收藏" arrow-direction="right" @tap="$router.push('/pages/user/center/MyCollection')"></u-cell-item>
             <u-cell-item icon="chat-fill" title="留言区" arrow-direction="right" @tap="$router.push('/pages/message/LeaveMessage')"></u-cell-item>
         </u-cell-group>
         <u-gap></u-gap>

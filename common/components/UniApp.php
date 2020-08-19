@@ -28,6 +28,7 @@ class UniApp extends Component
     public $sysInfo = [];
     public $howToUse = [];
     public $warnings = [];
+    public $searchAllKeyword = "search@All";
 
     public function init()
     {

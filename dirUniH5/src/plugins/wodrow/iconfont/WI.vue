@@ -27,7 +27,7 @@
     @font-face {
         font-family: 'wi';
         /** 阿里巴巴矢量图标库的字体库地址,你可以更换为你的图标库 **/
-        src: url('http://at.alicdn.com/t/font_1840030_fm03rt2ccz.ttf') format('truetype');
+        src: url('http://at.alicdn.com/t/font_1840030_g5uzc9pbrun.ttf') format('truetype');
     }
     .wi {
         font-family: wi !important;
