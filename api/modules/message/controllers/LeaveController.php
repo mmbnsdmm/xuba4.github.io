@@ -9,6 +9,7 @@
 namespace api\modules\message\controllers;
 
 
+use common\components\Tools;
 use common\models\db\LeaveMessage;
 use wodrow\yii\rest\ApiException;
 use wodrow\yii\rest\Controller;
@@ -63,6 +64,7 @@ class LeaveController extends Controller
      */
     public function actionList($start_id = null, $page = 1, $page_size = 10, $json_filter_params = null)
     {
+        $appendData = ['list' => [], 'page' => $page, 'page_size' => $page_size, 'total' => 0];
         $limit = $page_size;
         $offset = $limit * ($page - 1);
         $query = LeaveMessage::find()->where(['status' => LeaveMessage::STATUS_ACTIVE]);
@@ -79,17 +81,12 @@ class LeaveController extends Controller
         $leaveMessages = $query->limit($limit)->offset($offset)->all();
         $list = [];
         foreach ($leaveMessages as $k => $v) {
-            $info =$v->info;
+            $info = $v->info;
             unset($info['content']);
             $list[] = $info;
         }
-        $r = $this->data;
-        $r['status'] = 200;
-        $r['msg'] = "获取成功";
-        $r['list'] = $list;
-        $r['page'] = $page;
-        $r['page_size'] = $page_size;
-        $r['total'] = $total;
-        return $r;
+        $appendData['list'] = $list;
+        $appendData['total'] = $total;
+        return $this->success("获取成功", $appendData);
     }
 }

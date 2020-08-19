@@ -95,6 +95,7 @@ class DefaultController extends Controller
      */
     public function actionList($start_id = null, $page = 1, $page_size = 10, $json_filter_params = null)
     {
+        $appendData = ['list' => [], 'page' => $page, 'page_size' => $page_size, 'total' => 0];
         $limit = $page_size;
         $offset = $limit * ($page - 1);
         $query = Article::find()->where(['status' => Article::STATUS_ACTIVE]);
@@ -115,14 +116,9 @@ class DefaultController extends Controller
             unset($info['content']);
             $list[] = $info;
         }
-        $r = $this->data;
-        $r['status'] = 200;
-        $r['msg'] = "获取成功";
-        $r['list'] = $list;
-        $r['page'] = $page;
-        $r['page_size'] = $page_size;
-        $r['total'] = $total;
-        return $r;
+        $appendData['list'] = $list;
+        $appendData['total'] = $total;
+        return $this->success("获取成功", $appendData);
     }
 
     /**
