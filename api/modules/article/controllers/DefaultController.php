@@ -10,6 +10,8 @@ namespace api\modules\article\controllers;
 
 
 use common\models\db\Article;
+use common\models\db\Collection;
+use common\models\db\User;
 use wodrow\yii\rest\ApiException;
 use wodrow\yii\rest\Controller;
 use wodrow\yii2wtools\tools\Model;
@@ -85,6 +87,7 @@ class DefaultController extends Controller
      * @param int $page 页码
      * @param int $page_size 每页数据数
      * @param string $json_filter_params 查询过滤参数(数组型json),详见https://www.yiichina.com/tutorial/1405,示例:["and/or",["and/or",["=","字段1","值"],["!=","字段2","值"]],["in","字段3",["值1","值2","值3"]],[">=","字段4","值"]]
+     * @param int $collectionUser 是否$collectionUser的收藏文章
      * @return array
      * @return int status 是否成功
      * @return string msg
@@ -94,7 +97,7 @@ class DefaultController extends Controller
      * @return int total 总数据数
      * @throws
      */
-    public function actionList($start_id = null, $page = 1, $page_size = 10, $json_filter_params = null)
+    public function actionList($start_id = null, $page = 1, $page_size = 10, $json_filter_params = null, $collectionUser = null)
     {
         $appendData = ['list' => [], 'page' => $page, 'page_size' => $page_size, 'total' => 0];
         $limit = $page_size;
@@ -103,6 +106,14 @@ class DefaultController extends Controller
         if ($json_filter_params){
             $filter_params = json_decode($json_filter_params, true);
             $query->andWhere($filter_params);
+        }
+        if ($collectionUser){
+            $user = User::findOne($collectionUser);
+            $caids = [];
+            foreach ($user->collections as $k => $v) {
+                $caids[] = $v->article_id;
+            }
+            $query->andWhere(['in', 'id', $caids]);
         }
         if ($start_id){
             $query->andWhere(['<=', 'id', $start_id]);

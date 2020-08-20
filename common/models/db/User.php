@@ -26,6 +26,7 @@ use yii\web\IdentityInterface;
  *
  * @property-read string $nickname
  * @property QueneYiiTask[] $queneYiiTasks
+ * @property Collection[] $collections
  *
  * @property-read array $statusDesc
  * @property-read string $nickName
@@ -157,6 +158,11 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
     public function getQueneYiiTasks()
     {
         return $this->hasMany(QueneYiiTask::className(), ['created_by' => 'id']);
+    }
+
+    public function getCollections()
+    {
+        return $this->hasMany(Collection::className(), ['created_by' => 'id']);
     }
 
     /**

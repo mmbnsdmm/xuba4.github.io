@@ -29,8 +29,8 @@
                     <h4>
                         {{article.title}}
                         <WI class="single pull-right" type="&#xe621;" font-size="35rpx" title="配置" @click.native="actionSheetShow= ! actionSheetShow"></WI>
-                        <u-icon name="star" class="pull-right" v-if="article.created_by !== userInfo.id && !article.isYouCollection" @tap="collect"></u-icon>
-                        <u-icon name="star-fill" class="pull-right" v-if="article.created_by !== userInfo.id && article.isYouCollection" @tap="unCollect"></u-icon>
+                        <u-icon name="star" class="pull-right" v-if="article.created_by !== userInfo.id && !article.isYouCollection" :label="article.collectionTotal" @tap="collect"></u-icon>
+                        <u-icon name="star-fill" class="pull-right" v-if="article.created_by !== userInfo.id && article.isYouCollection" :label="article.collectionTotal"  @tap="unCollect"></u-icon>
                     </h4>
                     <small><code>{{$conf.serverData.enums.article.createTypeDesc[article.create_type]}}</code>|发布者:<code>{{article.createdBy.nickName}}</code>|发布时间:<code>{{$moment(article.created_at*1000).fromNow()}}</code>|最近更新:<code>{{$moment(article.updated_at*1000).fromNow()}}</code></small>
                     <hr>
@@ -157,26 +157,10 @@
                 })
             },
             collect(){
-                let _this = this;
-                let formParams = {
-                    id: _this.article.id
-                };
-                _this.$auth.post("/article/default/collection", formParams, true, function (res) {
-                    _this.$set(_this.article, "isYouCollection", res.info.isYouCollection);
-                }, function (msg) {
-                    Toast(msg);
-                });
+                Toast("请在列表页操作");
             },
             unCollect(){
-                let _this = this;
-                let formParams = {
-                    id: _this.article.id
-                };
-                _this.$auth.post("/article/default/un-collection", formParams, true, function (res) {
-                    _this.$set(_this.article, "isYouCollection", res.info.isYouCollection);
-                }, function (msg) {
-                    Toast(msg);
-                });
+                Toast("请在列表页操作");
             }
         },
         onPullDownRefresh(){

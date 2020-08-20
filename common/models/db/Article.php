@@ -24,6 +24,7 @@ use yii\behaviors\TimestampBehavior;
  * @property-read  array $info
  * @property-read  boolean $canYouOpt
  * @property Collection[] $collections
+ * @property-read  int $collectionTotal
  * @property Collection $yourCollection
  * @property-read  boolean $isYouCollection
  */
@@ -219,6 +220,7 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
         $arr['createdBy'] = $createdBy;
         $arr['canYouOpt'] = $this->canYouOpt;
         $arr['collections'] = $this->collections;
+        $arr['collectionTotal'] = $this->collectionTotal;
         $arr['isYouCollection'] = $this->isYouCollection;
         return $arr;
     }
@@ -254,6 +256,11 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
     public function getCollections()
     {
         return $this->hasMany(Collection::className(), ['article_id' => 'id']);
+    }
+
+    public function getCollectionTotal()
+    {
+        return Collection::find()->where(['article_id' => $this->id])->count();
     }
 
     /**

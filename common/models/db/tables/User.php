@@ -40,6 +40,7 @@ use Yii;
  * @property Fans[] $fans
  * @property Fans[] $fans0
  * @property AdminAuthItem[] $itemNames
+ * @property LeaveMessagePraise[] $leaveMessagePraises
  * @property LeaveMessage[] $leaveMessages
  * @property LeaveMessage[] $leaveMessages0
  * @property LogEmailSendCode[] $logEmailSendCodes
@@ -190,6 +191,14 @@ class User extends \yii\db\ActiveRecord
     public function getItemNames()
     {
         return $this->hasMany(AdminAuthItem::className(), ['name' => 'item_name'])->viaTable('{{%admin_auth_assignment}}', ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLeaveMessagePraises()
+    {
+        return $this->hasMany(LeaveMessagePraise::className(), ['created_by' => 'id']);
     }
 
     /**

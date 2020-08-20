@@ -30,7 +30,7 @@
                                     <text class="text-warning" v-if="item.create_type === 3">{{$conf.serverData.enums.article.createTypeDesc[item.create_type]}}</text>
                                     <u-icon name="eye-fill" size="34" color="" label="查看" class="pull-right text-blue" @tap="toView(item.id, item.isUpdate)"></u-icon>
                                     <u-icon name="edit-pen-fill" size="34" color="" label="修改" class="pull-right text-warning" v-if="item.canYouOpt" @tap="toUpdate(item.id, item.isUpdate)"></u-icon>
-                                    <u-icon name="close" size="34" color="" label="删除" class="pull-right text-danger" v-if="item.canYouOpt" @tap="toDelete(item.id)"></u-icon>
+                                    <u-icon name="close" size="34" color="" label="删除" class="pull-right text-danger" v-if="item.canYouOpt" @tap="toDelete(index)"></u-icon>
                                     <div class="clearfix"></div>
                                 </view>
                             </u-card>
@@ -129,15 +129,17 @@
                     url: "/pages/article/Update?id=" + articleId + "&isLast=" + isUpdate
                 });
             },
-            toDelete(articleId){
+            toDelete(index){
                 let _this = this;
                 Dialog.confirm({
                     title: '确认删除',
                     message: '你确认要删除此条记录吗？'
                 }).then(() => {
-                    let formParams = {id: articleId};
+                    let formParams = {
+                        id: _this.$refs.WODROW_LOAD_MORE_MY_ARTICLE_LIST.getItem(index).id
+                    };
                     _this.$auth.post("/article/default/delete", formParams, true, function (res) {
-                        _this.$refs.WODROW_LOAD_MORE_MY_ARTICLE_LIST.reLoadData()
+                        _this.$refs.WODROW_LOAD_MORE_MY_ARTICLE_LIST.deleteItem(index);
                     }, function (msg) {
                         Toast(msg);
                     });

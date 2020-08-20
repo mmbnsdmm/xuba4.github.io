@@ -43,7 +43,7 @@
                                         @body-click="toView(item.type, item.type_model_id)">
                                     <view class="" slot="body">
                                         <view>
-                                            <text class="text-blue" style="font-size: 36rpx">{{item.title}}</text>
+                                            <text class="text-blue" style="font-size: 36rpx" v-html="item.title"></text>
                                         </view>
                                     </view>
                                     <view class="" slot="foot">
@@ -219,6 +219,7 @@
                 };
                 _this.$auth.post("/search/index/list", formParams, false, function (r) {
                     _this.$_.forEach(r.list, function (v, k) {
+                        if (_this.keyword !== _this.$conf.serverData.datas.searchAllKeyword) v.title = v.title.replace(_this.keyword, "<b>" + _this.keyword + "</b>");
                         res.push(v);
                     });
                 }, function (msg) {

@@ -29,13 +29,13 @@
                                     <text class="text-danger" v-if="item.create_type === 2">{{$conf.serverData.enums.article.createTypeDesc[item.create_type]}}</text>
                                     <text class="text-warning" v-if="item.create_type === 3">{{$conf.serverData.enums.article.createTypeDesc[item.create_type]}}</text>
                                     <WI class="single" type="&#xe62b;" font-size="34rpx" v-if="item.created_by !== userInfo.id"></WI>
-                                    <u-icon name="star" v-if="item.created_by !== userInfo.id && !item.isYouCollection" @tap="collect(index)"></u-icon>
-                                    <u-icon name="star-fill" v-if="item.created_by !== userInfo.id && item.isYouCollection" @tap="unCollect(index)"></u-icon>
+                                    <u-icon name="star" v-if="item.created_by !== userInfo.id && !item.isYouCollection" :label="item.collectionTotal" @tap="collect(index)"></u-icon>
+                                    <u-icon name="star-fill" v-if="item.created_by !== userInfo.id && item.isYouCollection" :label="item.collectionTotal" @tap="unCollect(index)"></u-icon>
                                     <u-icon name="lock-fill" v-if="item.get_password && !item.canView"></u-icon>
                                     <u-icon name="lock-open" v-if="item.get_password && item.canView"></u-icon>
                                     <u-icon name="eye-fill" size="34" color="" label="查看" class="pull-right text-blue" @tap="toView(item.id, item.isUpdate)"></u-icon>
                                     <u-icon name="edit-pen-fill" size="34" color="" label="修改" class="pull-right text-warning" v-if="item.canYouOpt" @tap="toUpdate(item.id, item.isUpdate)"></u-icon>
-                                    <u-icon name="close" size="34" color="" label="删除" class="pull-right text-danger" v-if="item.canYouOpt" @tap="toDelete(item.id)"></u-icon>
+                                    <u-icon name="close" size="34" color="" label="删除" class="pull-right text-danger" v-if="item.canYouOpt" @tap="toDelete(index)"></u-icon>
                                     <div class="clearfix"></div>
                                 </view>
                             </u-card>
@@ -131,15 +131,17 @@
                     url: "/pages/article/Update?id=" + articleId + "&isLast=" + isUpdate
                 });
             },
-            toDelete(articleId){
+            toDelete(index){
                 let _this = this;
                 Dialog.confirm({
                     title: '确认删除',
                     message: '你确认要删除此条记录吗？'
                 }).then(() => {
-                    let formParams = {id: articleId};
+                    let formParams = {
+                        id: _this.$refs.WODROW_LOAD_MORE_ARTICLE_LIST.getItem(index).id
+                    };
                     _this.$auth.post("/article/default/delete", formParams, true, function (res) {
-                        _this.$refs.WODROW_LOAD_MORE_ARTICLE_LIST.reLoadData()
+                        _this.$refs.WODROW_LOAD_MORE_ARTICLE_LIST.deleteItem(index);
                     }, function (msg) {
                         Toast(msg);
                     });
