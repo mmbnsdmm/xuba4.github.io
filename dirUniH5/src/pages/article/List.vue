@@ -53,8 +53,8 @@
     import ScrollTopIcon from '@/plugins/wodrow/list/ScrollTopIcon';
     import uniTag from "@/components/uni-tag/uni-tag.vue";
     import WI from '@/plugins/wodrow/iconfont/WI';
-    import {mapState} from 'vuex'
-    import {Toast, Dialog} from 'vant'
+    import {mapState} from 'vuex';
+    import {Toast, Dialog} from 'vant';
     export default {
         name: "ArticleList",
         components: {

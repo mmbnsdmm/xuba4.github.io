@@ -107,8 +107,11 @@ class DefaultController extends Controller
             $filter_params = json_decode($json_filter_params, true);
             $query->andWhere($filter_params);
         }
-        if ($collectionUser){
+        if ($collectionUser !== null){
             $user = User::findOne($collectionUser);
+            if (!$user){
+                throw new ApiException(202008200927, "没有找到用户:{$collectionUser}");
+            }
             $caids = [];
             foreach ($user->collections as $k => $v) {
                 $caids[] = $v->article_id;

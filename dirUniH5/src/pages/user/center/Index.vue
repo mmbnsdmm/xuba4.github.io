@@ -67,7 +67,8 @@
                     if (_this.hasLogin){
                         Toast("退出失败，请联系管理员")
                     }else{
-                        this.$router.push('/')
+                        _this.$tool.delAllCache();
+                        _this.$router.push('/');
                     }
                 }).catch(() => {});
             }

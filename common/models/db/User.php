@@ -16,6 +16,7 @@ use wodrow\yii2wtools\tools\Color;
 use wodrow\yii2wtools\tools\Model;
 use wodrow\yii2wtools\tools\Security;
 use wodrow\yii2wtools\tools\StrHelper;
+use yii\base\Exception;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\web\IdentityInterface;
@@ -27,6 +28,10 @@ use yii\web\IdentityInterface;
  * @property-read string $nickname
  * @property QueneYiiTask[] $queneYiiTasks
  * @property Collection[] $collections
+ * @property Fans $attention
+ * @property Fans $fans
+ * @property-read  Fans $isYourAttention
+ * @property-read  Fans $isYourFans
  *
  * @property-read array $statusDesc
  * @property-read string $nickName
@@ -165,12 +170,74 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
         return $this->hasMany(Collection::className(), ['created_by' => 'id']);
     }
 
+    public function getAttentions()
+    {
+        return $this->hasMany(Fans::className(), ['fans_id' => 'id']);
+    }
+
+    public function getFans()
+    {
+        return $this->hasMany(Fans::className(), ['lender_id' => 'id']);
+    }
+
+    public function getIsYourAttention()
+    {
+        if (\Yii::$app->user->isGuest){
+            return false;
+        }
+        $identify = \Yii::$app->user->identity;
+        $fans = Fans::findOne(['lender_id' => $this->id, 'fans_id' => $identify->id]);
+        return !!$fans;
+    }
+
+    public function getIsYourFans()
+    {
+        if (\Yii::$app->user->isGuest){
+            return false;
+        }
+        $identify = \Yii::$app->user->identity;
+        $fans = Fans::findOne(['lender_id' => $identify->id, 'fans_id' => $this->id]);
+        return !!$fans;
+    }
+
     /**
      * @return string
      */
     public function getNickName()
     {
         return $this->nickname?:$this->username;
+    }
+
+    public function attention()
+    {
+        if (!$this->isYourAttention){
+            if (\Yii::$app->user->isGuest){
+                throw new Exception("必须登录后才能进行关注操作");
+            }
+            $identify = \Yii::$app->user->identity;
+            $fans = new Fans();
+            $fans->lender_id = $this->id;
+            $fans->fans_id = $identify->id;
+            $fans->created_at = $fans->updated_at = YII_BT_TIME;
+            $fans->status = Fans::STATUS_ACTIVE;
+            if (!$fans->save()){
+                throw new Exception("关注失败:".Model::getModelError($fans));
+            }
+        }
+    }
+
+    public function unAttention()
+    {
+        if ($this->isYourAttention){
+            if (\Yii::$app->user->isGuest){
+                throw new Exception("必须登录后才能进行取消关注操作");
+            }
+            $identify = \Yii::$app->user->identity;
+            $fans = Fans::findOne(['lender_id' => $this->id, 'fans_id' => $identify->id]);
+            if (!$fans->delete()){
+                throw new Exception("取消关注失败:".Model::getModelError($fans));
+            }
+        }
     }
 
     public function beforeValidate()

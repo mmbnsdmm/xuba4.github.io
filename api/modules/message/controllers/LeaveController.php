@@ -192,12 +192,17 @@ class LeaveController extends Controller
         return $this->success("取消踩一踩成功", ['info' => $leaveMessage->info]);
     }
 
+    /**
+     * @param $id
+     * @return LeaveMessage|null
+     * @throws
+     */
     private function _getModel($id)
     {
-        $leaveMessage = LeaveMessage::findOne(['id' => $id, 'status' => LeaveMessage::STATUS_ACTIVE]);
-        if (!$leaveMessage){
+        $model = LeaveMessage::findOne(['id' => $id, 'status' => LeaveMessage::STATUS_ACTIVE]);
+        if (!$model){
             throw new ApiException(202008181709, "没有找到留言或留言已删除");
         }
-        return $leaveMessage;
+        return $model;
     }
 }
