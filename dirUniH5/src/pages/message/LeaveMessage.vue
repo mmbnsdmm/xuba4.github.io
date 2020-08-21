@@ -127,7 +127,7 @@
                         id: _this.$refs.WODROW_LOAD_MORE_COMMENT_LIST.getItem(index).id
                     };
                     _this.$auth.post("/message/leave/delete", formParams, true, function (res) {
-                        _this.$refs.WODROW_LOAD_MORE_COMMENT_LIST.deleteItem(index);
+                        _this.$refs.WODROW_LOAD_MORE_COMMENT_LIST.reLoadData();
                     }, function (msg) {
                         Toast(msg);
                     });
@@ -203,13 +203,13 @@
         },
         onReady() {
             //如果是H5，请一定使用onReady方法初次加载数据，否则不会触发
-            this.$refs.WODROW_LOAD_MORE_COMMENT_LIST.reLoadData()
+            this.$refs.WODROW_LOAD_MORE_COMMENT_LIST.reLoadData();
         },
         onPullDownRefresh() {
             this.$refs.WODROW_LOAD_MORE_COMMENT_LIST.pullDownRefresh();
         },
         onReachBottom() {
-            this.$refs.WODROW_LOAD_MORE_COMMENT_LIST.reachBottom()
+            this.$refs.WODROW_LOAD_MORE_COMMENT_LIST.reachBottom();
         }
     }
 </script>

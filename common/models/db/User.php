@@ -28,14 +28,15 @@ use yii\web\IdentityInterface;
  * @property-read string $nickname
  * @property QueneYiiTask[] $queneYiiTasks
  * @property Collection[] $collections
- * @property Fans $attention
- * @property Fans $fans
+ * @property Fans[] $attentions
+ * @property Fans[] $fanses
  * @property-read  Fans $isYourAttention
  * @property-read  Fans $isYourFans
  *
  * @property-read array $statusDesc
  * @property-read string $nickName
  * @property-read boolean $isAdmin
+ * @property-read array $profile
  */
 class User extends \common\models\db\tables\User implements IdentityInterface, SearchIndexInterface
 {
@@ -175,7 +176,7 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
         return $this->hasMany(Fans::className(), ['fans_id' => 'id']);
     }
 
-    public function getFans()
+    public function getFanses()
     {
         return $this->hasMany(Fans::className(), ['lender_id' => 'id']);
     }
@@ -208,20 +209,35 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
         return $this->nickname?:$this->username;
     }
 
+    public function getProfile()
+    {
+        $profile = \Yii::$app->apiTool->authReturn($this);
+        $profile['isYourAttention'] = $this->isYourAttention;
+        $profile['attentions'] = $this->attentions;
+        $profile['attentionTotal'] = count($profile['attentions']);
+        $profile['fanses'] = $this->fanses;
+        $profile['fansTotal'] = count($profile['fanses']);;
+        return $profile;
+    }
+
     public function attention()
     {
         if (!$this->isYourAttention){
             if (\Yii::$app->user->isGuest){
                 throw new Exception("必须登录后才能进行关注操作");
             }
-            $identify = \Yii::$app->user->identity;
-            $fans = new Fans();
-            $fans->lender_id = $this->id;
-            $fans->fans_id = $identify->id;
-            $fans->created_at = $fans->updated_at = YII_BT_TIME;
-            $fans->status = Fans::STATUS_ACTIVE;
-            if (!$fans->save()){
-                throw new Exception("关注失败:".Model::getModelError($fans));
+            $identity = \Yii::$app->user->identity;
+            if (count($identity->attentions) < 100){
+                $fans = new Fans();
+                $fans->lender_id = $this->id;
+                $fans->fans_id = $identity->id;
+                $fans->created_at = $fans->updated_at = YII_BT_TIME;
+                $fans->status = Fans::STATUS_ACTIVE;
+                if (!$fans->save()){
+                    throw new Exception("关注失败:".Model::getModelError($fans));
+                }
+            }else{
+                throw new Exception("你最多只能关注100人");
             }
         }
     }

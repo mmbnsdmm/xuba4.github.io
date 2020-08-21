@@ -142,7 +142,7 @@
                         id: _this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.getItem(index).id
                     };
                     _this.$auth.post("/article/default/delete", formParams, true, function (res) {
-                        _this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.deleteItem(index);
+                        _this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.reLoadData();
                     }, function (msg) {
                         Toast(msg);
                     });
@@ -173,8 +173,7 @@
                     id: _this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.getItem(index).id
                 };
                 _this.$auth.post("/article/default/un-collection", formParams, true, function (res) {
-                    _this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.updateItem(index, res.info);
-                    _this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.deleteItem(index);
+                    _this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.reLoadData();
                 }, function (msg) {
                     Toast(msg);
                 });
@@ -182,13 +181,13 @@
         },
         onReady() {
             //如果是H5，请一定使用onReady方法初次加载数据，否则不会触发
-            this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.reLoadData()
+            this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.reLoadData();
         },
         onPullDownRefresh() {
             this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.pullDownRefresh();
         },
         onReachBottom() {
-            this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.reachBottom()
+            this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.reachBottom();
         }
     }
 </script>

@@ -30,6 +30,7 @@
         },
         data() {
             return {
+                profileId: "",
                 profileInfo: {}
             }
         },
@@ -39,16 +40,28 @@
                 Toast("参数id传递异常");
                 uni.navigateBack();
             }
-            let formParams = {
-                id: options.id
-            };
-            _this.$auth.post("/user/profile/info", formParams, false, function (res) {
-                _this.$set(_this.$data, "profileInfo", res.user)
-            }, function (msg) {
-                Toast(msg);
-            });
+            _this.profileId = options.id;
+            _this.updateProfileInfo();
+        },
+        onPullDownRefresh() {
+            let _this = this;
+            _this.updateProfileInfo();
+            setTimeout(function () {
+                uni.stopPullDownRefresh();
+            }, 1000);
         },
         methods: {
+            updateProfileInfo() {
+                let _this = this;
+                let formParams = {
+                    id: _this.profileId
+                };
+                _this.$auth.post("/user/profile/info", formParams, false, function (res) {
+                    _this.$set(_this.$data, "profileInfo", res.user)
+                }, function (msg) {
+                    Toast(msg);
+                });
+            },
             attention() {
                 let _this = this;
                 let formParams = {

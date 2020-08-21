@@ -139,7 +139,7 @@
                         id: _this.$refs.WODROW_LOAD_MORE_MY_ARTICLE_LIST.getItem(index).id
                     };
                     _this.$auth.post("/article/default/delete", formParams, true, function (res) {
-                        _this.$refs.WODROW_LOAD_MORE_MY_ARTICLE_LIST.deleteItem(index);
+                        _this.$refs.WODROW_LOAD_MORE_MY_ARTICLE_LIST.reLoadData();
                     }, function (msg) {
                         Toast(msg);
                     });

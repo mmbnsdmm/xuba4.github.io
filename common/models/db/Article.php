@@ -278,15 +278,22 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
 
     public function collection()
     {
-        $user = \Yii::$app->user->identity;
         if (!$this->isYouCollection){
-            $collection = new Collection();
-            $collection->created_by = $collection->updated_by = $user->id;
-            $collection->article_id = $this->id;
-            $collection->created_at = $collection->updated_at = YII_BT_TIME;
-            $collection->status = Collection::STATUS_ACTIVE;
-            if (!$collection->save()){
-                throw new Exception("收藏失败:".Model::getModelError($collection));
+            if (\Yii::$app->user->isGuest){
+                throw new Exception("必须登录后才能进行收藏操作");
+            }
+            $identity = \Yii::$app->user->identity;
+            if (count($identity->collections) < 1000){
+                $collection = new Collection();
+                $collection->created_by = $collection->updated_by = $identity->id;
+                $collection->article_id = $this->id;
+                $collection->created_at = $collection->updated_at = YII_BT_TIME;
+                $collection->status = Collection::STATUS_ACTIVE;
+                if (!$collection->save()){
+                    throw new Exception("收藏失败:".Model::getModelError($collection));
+                }
+            }else{
+                throw new Exception("你最多只能收藏1000文章");
             }
         }
     }
