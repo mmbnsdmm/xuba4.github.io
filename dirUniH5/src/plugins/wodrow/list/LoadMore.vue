@@ -128,13 +128,19 @@
             },
             updateItem(index, v){
                 let _this = this;
-                _this.isUpdate = true;
-                _this.lastPage.splice(index, 1, v);
-                _this.isUpdate = false;
+                if (_this.dataList[index]){
+                    _this.dataList.splice(index, 1, v);
+                } else {
+                    _this.lastPage.splice(index, 1, v);
+                }
             },
             deleteItem(index){
                 let _this = this;
-                _this.dataList.splice(index, 1);
+                if (_this.dataList[index]){
+                    _this.dataList.splice(index, 1);
+                } else {
+                    _this.lastPage.splice(index, 1);
+                }
             }
         }
     }
