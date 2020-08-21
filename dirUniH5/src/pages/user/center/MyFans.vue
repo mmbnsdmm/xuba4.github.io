@@ -11,6 +11,8 @@
                                 <view class="" slot="body">
                                     <text>关注:<code>{{item.attentionTotal}}</code></text>
                                     <text>粉丝:<code>{{item.fansTotal}}</code></text>
+                                    <text>文章:<code>{{item.articleTotal}}</code></text>
+                                    <text>收藏:<code>{{item.collectionTotal}}</code></text>
                                     <div class="clearfix"></div>
                                 </view>
                             </u-card>

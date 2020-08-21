@@ -90,6 +90,7 @@
                 let formParams = {
                     page: pd.pageNo,
                     page_size: pd.pageSize,
+                    json_filter_params: JSON.stringify(["=", "status", 10]),
                     collectionUser: _this.userInfo.id
                 };
                 _this.$auth.post("/article/default/list", formParams, false, function (r) {

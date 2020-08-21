@@ -11,6 +11,8 @@
                                 <view class="" slot="body">
                                     <text>关注:<code>{{item.attentionTotal}}</code></text>
                                     <text>粉丝:<code>{{item.fansTotal}}</code></text>
+                                    <text>文章:<code>{{item.articleTotal}}</code></text>
+                                    <text>收藏:<code>{{item.collectionTotal}}</code></text>
                                     <u-icon name="close" size="34" color="" label="取消关注" class="pull-right text-danger"  @tap="toUnAttention(index)"></u-icon>
                                     <div class="clearfix"></div>
                                 </view>

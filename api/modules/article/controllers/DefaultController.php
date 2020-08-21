@@ -102,7 +102,7 @@ class DefaultController extends Controller
         $appendData = ['list' => [], 'page' => $page, 'page_size' => $page_size, 'total' => 0];
         $limit = $page_size;
         $offset = $limit * ($page - 1);
-        $query = Article::find()->where(['status' => Article::STATUS_ACTIVE]);
+        $query = Article::find();
         if ($json_filter_params){
             $filter_params = json_decode($json_filter_params, true);
             $query->andWhere($filter_params);

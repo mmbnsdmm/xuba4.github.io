@@ -27,6 +27,7 @@ use yii\web\IdentityInterface;
  *
  * @property-read string $nickname
  * @property QueneYiiTask[] $queneYiiTasks
+ * @property Article[] $articles
  * @property Collection[] $collections
  * @property Fans[] $attentions
  * @property Fans[] $fanses
@@ -166,6 +167,11 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
         return $this->hasMany(QueneYiiTask::className(), ['created_by' => 'id']);
     }
 
+    public function getArticles()
+    {
+        return $this->hasMany(Article::className(), ['created_by' => 'id'])->andWhere(["=", 'status', Article::STATUS_ACTIVE]);
+    }
+
     public function getCollections()
     {
         return $this->hasMany(Collection::className(), ['created_by' => 'id']);
@@ -216,7 +222,9 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
         $profile['attentions'] = $this->attentions;
         $profile['attentionTotal'] = count($profile['attentions']);
         $profile['fanses'] = $this->fanses;
-        $profile['fansTotal'] = count($profile['fanses']);;
+        $profile['fansTotal'] = count($profile['fanses']);
+        $profile['collectionTotal'] = count($this->collections);
+        $profile['articleTotal'] = count($this->articles);
         return $profile;
     }
 

@@ -82,7 +82,7 @@
             getData(pd) {
                 let _this = this;
                 let res = [];
-                let json_filter_params = ["=", "created_by", _this.userInfo.id];
+                let json_filter_params = ["and", ["=", "created_by", _this.userInfo.id], ["!=", "status", -10]];
                 json_filter_params = JSON.stringify(json_filter_params);
                 let formParams = {
                     page: pd.pageNo,
