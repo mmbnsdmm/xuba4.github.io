@@ -1,5 +1,5 @@
 <template>
-    <view class="user-center-my-collection">
+    <view class="user-profile-collections">
         <ol class="breadcrumb">
             <li>
                 <text class="text-blue" @tap="$router.push('/')">首页</text>
@@ -9,7 +9,7 @@
         </ol>
         <div class="row">
             <div class="col-xs-12">
-                <WLoadMore ref="WODROW_LOAD_MORE_MY_COLLECTION" @provider="provider" :pageSize="page_size" color="#66ccff">
+                <WLoadMore ref="WODROW_LOAD_MORE_PROFILE_COLLECTION" @provider="provider" :pageSize="page_size" color="#66ccff">
                     <template v-slot:list="{ items }">
                         <view class="solid-top" v-for="(item, index) in items" :key="index">
                             <u-card padding="10" margin="15rpx" :border="false" :head-border-bottom="false" :foot-border-top="false" title-size="15rpx"
@@ -54,9 +54,8 @@
     import uniTag from "@/components/uni-tag/uni-tag.vue";
     import WI from '@/plugins/wodrow/iconfont/WI';
     import {mapState} from 'vuex';
-    import {Toast, Dialog} from 'vant'
     export default {
-        name: "UserCenterMyCollection",
+        name: "Collections",
         components: {
             WLoadMore,
             ScrollTopIcon,
@@ -68,20 +67,29 @@
         },
         data() {
             return {
+                profileId: "",
                 page: 0,
                 page_size: 10,
                 total: 0
             }
         },
+        onLoad(options) {
+            let _this = this;
+            if (!options.profileId){
+                Toast("参数profileId传递异常");
+                uni.navigateBack();
+            }
+            _this.profileId = options.profileId;
+        },
         mounted() {
-            this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.reLoadData()
+            this.$refs.WODROW_LOAD_MORE_PROFILE_COLLECTION.reLoadData()
         },
         methods: {
             provider(pd){
                 let _this = this;
                 setTimeout(function () {
                     let res = _this.getData(pd);
-                    _this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.pushData(res);
+                    _this.$refs.WODROW_LOAD_MORE_PROFILE_COLLECTION.pushData(res);
                 }, 1000);
             },
             getData(pd) {
@@ -91,7 +99,7 @@
                     page: pd.pageNo,
                     page_size: pd.pageSize,
                     json_filter_params: JSON.stringify(["=", "status", 10]),
-                    collectionUser: _this.userInfo.id
+                    collectionUser: _this.profileId
                 };
                 _this.$auth.post("/article/default/list", formParams, false, function (r) {
                     _this.$_.forEach(r.list, function (v, k) {
@@ -140,10 +148,10 @@
                     message: '你确认要删除此条记录吗？'
                 }).then(() => {
                     let formParams = {
-                        id: _this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.getItem(index).id
+                        id: _this.$refs.WODROW_LOAD_MORE_PROFILE_COLLECTION.getItem(index).id
                     };
                     _this.$auth.post("/article/default/delete", formParams, true, function (res) {
-                        _this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.reLoadData();
+                        _this.$refs.WODROW_LOAD_MORE_PROFILE_COLLECTION.reLoadData();
                     }, function (msg) {
                         Toast(msg);
                     });
@@ -160,10 +168,10 @@
             collect(index){
                 let _this = this;
                 let formParams = {
-                    id: _this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.getItem(index).id
+                    id: _this.$refs.WODROW_LOAD_MORE_PROFILE_COLLECTION.getItem(index).id
                 };
                 _this.$auth.post("/article/default/collection", formParams, true, function (res) {
-                    _this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.updateItem(index, res.info);
+                    _this.$refs.WODROW_LOAD_MORE_PROFILE_COLLECTION.updateItem(index, res.info);
                 }, function (msg) {
                     Toast(msg);
                 });
@@ -171,10 +179,10 @@
             unCollect(index){
                 let _this = this;
                 let formParams = {
-                    id: _this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.getItem(index).id
+                    id: _this.$refs.WODROW_LOAD_MORE_PROFILE_COLLECTION.getItem(index).id
                 };
                 _this.$auth.post("/article/default/un-collection", formParams, true, function (res) {
-                    _this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.reLoadData();
+                    _this.$refs.WODROW_LOAD_MORE_PROFILE_COLLECTION.reLoadData();
                 }, function (msg) {
                     Toast(msg);
                 });
@@ -182,13 +190,13 @@
         },
         onReady() {
             //如果是H5，请一定使用onReady方法初次加载数据，否则不会触发
-            this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.reLoadData();
+            this.$refs.WODROW_LOAD_MORE_PROFILE_COLLECTION.reLoadData();
         },
         onPullDownRefresh() {
-            this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.pullDownRefresh();
+            this.$refs.WODROW_LOAD_MORE_PROFILE_COLLECTION.pullDownRefresh();
         },
         onReachBottom() {
-            this.$refs.WODROW_LOAD_MORE_MY_COLLECTION.reachBottom();
+            this.$refs.WODROW_LOAD_MORE_PROFILE_COLLECTION.reachBottom();
         }
     }
 </script>

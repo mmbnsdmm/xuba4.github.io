@@ -17,6 +17,43 @@
                 </div>
             </div>
         </view>
+        <u-cell-group>
+            <u-cell-item icon="eye-fill" title="关注" arrow-direction="right" @tap="toAttentions"></u-cell-item>
+            <u-cell-item icon="eye" title="粉丝" arrow-direction="right" @tap="toFanses"></u-cell-item>
+            <u-cell-item icon="file-text-fill" title="文章" arrow-direction="right" @tap="toArticles"></u-cell-item>
+            <u-cell-item icon="star-fill" title="收藏" arrow-direction="right" @tap="toCollections"></u-cell-item>
+        </u-cell-group>
+        <uni-collapse accordion="true">
+            <uni-collapse-item title="联系方式">
+                <view style="padding: 30rpx;">
+                    <p>手机号: <code>{{profileInfo.mobile?profileInfo.mobile:'未设置'}}</code></p>
+                    <p>微信: <code>{{profileInfo.weixin?profileInfo.weixin:'未设置'}}</code></p>
+                    <p>QQ: <code>{{profileInfo.qq?profileInfo.qq:'未设置'}}</code></p>
+                </view>
+            </uni-collapse-item>
+            <uni-collapse-item title="打赏">
+                <view style="padding: 30rpx;">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <p>支付宝：</p>
+                            <u-link :href="profileInfo.alipay_exceptional_url" v-if="profileInfo.alipay_exceptional_url">点击去打赏</u-link>
+                        </div>
+                        <div class="col-xs-8">
+                            <image style="width: 200px; height: 200px;" mode="aspectFill" :src="profileInfo.alipay_exceptional_code?profileInfo.alipay_exceptional_code:QrcodePlaceholder"></image>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <p>微信：</p>
+                            <u-link :href="profileInfo.weixin_exceptional_url" v-if="profileInfo.weixin_exceptional_url">点击去打赏</u-link>
+                        </div>
+                        <div class="col-xs-8">
+                            <image style="width: 200px; height: 200px;" mode="aspectFill"  :src="profileInfo.weixin_exceptional_code?profileInfo.weixin_exceptional_code:QrcodePlaceholder"></image>
+                        </div>
+                    </div>
+                </view>
+            </uni-collapse-item>
+        </uni-collapse>
     </div>
 </template>
 
@@ -31,7 +68,8 @@
         data() {
             return {
                 profileId: "",
-                profileInfo: {}
+                profileInfo: {},
+                QrcodePlaceholder: "https://via.placeholder.com/200x200?text=200x200"
             }
         },
         onLoad(options) {
@@ -41,6 +79,7 @@
                 uni.navigateBack();
             }
             _this.profileId = options.id;
+            // _this.profileId = 7;
             _this.updateProfileInfo();
         },
         onPullDownRefresh() {
@@ -82,6 +121,26 @@
                     _this.$set(_this.$data, "profileInfo", res.user)
                 }, function (msg) {
                     Toast(msg);
+                });
+            },
+            toAttentions() {
+                uni.navigateTo({
+                    url: "/pages/user/profile/Attentions?profileId=" + this.profileId
+                });
+            },
+            toFanses() {
+                uni.navigateTo({
+                    url: "/pages/user/profile/Fanses?profileId=" + this.profileId
+                });
+            },
+            toArticles() {
+                uni.navigateTo({
+                    url: "/pages/user/profile/Articles?profileId=" + this.profileId
+                });
+            },
+            toCollections() {
+                uni.navigateTo({
+                    url: "/pages/user/profile/Collections?profileId=" + this.profileId
                 });
             }
         }

@@ -76,7 +76,8 @@
                 state: 0,
                 dataList: [],
                 lastPage: [],
-                pageNo: 1
+                pageNo: 1,
+                isUpdate: false
             }
         },
         methods: {
@@ -127,7 +128,9 @@
             },
             updateItem(index, v){
                 let _this = this;
-                _this.dataList.splice(index, 1, v);
+                _this.isUpdate = true;
+                _this.lastPage.splice(index, 1, v);
+                _this.isUpdate = false;
             },
             deleteItem(index){
                 let _this = this;

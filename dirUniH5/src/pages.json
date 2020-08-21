@@ -170,6 +170,50 @@
 			}
 		},
 		{
+			"path": "pages/user/profile/Articles",
+			"name":"用户文章",
+			"meta":{},
+			"authType": "*",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "用户文章",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/user/profile/Collections",
+			"name":"用户收藏",
+			"meta":{},
+			"authType": "*",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "用户收藏",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/user/profile/Attentions",
+			"name":"用户关注",
+			"meta":{},
+			"authType": "*",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "用户关注",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/user/profile/Fanses",
+			"name":"用户粉丝",
+			"meta":{},
+			"authType": "*",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "用户粉丝",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
 			"path": "pages/article/List",
 			"name":"文章列表",
 			"meta":{},
