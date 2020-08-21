@@ -13,6 +13,8 @@
                                     <text>粉丝:<code>{{item.fansTotal}}</code></text>
                                     <text>文章:<code>{{item.articleTotal}}</code></text>
                                     <text>收藏:<code>{{item.collectionTotal}}</code></text>
+                                    <u-icon v-if="item.id !== userInfo.id && !item.isYourAttention" @tap="attention(index)" name="eye" size="34" color="" label="关注" class="pull-right text-blue"></u-icon>
+                                    <u-icon v-if="item.id !== userInfo.id && item.isYourAttention" @tap="unAttention(index)" name="eye-off" size="34" color="" label="取消关注" class="pull-right text-warning"></u-icon>
                                     <div class="clearfix"></div>
                                 </view>
                             </u-card>
@@ -96,6 +98,28 @@
             toAuthor(userId){
                 uni.navigateTo({
                     url: "/pages/user/profile/Index?id=" + userId
+                });
+            },
+            attention(index) {
+                let _this = this;
+                let formParams = {
+                    id: _this.$refs.WODROW_LOAD_MORE_PROFILE_FANSES.getItem(index).id
+                };
+                _this.$auth.post("/user/profile/attention", formParams, false, function (res) {
+                    _this.$refs.WODROW_LOAD_MORE_PROFILE_FANSES.updateItem(index, res.user);
+                }, function (msg) {
+                    Toast(msg);
+                });
+            },
+            unAttention(index) {
+                let _this = this;
+                let formParams = {
+                    id: _this.$refs.WODROW_LOAD_MORE_PROFILE_FANSES.getItem(index).id
+                };
+                _this.$auth.post("/user/profile/un-attention", formParams, false, function (res) {
+                    _this.$refs.WODROW_LOAD_MORE_PROFILE_FANSES.updateItem(index, res.user);
+                }, function (msg) {
+                    Toast(msg);
                 });
             }
         },
