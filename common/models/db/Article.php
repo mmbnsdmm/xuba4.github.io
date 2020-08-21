@@ -218,6 +218,7 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
         $arr = $this->toArray();
         $createdBy = Yii::$app->apiTool->authReturn($this->createdBy);
         $arr['createdBy'] = $createdBy;
+        $arr['createdBy']['profile'] = $this->createdBy->profile;
         $arr['canYouOpt'] = $this->canYouOpt;
         $arr['collections'] = $this->collections;
         $arr['collectionTotal'] = $this->collectionTotal;

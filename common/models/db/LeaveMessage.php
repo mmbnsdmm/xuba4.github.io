@@ -184,6 +184,7 @@ class LeaveMessage extends \common\models\db\tables\LeaveMessage
         $arr = $this->toArray();
         $createdBy = Yii::$app->apiTool->authReturn($this->createdBy);
         $arr['createdBy'] = $createdBy;
+        $arr['createdBy']['profile'] = $this->createdBy->profile;
         $arr['canYouOpt'] = $this->canYouOpt;
         $arr['isYouPraise'] = $this->isYouPraise;
         $arr['isYouTrample'] = $this->isYouTrample;
