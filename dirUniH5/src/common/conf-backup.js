@@ -64,4 +64,16 @@ $.ajax({
         conf.unConnected()
     }
 });
+$.ajax({
+    url: conf.apiUrl + "/public/get-datas",
+    async: false,
+    datatype: "json",
+    success: function(msg){
+        conf.serverData.datas = msg.data.datas
+    },
+    error: function(){
+        conf.serverData.datas = {};
+        conf.unConnected()
+    }
+});
 export default conf
