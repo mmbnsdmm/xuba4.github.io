@@ -24,6 +24,8 @@ use Yii;
  * @property Collection[] $collections
  * @property Comments[] $comments
  * @property User $createdBy
+ * @property TagArticle[] $tagArticles
+ * @property Tag[] $tags
  * @property User $updatedBy
  */
 class Article extends \yii\db\ActiveRecord
@@ -99,6 +101,22 @@ class Article extends \yii\db\ActiveRecord
     public function getCreatedBy()
     {
         return $this->hasOne(User::className(), ['id' => 'created_by']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTagArticles()
+    {
+        return $this->hasMany(TagArticle::className(), ['article_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTags()
+    {
+        return $this->hasMany(Tag::className(), ['id' => 'tag_id'])->viaTable('{{%tag_article}}', ['article_id' => 'id']);
     }
 
     /**

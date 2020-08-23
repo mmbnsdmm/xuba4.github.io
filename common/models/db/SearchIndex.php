@@ -20,12 +20,14 @@ class SearchIndex extends \common\models\db\tables\SearchIndex
 {
     const TYPE_USER = 1;
     const TYPE_ARTICLE = 2;
+    const TYPE_TAG = 3;
 
     public function getTypeDesc()
     {
         return [
             self::TYPE_USER => "用户",
             self::TYPE_ARTICLE => "文章",
+            self::TYPE_TAG => "圈子",
         ];
     }
 
