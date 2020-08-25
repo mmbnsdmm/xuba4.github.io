@@ -33,6 +33,7 @@ use yii\web\IdentityInterface;
  * @property Fans[] $fanses
  * @property-read  Fans $isYourAttention
  * @property-read  Fans $isYourFans
+ * @property Tag[] $tags
  *
  * @property-read array $statusDesc
  * @property-read string $nickName
@@ -165,6 +166,11 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
     public function getQueneYiiTasks()
     {
         return $this->hasMany(QueneYiiTask::className(), ['created_by' => 'id']);
+    }
+
+    public function getTags()
+    {
+        return $this->hasMany(Tag::className(), ['id' => 'tag_id'])->viaTable('{{%user_tag}}', ['created_by' => 'id']);
     }
 
     public function getArticles()

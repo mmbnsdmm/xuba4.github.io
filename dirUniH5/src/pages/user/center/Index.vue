@@ -19,6 +19,7 @@
             <u-cell-item icon="setting-fill" title="修改密码" arrow-direction="right" @tap="$router.push('/pages/user/center/UpdatePassword')"></u-cell-item>
             <u-cell-item icon="chat" title="修改联系方式" arrow-direction="right" @tap="$router.push('/pages/user/center/UpdateContact')"></u-cell-item>
             <u-cell-item icon="red-packet-fill" title="修改打赏码" arrow-direction="right" @tap="$router.push('/pages/user/center/UpdateExceptionalCode')"></u-cell-item>
+            <u-cell-item icon="moments" title="我的圈子" arrow-direction="right" @tap="$router.push('/pages/user/center/MyTag')"></u-cell-item>
             <u-cell-item icon="eye-fill" title="我的关注" arrow-direction="right" @tap="$router.push('/pages/user/center/MyAttention')"></u-cell-item>
             <u-cell-item icon="eye" title="我的粉丝" arrow-direction="right" @tap="$router.push('/pages/user/center/MyFans')"></u-cell-item>
             <u-cell-item icon="file-text-fill" title="我的文章" arrow-direction="right" @tap="$router.push('/pages/user/center/MyArticle')"></u-cell-item>

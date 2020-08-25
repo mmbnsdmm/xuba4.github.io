@@ -2,28 +2,22 @@
 
 namespace common\models\db;
 
-use common\models\interfaces\SearchIndexInterface;
 use Yii;
 use wodrow\yii2wtools\tools\ArrayHelper;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the model class for table "{{%tag}}".
+ * This is the model class for table "{{%user_tag}}".
  *
  * @author
  *
- * @property Article[] $articles
  * @property User $createdBy
- * @property TagArticle[] $tagArticles
+ * @property Tag $tag
  * @property User $updatedBy
  * @property-read array $statusDesc
- *
- * @property array $info
- * @property UserTag $youJoin
- * @property bool $isYouJoin
  */
-class Tag extends \common\models\db\tables\Tag implements SearchIndexInterface
+class UserTag extends \common\models\db\tables\UserTag
 {
     const SCENARIO_TEST = 'test';
     const STATUS_DELETE = -10;
@@ -149,21 +143,7 @@ class Tag extends \common\models\db\tables\Tag implements SearchIndexInterface
     }
 
     protected function _deleteCaches()
-    {
-        if ($this->status == self::STATUS_ACTIVE){
-            $this->setSearchIndex();
-        }else{
-            $this->delSearchIndex();
-        }
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getArticles()
-    {
-        return $this->hasMany(Article::className(), ['id' => 'article_id'])->viaTable('{{%tag_article}}', ['tag_id' => 'id']);
-    }
+    {}
 
     /**
      * @return \yii\db\ActiveQuery
@@ -176,9 +156,9 @@ class Tag extends \common\models\db\tables\Tag implements SearchIndexInterface
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTagArticles()
+    public function getTag()
     {
-        return $this->hasMany(TagArticle::className(), ['tag_id' => 'id']);
+        return $this->hasOne(Tag::className(), ['id' => 'tag_id']);
     }
 
     /**
@@ -195,44 +175,5 @@ class Tag extends \common\models\db\tables\Tag implements SearchIndexInterface
         $test->setScenario(self::SCENARIO_TEST);
         $test->save();
         var_dump($test->toArray());
-    }
-
-    public function getInfo()
-    {
-        $arr = $this->toArray();
-        $createdBy = Yii::$app->apiTool->authReturn($this->createdBy);
-        $arr['createdBy'] = $createdBy;
-        $arr['createdBy']['profile'] = $this->createdBy->profile;
-        $arr['isYouJoin'] = $this->isYouJoin;
-        return $arr;
-    }
-
-    public function getIsYouJoin()
-    {
-        return $this->youJoin?true:false;
-    }
-
-    public function getYouJoin()
-    {
-        return UserTag::findOne(['created_by' => Yii::$app->user->id, 'tag_id' => $this->id]);
-    }
-
-    public function setSearchIndex()
-    {
-        SearchIndex::setSearchIndex(SearchIndex::TYPE_TAG, $this->id, $this->name);
-    }
-
-    public function delSearchIndex()
-    {
-        SearchIndex::delSearchIndex(SearchIndex::TYPE_TAG, $this->id);
-    }
-
-    public function getSearchIndexData()
-    {
-        return [
-            'type' => SearchIndex::TYPE_TAG,
-            'type_model_id' => $this->id,
-            'title' => $this->name,
-        ];
     }
 }

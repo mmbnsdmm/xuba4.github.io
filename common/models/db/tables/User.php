@@ -46,8 +46,15 @@ use Yii;
  * @property LogEmailSendCode[] $logEmailSendCodes
  * @property LogUserLogin[] $logUserLogins
  * @property QueneYiiTask[] $queneYiiTasks
+ * @property TagArticle[] $tagArticles
+ * @property TagArticle[] $tagArticles0
+ * @property Tag[] $tags
+ * @property Tag[] $tags0
+ * @property Tag[] $tags1
  * @property UserFile[] $userFiles
  * @property UserFile[] $userFiles0
+ * @property UserTag[] $userTags
+ * @property UserTag[] $userTags0
  */
 class User extends \yii\db\ActiveRecord
 {
@@ -244,6 +251,46 @@ class User extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getTagArticles()
+    {
+        return $this->hasMany(TagArticle::className(), ['updated_by' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTagArticles0()
+    {
+        return $this->hasMany(TagArticle::className(), ['created_by' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTags()
+    {
+        return $this->hasMany(Tag::className(), ['created_by' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTags0()
+    {
+        return $this->hasMany(Tag::className(), ['updated_by' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTags1()
+    {
+        return $this->hasMany(Tag::className(), ['id' => 'tag_id'])->viaTable('{{%user_tag}}', ['created_by' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getUserFiles()
     {
         return $this->hasMany(UserFile::className(), ['created_by' => 'id']);
@@ -255,5 +302,21 @@ class User extends \yii\db\ActiveRecord
     public function getUserFiles0()
     {
         return $this->hasMany(UserFile::className(), ['updated_by' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserTags()
+    {
+        return $this->hasMany(UserTag::className(), ['created_by' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserTags0()
+    {
+        return $this->hasMany(UserTag::className(), ['updated_by' => 'id']);
     }
 }

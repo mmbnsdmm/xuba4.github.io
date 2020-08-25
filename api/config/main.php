@@ -15,6 +15,7 @@ $config = [
     ],
     'modules' => [
         'user' => \api\modules\user\UserModule::class,
+        'tag' => \api\modules\tag\TagModule::class,
         'article' => \api\modules\article\ArticleModule::class,
         'message' => \api\modules\message\MessageModule::class,
         'search' => \api\modules\search\SearchModule::class,

@@ -18,6 +18,7 @@
             </div>
         </view>
         <u-cell-group>
+            <u-cell-item icon="eye-fill" title="圈子" arrow-direction="right" @tap="toCircles"></u-cell-item>
             <u-cell-item icon="eye-fill" title="关注" arrow-direction="right" @tap="toAttentions"></u-cell-item>
             <u-cell-item icon="eye" title="粉丝" arrow-direction="right" @tap="toFanses"></u-cell-item>
             <u-cell-item icon="file-text-fill" title="文章" arrow-direction="right" @tap="toArticles"></u-cell-item>
@@ -121,6 +122,11 @@
                     _this.$set(_this.$data, "profileInfo", res.user)
                 }, function (msg) {
                     Toast(msg);
+                });
+            },
+            toCircles() {
+                uni.navigateTo({
+                    url: "/pages/user/profile/Tags?profileId=" + this.profileId
                 });
             },
             toAttentions() {

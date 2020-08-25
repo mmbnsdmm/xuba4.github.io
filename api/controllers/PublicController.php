@@ -132,6 +132,7 @@ class PublicController extends Controller
         $this->data['datas']['adminEmail'] = $params['adminEmail'];
         $this->data['datas']['adminQQ'] = $params['adminQQ'];
         $this->data['datas']['adminWX'] = $params['adminWX'];
+        $this->data['datas']['apiAdminUserIds'] = $params['apiAdminUserIds'];
         $this->data['datas']['sysInfo'] = \Yii::$app->uniApp->sysInfo;
         $this->data['datas']['howToUse'] = \Yii::$app->uniApp->howToUse;
         $this->data['datas']['warnings'] = \Yii::$app->uniApp->warnings;
