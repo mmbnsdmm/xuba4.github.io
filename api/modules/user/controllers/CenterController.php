@@ -9,8 +9,10 @@
 namespace api\modules\user\controllers;
 
 
+use common\models\db\UserTag;
 use wodrow\yii\rest\ApiException;
 use wodrow\yii\rest\Controller;
+use wodrow\yii2wtools\tools\ArrayHelper;
 use wodrow\yii2wtools\tools\Model;
 
 class CenterController extends Controller
@@ -117,5 +119,28 @@ class CenterController extends Controller
         $this->data['msg'] = "成功";
         $this->data['user'] = $user;
         return $this->data;
+    }
+
+    /**
+     * 获取用户圈子
+     * @desc post
+     * @return array
+     * @return int status 是否成功
+     * @return string msg
+     * @return array utags 用户圈子
+     * @return array tagIds 用户圈子id
+     * @return object tagMap 用户圈子
+     */
+    public function actionGetMyTags()
+    {
+        $user = \Yii::$app->user->identity;
+        $query = UserTag::find()->where(['created_by' => $user->id]);
+        $utags = $query->all();
+        $tagMap = ArrayHelper::map($utags, 'tag_id', "tag_name");
+        $tagIds = [];
+        foreach ($utags as $k => $v) {
+            $tagIds[] = $v->tag_id;
+        }
+        return $this->success("获取成功", ['utags' => $utags, 'tagIds' => $tagIds, 'tagMap' => $tagMap]);
     }
 }

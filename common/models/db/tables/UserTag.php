@@ -14,6 +14,7 @@ use Yii;
  * @property int $updated_at
  * @property int $status
  * @property int $tag_id
+ * @property string|null $tag_name
  *
  * @property User $createdBy
  * @property Tag $tag
@@ -35,10 +36,11 @@ class UserTag extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['created_by', 'updated_by', 'created_at', 'updated_at', 'status', 'tag_id'], 'trim'],
+            [['created_by', 'updated_by', 'created_at', 'updated_at', 'status', 'tag_id', 'tag_name'], 'trim'],
             [['created_by', 'created_at', 'updated_at', 'status', 'tag_id'], 'required'],
             [['created_by', 'updated_by', 'created_at', 'updated_at', 'status', 'tag_id'], 'integer'],
-            [['updated_by'], 'default', 'value' => null],
+            [['tag_name'], 'string', 'max' => 50],
+            [['updated_by', 'tag_name'], 'default', 'value' => null],
             [['created_by', 'tag_id'], 'unique', 'targetAttribute' => ['created_by', 'tag_id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
@@ -59,6 +61,7 @@ class UserTag extends \yii\db\ActiveRecord
             'updated_at' => Yii::t('app', 'Updated At'),
             'status' => Yii::t('app', 'Status'),
             'tag_id' => Yii::t('app', 'Tag ID'),
+            'tag_name' => Yii::t('app', 'Tag Name'),
         ];
     }
 
