@@ -148,7 +148,9 @@
                 }).catch(() => {});
             },
             toCircle(circleId){
-                console.log(circleId);
+                uni.navigateTo({
+                    url: "/pages/tag/View?id=" + circleId
+                })
             }
         },
         onReady() {

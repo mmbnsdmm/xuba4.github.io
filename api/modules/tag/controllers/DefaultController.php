@@ -152,4 +152,59 @@ class DefaultController extends Controller
         }
         return $this->success("加入成功", ['tag' => $userTag->tag->info]);
     }
+
+    /**
+     * 获取圈子信息
+     * @desc post
+     * @param int $id
+     * @throws
+     * @return array
+     * @return int status 是否成功
+     * @return string msg
+     * @return object tag 圈子信息
+     */
+    public function actionView($id)
+    {
+        $tag = $this->_getModel($id);
+        return $this->success("获取成功", ['tag' => $tag->info]);
+    }
+
+    /**
+     * 删除圈子
+     * @desc post
+     * @param int $id
+     * @throws
+     * @return array
+     * @return int status 是否成功
+     * @return string msg
+     */
+    public function actionDelete($id)
+    {
+        $tag = $this->_getModel($id);
+        if (!in_array(\Yii::$app->user->id, \Yii::$app->params['apiAdminUserIds'])){
+            throw new ApiException(202008270953, "你没有修改此圈子权限");
+        }
+        $tag->status = Tag::STATUS_DELETE;
+        if (!$tag->save()){
+            throw new ApiException(202008270954, "删除失败:".Model::getModelError($tag));
+        }
+        $tag->delete();
+        $this->data['status'] = 200;
+        $this->data['msg'] = "删除成功";
+        return $this->data;
+    }
+
+    /**
+     * @param $id
+     * @return Tag|null
+     * @throws
+     */
+    private function _getModel($id)
+    {
+        $tag = Tag::findOne(['id' => $id, 'status' => Tag::STATUS_ACTIVE]);
+        if (!$tag) {
+            throw new ApiException(202008270948, "没有找到圈子或圈子已删除");
+        }
+        return $tag;
+    }
 }

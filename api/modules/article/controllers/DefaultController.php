@@ -11,6 +11,7 @@ namespace api\modules\article\controllers;
 
 use common\models\db\Article;
 use common\models\db\Collection;
+use common\models\db\Tag;
 use common\models\db\User;
 use wodrow\yii\rest\ApiException;
 use wodrow\yii\rest\Controller;
@@ -97,7 +98,7 @@ class DefaultController extends Controller
      * @return int total 总数据数
      * @throws
      */
-    public function actionList($start_id = null, $page = 1, $page_size = 10, $json_filter_params = null, $collectionUser = null)
+    public function actionList($start_id = null, $page = 1, $page_size = 10, $json_filter_params = null, $collectionUser = null, $tagId = null)
     {
         $appendData = ['list' => [], 'page' => $page, 'page_size' => $page_size, 'total' => 0];
         $limit = $page_size;
@@ -117,6 +118,17 @@ class DefaultController extends Controller
                 $caids[] = $v->article_id;
             }
             $query->andWhere(['in', 'id', $caids]);
+        }
+        if ($tagId !== null){
+            $tag = Tag::findOne($tagId);
+            if (!$tag){
+                throw new ApiException(2020082270859, "没有找到圈子:{$tagId}");
+            }
+            $taids = [];
+            foreach ($tag->tagArticles as $k => $v) {
+                $taids[] = $v->article_id;
+            }
+            $query->andWhere(['in', 'id', $taids]);
         }
         if ($start_id){
             $query->andWhere(['<=', 'id', $start_id]);
@@ -149,7 +161,7 @@ class DefaultController extends Controller
     {
         $article = $this->_getModel($id);
         if (!$article->canYouOpt){
-            throw new ApiException(202008140909, "你没有修改此留言权限");
+            throw new ApiException(202008140909, "你没有修改此文章权限");
         }
         $article->status = Article::STATUS_DELETE;
         if (!$article->save()){

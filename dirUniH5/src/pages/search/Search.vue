@@ -242,6 +242,9 @@
                     case 2:
                         url = "/pages/article/View?id=" + type_model_id;
                         break;
+                    case 3:
+                        url = "/pages/tag/View?id=" + type_model_id;
+                        break;
                     default:
                         Toast("未定义搜索索引类型，请联系管理员");
                         break;

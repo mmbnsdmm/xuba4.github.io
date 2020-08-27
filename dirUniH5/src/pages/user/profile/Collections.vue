@@ -163,7 +163,9 @@
                 });
             },
             toCircle(circleId){
-                console.log(circleId);
+                uni.navigateTo({
+                    url: "/pages/tag/View?id=" + circleId
+                })
             },
             collect(index){
                 let _this = this;
