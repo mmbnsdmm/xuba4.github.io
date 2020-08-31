@@ -133,37 +133,50 @@ class DefaultController extends Controller
      * @return int total 总数据数
      * @throws
      */
-    public function actionList($start_id = null, $page = 1, $page_size = 10, $json_filter_params = null, $collectionUser = null, $tagId = null)
+    public function actionList($start_id = null, $page = 1, $page_size = 10, $showUser = null, $json_filter_params = null, $collectionUser = null, $tagId = null)
     {
         $appendData = ['list' => [], 'page' => $page, 'page_size' => $page_size, 'total' => 0];
         $limit = $page_size;
         $offset = $limit * ($page - 1);
         $query = Article::find();
-        if ($json_filter_params){
-            $filter_params = json_decode($json_filter_params, true);
-            $query->andWhere($filter_params);
-        }
-        if ($collectionUser !== null){
-            $user = User::findOne($collectionUser);
-            if (!$user){
-                throw new ApiException(202008200927, "没有找到用户:{$collectionUser}");
+        if ($showUser === null){
+            if ($json_filter_params){
+                $filter_params = json_decode($json_filter_params, true);
+                $query->andWhere($filter_params);
             }
-            $caids = [];
-            foreach ($user->collections as $k => $v) {
-                $caids[] = $v->article_id;
+            if ($collectionUser !== null){
+                $user = User::findOne($collectionUser);
+                if (!$user){
+                    throw new ApiException(202008200927, "没有找到用户:{$collectionUser}");
+                }
+                $caids = [];
+                foreach ($user->collections as $k => $v) {
+                    $caids[] = $v->article_id;
+                }
+                $query->andWhere(['in', 'id', $caids]);
             }
-            $query->andWhere(['in', 'id', $caids]);
-        }
-        if ($tagId !== null){
-            $tag = Tag::findOne($tagId);
-            if (!$tag){
-                throw new ApiException(2020082270859, "没有找到圈子:{$tagId}");
+            if ($tagId !== null){
+                $tag = Tag::findOne($tagId);
+                if (!$tag){
+                    throw new ApiException(2020082270859, "没有找到圈子:{$tagId}");
+                }
+                $taids = [];
+                foreach ($tag->tagArticles as $k => $v) {
+                    $taids[] = $v->article_id;
+                }
+                $query->andWhere(['in', 'id', $taids]);
             }
-            $taids = [];
-            foreach ($tag->tagArticles as $k => $v) {
-                $taids[] = $v->article_id;
+        }else{
+            $user = User::findOne($showUser);
+            if ($user->isAdmin){}else{
+                $tags = $user->tagArticles;
+                $taIds = [];
+                foreach ($tags as $k => $v) {
+                    $taIds[] = $v->article_id;
+                }
+                $query->andWhere(['or', ['created_by' => $showUser], ['in', 'id', $taIds]]);
             }
-            $query->andWhere(['in', 'id', $taids]);
+            $query->andWhere(["!=", "status", Article::STATUS_DELETE]);
         }
         if ($start_id){
             $query->andWhere(['<=', 'id', $start_id]);
