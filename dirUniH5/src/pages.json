@@ -1,0 +1,384 @@
+{
+	"easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+	},
+	"pages": [
+		{
+			"path": "pages/site/Home",
+			"name":"首页",
+			"meta":{},
+			"authType": "*",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+        {
+        	"path": "pages/site/About",
+			"name":"关于",
+			"meta":{},
+			"authType": "*",
+			"data": {},
+        	"style": {
+        		"navigationBarTitleText": "关于"
+        	}
+        },
+		{
+			"path": "pages/site/Login",
+			"name":"登录",
+			"meta":{},
+			"authType": "?",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/site/LoginByEmail",
+			"name":"邮箱登录",
+			"meta":{},
+			"authType": "?",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "邮箱登录"
+			}
+		},
+		{
+			"path": "pages/site/ResetPassword",
+			"name":"重置密码",
+			"meta":{},
+			"authType": "?",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "重置密码"
+			}
+		},
+		{
+			"path": "pages/site/Signup",
+			"name":"注册",
+			"meta":{},
+			"authType": "?",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
+		},
+		{
+			"path": "pages/user/center/Index",
+			"name":"个人中心",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "个人中心",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/user/center/UpdateAvatar",
+			"name":"修改头像",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "修改头像"
+			}
+		},
+		{
+			"path": "pages/user/center/UpdatePassword",
+			"name":"修改密码",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "修改密码"
+			}
+		},
+		{
+			"path": "pages/user/center/UpdateExceptionalCode",
+			"name":"修改打赏码",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "修改打赏码"
+			}
+		},
+		{
+			"path": "pages/user/center/UpdateContact",
+			"name":"修改联系方式",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "修改联系方式"
+			}
+		},
+		{
+			"path": "pages/user/center/MyTag",
+			"name":"我的圈子",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "我的圈子",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/user/center/MyAttention",
+			"name":"我的关注",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "我的关注",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/user/center/MyFans",
+			"name":"我的粉丝",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "我的粉丝",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/user/center/MyArticle",
+			"name":"我的文章",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "我的文章",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/user/center/MyCollection",
+			"name":"我的收藏",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "我的收藏",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/user/profile/Index",
+			"name":"用户信息",
+			"meta":{},
+			"authType": "*",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "用户信息",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/user/profile/Tags",
+			"name":"用户圈子",
+			"meta":{},
+			"authType": "*",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "用户圈子",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/user/profile/Articles",
+			"name":"用户文章",
+			"meta":{},
+			"authType": "*",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "用户文章",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/user/profile/Collections",
+			"name":"用户收藏",
+			"meta":{},
+			"authType": "*",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "用户收藏",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/user/profile/Attentions",
+			"name":"用户关注",
+			"meta":{},
+			"authType": "*",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "用户关注",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/user/profile/Fanses",
+			"name":"用户粉丝",
+			"meta":{},
+			"authType": "*",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "用户粉丝",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/tag/List",
+			"name":"圈子列表",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "圈子列表",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/tag/View",
+			"name":"圈子详细",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "圈子详细",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/tag/Add",
+			"name":"创建圈子",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "创建圈子"
+			}
+		},
+		{
+			"path": "pages/article/List",
+			"name":"文章列表",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "文章列表",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/article/Add",
+			"name":"创建文章",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "创建文章"
+			}
+		},
+		{
+			"path": "pages/article/Update",
+			"name":"修改文章",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "修改文章"
+			}
+		},
+		{
+			"path": "pages/article/View",
+			"name":"文章详情",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "文章详情",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/search/Search",
+			"name":"搜索",
+			"meta":{},
+			"authType": "@",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "搜索",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/search/Scan",
+			"name":"扫一扫",
+			"meta":{},
+			"authType": "*",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "扫一扫"
+			}
+		},
+		{
+			"path": "pages/message/LeaveMessage",
+			"name":"留言区",
+			"meta":{},
+			"authType": "*",
+			"data": {},
+			"style": {
+				"navigationBarTitleText": "留言区",
+                "enablePullDownRefresh": true
+			}
+		}
+	],
+	"globalStyle": {
+        "pageOrientation": "portrait",
+        "navigationBarTextStyle": "white",
+        "navigationBarBackgroundColor": "#007AFF",
+        "backgroundColor": "#F8F8F8",
+        "backgroundColorTop": "#F4F5F6",
+        "backgroundColorBottom": "#F4F5F6",
+		"navigationBarTitleText": "Hello uniapp title text",
+		"onReachBottomDistance": 50
+	},
+    "tabBar": {
+    	"color": "#C0C4CC",
+    	"selectedColor": "#fa436a",
+    	"borderStyle": "black",
+    	"backgroundColor": "#ffffff",
+    	"list": [
+            {
+    			"pagePath": "pages/site/Home",
+    			"iconPath": "static/home02.jpg",
+    			"selectedIconPath": "static/home02.jpg",
+    			"text": "首页"
+    		},
+			{
+				"pagePath": "pages/article/List",
+				"iconPath": "static/article_list01.jpg",
+				"selectedIconPath": "static/article_list01.jpg",
+				"text": "文章列表"
+			},
+    		{
+    			"pagePath": "pages/user/center/Index",
+    			"iconPath": "static/user01.jpg",
+    			"selectedIconPath": "static/user01.jpg",
+    			"text": "个人中心"
+    		}
+    	],
+		"midButton": {
+			"iconPath": "static/logo.png"
+		}
+    }
+}

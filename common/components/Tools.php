@@ -9,6 +9,9 @@
 namespace common\components;
 
 
+use common\models\db\LogYiiLog;
+use yii\helpers\VarDumper;
+
 class Tools
 {
     /**
@@ -44,12 +47,39 @@ class Tools
         return rand(10, 99).rand(1000, 9999);
     }
 
-    public static function yiiLog($msg, $log_name = null)
+    public static function yiiLog($msg, $log_name = null, $is_saveto_db = false)
     {
         if (!$log_name){
             $log_name = \Yii::$app->controller->route;
         }
         \wodrow\yii2wtools\tools\Tools::log($msg, $log_name);
+        if ($is_saveto_db){
+            $ip = null;
+            $user_id = null;
+            if (!is_string($msg)) {
+                // exceptions may not be serializable if in the call stack somewhere is a Closure
+                if ($msg instanceof \Throwable || $msg instanceof \Exception) {
+                    $msg = (string) $msg;
+                } else {
+                    $msg = VarDumper::export($msg);
+                }
+            }
+            if (\Yii::$app->has('user', true)){
+                if (\Yii::$app->user->isGuest){}else{
+                    $ip = \Yii::$app->user->loginIp;
+                    $user_id = \Yii::$app->user->id;
+                }
+            }
+            $logYiiLog = new LogYiiLog();
+            $logYiiLog->log_name = $log_name;
+            $logYiiLog->msg = $msg;
+            $logYiiLog->created_at = YII_BT_TIME;
+            $logYiiLog->from_ip = $ip;
+            $logYiiLog->user_id = $user_id;
+            if (!$logYiiLog->save()){
+                \wodrow\yii2wtools\tools\Tools::log($logYiiLog->errors, $log_name);
+            }
+        }
     }
 
     /**

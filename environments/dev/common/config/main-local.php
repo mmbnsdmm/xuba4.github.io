@@ -24,11 +24,14 @@ return [
         ],
         'apiTool' => [
             'class' => \common\components\ApiTool::class,
-            'baseUri' => getenv("BASE_URl"),
+            'baseUri' => getenv("BASE_URL"),
             'apiUri' => "/api",
         ],
         'vueApp' => [
             'class' => \common\components\VueApp::class,
+        ],
+        'uniApp' => [
+            'class' => \common\components\UniApp::class,
         ],
         'sftpFileProd' => [
             'class' => \creocoder\flysystem\SftpFilesystem::class,
@@ -63,11 +66,14 @@ return [
     'params' => [
         'adminEmail' => "",
         'adminMobile' => "",
+        'adminQQ' => "",
+        'adminWX' => "",
         'quenYiiTaskCacheKey' => "quenYiiTaskCacheKey",
         'yiichina-username' => "",
         'yiichina-password' => "",
         'adminRoleOrdinaryUserName' => "普通用户",
         'adminRoleAdminUserName' => "管理员",
+        'apiAdminUserIds' => [],
         'console-username' => "",
         'console-password' => "",
         'qqqs' => [],

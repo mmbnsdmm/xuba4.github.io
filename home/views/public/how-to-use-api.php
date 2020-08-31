@@ -33,7 +33,7 @@ if(responseCode.code === 200){
     console.log(responseBody);
     var json = JSON.parse(responseBody);
     if(json.code === 200){
-        if(json.data.is_ok == 1){
+        if(json.data.status == 200){
             pm.environment.set('token', json.data.user.token);
             pm.environment.set('key', json.data.user.key);
         }

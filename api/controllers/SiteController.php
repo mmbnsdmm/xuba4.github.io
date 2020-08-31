@@ -27,7 +27,7 @@ class SiteController extends Controller
      * @param string $email
      * @param string $typeKey 注册:1;登录:2;重置密码:3
      * @return array
-     * @return int is_ok 是否发送成功
+     * @return int status 是否发送成功
      * @return string msg
      * @throws
      */
@@ -41,11 +41,11 @@ class SiteController extends Controller
         ];
         switch ($typeKey){
             case LogEmailSendCode::TYPE_SIGNUP:
-                $rules[] = ['email', 'unique', 'targetClass' => User::class, 'targetAttribute' => "email"];
+                $rules[] = ['email', 'unique', 'targetClass' => User::class, 'targetAttribute' => "email", 'message' => "邮箱已存在"];
                 break;
             case LogEmailSendCode::TYPE_LOGIN:
             case LogEmailSendCode::TYPE_RESET_PASSWORD:
-            $rules[] = ['email', 'exist', 'targetClass' => User::class, 'targetAttribute' => "email"];
+            $rules[] = ['email', 'exist', 'targetClass' => User::class, 'targetAttribute' => "email", 'message' => "邮箱不存在"];
                 break;
             default:
                 throw new ApiException(201911121120, "验证码类型未设置");
@@ -193,7 +193,7 @@ class SiteController extends Controller
      * @param string $code
      * @throws
      * @return array
-     * @return int is_ok 是否登录成功0:失败;1:成功
+     * @return int status 是否登录成功0:失败;1:成功
      * @return string msg 提示信息
      * @return object user 用户信息示例 {'id': id, 'token': "令牌", 'key': "秘钥， 不要泄露", 'username': "用户名", 'email': "邮箱", 'amount': "余额", 'frozen': "冻结资金", 'availableAmount' => "可用余额", 'deposit': 保证金", 'level': 级别", 'integral': 积分", 'uclass' => "", 'alipay_income_image' => "", 'weixin_income_image' => "", 'qq' => "QQ号", 'weiixn' => "微信号"}
      *

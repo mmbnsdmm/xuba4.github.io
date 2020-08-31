@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         dataType: "json",
                         success: function (msg) {
                             if (msg.code == 200){
-                                if (msg.data.is_ok == 1){
+                                if (msg.data.status == 200){
                                     alert("发送成功");
                                     _this.count = 120;
                                     _this.is_disabled = true;

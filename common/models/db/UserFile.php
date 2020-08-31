@@ -99,7 +99,7 @@ class UserFile extends \common\models\db\tables\UserFile
     public function fileSave($base64 = null, $base64s = null, $url = null, $urls = null, $url_file_download = 0)
     {
         $r = [
-            'is_ok' => 0,
+            'status' => 0,
             'msg' => "失败",
         ];
         $rurl = [];
@@ -146,7 +146,7 @@ class UserFile extends \common\models\db\tables\UserFile
                 }
             }
         }
-        $r['is_ok'] = 1;
+        $r['status'] = 200;
         $r['msg'] = "成功";
         $r['urls'] = $rurl;
         return $r;

@@ -1,7 +1,13 @@
 <?php
 define("YII_BT_TIME", time());
+define("YII_BT_DATE", date("Y-m-d", YII_BT_TIME));
+define("YII_BT_DATETIME", date("Y-m-d H:i:s", YII_BT_TIME));
 define("YII_BT_MTIME", microtime(true));
 define("YII_PROJECT_ROOT", dirname(dirname(__DIR__))); // 根目录
+
+if (YII_ENV_DEV) {
+    error_reporting(E_ALL);
+}
 
 \Dotenv\Dotenv::createImmutable(__DIR__)->load();
 
@@ -52,4 +58,8 @@ Yii::$container->set(\yii\widgets\LinkPager::class, [
     'lastPageLabel' => '末页',
     'prevPageLabel'=>'上一页',
     'nextPageLabel'=>'下一页',
+]);
+
+Yii::$container->set(\yii\data\Pagination::class, [
+    'defaultPageSize' => 10,
 ]);

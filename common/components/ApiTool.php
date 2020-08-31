@@ -27,10 +27,10 @@ class ApiTool extends Component
      * @return mixed
      * @throws
      */
-    public function post($uri, $form_params)
+    public function post($uri, $form_params, $user = null)
     {
         $client = new Client(['base_uri' => $this->getFullUrl($uri), 'verify'=>false]);
-        $form_params = $this->signFormParams($form_params);
+        $form_params = $this->signFormParams($form_params, $user);
         $resp = $client->request("POST", "", [
             'form_params' => $form_params,
         ]);
@@ -42,10 +42,9 @@ class ApiTool extends Component
      * @param $form_params
      * @return array
      */
-    public function signFormParams($form_params)
+    public function signFormParams($form_params, $user = null)
     {
-        if (!\Yii::$app->user->isGuest){
-            $user = \Yii::$app->user->identity;
+        if ($user){
             $form_params = $this->generateFormParams($user, $form_params);
         }
         return $form_params;
@@ -168,14 +167,27 @@ class ApiTool extends Component
      */
     public function authReturn($user)
     {
-        return [
+        $r = [
+            'id' => $user->id,
             'token' => $user->token,
             'key' => $user->key,
             'username' => $user->username,
+            'nickName' => $user->nickName,
             'email' => $user->email,
             'amount' => $user->amount,
             'frozen' => $user->frozen,
+            'status' => $user->status,
+            'created_at' => $user->created_at,
+            'avatar' => $user->avatar,
+            'mobile' => $user->mobile,
+            'weixin' => $user->weixin,
+            'qq' => $user->qq,
+            'alipay_exceptional_code' => $user->alipay_exceptional_code,
+            'alipay_exceptional_url' => $user->alipay_exceptional_url,
+            'weixin_exceptional_code' => $user->weixin_exceptional_code,
+            'weixin_exceptional_url' => $user->weixin_exceptional_url,
         ];
+        return $r;
     }
 
     /**
