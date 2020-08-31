@@ -30,6 +30,6 @@ $urlManagers['urlManagerApi'] = $_apiConfig['components']['urlManager'];
 $urlManagers['urlManagerApi']['class'] = \yii\web\UrlManager::class;
 $urlManagers['urlManagerApi']['baseUrl'] = getenv("BASE_URL")."/api";
 $urlManagers['urlManagerApi']['hostInfo'] = getenv("BASE_URL");
-$urlManagers['urlManagerApi']['rules']['/'] = 'route/api';
+//$urlManagers['urlManagerApi']['rules']['/'] = 'route/api';
 
 return $urlManagers;
