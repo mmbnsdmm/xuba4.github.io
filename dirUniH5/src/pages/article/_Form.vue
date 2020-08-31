@@ -28,6 +28,13 @@
                         </u-radio>
                     </u-radio-group>
                 </div>
+                <div class="col-xs-12">
+                    <u-gap></u-gap>
+                    <view class="tags pull-left" v-for="(utag, i) in myTags" :key="i">
+                        <u-tag :text="utag.tag_name" :type="utag._isSel?'success':'info'" @tap="toggleTag(i)"/>
+                    </view>
+                    <view class="clearfix"></view>
+                </div>
             </div>
         </div>
         <u-gap></u-gap>
@@ -59,6 +66,7 @@
                         get_password: "",
                         content: "",
                         status: 10,
+                        aTagIds: [],
                         create_type: 1
                     }
                 }
@@ -74,6 +82,13 @@
                 statusList: [],
                 create_type: 1,
                 createTypeList: [],
+                aTagIds: [],
+                myTags: [],
+                oldMyTags: [],
+                tagModify: {
+                    plus: [],
+                    reduce: []
+                },
                 isBtnDisabled: false
             }
         },
@@ -104,6 +119,18 @@
                     _this.createTypeList.push(item);
                 }
             });
+            _this.$auth.post("/user/center/get-my-tags", {}, true, function (res) {
+                let uTags = res.utags;
+                _this.$_.forEach(uTags, function (v, k) {
+                    let tag = v;
+                    let findIndex = _this.aTagIds.indexOf(v.tag_id);
+                    tag._isSel = findIndex !== -1;
+                    _this.myTags.push(tag);
+                });
+                _this.oldMyTags = _this.$tool.clone(_this.myTags);
+            }, function (msg) {
+                Toast(msg);
+            });
         },
         watch: {
             article:{
@@ -114,6 +141,7 @@
                     _this.get_password = newValue.get_password;
                     _this.content = newValue.content;
                     _this.status = newValue.status;
+                    _this.aTagIds = newValue.aTagIds;
                     _this.$refs.WODROW_ARTICLE_EDITOR.setContent(newValue.content);
                 },
                 deep:true
@@ -139,7 +167,8 @@
                     title: _this.title,
                     content: _this.content,
                     status: _this.status,
-                    create_type: _this.create_type
+                    create_type: _this.create_type,
+                    tagModify: JSON.stringify(_this.tagModify)
                 };
                 if (_this.id)formParams['id'] = _this.id;
                 if (_this.get_password)formParams['get_password'] = _this.get_password;
@@ -157,6 +186,38 @@
                     Toast(msg);
                     _this.isBtnDisabled = false;
                 });
+            },
+            toggleTag(i) {
+                let _this = this;
+                let tag = _this.myTags[i];
+                tag._isSel = !tag._isSel;
+                _this.$set(_this.myTags, i, tag);
+                _this.calculate();
+            },
+            calculate: function() {
+                let _this = this;
+                let len = _this.oldMyTags.length;
+                if (_this.myTags.length !== len){
+                    Toast("标签长度异常");
+                    return ;
+                }
+                for (let i = 0; i < len; i++){
+                    let oldChecked = _this.oldMyTags[i]._isSel;
+                    let newChecked = _this.myTags[i]._isSel;
+                    let tag_id = _this.oldMyTags[i].tag_id;
+                    _this.tagModify.plus = _this.tagModify.plus.filter(function (v) {
+                        return v !== tag_id;
+                    });
+                    _this.tagModify.reduce = _this.tagModify.reduce.filter(function (v) {
+                        return v !== tag_id;
+                    });
+                    if (oldChecked && !newChecked) {
+                        _this.tagModify.reduce.push(tag_id);
+                    }
+                    if (!oldChecked && newChecked) {
+                        _this.tagModify.plus.push(tag_id);
+                    }
+                }
             }
         }
     }

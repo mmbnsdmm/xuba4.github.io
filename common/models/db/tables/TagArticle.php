@@ -9,9 +9,9 @@ use Yii;
  *
  * @property int $id
  * @property int $tag_id
- * @property int|null $tag_name
+ * @property string|null $tag_name
  * @property int $article_id
- * @property int|null $article_title
+ * @property string|null $article_title
  * @property int $created_by
  * @property int|null $updated_by
  * @property int $created_at
@@ -41,7 +41,9 @@ class TagArticle extends \yii\db\ActiveRecord
         return [
             [['tag_id', 'tag_name', 'article_id', 'article_title', 'created_by', 'updated_by', 'created_at', 'updated_at', 'status'], 'trim'],
             [['tag_id', 'article_id', 'created_by', 'created_at', 'updated_at', 'status'], 'required'],
-            [['tag_id', 'tag_name', 'article_id', 'article_title', 'created_by', 'updated_by', 'created_at', 'updated_at', 'status'], 'integer'],
+            [['tag_id', 'article_id', 'created_by', 'updated_by', 'created_at', 'updated_at', 'status'], 'integer'],
+            [['tag_name'], 'string', 'max' => 50],
+            [['article_title'], 'string', 'max' => 180],
             [['tag_name', 'article_title', 'updated_by'], 'default', 'value' => null],
             [['tag_id', 'article_id'], 'unique', 'targetAttribute' => ['tag_id', 'article_id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],

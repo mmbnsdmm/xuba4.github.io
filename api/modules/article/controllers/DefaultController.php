@@ -12,6 +12,7 @@ namespace api\modules\article\controllers;
 use common\models\db\Article;
 use common\models\db\Collection;
 use common\models\db\Tag;
+use common\models\db\TagArticle;
 use common\models\db\User;
 use wodrow\yii\rest\ApiException;
 use wodrow\yii\rest\Controller;
@@ -34,7 +35,7 @@ class DefaultController extends Controller
      * @return string msg
      * @return object article 文章信息
      */
-    public function actionPublish($id = null, $title, $get_password = null, $content, $status, $is_boutique = Article::IS_BOUTIQUE_N, $create_type = Article::CREATE_TYPE_ORIGINAL)
+    public function actionPublish($id = null, $title, $get_password = null, $content, $status, $is_boutique = Article::IS_BOUTIQUE_N, $create_type = Article::CREATE_TYPE_ORIGINAL, $tagModify = null)
     {
         if ($id === null){
             $article = new Article();
@@ -44,22 +45,56 @@ class DefaultController extends Controller
                 throw new ApiException(202008111057, "没有找到文章");
             }
         }
+        if ($tagModify !== null){
+            $tagModify = json_decode($tagModify, true);
+            if (!is_array($tagModify) || !is_array($tagModify['plus']) || !is_array($tagModify['reduce'])){
+                throw new ApiException(201912141409, "标签修改参数格式不正确");
+            }
+        }
         if (!$article->canYouOpt){
             throw new ApiException(202008131536, "你没有修改此文章权限");
         }
-        $article->title = $title;
-        $article->get_password = $get_password;
-        $article->content = $content;
-        $article->status = $status;
-        $article->is_boutique = $is_boutique;
-        $article->create_type = $create_type;
-        if (!$article->save()){
-            throw new ApiException(202008111100, "文章保存失败:".Model::getModelError($article));
+        $trans = \Yii::$app->db->beginTransaction();
+        try{
+            $article->title = $title;
+            $article->get_password = $get_password;
+            $article->content = $content;
+            $article->status = $status;
+            $article->is_boutique = $is_boutique;
+            $article->create_type = $create_type;
+            if (!$article->save()){
+                throw new ApiException(202008111100, "文章保存失败:".Model::getModelError($article));
+            }
+            if (count($tagModify['plus']) > 0){
+                foreach ($tagModify['plus'] as $k => $v) {
+                    $v = (int)$v;
+                    $articleTag = TagArticle::findOne(['tag_id' => $v, 'article_id' => $article->id]);
+                    if (!$articleTag){
+                        $articleTag = new TagArticle();
+                        $articleTag->article_id = $article->id;
+                        $articleTag->tag_id = $v;
+                        $articleTag->status = TagArticle::STATUS_ACTIVE;
+                        if (!$articleTag->save()){
+                            throw new ApiException(201912141414, "标签保存失败:".Model::getModelError($articleTag));
+                        }
+                    }
+                }
+            }
+            if (count($tagModify['reduce']) > 0){
+                foreach ($tagModify['reduce'] as $k => $v) {
+                    $v = (int)$v;
+                    $articleTag = TagArticle::findOne(['tag_id' => $v, 'article_id' => $article->id]);
+                    if ($articleTag && !$articleTag->delete()){
+                        throw new ApiException(201912141415, "标签删除失败:".Model::getModelError($articleTag));
+                    }
+                }
+            }
+            $trans->commit();
+            return $this->success("发布成功", ['article' => $article->info]);
+        }catch (ApiException $e){
+            $trans->rollBack();
+            throw $e;
         }
-        $this->data['status'] = 200;
-        $this->data['msg'] = "发布成功";
-        $this->data['article'] = $article->info;
-        return $this->data;
     }
 
     /**

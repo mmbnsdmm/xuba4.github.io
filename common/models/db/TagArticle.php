@@ -38,13 +38,13 @@ class TagArticle extends \common\models\db\tables\TagArticle
         $behaviors = ArrayHelper::merge($behaviors, [
             'timestamp' => [
                 'class' => TimestampBehavior::class,
-                'createdAtAttribute' => false,
-                'updatedAtAttribute' => false,
+//                'createdAtAttribute' => false,
+//                'updatedAtAttribute' => false,
             ],
             'blameable' => [
                 'class' => BlameableBehavior::class,
-                'createdByAttribute' => false,
-                'updatedByAttribute' => false,
+//                'createdByAttribute' => false,
+//                'updatedByAttribute' => false,
             ],
         ]);
         return $behaviors;
@@ -62,11 +62,11 @@ class TagArticle extends \common\models\db\tables\TagArticle
     public function rules()
     {
         $rules = parent::rules();
-        /*foreach ($rules as $k => $v) {
+        foreach ($rules as $k => $v) {
             if ($v[1] == 'required'){
                 $rules[$k][0] = array_diff($rules[$k][0], ['created_at', 'updated_at', 'created_by', 'updated_by']);
             }
-        }*/
+        }
         $rules = ArrayHelper::merge($rules, [
 //            [[], 'required', 'on' => self::SCENARIO_TEST],
         ]);
@@ -97,7 +97,7 @@ class TagArticle extends \common\models\db\tables\TagArticle
             $tag = Tag::findOne($this->tag_id);
             $this->tag_name = $tag->name;
             $article = Article::findOne($this->article_id);
-            $this->article_id = $article->id;
+            $this->article_title = $article->title;
             return true;
         }else{
             return false;

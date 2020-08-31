@@ -206,6 +206,11 @@
                     url: "/pages/user/profile/Index?id=" + userId
                 });
             },
+            toCircle(circleId){
+                uni.navigateTo({
+                    url: "/pages/tag/View?id=" + circleId
+                })
+            },
             collect(index){
                 let _this = this;
                 let formParams = {

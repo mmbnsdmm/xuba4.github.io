@@ -20,9 +20,10 @@
                                         <text class="text-blue" style="font-size: 36rpx" v-html="item.title"></text>
                                         <small class="pull-right text-danger" v-if="item.isUpdate">有更新</small>
                                     </view>
-                                    <view>
-                                        <u-tag text="标签" mode="light" size="mini" @click.native.stop="toCircle(1)"/>
+                                    <view class="tags pull-left" v-for="(tag, i) in item.aTags" :key="i">
+                                        <u-tag :text="tag.tag_name" mode="light" size="mini" type="info" @click.native.stop="toCircle(tag.tag_id)"/>
                                     </view>
+                                    <view class="clearfix"></view>
                                 </view>
                                 <view class="" slot="foot">
                                     <text class="text-green" v-if="item.create_type === 1">{{$conf.serverData.enums.article.createTypeDesc[item.create_type]}}</text>
