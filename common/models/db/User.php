@@ -150,7 +150,7 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
     {
         if ($this->avatar && !$isReset){}else{
             if ($isRandom){
-                $this->avatar = "http://placeimg.com/400/400";
+                $this->avatar = "http://placeimg.com/50/50";
                 $path = \Yii::getAlias("@uploads_root");
                 $y = date("Y");
                 $m = date("m");
