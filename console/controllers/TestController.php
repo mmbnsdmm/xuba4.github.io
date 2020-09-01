@@ -14,6 +14,7 @@ use common\models\db\AdminAuthItem;
 use common\models\db\AdminAuthItemChild;
 use common\models\db\SearchIndex;
 use common\models\db\User;
+use GuzzleHttp\Client;
 use QL\QueryList;
 use wodrow\yii2wtools\tools\Color;
 use wodrow\yii2wtools\tools\StrHelper;
@@ -132,7 +133,7 @@ class TestController extends Controller
     public function actionTest4()
     {
         foreach (User::find()->all() as $k => $v) {
-            $v->generateAvatar(false, true);
+            $v->generateAvatar(true, true);
             $v->save();
             var_dump($v->toArray());
         }
@@ -141,5 +142,13 @@ class TestController extends Controller
     public function actionTest5()
     {
         SearchIndex::initSearchIndex();
+    }
+
+    public function actionTest6()
+    {
+        $randomAvatarUrl = "http://placeimg.com/400/400";
+        $path = \Yii::getAlias("@uploads_root/test.jpg");
+        $client = new Client(['base_uri' => $randomAvatarUrl]);
+        $client->request("get", "", ['sink' => $path]);
     }
 }

@@ -11,8 +11,10 @@ namespace common\models\db;
 
 use common\models\interfaces\SearchIndexInterface;
 use common\Tools;
+use GuzzleHttp\Client;
 use wodrow\yii2wtools\tools\ArrayHelper;
 use wodrow\yii2wtools\tools\Color;
+use wodrow\yii2wtools\tools\FileHelper;
 use wodrow\yii2wtools\tools\Model;
 use wodrow\yii2wtools\tools\Security;
 use wodrow\yii2wtools\tools\StrHelper;
@@ -149,6 +151,17 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
         if ($this->avatar && !$isReset){}else{
             if ($isRandom){
                 $this->avatar = "http://placeimg.com/400/400";
+                $path = \Yii::getAlias("@uploads_root");
+                $y = date("Y");
+                $m = date("m");
+                $d = date("d");
+                $_path = "/user_files/{$this->id}/{$y}/{$m}/{$d}/{$this->id}.jpg";
+                if (!is_dir(dirname($path.$_path))){
+                    FileHelper::createDirectory(dirname($path.$_path));
+                }
+                $client = new Client(['base_uri' => $this->avatar]);
+                $client->request("get", "", ['sink' => $path.$_path]);
+                $this->avatar = \Yii::$app->apiTool->baseUri.\Yii::getAlias("@uploads_url").$_path;
             }else{
                 $hex = StrHelper::strToHex(md5($this->nickName));
                 $colour = "#".substr($hex, 0, "6");

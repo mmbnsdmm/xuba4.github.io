@@ -57,13 +57,60 @@ class SearchIndex extends \common\models\db\tables\SearchIndex
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public static function initSearchIndex()
     {
-        foreach (User::find()->all() as $k => $v) {
-            $v->save();
-        }
-        foreach (Article::find()->all() as $k => $v) {
-            $v->save();
+        $trans = Yii::$app->db->beginTransaction();
+        try{
+            SearchIndex::deleteAll();
+            foreach (User::find()->all() as $k => $v) {
+                if ($v->status == User::STATUS_ACTIVE){
+                    $model = new SearchIndex;
+                    $model->type = SearchIndex::TYPE_USER;
+                    $model->type_model_id = $v->id;
+                    $model->created_at = YII_BT_TIME;
+                    $model->updated_at = YII_BT_TIME;
+                    $model->title = $v->username;
+                    if (!$model->save()){
+                        throw new Exception("添加搜索索引失败:".Model::getModelError($model));
+                    }
+                }
+                $v->save();
+            }
+            foreach (Article::find()->all() as $k => $v) {
+                if ($v->status == Article::STATUS_ACTIVE){
+                    $model = new SearchIndex;
+                    $model->type = SearchIndex::TYPE_ARTICLE;
+                    $model->type_model_id = $v->id;
+                    $model->created_at = YII_BT_TIME;
+                    $model->updated_at = YII_BT_TIME;
+                    $model->title = $v->title;
+                    if (!$model->save()){
+                        throw new Exception("添加搜索索引失败:".Model::getModelError($model));
+                    }
+                }
+                $v->save();
+            }
+            foreach (Tag::find()->all() as $k => $v) {
+                if ($v->status == Tag::STATUS_ACTIVE){
+                    $model = new SearchIndex;
+                    $model->type = SearchIndex::TYPE_TAG;
+                    $model->type_model_id = $v->id;
+                    $model->created_at = YII_BT_TIME;
+                    $model->updated_at = YII_BT_TIME;
+                    $model->title = $v->name;
+                    if (!$model->save()){
+                        throw new Exception("添加搜索索引失败:".Model::getModelError($model));
+                    }
+                }
+                $v->save();
+            }
+            $trans->commit();
+        }catch (Exception $e){
+            $trans->rollBack();
+            throw $e;
         }
     }
 
