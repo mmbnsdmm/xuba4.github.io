@@ -68,20 +68,21 @@ class SiteController extends Controller
      * @param string $email
      * @param string $password
      * @param string $code 详见发送验证码
+     * @param string $signup_message 注册信息
      * @throws
      * @return array
      * @return int status 是否注册成功0:失败;1:成功
      * @return string msg 提示信息
      */
-    public function actionSignup($username, $email, $password, $code)
+    public function actionSignup($username, $email, $password, $code, $signup_message)
     {
         $r = $this->data;
         $rules = [
-            [['username', 'password'], 'trim'],
-            [['username', 'password'], 'string', 'min' => 6, 'max' => 150],
+            [['username', 'password', 'signup_message'], 'trim'],
+            [['username', 'password', 'signup_message'], 'string', 'min' => 6, 'max' => 150],
             ['username', 'unique', 'targetClass' => User::class, 'targetAttribute' => 'username'],
         ];
-        $model = DynamicModel::validateData(['username' => $username, 'password' => $password], $rules);
+        $model = DynamicModel::validateData(['username' => $username, 'password' => $password, 'signup_message' => $signup_message], $rules);
         if (!$model->validate()){
             $r['status'] = 0;
             $r['msg'] = Model::getModelError($model);
@@ -105,12 +106,16 @@ class SiteController extends Controller
             $user->username = $username;
             $user->email = $email;
             $user->setPassword($password);
+            $user->signup_message = $signup_message;
             $user->auth_key = \Yii::$app->security->generateRandomString();
             $user->status = User::STATUS_ACTIVE;
             $user->created_at = YII_BT_TIME;
             $user->setToken();
             if (!$user->save()) {
                 throw new ApiException(201909231313, "注册失败:" . Model::getModelError($user));
+            }else{
+                $user->generateAvatar(true, true);
+                $user->save();
             }
             $adminRoleOrdinaryUserName = \Yii::$app->params['adminRoleOrdinaryUserName'];
             if (!AdminAuthAssignment::findOne(['item_name' => $adminRoleOrdinaryUserName, 'user_id' => $user->id])) {
@@ -177,7 +182,7 @@ class SiteController extends Controller
                 return $this->data;
                 break;
         }
-        $this->data['user'] = \Yii::$app->apiTool->authReturn($user);
+        $this->data['user'] = $user->profile;
         $log->is_login = LogUserLogin::IS_LOGIN_Y;
         $log->from_ip = \Yii::$app->request->remoteIP;
         if (!$log->save()){
@@ -232,7 +237,7 @@ class SiteController extends Controller
                 return $this->data;
                 break;
         }
-        $this->data['user'] = \Yii::$app->apiTool->authReturn($user);
+        $this->data['user'] = $user->profile;
         $log->is_login = LogUserLogin::IS_LOGIN_Y;
         $log->from_ip = \Yii::$app->request->remoteIP;
         if (!$log->save()){

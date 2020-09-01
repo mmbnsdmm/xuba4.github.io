@@ -32,6 +32,11 @@
                     <p>QQ: <code>{{profileInfo.qq?profileInfo.qq:'未设置'}}</code></p>
                 </view>
             </uni-collapse-item>
+            <uni-collapse-item title="注册信息" v-if="userInfo.isAdmin">
+                <view style="padding: 30rpx;">
+                    <view v-html="profileInfo.signup_message"></view>
+                </view>
+            </uni-collapse-item>
             <uni-collapse-item title="打赏">
                 <view style="padding: 30rpx;">
                     <div class="row">

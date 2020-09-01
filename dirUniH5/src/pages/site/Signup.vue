@@ -31,6 +31,10 @@
                         <label>确认密码</label>
                         <input type="password" class="form-control" v-model="passwordConfirmation" placeholder="再次确认密码">
                     </div>
+                    <div class="form-group">
+                        <label>注册信息</label>
+                        <textarea class="form-control" :auto-height="false" placeholder="请输入注册信息" v-model="signup_message" style="min-height: 4rem;height: 4rem"></textarea>
+                    </div>
                     <div class="help-block">
                         <navigator url="/pages/site/Login" class="pull-left">
                             <text class="text-blue">用户名登陆</text>
@@ -64,6 +68,7 @@
                 username: "",
                 password : "",
                 passwordConfirmation : "",
+                signup_message: "",
                 countDownSendCode: "",
                 isBtnSendVerifyCodedisabled: false,
                 isBtnDisabled: false
@@ -131,12 +136,21 @@
                     Toast("确认密码必须和密码一致");
                     return;
                 }
+                if (!_this.signup_message){
+                    Toast("注册信息不能为空");
+                    return;
+                }
+                if (_this.signup_message.length < 6){
+                    Toast("注册信息至少6位");
+                    return;
+                }
                 _this.isBtnDisabled = true;
                 _this.$http.post('/site/signup', {
                     email: _this.email,
                     code: _this.emailVerifyCode,
                     username: _this.username,
-                    password: _this.password
+                    password: _this.password,
+                    signup_message: _this.signup_message
                 }, true, function (res) {
                     Toast(res.msg);
                     _this.$tool.setCache('beforeLoginPath', "/");

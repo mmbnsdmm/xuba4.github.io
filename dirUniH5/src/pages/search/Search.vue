@@ -81,7 +81,7 @@
                 keywordListShow: true,
                 maxOldKeywordCount: 20,
                 oldKeywordList: [],
-                hotKeywordList: ['search@All', '键盘', '鼠标', '显示器', '电脑主机', '蓝牙音箱', '笔记本电脑', '鼠标垫', 'USB', 'USB3.0'],
+                hotKeywordList: ['search@All'],
                 forbid: '',
                 attentionSrc: '/static/search/attention.png',
                 page: 0,

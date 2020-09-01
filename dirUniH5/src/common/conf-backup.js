@@ -3,7 +3,6 @@ import { Toast } from 'vant'
 let conf = {
     apiUrl: null,
     mapApiUrl: "http://xuba4.tc/api/public/get-api-url",
-    // mapApiUrl: "https://bnsdmm.github.io",
     appUrl: "http://xuba4.tc/home",
     v_id: 1,
     version: "4.0.0",

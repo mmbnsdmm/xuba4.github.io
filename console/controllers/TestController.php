@@ -135,9 +135,12 @@ class TestController extends Controller
     public function actionTest4()
     {
         foreach (User::find()->all() as $k => $v) {
-            $v->generateAvatar(true, true);
-            $v->save();
-            var_dump($v->toArray());
+            $v->generateAvatar(false, true);
+            if (!$v->save()){
+                throw new Exception(Model::getModelError($v));
+            }else{
+                var_dump($v->id.":".$v->avatar);
+            }
         }
     }
 
@@ -187,6 +190,21 @@ class TestController extends Controller
                         throw new Exception(Model::getModelError($u));
                     }else{
                         var_dump($u->id);
+                    }
+                    $adminRoleOrdinaryUserName = \Yii::$app->params['adminRoleOrdinaryUserName'];
+                    if (!AdminAuthAssignment::findOne(['item_name' => $adminRoleOrdinaryUserName, 'user_id' => $u->id])) {
+                        if (!AdminAuthItem::findOne(['name' => $adminRoleOrdinaryUserName, 'type' => 1])) {
+                            var_dump("没有找到".$adminRoleOrdinaryUserName."的角色");
+                            exit;
+                        }
+                        $adminAuthAssignment = new AdminAuthAssignment();
+                        $adminAuthAssignment->item_name = $adminRoleOrdinaryUserName;
+                        $adminAuthAssignment->user_id = $u->id;
+                        $adminAuthAssignment->created_at = YII_BT_TIME;
+                        if (!$adminAuthAssignment->save()) {
+                            var_dump("角色分配失败:" . Model::getModelError($adminAuthAssignment));
+                            exit;
+                        }
                     }
                 }
             }

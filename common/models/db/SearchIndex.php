@@ -64,45 +64,52 @@ class SearchIndex extends \common\models\db\tables\SearchIndex
     {
         $trans = Yii::$app->db->beginTransaction();
         try{
-            SearchIndex::deleteAll();
+            Yii::$app->db->createCommand()->truncateTable('search_index')->execute();
+            $model = new SearchIndex();
             foreach (User::find()->all() as $k => $v) {
                 if ($v->status == User::STATUS_ACTIVE){
-                    $model = new SearchIndex;
-                    $model->type = SearchIndex::TYPE_USER;
-                    $model->type_model_id = $v->id;
-                    $model->created_at = YII_BT_TIME;
-                    $model->updated_at = YII_BT_TIME;
-                    $model->title = $v->username;
-                    if (!$model->save()){
-                        throw new Exception("添加搜索索引失败:".Model::getModelError($model));
+                    $m = clone $model;
+                    $m->type = SearchIndex::TYPE_USER;
+                    $m->type_model_id = $v->id;
+                    $m->created_at = YII_BT_TIME;
+                    $m->updated_at = YII_BT_TIME;
+                    $m->title = $v->username;
+                    if (!$m->save()){
+                        throw new Exception("添加搜索索引失败:".Model::getModelError($m));
+                    }else{
+                        var_dump("user:".$m->title);
                     }
                 }
                 $v->save();
             }
             foreach (Article::find()->all() as $k => $v) {
                 if ($v->status == Article::STATUS_ACTIVE){
-                    $model = new SearchIndex;
-                    $model->type = SearchIndex::TYPE_ARTICLE;
-                    $model->type_model_id = $v->id;
-                    $model->created_at = YII_BT_TIME;
-                    $model->updated_at = YII_BT_TIME;
-                    $model->title = $v->title;
-                    if (!$model->save()){
-                        throw new Exception("添加搜索索引失败:".Model::getModelError($model));
+                    $m = clone $model;
+                    $m->type = SearchIndex::TYPE_ARTICLE;
+                    $m->type_model_id = $v->id;
+                    $m->created_at = YII_BT_TIME;
+                    $m->updated_at = YII_BT_TIME;
+                    $m->title = $v->title;
+                    if (!$m->save()){
+                        throw new Exception("添加搜索索引失败:".Model::getModelError($m));
+                    }else{
+                        var_dump("article:".$m->title);
                     }
                 }
                 $v->save();
             }
             foreach (Tag::find()->all() as $k => $v) {
                 if ($v->status == Tag::STATUS_ACTIVE){
-                    $model = new SearchIndex;
-                    $model->type = SearchIndex::TYPE_TAG;
-                    $model->type_model_id = $v->id;
-                    $model->created_at = YII_BT_TIME;
-                    $model->updated_at = YII_BT_TIME;
-                    $model->title = $v->name;
-                    if (!$model->save()){
-                        throw new Exception("添加搜索索引失败:".Model::getModelError($model));
+                    $m = clone $model;
+                    $m->type = SearchIndex::TYPE_TAG;
+                    $m->type_model_id = $v->id;
+                    $m->created_at = YII_BT_TIME;
+                    $m->updated_at = YII_BT_TIME;
+                    $m->title = $v->name;
+                    if (!$m->save()){
+                        throw new Exception("添加搜索索引失败:".Model::getModelError($m));
+                    }else{
+                        var_dump("tag:".$m->title);
                     }
                 }
                 $v->save();

@@ -95,7 +95,7 @@
             toCreateCircle() {
                 let _this = this;
                 if (_this.userInfo.email !== _this.$conf.serverData.datas['adminEmail'] && -1 === _this.$conf.serverData.datas['apiAdminUserIds'].indexOf(_this.userInfo.id)) {
-                    Toast("你没有权限创建圈子");
+                    Toast("你没有权限创建圈子，你可以联系管理员创建需要的圈子");
                 }else{
                     uni.navigateTo({
                         url: "/pages/tag/Add"

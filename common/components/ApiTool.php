@@ -186,6 +186,7 @@ class ApiTool extends Component
             'alipay_exceptional_url' => $user->alipay_exceptional_url,
             'weixin_exceptional_code' => $user->weixin_exceptional_code,
             'weixin_exceptional_url' => $user->weixin_exceptional_url,
+            'signup_message' => $user->signup_message,
         ];
         return $r;
     }

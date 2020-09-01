@@ -237,6 +237,7 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
     public function getProfile()
     {
         $profile = \Yii::$app->apiTool->authReturn($this);
+        $profile['isAdmin'] = $this->isAdmin;
         $profile['isYourAttention'] = $this->isYourAttention;
         $profile['attentions'] = $this->attentions;
         $profile['attentionTotal'] = count($profile['attentions']);

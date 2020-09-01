@@ -114,10 +114,9 @@ class CenterController extends Controller
     public function actionUserInfo()
     {
         $user = \Yii::$app->user->identity;
-        $user = \Yii::$app->apiTool->authReturn($user);
         $this->data['status'] = 200;
         $this->data['msg'] = "成功";
-        $this->data['user'] = $user;
+        $this->data['user'] = $user->profile;
         return $this->data;
     }
 

@@ -26,6 +26,13 @@
             <u-cell-item icon="star-fill" title="我的收藏" arrow-direction="right" @tap="$router.push('/pages/user/center/MyCollection')"></u-cell-item>
             <u-cell-item icon="chat-fill" title="留言区" arrow-direction="right" @tap="$router.push('/pages/message/LeaveMessage')"></u-cell-item>
         </u-cell-group>
+        <uni-collapse accordion="true">
+            <uni-collapse-item title="注册信息" v-if="userInfo.isAdmin">
+                <view style="padding: 30rpx;">
+                    <view v-html="userInfo.signup_message"></view>
+                </view>
+            </uni-collapse-item>
+        </uni-collapse>
         <u-gap></u-gap>
         <view class="container">
             <div class="row">
