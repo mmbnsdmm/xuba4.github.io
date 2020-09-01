@@ -21,6 +21,7 @@ class UniApp extends Component
     public $androidAppDownloadUrl;
     public $iosAppDownloadUrl;
     public $webAppUrl;
+    public $appUrl;
     public $qqqs = [
         ['k' => 1, 'qqq' => "test", 'isFull' => true, 'canJoin' => false, 'checkCode' => "15xag4ae"],
         ['k' => 2, 'qqq' => "test1", 'isFull' => false, 'canJoin' => true, 'checkCode' => "gasd451h"],
