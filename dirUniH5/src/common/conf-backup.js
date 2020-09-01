@@ -2,11 +2,11 @@ import Tool from '@/common/tool'
 import { Toast } from 'vant'
 let conf = {
     apiUrl: null,
-    mapApiUrl: "http://inityii.tc/api/public/get-api-url",
+    mapApiUrl: "http://xuba4.tc/api/public/get-api-url",
     // mapApiUrl: "https://bnsdmm.github.io",
-    appUrl: "",
+    appUrl: "http://xuba4.tc/home",
     v_id: 1,
-    version: "1.0.0",
+    version: "4.0.0",
     productionTip: false,
     ajax: {
         method: "post",
@@ -15,7 +15,8 @@ let conf = {
         successStatus: 200
     },
     serverData: {
-        enums: {}
+        enums: {},
+        datas: {}
     },
     unConnected: function(){
         Tool.delCache('API_URL');

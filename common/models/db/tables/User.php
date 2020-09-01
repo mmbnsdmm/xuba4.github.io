@@ -19,6 +19,7 @@ use Yii;
  * @property string $auth_key session认证秘钥
  * @property float $amount 余额
  * @property float $frozen 冻结资金
+ * @property string|null $signup_message 注册信息
  * @property int $updated_at 修改时间
  * @property string|null $nickname 昵称
  * @property string|null $avatar 头像
@@ -72,17 +73,18 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['username', 'email', 'password', 'pwd_back', 'status', 'created_at', 'token', 'key', 'auth_key', 'amount', 'frozen', 'updated_at', 'nickname', 'avatar', 'weixin_exceptional_code', 'weixin_exceptional_url', 'alipay_exceptional_code', 'alipay_exceptional_url', 'mobile', 'qq', 'weixin'], 'trim'],
+            [['username', 'email', 'password', 'pwd_back', 'status', 'created_at', 'token', 'key', 'auth_key', 'amount', 'frozen', 'signup_message', 'updated_at', 'nickname', 'avatar', 'weixin_exceptional_code', 'weixin_exceptional_url', 'alipay_exceptional_code', 'alipay_exceptional_url', 'mobile', 'qq', 'weixin'], 'trim'],
             [['username', 'email', 'password', 'pwd_back', 'created_at', 'token', 'key', 'auth_key', 'updated_at'], 'required'],
             [['status', 'created_at', 'updated_at'], 'integer'],
             [['amount', 'frozen'], 'number'],
+            [['signup_message'], 'string'],
             [['username', 'password', 'token', 'key', 'auth_key'], 'string', 'max' => 32],
             [['email', 'pwd_back'], 'string', 'max' => 150],
             [['nickname', 'avatar', 'weixin_exceptional_code', 'weixin_exceptional_url', 'alipay_exceptional_code', 'alipay_exceptional_url', 'weixin'], 'string', 'max' => 180],
             [['mobile', 'qq'], 'string', 'max' => 20],
             [['status'], 'default', 'value' => 10],
             [['amount', 'frozen'], 'default', 'value' => 0.00],
-            [['nickname', 'avatar', 'weixin_exceptional_code', 'weixin_exceptional_url', 'alipay_exceptional_code', 'alipay_exceptional_url', 'mobile', 'qq', 'weixin'], 'default', 'value' => null],
+            [['signup_message', 'nickname', 'avatar', 'weixin_exceptional_code', 'weixin_exceptional_url', 'alipay_exceptional_code', 'alipay_exceptional_url', 'mobile', 'qq', 'weixin'], 'default', 'value' => null],
             [['token'], 'unique'],
             [['email'], 'unique'],
             [['username'], 'unique'],
@@ -107,6 +109,7 @@ class User extends \yii\db\ActiveRecord
             'auth_key' => Yii::t('app', 'session认证秘钥'),
             'amount' => Yii::t('app', '余额'),
             'frozen' => Yii::t('app', '冻结资金'),
+            'signup_message' => Yii::t('app', '注册信息'),
             'updated_at' => Yii::t('app', '修改时间'),
             'nickname' => Yii::t('app', '昵称'),
             'avatar' => Yii::t('app', '头像'),

@@ -8,6 +8,13 @@ return [
             'password' => "",
             'charset' => "utf8mb4",
         ],
+        'dbXuba3' => [
+            'class' => "yii\db\Connection",
+            'dsn' => "mysql:host=127.0.0.1;port=3306;dbname=_xuba3",
+            'username' => "",
+            'password' => "",
+            'charset' => "utf8mb4",
+        ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'useFileTransport' => false,    //这里一定要改成false，不然邮件不会发送

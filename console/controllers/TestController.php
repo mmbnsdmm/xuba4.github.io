@@ -17,9 +17,11 @@ use common\models\db\User;
 use GuzzleHttp\Client;
 use QL\QueryList;
 use wodrow\yii2wtools\tools\Color;
+use wodrow\yii2wtools\tools\Model;
 use wodrow\yii2wtools\tools\StrHelper;
 use wodrow\yii2wtools\tools\Tools;
 use yii\console\Controller;
+use yii\db\Exception;
 use yii\helpers\Console;
 
 class TestController extends Controller
@@ -150,5 +152,49 @@ class TestController extends Controller
         $path = \Yii::getAlias("@uploads_root/test.jpg");
         $client = new Client(['base_uri' => $randomAvatarUrl]);
         $client->request("get", "", ['sink' => $path]);
+    }
+
+    public function actionTest7()
+    {
+        $xuba3Users = \Yii::$app->dbXuba3->createCommand("SELECT * FROM `user`")->queryAll();
+        $trans = \Yii::$app->db->beginTransaction();
+        try{
+            $user = new User();
+            foreach ($xuba3Users as $k => $v){
+                if (User::findOne(['username' => $v['username']])){
+                    \common\components\Tools::yiiLog($v);
+                    var_dump($v['username']);
+                }else{
+                    $u = clone $user;
+                    $u->username = $v['username'];
+                    $u->email = $v['email'];
+                    $u->password = $v['password'];
+                    $u->pwd_back = $v['pwd_back'];
+                    $u->status = $v['status'];
+                    $u->created_at = $v['created_at'];
+                    $u->token = $v['token'];
+                    $u->key = $v['key'];
+                    $u->auth_key = $v['auth_key'];
+                    $u->amount = $v['amount'];
+                    $u->frozen = $v['frozen'];
+                    $u->signup_message = $v['signup_message'];
+                    $u->updated_at = YII_BT_TIME;
+                    $u->weixin_exceptional_url = $v['weixin_income_image'];
+                    $u->alipay_exceptional_url = $v['alipay_income_image'];
+                    $u->qq = $v['qq'];
+                    $u->weixin = $v['weixin'];
+                    if (!$u->save()){
+                        throw new Exception(Model::getModelError($u));
+                    }else{
+                        var_dump($u->id);
+                    }
+                }
+            }
+            $this->actionTest4();
+            $trans->commit();
+        }catch (\yii\base\Exception $e){
+            $trans->rollBack();
+            throw $e;
+        }
     }
 }

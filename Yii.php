@@ -49,6 +49,7 @@ Yii::$container = new yii\di\Container;
  * @property \creocoder\flysystem\SftpFilesystem sftpFileProd
  * @property \creocoder\flysystem\SftpFilesystem sftpFileDev
  * @property \creocoder\flysystem\SftpFilesystem sftpFileBackup
+ * @property \yii\db\Connection $dbXuba3
  * @property string $name
  */
 abstract class BaseApplication extends yii\base\Application
