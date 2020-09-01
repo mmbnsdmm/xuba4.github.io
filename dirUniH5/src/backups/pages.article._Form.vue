@@ -2,7 +2,7 @@
     <div class="article-_form">
         <u-field v-model="title" label="标题" placeholder="请填写标题"></u-field>
         <u-field v-model="get_password" label="获取密码" placeholder="如果设置则用户必须验证密码后才能访问文章"></u-field>
-        <WWangEditor ref="WODROW_W_EDITOR" v-model="content"></WWangEditor>
+        <WodrowEditor ref="WODROW_ARTICLE_EDITOR" id="article-edit" placeholder="请输入内容" :uploadFileUrl="$conf.apiUrl + '/user/file/upload'" v-model="content"></WodrowEditor>
         <u-gap></u-gap>
         <div class="container">
             <div class="row">
@@ -49,13 +49,13 @@
 </template>
 
 <script>
-    import WWangEditor from '@/plugins/wodrow/editor/WangEditor';
+    import WodrowEditor from "@/plugins/wodrow/editor/WodrowEditor";
     import {Toast} from 'vant';
     export default {
-        name: "Article_Form",
         components: {
-            WWangEditor
+            WodrowEditor
         },
+        name: "Article_Form",
         props: {
             article: {
                 type: Object,
@@ -131,7 +131,21 @@
             }, function (msg) {
                 Toast(msg);
             });
-            _this.$refs.WODROW_W_EDITOR.initContent(_this.content);
+        },
+        watch: {
+            article:{
+                handler(newValue, oldValue){
+                    let _this = this;
+                    _this.id = newValue.id;
+                    _this.title = newValue.title;
+                    _this.get_password = newValue.get_password;
+                    _this.content = newValue.content;
+                    _this.status = newValue.status;
+                    _this.aTagIds = newValue.aTagIds;
+                    _this.$refs.WODROW_ARTICLE_EDITOR.setContent(newValue.content);
+                },
+                deep:true
+            }
         },
         methods:{
             toPublish: function () {
@@ -162,7 +176,7 @@
                     Toast(res.msg);
                     _this.isBtnDisabled = false;
                     _this.title = _this.content = _this.get_password = _this.id = "";
-                    // set content
+                    _this.$refs.WODROW_ARTICLE_EDITOR.setContent(_this.content);
                     _this.statas = 10;
                     let article = res.article;
                     uni.redirectTo({

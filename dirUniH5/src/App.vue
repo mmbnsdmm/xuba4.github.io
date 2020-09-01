@@ -33,4 +33,7 @@
     uni-view{
         word-break:break-all;
     }
+    .w-e-toolbar{
+        flex-wrap:wrap !important;
+    }
 </style>

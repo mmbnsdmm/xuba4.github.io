@@ -13,6 +13,7 @@ use common\models\db\AdminAuthItem;
 use common\models\db\LogEmailSendCode;
 use common\models\db\LogUserLogin;
 use common\models\db\User;
+use common\models\db\UserFile;
 use wodrow\yii\rest\ApiException;
 use wodrow\yii\rest\Controller;
 use wodrow\yii2wtools\tools\Model;
@@ -288,6 +289,53 @@ class SiteController extends Controller
         }
         $r['status'] = 200;
         $r['msg'] = "密码重置成功";
+        return $r;
+    }
+
+    /**
+     * 文件上传
+     * @desc post url,urls,base64,base64s,表单上传必须选其一,如果表单上传，字段必须为ufile或者ufile[]
+     * @param string $token
+     * @param string $url
+     * @param string $urls json数组格式:['url1', 'url2']
+     * @param string $base64
+     * @param string $base64s json数组格式:['base64', 'base64']
+     * @param string $ufile 表单上传必须有这个字段
+     * @param int $url_file_download url文件是否保存到图床 1:保存到图床;0:不保存,用原有url
+     * @param int $wangEV 是否wangEditor，如果是的版本号
+     * @return array
+     * @return int status 是否成功
+     * @return string msg 返回信息
+     * @return array urls 成功返回的所有文件链接
+     * @throws
+     */
+    public function actionWangEditorUpload($token, $base64 = null, $base64s = null, $url = null, $urls = null, $url_file_download = 1, $wangEV = 0)
+    {
+        $user = \Yii::$app->user->loginByAccessToken($token);
+        if (!$user){
+            throw new ApiException(202009011747, "没有找到用户");
+        }
+        if ($base64s){
+            $base64s = json_decode($base64s, true);
+        }
+        if ($urls){
+            $urls = json_decode($urls, true);
+        }
+        $user_file = new UserFile();
+        $r =  $user_file->fileSave($base64, $base64s, $url, $urls, $url_file_download);
+        if ($wangEV == 3){
+            $this->onlyDataOut = true;
+            if ($r['status'] == 200){
+                return [
+                    "errno" => 0,
+                    "data" => $r['urls'],
+                ];
+            }else{
+                return [
+                    "errno" => $r['status'],
+                ];
+            }
+        }
         return $r;
     }
 }
