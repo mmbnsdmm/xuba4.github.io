@@ -46,7 +46,7 @@
             </uni-collapse-item>
             <uni-collapse-item title="注意事项">
                 <view style="padding: 30rpx;">
-                    <p>你可以使用网页端，地址为 <u-link :href="$conf.appUrl">{{$conf.appUrl}}</u-link></p>
+                    <p>你可以使用网页端，地址为 <u-link :href="$conf.serverData.datas.appUrl">{{$conf.serverData.datas.appUrl}}</u-link></p>
                 </view>
             </uni-collapse-item>
         </uni-collapse>

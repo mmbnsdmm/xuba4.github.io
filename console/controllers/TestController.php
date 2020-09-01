@@ -134,7 +134,7 @@ class TestController extends Controller
 
     public function actionTest4($isRandom = false)
     {
-        foreach (User::find()->all() as $k => $v) {
+        foreach (User::find()->where(['>', 'id', 88])->all() as $k => $v) {
             $v->generateAvatar($isRandom, true);
             if (!$v->save()){
                 throw new Exception(Model::getModelError($v));
