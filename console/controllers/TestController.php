@@ -132,10 +132,10 @@ class TestController extends Controller
         }
     }
 
-    public function actionTest4()
+    public function actionTest4($isRandom = false)
     {
         foreach (User::find()->all() as $k => $v) {
-            $v->generateAvatar(false, true);
+            $v->generateAvatar($isRandom, true);
             if (!$v->save()){
                 throw new Exception(Model::getModelError($v));
             }else{
