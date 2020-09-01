@@ -211,7 +211,7 @@ export default {
 		line-height: 160%;
 		font-size: 34rpx;
 		width: calc(100% - 60rpx); 
-		height: auto;
+		height: 8rem;
 		margin: 0 auto;
 		max-height: 800rpx;
 		word-wrap: break-word;
