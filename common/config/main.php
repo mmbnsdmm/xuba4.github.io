@@ -17,7 +17,7 @@ $config = [
                 ],
             ],
         ],
-        /*'cdn' => [
+        'cdn' => [
             'class' => \yiizh\cdn\CDN::class,
             'assets' => [
                 [
@@ -57,7 +57,7 @@ $config = [
                     ],
                 ],
             ],
-        ],*/
+        ],
     ],
     'bootstrap' => ['log', 'cdn'],
     'params' => [
