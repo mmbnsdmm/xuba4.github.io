@@ -72,6 +72,7 @@ $config = [
         'user' => \admin\modules\user\UserModule::class,
         'ucenter' => \admin\modules\ucenter\UcenterModule::class,
         'app' => \admin\modules\app\AppModule::class,
+        'article' => \admin\modules\article\ArticleModule::class,
     ],
     'as access' => [
         'class' => \mdm\admin\components\AccessControl::class,
