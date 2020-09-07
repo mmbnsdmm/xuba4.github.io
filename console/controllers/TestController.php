@@ -151,7 +151,7 @@ class TestController extends Controller
 
     public function actionTest6()
     {
-        $randomAvatarUrl = "http://placeimg.com/400/400";
+        $randomAvatarUrl = "http://placeimg.com/100/100";
         $path = \Yii::getAlias("@uploads_root/test.jpg");
         $client = new Client(['base_uri' => $randomAvatarUrl]);
         $client->request("get", "", ['sink' => $path]);

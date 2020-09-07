@@ -150,7 +150,7 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
     {
         if ($this->avatar && !$isReset){}else{
             if ($isRandom){
-                $this->avatar = "http://placeimg.com/50/50";
+                $this->avatar = "http://placeimg.com/100/100";
                 $path = \Yii::getAlias("@uploads_root");
                 $y = date("Y");
                 $m = date("m");
@@ -168,7 +168,7 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
                 $_colour = Color::rgb2contrast($colour);
                 $c = str_replace("#", "", $colour);
                 $_c = str_replace("#", "", $_colour);
-                $this->avatar = "https://via.placeholder.com/400x400/{$c}/{$_c}?text={$this->nickName}";
+                $this->avatar = "https://via.placeholder.com/100x100/{$c}/{$_c}?text={$this->nickName}";
             }
         }
     }
