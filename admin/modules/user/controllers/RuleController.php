@@ -61,7 +61,7 @@ class RuleController extends Controller
      * @return mixed
      */
     public function actionIndex()
-    {    
+    {
         $searchModel = new adminAuthRuleSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
