@@ -215,4 +215,26 @@ class TestController extends Controller
             throw $e;
         }
     }
+
+    public function actionTest8()
+    {
+        $users = User::find()->all();
+        $assign = new AdminAuthAssignment();
+        $param = \Yii::$app->params['adminRoleOrdinaryUserName'];
+        foreach ($users as $k => $v) {
+            if (AdminAuthAssignment::findOne(['item_name' => $param, 'user_id' => $v->id])){
+                var_dump("pass:{$v->id}");
+                continue;
+            }
+            $a = clone $assign;
+            $a->item_name = $param;
+            $a->user_id = $v->id;
+            $a->created_at = YII_BT_TIME;
+            if ($a->save()){
+                var_dump($a->toArray());
+            }else{
+                var_dump($a->errors);
+            }
+        }
+    }
 }
