@@ -19,7 +19,7 @@ use wodrow\yii2wtools\tools\JsBlock;
 use yii\web\JsExpression;
 
 /* @var $this yii\web\View */
-/* @var $searchModel admin\modules\user\models\searchs\adminAuthRule */
+/* @var $searchModel admin\modules\user\models\searchs\AdminAuthRule */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Admin Auth Rules');

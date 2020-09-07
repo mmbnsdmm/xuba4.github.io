@@ -8,12 +8,12 @@ use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
-use common\models\db\adminAuthRule as adminAuthRuleModel;
+use common\models\db\AdminAuthRule as AdminAuthRuleModel;
 
 /**
- * adminAuthRule represents the model behind the search form about `common\models\db\adminAuthRule`.
+ * AdminAuthRule represents the model behind the search form about `common\models\db\AdminAuthRule`.
  */
-class adminAuthRule extends adminAuthRuleModel
+class AdminAuthRule extends AdminAuthRuleModel
 {
     const EMPTY_STRING = "(空字符)";
     const NO_EMPTY = "(非空)";

@@ -3,8 +3,8 @@
 namespace admin\modules\user\controllers;
 
 use Yii;
-use common\models\db\adminAuthRule;
-use admin\modules\user\models\searchs\adminAuthRule as adminAuthRuleSearch;
+use common\models\db\AdminAuthRule;
+use admin\modules\user\models\searchs\AdminAuthRule as AdminAuthRuleSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -13,7 +13,7 @@ use yii\helpers\Html;
 use kartik\grid\EditableColumnAction;
 
 /**
- * RuleController implements the CRUD actions for adminAuthRule model.
+ * RuleController implements the CRUD actions for AdminAuthRule model.
  */
 class RuleController extends Controller
 {
@@ -22,8 +22,8 @@ class RuleController extends Controller
         return [
             'editable-edit' => [
                 'class' => EditableColumnAction::class,
-                'modelClass' => adminAuthRuleSearch::class,                // the model for the record being edited
-                'scenario' => adminAuthRuleSearch::SCENARIO_EDITABLE,
+                'modelClass' => AdminAuthRuleSearch::class,                // the model for the record being edited
+                'scenario' => AdminAuthRuleSearch::SCENARIO_EDITABLE,
                 'outputValue' => function ($model, $attribute, $key, $index) {
                     return (int)$model->$attribute / 100;      // return any custom output value if desired
                 },
@@ -57,12 +57,12 @@ class RuleController extends Controller
     }
 
     /**
-     * Lists all adminAuthRule models.
+     * Lists all AdminAuthRule models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new adminAuthRuleSearch();
+        $searchModel = new AdminAuthRuleSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -73,7 +73,7 @@ class RuleController extends Controller
 
 
     /**
-     * Displays a single adminAuthRule model.
+     * Displays a single AdminAuthRule model.
      * @param string $id
      * @return mixed
      */
@@ -83,7 +83,7 @@ class RuleController extends Controller
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'title' => "adminAuthRule({$id})",
+                    'title' => "AdminAuthRule({$id})",
                     'content' => $this->renderAjax('view', [
                         'model' => $this->findModel($id),
                     ]),
@@ -98,7 +98,7 @@ class RuleController extends Controller
     }
 
     /**
-     * Creates a new adminAuthRule model.
+     * Creates a new AdminAuthRule model.
      * For ajax request will return json object
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -106,13 +106,13 @@ class RuleController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
-        $model = new adminAuthRule();  
+        $model = new AdminAuthRule();
 
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title' => "新建 adminAuthRule",
+                    'title' => "新建 AdminAuthRule",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -123,15 +123,15 @@ class RuleController extends Controller
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload' => '#crud-datatable-pjax',
-                    'title' => "Create new adminAuthRule",
-                    'content' => '<span class="text-success">Create adminAuthRule success</span>',
+                    'title' => "Create new AdminAuthRule",
+                    'content' => '<span class="text-success">Create AdminAuthRule success</span>',
                     'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
                             Html::a('新建更多', ['create'], ['class' => 'btn btn-primary','role' => 'modal-remote'])
         
                 ];         
             }else{           
                 return [
-                    'title' => "新建 adminAuthRule",
+                    'title' => "新建 AdminAuthRule",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -152,7 +152,7 @@ class RuleController extends Controller
     }
 
     /**
-     * Updates an existing adminAuthRule model.
+     * Updates an existing AdminAuthRule model.
      * For ajax request will return json object
      * and for non-ajax request if update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
@@ -170,7 +170,7 @@ class RuleController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title' => "修改 adminAuthRule({$id})",
+                    'title' => "修改 AdminAuthRule({$id})",
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
@@ -180,7 +180,7 @@ class RuleController extends Controller
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload' => '#crud-datatable-pjax',
-                    'title' => "adminAuthRule #".$id,
+                    'title' => "AdminAuthRule #".$id,
                     'content' => $this->renderAjax('view', [
                         'model' => $model,
                     ]),
@@ -189,7 +189,7 @@ class RuleController extends Controller
                 ];    
             }else{
                  return [
-                    'title' => "修改 adminAuthRule #".$id,
+                    'title' => "修改 AdminAuthRule #".$id,
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
@@ -212,7 +212,7 @@ class RuleController extends Controller
     }
 
     /**
-     * Delete an existing adminAuthRule model.
+     * Delete an existing AdminAuthRule model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
@@ -239,7 +239,7 @@ class RuleController extends Controller
     }
 
      /**
-     * Delete multiple existing adminAuthRule model.
+     * Delete multiple existing AdminAuthRule model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
@@ -277,7 +277,7 @@ class RuleController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                'title' => "test adminAuthRule({$id})",
+                'title' => "test AdminAuthRule({$id})",
                     'content' => $this->renderAjax('test', [
                     'model' => $model,
                 ]),
@@ -290,7 +290,7 @@ class RuleController extends Controller
                 return ['forceClose' => true,'forceReload' => '#crud-datatable-pjax'];
             }else{
                 return [
-                    'title' => "test adminAuthRule({$id})",
+                    'title' => "test AdminAuthRule({$id})",
                     'content' => $this->renderAjax('test', [
                     'model' => $model,
                 ]),
@@ -311,7 +311,7 @@ class RuleController extends Controller
     }
 
     /**
-     * Delete multiple existing adminAuthRule model.
+     * Delete multiple existing AdminAuthRule model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
@@ -337,12 +337,12 @@ class RuleController extends Controller
      * Finds the adminAuthRule model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return adminAuthRule the loaded model
+     * @return AdminAuthRule the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = adminAuthRule::findOne($id)) !== null) {
+        if (($model = AdminAuthRule::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

@@ -4,7 +4,7 @@ use wodrow\yii2wtools\tools\ArrayHelper;
 use kartik\detail\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\db\adminAuthRule */
+/* @var $model common\models\db\AdminAuthRule */
 ?>
 <div class="admin-auth-rule-_detail-view">
 

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model common\models\db\adminAuthRule */
+/* @var $model common\models\db\AdminAuthRule */
 
 ?>
 <div class="admin-auth-rule-create">

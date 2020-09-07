@@ -3,7 +3,7 @@ use yii\helpers\Html;
 use kartik\form\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\db\adminAuthRule */
+/* @var $model common\models\db\AdminAuthRule */
 /* @var $form \kartik\form\ActiveForm */
 ?>
 
