@@ -1,5 +1,5 @@
 <template>
-    <view class="user-profile-attentions">
+    <view class="user-profile-attentions container-fluid">
         <div class="row">
             <div class="col-xs-12">
                 <WLoadMore ref="WODROW_LOAD_MORE_PROFILE_ATTENTIONS" @provider="provider" :pageSize="page_size" color="#66ccff">

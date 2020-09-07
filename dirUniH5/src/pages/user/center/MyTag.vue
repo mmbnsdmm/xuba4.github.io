@@ -10,26 +10,28 @@
             <li class="active">我的圈子</li>
             <text class="text-blue pull-right" @tap="toCreateCircle">创建圈子</text>
         </ol>
-        <div class="row">
-            <div class="col-xs-12">
-                <WLoadMore ref="WODROW_LOAD_MORE_MY_TAG_LIST" @provider="provider" :pageSize="page_size" color="#66ccff">
-                    <template v-slot:list="{ items }">
-                        <view class="solid-top" v-for="(item, index) in items" :key="index">
-                            <u-card padding="10" margin="15rpx" :show-head="false" :border="false" :head-border-bottom="false" :foot-border-top="false" title-size="15rpx">
-                                <view class="" slot="body">
-                                    <view>
-                                        <text class="text-blue" style="font-size: 36rpx" v-html="item.name"></text>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <WLoadMore ref="WODROW_LOAD_MORE_MY_TAG_LIST" @provider="provider" :pageSize="page_size" color="#66ccff">
+                        <template v-slot:list="{ items }">
+                            <view class="solid-top" v-for="(item, index) in items" :key="index">
+                                <u-card padding="10" margin="15rpx" :show-head="false" :border="false" :head-border-bottom="false" :foot-border-top="false" title-size="15rpx">
+                                    <view class="" slot="body">
+                                        <view>
+                                            <text class="text-blue" style="font-size: 36rpx" v-html="item.name"></text>
+                                        </view>
                                     </view>
-                                </view>
-                                <view class="" slot="foot">
-                                    <u-icon name="eye-fill" size="34" color="" label="查看" class="pull-right text-blue" @tap="toCircle(item.id)"></u-icon>
-                                    <u-icon name="close" size="34" color="" label="退出" class="pull-right text-danger" @tap="toQuit(index)"></u-icon>
-                                    <div class="clearfix"></div>
-                                </view>
-                            </u-card>
-                        </view>
-                    </template>
-                </WLoadMore>
+                                    <view class="" slot="foot">
+                                        <u-icon name="eye-fill" size="34" color="" label="查看" class="pull-right text-blue" @tap="toCircle(item.id)"></u-icon>
+                                        <u-icon name="close" size="34" color="" label="退出" class="pull-right text-danger" @tap="toQuit(index)"></u-icon>
+                                        <div class="clearfix"></div>
+                                    </view>
+                                </u-card>
+                            </view>
+                        </template>
+                    </WLoadMore>
+                </div>
             </div>
         </div>
         <ScrollTopIcon @tapIcon="tapIcon"></ScrollTopIcon>

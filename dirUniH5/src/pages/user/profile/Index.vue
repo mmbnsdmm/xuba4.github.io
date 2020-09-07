@@ -38,7 +38,7 @@
                 </view>
             </uni-collapse-item>
             <uni-collapse-item title="打赏">
-                <view style="padding: 30rpx;">
+                <view class="container-fluid" style="padding: 30rpx;">
                     <div class="row">
                         <div class="col-xs-4">
                             <p>支付宝：</p>

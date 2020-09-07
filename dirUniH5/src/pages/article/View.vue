@@ -10,7 +10,7 @@
             <li class="active">{{article.title}}</li>
         </ol>
         <div class="validate-password" v-if="!canView">
-            <view class="container">
+            <view class="container-fluid">
                 <div class="row">
                     <div class="col-xs-12">
                         <h4>验证密码</h4>
@@ -23,7 +23,7 @@
                 </div>
             </view>
         </div>
-        <div class="container" v-if="canView">
+        <div class="container-fluid" v-if="canView">
             <div class="row">
                 <div class="col-xs-12">
                     <h4>

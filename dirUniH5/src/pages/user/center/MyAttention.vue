@@ -1,5 +1,5 @@
 <template>
-    <view class="user-center-my-attention">
+    <view class="user-center-my-attention container-fluid">
         <div class="row">
             <div class="col-xs-12">
                 <WLoadMore ref="WODROW_LOAD_MORE_MY_ATTENTIONS" @provider="provider" :pageSize="page_size" color="#66ccff">

@@ -34,7 +34,7 @@
             </uni-collapse-item>
         </uni-collapse>
         <u-gap></u-gap>
-        <view class="container">
+        <view class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
                     <button class="btn btn-warning btn-block"  @tap="toLogout" v-preventReClick>退出登录</button>

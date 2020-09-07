@@ -1,6 +1,6 @@
 <template>
     <div class="site-login">
-        <view class="container">
+        <view class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
                     <h4>用户登录</h4>

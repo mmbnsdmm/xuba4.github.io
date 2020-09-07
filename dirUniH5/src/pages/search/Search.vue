@@ -33,7 +33,7 @@
                 </view>
             </scroll-view>
         </view>
-        <view>
+        <view class="container-fluid">
             <div class="row" v-show="!keywordListShow">
                 <div class="col-xs-12">
                     <WLoadMore ref="WODROW_LOAD_MORE_SEARCH_LIST" @provider="provider" :pageSize="page_size" color="#66ccff">

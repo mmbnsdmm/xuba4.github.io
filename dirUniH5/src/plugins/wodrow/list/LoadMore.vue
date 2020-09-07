@@ -150,6 +150,8 @@
     .loadmore{
         display: flex;
         flex-direction: column;
+        margin-left: -10px;
+        margin-right: -10px;
     }
     .uni-load-more {
         display: flex;

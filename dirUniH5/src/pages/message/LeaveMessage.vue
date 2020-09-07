@@ -1,5 +1,5 @@
 <template>
-    <view class="message-leave-message">
+    <view class="message-leave-message container-fluid">
         <div class="row">
             <div class="col-xs-12">
                 <WLoadMore ref="WODROW_LOAD_MORE_COMMENT_LIST" @provider="provider" :pageSize="page_size" color="#66ccff">

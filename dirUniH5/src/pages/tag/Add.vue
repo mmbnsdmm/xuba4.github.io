@@ -12,7 +12,7 @@
         <view class="tag-add-form">
             <u-field v-model="name" label="标题" placeholder="请填写标题"></u-field>
             <u-gap></u-gap>
-            <div class="container">
+            <div class="container-fluid">
                 <div class="row">
                     <div class="col-xs-12">
                         <button class="btn btn-primary btn-block" :disabled="isBtnDisabled" @tap="toCreate">创建</button>

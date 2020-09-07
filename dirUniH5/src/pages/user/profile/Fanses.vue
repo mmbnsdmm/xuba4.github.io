@@ -1,5 +1,5 @@
 <template>
-    <view class="user-profile-fanses">
+    <view class="user-profile-fanses container-fluid">
         <div class="row">
             <div class="col-xs-12">
                 <WLoadMore ref="WODROW_LOAD_MORE_PROFILE_FANSES" @provider="provider" :pageSize="page_size" color="#66ccff">

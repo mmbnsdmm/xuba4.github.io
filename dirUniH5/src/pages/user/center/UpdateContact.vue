@@ -1,6 +1,6 @@
 <template>
     <div class="user-center-update-contact">
-        <view class="container">
+        <view class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
                     <h4>修改联系方式</h4>

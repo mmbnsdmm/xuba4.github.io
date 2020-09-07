@@ -24,11 +24,6 @@
     }
     /* #endif */
     @import "uview-ui/index.scss";
-    html, body{
-        overflow-x: hidden;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-    }
     body {
         background: #ffffff !important;
     }

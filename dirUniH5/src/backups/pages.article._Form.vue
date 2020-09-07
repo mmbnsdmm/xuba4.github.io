@@ -4,7 +4,7 @@
         <u-field v-model="get_password" label="获取密码" placeholder="如果设置则用户必须验证密码后才能访问文章"></u-field>
         <WodrowEditor ref="WODROW_ARTICLE_EDITOR" id="article-edit" placeholder="请输入内容" :uploadFileUrl="$conf.apiUrl + '/user/file/upload'" v-model="content"></WodrowEditor>
         <u-gap></u-gap>
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
                     <u-radio-group v-model="status">
@@ -38,7 +38,7 @@
             </div>
         </div>
         <u-gap></u-gap>
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
                     <button class="btn btn-primary btn-block" :disabled="isBtnDisabled" @tap="toPublish()">发布</button>

@@ -1,7 +1,7 @@
 <template>
     <div class="user-center-update-avatar">
         <u-gap></u-gap>
-        <view class="container">
+        <view class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
                     <div class="preview">

@@ -1,6 +1,6 @@
 <template>
     <div class="site-login-by-email">
-        <view class="container">
+        <view class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
                     <h4>邮箱登录</h4>
