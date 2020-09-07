@@ -28,8 +28,8 @@
                                     <text class="text-danger" v-if="item.create_type === 2">{{$conf.serverData.enums.article.createTypeDesc[item.create_type]}}</text>
                                     <text class="text-warning" v-if="item.create_type === 3">{{$conf.serverData.enums.article.createTypeDesc[item.create_type]}}</text>
                                     <WI class="single" type="&#xe62b;" font-size="34rpx" v-if="item.created_by !== userInfo.id"></WI>
-                                    <u-icon name="star" v-if="item.created_by !== userInfo.id && !item.isYouCollection" :label="item.collectionTotal" @tap="collect(index)"></u-icon>
-                                    <u-icon name="star-fill" v-if="item.created_by !== userInfo.id && item.isYouCollection" :label="item.collectionTotal" @tap="unCollect(index)"></u-icon>
+                                    <u-icon name="star" v-if="!item.isYouCollection" :label="item.collectionTotal" @tap="collect(index)"></u-icon>
+                                    <u-icon name="star-fill" v-if="item.isYouCollection" :label="item.collectionTotal" @tap="unCollect(index)"></u-icon>
                                     <u-icon name="lock-fill" v-if="item.get_password && !item.canView"></u-icon>
                                     <u-icon name="lock-open" v-if="item.get_password && item.canView"></u-icon>
                                     <u-icon name="eye-fill" size="34" color="" label="查看" class="pull-right text-blue" @tap="toView(item.id, item.isUpdate)"></u-icon>
