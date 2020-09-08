@@ -38,7 +38,7 @@
         <view class="container-fluid">
             <div class="row">
                 <div class="col-xs-12">
-                    <button class="btn btn-warning btn-block"  @tap="toLogout" v-preventReClick>退出登录</button>
+                    <button class="btn btn-warning btn-block" @tap="toLogout" v-preventReClick>退出登录</button>
                 </div>
             </div>
         </view>
@@ -88,7 +88,12 @@
                     message: '你确认要清空缓存吗？'
                 }).then(() => {
                     _this.$tool.delAllCache();
-                    _this.$router.push("/pages/site/Login");
+                    _this.logout();
+                    if (_this.hasLogin){
+                        Toast("退出失败，请联系管理员")
+                    }else{
+                        _this.$router.push("/");
+                    }
                 }).catch(() => {});
             }
         }

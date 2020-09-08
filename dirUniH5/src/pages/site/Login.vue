@@ -61,6 +61,7 @@
                         Toast("登陆失败，请联系管理员");
                         _this.isBtnDisabled = false;
                     } else {
+                        _this.isBtnDisabled = false;
                         if (_this.$tool.getCache('beforeLoginPath')){
                             _this.$router.push(_this.$tool.getCache('beforeLoginPath'));
                         } else{

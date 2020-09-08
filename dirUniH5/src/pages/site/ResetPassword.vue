@@ -125,9 +125,9 @@
                     password: _this.password
                 }, true, function (res) {
                     Toast(res.msg);
+                    _this.isBtnDisabled = false;
                     _this.$tool.setCache('beforeLoginPath', "/");
                     _this.$router.push("/pages/site/Login");
-                    _this.isBtnDisabled = false;
                 }, function (msg) {
                     Toast(msg);
                     _this.isBtnDisabled = false;
