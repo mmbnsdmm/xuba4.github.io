@@ -16,6 +16,7 @@
             </div>
         </view>
         <u-cell-group>
+            <u-cell-item icon="reload" title="清空数据" arrow-direction="right" @tap="removeCache"></u-cell-item>
             <u-cell-item icon="setting-fill" title="修改密码" arrow-direction="right" @tap="$router.push('/pages/user/center/UpdatePassword')"></u-cell-item>
             <u-cell-item icon="chat" title="修改联系方式" arrow-direction="right" @tap="$router.push('/pages/user/center/UpdateContact')"></u-cell-item>
             <u-cell-item icon="red-packet-fill" title="修改打赏码" arrow-direction="right" @tap="$router.push('/pages/user/center/UpdateExceptionalCode')"></u-cell-item>
@@ -78,6 +79,16 @@
                         _this.$tool.delAllCache();
                         _this.$router.push('/');
                     }
+                }).catch(() => {});
+            },
+            removeCache: function() {
+                let _this = this;
+                Dialog.confirm({
+                    title: '确认清空缓存',
+                    message: '你确认要清空缓存吗？'
+                }).then(() => {
+                    _this.$tool.delAllCache();
+                    _this.$router.push("/pages/site/Login");
                 }).catch(() => {});
             }
         }

@@ -45,7 +45,7 @@
             removeCache: function() {
                 let _this = this;
                 _this.$tool.delAllCache();
-                _this.$router.push("/site/login");
+                _this.$router.push("/login");
             },
             logout: function () {
                 Dialog.confirm({
