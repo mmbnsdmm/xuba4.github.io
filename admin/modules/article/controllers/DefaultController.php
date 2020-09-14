@@ -2,6 +2,7 @@
 
 namespace admin\modules\article\controllers;
 
+use admin\modules\article\models\forms\UploadFileArticle;
 use Yii;
 use common\models\db\Article;
 use admin\modules\article\models\searchs\Article as ArticleSearch;
@@ -13,6 +14,7 @@ use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
 use kartik\grid\EditableColumnAction;
+use yii\web\UploadedFile;
 
 /**
  * DefaultController implements the CRUD actions for Article model.
@@ -147,6 +149,60 @@ class DefaultController extends Controller
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Creates a new ArticleForm model.
+     * For ajax request will return json object
+     * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreateFromFile()
+    {
+        $request = Yii::$app->request;
+        $model = new UploadFileArticle();
+
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($request->isGet){
+                return [
+                    'title' => "新建 ArticleForm",
+                    'content' => $this->renderAjax('create-from-file', [
+                        'model' => $model,
+                    ]),
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                        Html::button('保存', ['class' => 'btn btn-primary','type' => "submit"])
+
+                ];
+            }else if($model->load($request->post()) && $model->uploadAndSave()){
+                return [
+                    'forceReload' => '#crud-datatable-pjax',
+                    'title' => "Create new ArticleForm",
+                    'content' => '<span class="text-success">Create ArticleForm success</span>',
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                        Html::a('上传更多', ['create-from-file'], ['class' => 'btn btn-primary','role' => 'modal-remote'])
+
+                ];
+            }else{
+                return [
+                    'title' => "新建 ArticleForm",
+                    'content' => $this->renderAjax('create-from-file', [
+                        'model' => $model,
+                    ]),
+                    'footer' => Html::button('关闭', ['class' => 'btn btn-default pull-left','data-dismiss' => "modal"]).
+                        Html::button('保存', ['class' => 'btn btn-primary','type' => "submit"])
+
+                ];
+            }
+        }else{
+            if ($model->load($request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('create-from-file', [
                     'model' => $model,
                 ]);
             }

@@ -272,6 +272,8 @@ CrudAsset::register($this);
                 ['content' =>
                     Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'],
                     ['role' => "modal-remote", 'title' => "新建 Articles", 'class' => "btn btn-default"]).
+                    Html::a('<i class="glyphicon glyphicon-open-file"></i>', ['create-from-file'],
+                        ['role' => "modal-remote", 'title' => "新建 Articles", 'class' => "btn btn-default"]).
                     Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
                     ['data-pjax' => 1, 'class' => "btn btn-default", 'title' => "Reset Grid"]).
                     '{toggleData}'.

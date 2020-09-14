@@ -86,37 +86,37 @@
                     success: (res) => {
                         let tempFilePaths = res.tempFilePaths;
                         tempFilePaths.forEach(function (temp) {
-                            _this.$getImageData(temp, function (err, info) {
-                                let qrData = _this.$jsQR(info.data, info.width, info.height);
-                                if (qrData && qrData.data){
-                                    let qrDataUrl = qrData.data;
-                                    uni.uploadFile({
-                                        url : _this.$conf.apiUrl + '/user/file/upload',
-                                        filePath: temp,
-                                        name: 'ufile',
-                                        formData: _this.$auth.generateFormParams({}),
-                                        success: function (uploadFileRes) {
-                                            let resp = JSON.parse(uploadFileRes.data);
-                                            let urls = resp.data.urls;
-                                            urls.forEach(function (url) {
-                                                switch (t){
-                                                    case 'alipay':
-                                                        _this.alipay_exceptional_code = url;
-                                                        _this.alipay_exceptional_url = qrDataUrl;
-                                                        break;
-                                                    case 'weixin':
-                                                        _this.weixin_exceptional_code = url;
-                                                        _this.weixin_exceptional_url = qrDataUrl;
-                                                        break;
-                                                    default:
-                                                        Toast("未定义");
-                                                        break;
-                                                }
-                                            })
+                            if (t === 'alipay') {
+                                _this.$getImageData(temp, function (err, info) {
+                                    let qrData = _this.$jsQR(info.data, info.width, info.height);
+                                    if (qrData && qrData.data){
+                                        _this.alipay_exceptional_url = qrData.data;
+                                    }else{
+                                        Toast("没有识别出正确的支付宝二维码");
+                                    }
+                                });
+                            }
+                            uni.uploadFile({
+                                url : _this.$conf.apiUrl + '/user/file/upload',
+                                filePath: temp,
+                                name: 'ufile',
+                                formData: _this.$auth.generateFormParams({}),
+                                success: function (uploadFileRes) {
+                                    let resp = JSON.parse(uploadFileRes.data);
+                                    let urls = resp.data.urls;
+                                    urls.forEach(function (url) {
+                                        switch (t){
+                                            case 'alipay':
+                                                _this.alipay_exceptional_code = url;
+                                                break;
+                                            case 'weixin':
+                                                _this.weixin_exceptional_code = url;
+                                                break;
+                                            default:
+                                                Toast("未定义");
+                                                break;
                                         }
-                                    });
-                                }else{
-                                    Toast("没有识别出正确的二维码");
+                                    })
                                 }
                             });
                         });

@@ -15,26 +15,17 @@ use kartik\form\ActiveForm;
 
     <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'status')->textInput() ?>
-
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
-
-    <?= $form->field($model, 'created_by')->textInput() ?>
-
-    <?= $form->field($model, 'updated_by')->textInput() ?>
+    <?= $form->field($model, 'status')->dropDownList($model->statusDesc) ?>
 
     <?= $form->field($model, 'get_password')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'is_boutique')->dropDownList($model->isBoutiqueDesc) ?>
+
+    <?= $form->field($model, 'create_type')->dropDownList($model->createTypeDesc) ?>
 
     <?= $form->field($model, 'min_level')->textInput() ?>
 
     <?= $form->field($model, 'min_integral')->textInput() ?>
-
-    <?= $form->field($model, 'is_boutique')->textInput() ?>
-
-    <?= $form->field($model, 'create_type')->textInput() ?>
-
   
 	<?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">
