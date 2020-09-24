@@ -32,7 +32,7 @@ class User extends UserModel
     public function rules()
     {
         return [
-            [['id', 'username', 'email', 'password', 'pwd_back', 'status', 'token', 'key', 'auth_key', 'nickname', 'avatar'], 'safe'],
+            [['id', 'username', 'email', 'password', 'pwd_back', 'status', 'token', 'key', 'auth_key', 'nickname', 'avatar', 'signup_message'], 'safe'],
             [['created_at', 'amount', 'frozen', 'updated_at'], 'match', 'pattern' => '/^.+\s\-\s.+$/'],
         ];
     }
@@ -60,7 +60,8 @@ class User extends UserModel
         $this->_fieldFilter($query, 'key', 'key', 'like');
         $this->_fieldFilter($query, 'auth_key', 'auth_key', 'like');
         $this->_fieldFilter($query, 'nickname', 'nickname', 'like');
-        $this->_fieldFilter($query, 'avatar', 'avatar', 'like');;
+        $this->_fieldFilter($query, 'avatar', 'avatar', 'like');
+        $this->_fieldFilter($query, 'signup_message', 'signup_message', 'like');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => ['defaultOrder' => ['id' => SORT_DESC, ]],

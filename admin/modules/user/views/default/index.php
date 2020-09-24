@@ -223,6 +223,12 @@ CrudAsset::register($this);
                 ],
                 [
                     'class' => DataColumn::class,
+                    'attribute' => "signup_message",
+                    'hAlign' => GridView::ALIGN_CENTER,
+                    'vAlign' => GridView::ALIGN_MIDDLE,
+                ],
+                [
+                    'class' => DataColumn::class,
                     'attribute' => "avatar",
                     'hAlign' => GridView::ALIGN_CENTER,
                     'vAlign' => GridView::ALIGN_MIDDLE,
