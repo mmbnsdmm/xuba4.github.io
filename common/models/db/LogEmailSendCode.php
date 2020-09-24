@@ -41,7 +41,7 @@ class LogEmailSendCode extends \common\models\db\tables\LogEmailSendCode
         return [
             self::STATUS_DELETE => "已删除",
             self::STATUS_SEND_SUCCESS => "发送正常",
-            self::STATUS_SEND_SUCCESS => "发送失败",
+            self::STATUS_SEND_FAILED => "发送失败",
         ];
     }
 
