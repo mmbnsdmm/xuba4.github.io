@@ -5,3 +5,4 @@
 /*.html
 .user.ini
 assets
+/nginx.htaccess
