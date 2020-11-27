@@ -46,7 +46,8 @@ class UploadFileArticle extends Model
     {
         $files = UploadedFile::getInstances($this, 'txts');
         $article = new Article;
-        $article->status = Article::STATUS_SECRET;
+        $article->status = Article::STATUS_ACTIVE;
+        $article->create_type = Article::CREATE_TYPE_REPRINTED;
         foreach ($files as $k => $v){
             $content = file_get_contents($v->tempName);
             $content = str_replace("http://120.92.150.43:8003/storage/uploads/prod", "http://49.235.220.19:7053/storage/uploads/prod/xuba3", $content);

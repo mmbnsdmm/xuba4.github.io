@@ -254,10 +254,13 @@ class DefaultController extends Controller
 
     private function _getModel($id)
     {
-        $leaveMessage = Article::findOne(['id' => $id, 'status' => Article::STATUS_ACTIVE]);
-        if (!$leaveMessage){
-            throw new ApiException(202008191739, "没有找到文章或文章已删除");
+        $model = Article::findOne(['id' => $id]);
+        if (!$model){
+            throw new ApiException(202008191739, "没有找到文章");
         }
-        return $leaveMessage;
+        if ($model->status === Article::STATUS_DELETE){
+            throw new ApiException(202008191740, "文章已删除");
+        }
+        return $model;
     }
 }

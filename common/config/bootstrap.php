@@ -11,6 +11,13 @@ if (YII_ENV_DEV) {
 
 \Dotenv\Dotenv::createImmutable(__DIR__)->load();
 
+$BASE_URL = getenv("BASE_URL");
+if (Yii::$app instanceof \yii\web\Application){
+    $BASE_URL = $_SERVER['HTTP_HOST'];
+}
+
+define("YII_BASE_URL", $BASE_URL);
+
 Yii::setAlias('@common', YII_PROJECT_ROOT . '/common');
 Yii::setAlias('@console', YII_PROJECT_ROOT . '/console');
 Yii::setAlias('@api', YII_PROJECT_ROOT . '/api');

@@ -38,7 +38,7 @@ return [
         ],
         'apiTool' => [
             'class' => \common\components\ApiTool::class,
-            'baseUri' => getenv("BASE_URL"),
+            'baseUri' => YII_BASE_URL,
             'apiUri' => "/api",
         ],
         'vueApp' => [
