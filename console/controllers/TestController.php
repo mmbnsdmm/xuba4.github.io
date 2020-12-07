@@ -138,7 +138,7 @@ class TestController extends Controller
             $avatar_len = mb_strlen($v->avatar);
             var_dump($v->avatar);
             var_dump($avatar_len);
-            if (in_array($avatar_len, [81, 82])){
+            if (in_array($avatar_len, [75, 76])){
                 $v->avatar = \Yii::$app->apiTool->randomAvatarUrl;
                 if (!$v->save()){
                     throw new Exception(Model::getModelError($v));
