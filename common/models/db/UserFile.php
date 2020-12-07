@@ -35,14 +35,16 @@ class UserFile extends \common\models\db\tables\UserFile
      */
     public function upload($filename, $extension, $content = null, $tmp_file = null)
     {
-        if (!$filename){
-            $filename = \Yii::$app->security->generateRandomString().".{$extension}";
-        }
-        $user = \Yii::$app->user->identity;
         $y = date("Y");
         $m = date("m");
         $d = date("d");
-        $_path = "/user_files/{$user->id}/{$y}/{$m}/{$d}";
+        $user = \Yii::$app->user->identity;
+        if (!$filename){
+//            $filename = \Yii::$app->security->generateRandomString().".{$extension}";
+            $filename = "{$y}{$m}{$d}_".\Yii::$app->security->generateRandomString().".{$extension}";
+        }
+//        $_path = "/user_files/{$user->id}/{$y}/{$m}/{$d}";
+        $_path = "/user_files/{$user->id}";
         $user_file = new UserFile();
         $user_file->filename = $filename;
         $user_file->extension = $extension;
