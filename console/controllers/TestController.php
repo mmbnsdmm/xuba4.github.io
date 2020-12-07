@@ -146,7 +146,6 @@ class TestController extends Controller
                     var_dump($v->id.":".$v->avatar);
                 }
             }
-            exit;
         }
     }
 
