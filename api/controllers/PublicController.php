@@ -55,20 +55,6 @@ class PublicController extends Controller
     }
 
     /**
-     * vueApp配置
-     * @desc post
-     * @return array
-     * @return string apiUrl
-     */
-    public function actionGetAppConfig()
-    {
-        $this->onlyDataOut = true;
-        return [
-            "apiUrl" => \Yii::$app->vueApp->apiUrl,
-        ];
-    }
-
-    /**
      * uniApp配置
      * @desc post
      * @return array

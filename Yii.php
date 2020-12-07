@@ -44,7 +44,6 @@ Yii::$container = new yii\di\Container;
  *
  * @property \common\components\User $user
  * @property \common\components\ApiTool $apiTool
- * @property \common\components\VueApp $vueApp
  * @property \common\components\UniApp $uniApp
  * @property \creocoder\flysystem\SftpFilesystem sftpFileProd
  * @property \creocoder\flysystem\SftpFilesystem sftpFileDev

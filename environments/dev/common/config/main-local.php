@@ -41,9 +41,6 @@ return [
             'baseUri' => YII_BASE_URL,
             'apiUri' => "/api",
         ],
-        'vueApp' => [
-            'class' => \common\components\VueApp::class,
-        ],
         'uniApp' => [
             'class' => \common\components\UniApp::class,
         ],
