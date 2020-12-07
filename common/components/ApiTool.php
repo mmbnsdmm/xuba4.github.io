@@ -16,6 +16,12 @@ use wodrow\yii2wtools\tools\ArrayHelper;
 use wodrow\yii2wtools\tools\Model;
 use yii\base\Component;
 
+/**
+ * Class ApiTool
+ * @package common\components
+ *
+ * @property-read string $randomAvatarUrl
+ */
 class ApiTool extends Component
 {
     public $baseUri;
@@ -198,5 +204,15 @@ class ApiTool extends Component
     public function getFullUrl($uri = "")
     {
         return $this->baseUri.$this->apiUri.$uri;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRandomAvatarUrl()
+    {
+        $random = rand(1001, 2387);
+        $baseUrl = \Yii::getAlias("@static_url/avatars");
+        return "{$this->baseUri}{$baseUrl}/{$random}.jpg";
     }
 }

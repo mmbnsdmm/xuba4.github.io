@@ -150,7 +150,7 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
     {
         if ($this->avatar && !$isReset){}else{
             if ($isRandom){
-                $this->avatar = "http://placeimg.com/100/100";
+                /*$this->avatar = "http://placeimg.com/100/100";
                 $path = \Yii::getAlias("@uploads_root");
                 $y = date("Y");
                 $m = date("m");
@@ -161,7 +161,8 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
                 }
                 $client = new Client(['base_uri' => $this->avatar]);
                 $client->request("get", "", ['sink' => $path.$_path]);
-                $this->avatar = \Yii::$app->apiTool->baseUri.\Yii::getAlias("@uploads_url").$_path;
+                $this->avatar = \Yii::$app->apiTool->baseUri.\Yii::getAlias("@uploads_url").$_path;*/
+                $this->avatar = \Yii::$app->apiTool->randomAvatarUrl;
             }else{
                 $hex = StrHelper::strToHex(md5($this->nickName));
                 $colour = "#".substr($hex, 0, "6");
