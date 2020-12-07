@@ -136,8 +136,8 @@ class TestController extends Controller
     {
         foreach (User::find()->all() as $k => $v) {
             $avatar_len = mb_strlen($v->avatar);
-            var_dump($v->avatar);
             var_dump($avatar_len);
+            var_dump($v->avatar);
             if (in_array($avatar_len, [75, 76])){
                 $v->avatar = \Yii::$app->apiTool->randomAvatarUrl;
                 if (!$v->save()){
