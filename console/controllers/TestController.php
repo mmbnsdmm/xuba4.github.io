@@ -135,7 +135,7 @@ class TestController extends Controller
     public function actionTest4($isRandom = false)
     {
         foreach (User::find()->all() as $k => $v) {
-            $avatar_len = strlen($v->avatar);
+            $avatar_len = mb_strlen($v->avatar);
             var_dump($v->avatar);
             var_dump($avatar_len);
             if (in_array($avatar_len, [81, 82])){
