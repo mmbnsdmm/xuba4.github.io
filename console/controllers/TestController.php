@@ -135,7 +135,9 @@ class TestController extends Controller
     public function actionTest4($isRandom = false)
     {
         foreach (User::find()->all() as $k => $v) {
-            if (in_array(strlen($v->avatar), [81, 82])){
+            $avatar_len = strlen($v->avatar);
+            var_dump($avatar_len);
+            if (in_array($avatar_len, [81, 82])){
                 $v->avatar = \Yii::$app->apiTool->randomAvatarUrl;
                 if (!$v->save()){
                     throw new Exception(Model::getModelError($v));
