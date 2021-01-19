@@ -19,6 +19,7 @@ class FormSignup extends Model
     public $code;
     public $password;
     public $repassword;
+    public $signup_message;
 
     public function attributeLabels()
     {
@@ -28,14 +29,15 @@ class FormSignup extends Model
             'password' => "密码",
             'repassword' => "确认密码",
             'code' => "验证码",
+            'signup_message' => "注册信息",
         ];
     }
 
     public function rules()
     {
         return [
-            [['email','password', 'repassword', 'code'], 'trim'],
-            [['email','password', 'repassword', 'code'], 'required'],
+            [['email','password', 'repassword', 'code', 'signup_message'], 'trim'],
+            [['email','password', 'repassword', 'code', 'signup_message'], 'required'],
             ['email', 'unique', 'targetClass' => User::class, 'targetAttribute' => 'email'],
             ['email', 'email'],
             ['username', 'unique', 'targetClass' => User::class, 'targetAttribute' => 'username'],
@@ -47,7 +49,7 @@ class FormSignup extends Model
 
     public function signUp()
     {
-        $r = \Yii::$app->apiTool->post('/site/signup', ['email' => $this->email, 'username' => $this->username, 'password' => $this->password, 'code' => $this->code]);
+        $r = \Yii::$app->apiTool->post('/site/signup', ['email' => $this->email, 'username' => $this->username, 'password' => $this->password, 'code' => $this->code, 'signup_message' => $this->signup_message]);
         if ($r['code'] != 200){
             \Yii::$app->session->addFlash('error', $r['message']);
             return false;

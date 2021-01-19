@@ -24,6 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?=$form->field($model, 'username')->textInput() ?>
             <?=$form->field($model, 'password')->passwordInput() ?>
             <?=$form->field($model, 'repassword')->passwordInput() ?>
+            <?=$form->field($model, 'signup_message')->textarea() ?>
             <?=$form->field($model, 'code')->textInput(['placeholder' => "验证码"]) ?>
             <?=Html::button("发送验证码{{count}}", ['class' => "btn btn-default", '@click' => "sendCode", ':disabled'=>"isDisabled"]) ?>
             <?=Html::submitButton("注册", ['class' => "btn btn-primary"]) ?>
