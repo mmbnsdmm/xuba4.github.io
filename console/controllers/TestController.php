@@ -12,6 +12,7 @@ namespace console\controllers;
 use common\models\db\AdminAuthAssignment;
 use common\models\db\AdminAuthItem;
 use common\models\db\AdminAuthItemChild;
+use common\models\db\Article;
 use common\models\db\SearchIndex;
 use common\models\db\User;
 use common\wodrow\spiders\BaiDuTieBa;
@@ -244,13 +245,30 @@ class TestController extends Controller
         }
     }
 
-    public function actionTest9()
+    public function actionTest9($url)
     {
         $spiderBaiDuTieBa = new BaiDuTieBa();
-        $spiderBaiDuTieBa->url = "https://tieba.baidu.com/p/5539408306";
+        $spiderBaiDuTieBa->url = $url;
         $spiderBaiDuTieBa->is_console = 1;
+        $spiderBaiDuTieBa->is_cache = 1;
         $list = $spiderBaiDuTieBa->getList();
-        var_dump($spiderBaiDuTieBa->author_id);
+        $content = "";
+        foreach ($list as $k => $v) {
+            if ($v['author_id'] == $spiderBaiDuTieBa->author_id){
+                $content .= $v['text'];
+            }
+        }
+        var_dump($content);
         var_dump($spiderBaiDuTieBa->title);
+        $resp = \Yii::$app->apiTool->post("/article/default/publish", [
+            'title' => $spiderBaiDuTieBa->title,
+            'content' => $content,
+            'create_type' => Article::CREATE_TYPE_REPRINTED,
+//            'tagModify' => \common\components\Tools::toJson([
+//                'plus' => [1],
+//                'reduce' => [],
+//            ]),
+        ], User::findOne(1));
+        var_dump($resp);
     }
 }

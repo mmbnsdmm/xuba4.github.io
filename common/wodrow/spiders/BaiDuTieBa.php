@@ -75,8 +75,8 @@ class BaiDuTieBa extends Component
     public function getUploadRootAndUrl()
     {
         $_dir = str_replace("http://tieba.baidu.com/p/", "", $this->url);
-        $this->upload_root = \Yii::getAlias("@tmp_root/baidu_tieba/{$_dir}");
-        $this->upload_url = \Yii::getAlias("@tmp_url/baidu_tieba/{$_dir}");
+        $this->upload_root = \Yii::getAlias("@uploads_root/baidu_tieba/{$_dir}");
+        $this->upload_url = \Yii::getAlias("@uploads_url/baidu_tieba/{$_dir}");
         if (!is_dir($this->upload_root)){
             FileHelper::createDirectory($this->upload_root);
         }

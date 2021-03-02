@@ -29,13 +29,14 @@ class DefaultController extends Controller
      * @param string $content
      * @param int $status
      * @param int $create_type
+     * @param int $tagModify {"plus": [], "reduce": []}
      * @throws
      * @return array
      * @return int status 是否成功
      * @return string msg
      * @return object article 文章信息
      */
-    public function actionPublish($id = null, $title, $get_password = null, $content, $status, $is_boutique = Article::IS_BOUTIQUE_N, $create_type = Article::CREATE_TYPE_ORIGINAL, $tagModify = null)
+    public function actionPublish($id = null, $title, $get_password = null, $content, $status = Article::STATUS_ACTIVE, $is_boutique = Article::IS_BOUTIQUE_N, $create_type = Article::CREATE_TYPE_ORIGINAL, $tagModify = null)
     {
         if ($id === null){
             $article = new Article();
@@ -43,12 +44,6 @@ class DefaultController extends Controller
             $article = Article::findOne($id);
             if (!$article){
                 throw new ApiException(202008111057, "没有找到文章");
-            }
-        }
-        if ($tagModify !== null){
-            $tagModify = json_decode($tagModify, true);
-            if (!is_array($tagModify) || !is_array($tagModify['plus']) || !is_array($tagModify['reduce'])){
-                throw new ApiException(201912141409, "标签修改参数格式不正确");
             }
         }
         if (!$article->canYouOpt){
@@ -65,27 +60,33 @@ class DefaultController extends Controller
             if (!$article->save()){
                 throw new ApiException(202008111100, "文章保存失败:".Model::getModelError($article));
             }
-            if (count($tagModify['plus']) > 0){
-                foreach ($tagModify['plus'] as $k => $v) {
-                    $v = (int)$v;
-                    $articleTag = TagArticle::findOne(['tag_id' => $v, 'article_id' => $article->id]);
-                    if (!$articleTag){
-                        $articleTag = new TagArticle();
-                        $articleTag->article_id = $article->id;
-                        $articleTag->tag_id = $v;
-                        $articleTag->status = TagArticle::STATUS_ACTIVE;
-                        if (!$articleTag->save()){
-                            throw new ApiException(201912141414, "标签保存失败:".Model::getModelError($articleTag));
+            if ($tagModify !== null){
+                $tagModify = json_decode($tagModify, true);
+                if (!is_array($tagModify) || !is_array($tagModify['plus']) || !is_array($tagModify['reduce'])){
+                    throw new ApiException(201912141409, "标签修改参数格式不正确");
+                }
+                if (count($tagModify['plus']) > 0){
+                    foreach ($tagModify['plus'] as $k => $v) {
+                        $v = (int)$v;
+                        $articleTag = TagArticle::findOne(['tag_id' => $v, 'article_id' => $article->id]);
+                        if (!$articleTag){
+                            $articleTag = new TagArticle();
+                            $articleTag->article_id = $article->id;
+                            $articleTag->tag_id = $v;
+                            $articleTag->status = TagArticle::STATUS_ACTIVE;
+                            if (!$articleTag->save()){
+                                throw new ApiException(201912141414, "标签保存失败:".Model::getModelError($articleTag));
+                            }
                         }
                     }
                 }
-            }
-            if (count($tagModify['reduce']) > 0){
-                foreach ($tagModify['reduce'] as $k => $v) {
-                    $v = (int)$v;
-                    $articleTag = TagArticle::findOne(['tag_id' => $v, 'article_id' => $article->id]);
-                    if ($articleTag && !$articleTag->delete()){
-                        throw new ApiException(201912141415, "标签删除失败:".Model::getModelError($articleTag));
+                if (count($tagModify['reduce']) > 0){
+                    foreach ($tagModify['reduce'] as $k => $v) {
+                        $v = (int)$v;
+                        $articleTag = TagArticle::findOne(['tag_id' => $v, 'article_id' => $article->id]);
+                        if ($articleTag && !$articleTag->delete()){
+                            throw new ApiException(201912141415, "标签删除失败:".Model::getModelError($articleTag));
+                        }
                     }
                 }
             }

@@ -214,4 +214,29 @@ class Tools
 
         return $sizeResult;
     }
+
+    /**
+     * 判断字符串是否为json，若是输出json
+     * @param string $str Json字符串
+     * @param bool $assoc 是否返回关联数组。默认返回对象
+     * @return array|bool|object 成功返回转换后的对象或数组，失败返回 false
+     */
+    public static function isJson($str, $assoc = true)
+    {
+        $data = json_decode($str, $assoc);
+        if (($data && is_object($data)) || (is_array($data) && !empty($data))) {
+            return $data;
+        }
+        return false;
+    }
+
+    /**
+     * 转json
+     * @param $data
+     * @return string Json字符串
+     */
+    public static function toJson($data)
+    {
+        return json_encode($data, JSON_UNESCAPED_UNICODE);
+    }
 }
