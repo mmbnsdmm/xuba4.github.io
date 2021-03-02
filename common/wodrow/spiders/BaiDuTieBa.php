@@ -19,15 +19,13 @@ use yii\helpers\Html;
 class BaiDuTieBa extends Component
 {
     public $url; # data
-    public $baiduTieziId;
-    public $alias_upload_root = ""; // @uploads_root/baidu_tieba
-    public $alias_upload_url = ""; // @uploads_url/baidu_tieba
     public $is_console = 0;
     public $is_cache = 0;
     public $title; # data
     public $post_ids; # data
     public $author_id; # data
     public $author_name; # data
+    protected $baiduTieziId;
     protected $upload_root;
     protected $upload_url;
 
@@ -77,8 +75,8 @@ class BaiDuTieBa extends Component
     public function getUploadRootAndUrl()
     {
         $_dir = str_replace("http://tieba.baidu.com/p/", "", $this->url);
-        $this->upload_root = \Yii::getAlias("@uploads_root/baidu_tieba/{$_dir}");
-        $this->upload_url = \Yii::getAlias("@uploads_url/baidu_tieba/{$_dir}");
+        $this->upload_root = \Yii::getAlias("@tmp_root/baidu_tieba/{$_dir}");
+        $this->upload_url = \Yii::getAlias("@tmp_url/baidu_tieba/{$_dir}");
         if (!is_dir($this->upload_root)){
             FileHelper::createDirectory($this->upload_root);
         }
@@ -129,33 +127,45 @@ class BaiDuTieBa extends Component
                 $list[$k]['tail'] = json_decode($v['tail'], true);
             }
         }
-        if (count($list) > 0){
-            foreach ($list as $k => $v) {
-                $this->consoleMsg("list:".$k);
-                $_ql = QueryList::getInstance()->html($v['html']);
-                $images = $_ql->rules([
-                    'image' => ['img', 'src'],
-                ])->queryData();
-                $videos = $_ql->rules([
-                    'video' => ['embed', 'data-video'],
-                ])->queryData();
-                $imgs = $this->saveTieBaImage($images);
-                $vids = $this->saveTieBaVideo($videos);
-                $list[$k]['text'] = "<p>".implode('', $vids)."</p>"."<p>{$v['text']}</p>"."<p>".implode('', $imgs)."</p>";
+        foreach ($list as $k => $v) {
+            $this->consoleMsg("list:".$k);
+            $html = $v['html'];
+            $tail = $v['tail'];
+            unset($list[$k]['tail']);
+            unset($list[$k]['html']);
+            $list[$k]['author_id'] = $tail['author']['user_id'];
+            $text = $v['text'];
+            if (trim($text)){
+                $text .= "<p>{$v['text']}</p>";
             }
-            foreach ($list as $k => $v){
-                if (isset($v['tail'])) {
-                    $tail = $list[$k]['tail'];
+            $_ql = QueryList::getInstance()->html($html);
+            $images = $_ql->rules([
+                'image' => ['img', 'src'],
+                'pic_type' => ['img', 'pic_type'],
+            ])->queryData();
+            $videos = $_ql->rules([
+                'video' => ['embed', 'data-video'],
+            ])->queryData();
+            $vids = $this->saveTieBaVideo($videos);
+            if ($vids){
+                $text .= "<p>".implode('', $vids)."</p>";
+            }
+            $imgs = $this->saveTieBaImage($images);
+            if ($imgs){
+                $text .= "<p>".implode('', $imgs)."</p>";
+            }
+            if ($text){
+                if ($tail) {
                     $this->post_ids[] = $tail['content']['post_id'];
                 }
-            }
-            $this->author_id = $list[0]['tail']['author']['user_id'];
-            $this->author_name = $list[0]['tail']['author']['user_name'];
-            foreach ($list as $k => $v) {
                 $list[$k]['post_id'] = $v['tail']['content']['post_id'];
-                unset($list[$k]['tail']);
-                unset($list[$k]['html']);
-                $list[$k]['text'] .= " <p> [来自贴吧]</p>";
+                $list[$k]['text'] = $text;
+            }else{
+                unset($list[$k]);
+            }
+            if ($k === 0){
+                $this->author_id = $tail['author']['user_id'];
+                $this->author_name = $tail['author']['user_name'];
             }
         }
         return $list;
@@ -170,20 +180,24 @@ class BaiDuTieBa extends Component
     {
         $imgs = [];
         foreach ($images as $k => $v){
-            $image_name = basename($v['image']);
-            if (strpos($image_name, '.png?t=') !== false){
-                $_x = explode("?t=", $image_name);
-                $image_name = $_x[0];
-            }
-            $root = $this->upload_root.DIRECTORY_SEPARATOR.$image_name;
-            $url = $this->upload_url.DIRECTORY_SEPARATOR.$image_name;
-            if (!file_exists($root)){
-                $fg_con = @file_get_contents($v['image']);
-                if ($fg_con){
-                    file_put_contents($root, $fg_con);
-                    $imgs[] = Html::img($url, ['class' => "img img-responsive"]);
-                    $this->consoleMsg($url);
+            if ($v['pic_type'] === "1"){
+                unset($images[$k]);
+            }else{
+                $image_name = basename($v['image']);
+                if (strpos($image_name, '.png?t=') !== false){
+                    $_x = explode("?t=", $image_name);
+                    $image_name = $_x[0];
                 }
+                $root = $this->upload_root.DIRECTORY_SEPARATOR.$image_name;
+                $url = $this->upload_url.DIRECTORY_SEPARATOR.$image_name;
+                if (!file_exists($root)){
+                    $fg_con = file_get_contents($v['image']);
+                    if ($fg_con){
+                        file_put_contents($root, $fg_con);
+                    }
+                }
+                $imgs[] = Html::img($url, ['class' => "img img-responsive"]);
+                $this->consoleMsg($url);
             }
         }
         return $imgs;
@@ -209,9 +223,9 @@ class BaiDuTieBa extends Component
                 $fg_con = @file_get_contents($v['image']);
                 if ($fg_con) {
                     file_put_contents($root, $fg_con);
-                    $vids[] = "<video src='{$url}' controls='controls'>您的浏览器不支持 video 标签</video>";
                 }
             }
+            $vids[] = "<video src='{$url}' controls='controls'>您的浏览器不支持 video 标签</video>";
 //            $fi = new \finfo(FILEINFO_MIME_TYPE);
 //            $mime_type = $fi->file($root);
         }

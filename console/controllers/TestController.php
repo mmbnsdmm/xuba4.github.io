@@ -14,6 +14,7 @@ use common\models\db\AdminAuthItem;
 use common\models\db\AdminAuthItemChild;
 use common\models\db\SearchIndex;
 use common\models\db\User;
+use common\wodrow\spiders\BaiDuTieBa;
 use GuzzleHttp\Client;
 use QL\QueryList;
 use wodrow\yii2wtools\tools\Color;
@@ -241,5 +242,15 @@ class TestController extends Controller
                 var_dump($a->errors);
             }
         }
+    }
+
+    public function actionTest9()
+    {
+        $spiderBaiDuTieBa = new BaiDuTieBa();
+        $spiderBaiDuTieBa->url = "https://tieba.baidu.com/p/5539408306";
+        $spiderBaiDuTieBa->is_console = 1;
+        $list = $spiderBaiDuTieBa->getList();
+        var_dump($list);
+        \common\components\Tools::yiiLog($list);
     }
 }
