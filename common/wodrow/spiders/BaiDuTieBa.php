@@ -135,6 +135,13 @@ class BaiDuTieBa extends Component
             unset($list[$k]['html']);
             $list[$k]['author_id'] = $tail['author']['user_id'];
             $text = $v['text'];
+            if ($k === 0){
+                $this->author_id = $tail['author']['user_id'];
+                $this->author_name = $tail['author']['user_name'];
+                if (trim($text)){}else{
+                    $text = "<p></p>";
+                }
+            }
             if (trim($text)){
                 $text = "<p>{$v['text']}</p>";
             }
@@ -162,10 +169,6 @@ class BaiDuTieBa extends Component
                 $list[$k]['text'] = $text;
             }else{
                 unset($list[$k]);
-            }
-            if ($k === 0){
-                $this->author_id = $tail['author']['user_id'];
-                $this->author_name = $tail['author']['user_name'];
             }
         }
         $_l = [];
