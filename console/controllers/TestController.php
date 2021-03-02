@@ -247,6 +247,8 @@ class TestController extends Controller
 
     public function actionTest9($url)
     {
+        ini_set ("memory_limit","-1");
+        ini_set("max_execution_time", "1800");
         $spiderBaiDuTieBa = new BaiDuTieBa();
         $spiderBaiDuTieBa->url = $url;
         $spiderBaiDuTieBa->is_console = 1;
