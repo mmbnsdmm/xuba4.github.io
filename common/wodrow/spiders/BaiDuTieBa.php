@@ -92,7 +92,7 @@ class BaiDuTieBa extends Component
         $this->getUploadRootAndUrl();
         $ql = QueryList::getInstance()->get($this->url);
         $this->title = $ql->find(".core_title_txt")->attr('title');
-        if ($this->title)$this->title .= " [引自百度贴吧]";
+        if ($this->title)$this->title .= "--引自百度贴吧";
         $this->post_ids = [];
         $pages = $ql->find('.l_reply_num')->find('.red:eq(1)')->text();
         $this->consoleMsg($pages);
@@ -136,7 +136,7 @@ class BaiDuTieBa extends Component
             $list[$k]['author_id'] = $tail['author']['user_id'];
             $text = $v['text'];
             if (trim($text)){
-                $text .= "<p>{$v['text']}</p>";
+                $text = "<p>{$v['text']}</p>";
             }
             $_ql = QueryList::getInstance()->html($html);
             $images = $_ql->rules([
@@ -168,7 +168,11 @@ class BaiDuTieBa extends Component
                 $this->author_name = $tail['author']['user_name'];
             }
         }
-        return $list;
+        $_l = [];
+        foreach ($list as $k => $v) {
+            $_l[] =$v;
+        }
+        return $_l;
     }
 
     /**

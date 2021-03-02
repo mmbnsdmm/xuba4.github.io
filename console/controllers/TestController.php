@@ -250,7 +250,7 @@ class TestController extends Controller
         $spiderBaiDuTieBa->url = "https://tieba.baidu.com/p/5539408306";
         $spiderBaiDuTieBa->is_console = 1;
         $list = $spiderBaiDuTieBa->getList();
-        var_dump($list);
-        \common\components\Tools::yiiLog($list);
+        var_dump($spiderBaiDuTieBa->author_id);
+        var_dump($spiderBaiDuTieBa->title);
     }
 }
