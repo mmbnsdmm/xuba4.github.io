@@ -88,9 +88,16 @@ class BaiDuTieBa extends Component
      */
     public function getList()
     {
+        $qlProxy = \Yii::$app->params['qlProxy'];
         $this->checkIsTieZi();
         $this->getUploadRootAndUrl();
-        $ql = QueryList::getInstance()->get($this->url);
+        if ($qlProxy) {
+            $ql = QueryList::getInstance()->get($this->url, null, [
+                'proxy' => $qlProxy,
+            ]);
+        }else{
+            $ql = QueryList::getInstance()->get($this->url);
+        }
         $this->title = $ql->find(".core_title_txt")->attr('title');
         if ($this->title)$this->title .= "--引自百度贴吧";
         $this->post_ids = [];
@@ -98,7 +105,6 @@ class BaiDuTieBa extends Component
         $this->consoleMsg($pages);
         if (!$this->is_cache)\Yii::$app->cache->delete('baiduTieziId_'.$this->baiduTieziId);
         $list = \Yii::$app->cache->get('baiduTieziId_'.$this->baiduTieziId);
-        $qlProxy = \Yii::$app->params['qlProxy'];
         if (!$list){
             $list = [];
             for ($i = 1; $i <= $pages; $i++){
