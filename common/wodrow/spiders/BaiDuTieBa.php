@@ -98,6 +98,7 @@ class BaiDuTieBa extends Component
         $this->consoleMsg($pages);
         if (!$this->is_cache)\Yii::$app->cache->delete('baiduTieziId_'.$this->baiduTieziId);
         $list = \Yii::$app->cache->get('baiduTieziId_'.$this->baiduTieziId);
+        $qlProxy = \Yii::$app->params['qlProxy'];
         if (!$list){
             $list = [];
             for ($i = 1; $i <= $pages; $i++){
@@ -105,7 +106,13 @@ class BaiDuTieBa extends Component
                 if ($i == 1){
                     $_ql = $ql;
                 }else{
-                    $_ql = QueryList::getInstance()->get($this->url."?pn={$i}");
+                    if ($qlProxy) {
+                        $_ql = QueryList::getInstance()->get($this->url."?pn={$i}", null, [
+                            'proxy' => $qlProxy,
+                        ]);
+                    }else{
+                        $_ql = QueryList::getInstance()->get($this->url."?pn={$i}");
+                    }
                 }
                 $_list = $_ql->rules([
 //                    'html' => ['.j_l_post:visible .j_d_post_content', 'html'],

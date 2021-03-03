@@ -88,5 +88,6 @@ return [
         'console-username' => "",
         'console-password' => "",
         'qqqs' => [],
+        'qlProxy' => "",
     ],
 ];
