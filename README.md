@@ -22,7 +22,7 @@ Software architecture description
         try_files $uri $uri/ /index.php$is_args$args;
     }
     location /app_dir {
-            try_files $uri $uri/ /app_dir/index.php$is_args$args;
+        try_files $uri $uri/ /app_dir/index.php$is_args$args;
     }
     
     location / 
