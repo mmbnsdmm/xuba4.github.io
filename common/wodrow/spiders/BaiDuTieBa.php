@@ -9,6 +9,7 @@
 namespace common\wodrow\spiders;
 
 
+use GuzzleHttp\Client;
 use QL\QueryList;
 use wodrow\yii2wtools\tools\ArrayHelper;
 use wodrow\yii2wtools\tools\FileHelper;
@@ -96,7 +97,7 @@ class BaiDuTieBa extends Component
                 'proxy' => $qlProxy,
                 'headers' => [
                     'Referer' => 'https://querylist.cc/',
-                ]
+                ],
             ]);
         }else{
             $ql = QueryList::getInstance()->get($this->url);
@@ -213,10 +214,20 @@ class BaiDuTieBa extends Component
                     $root = $this->upload_root.DIRECTORY_SEPARATOR.$image_name;
                     $url = $this->upload_url.DIRECTORY_SEPARATOR.$image_name;
                     if (!file_exists($root)){
+                        $client = new Client();
+                        $resp = $client->request('GET', $v['image'], [
+                            'sink' => $root,
+                            'headers' => [
+                                'Referer' => 'https://querylist.cc/',
+                            ],
+                        ]);
+                        $cont = $resp->getBody()->getContents();
+                        var_dump($cont);
+                        /*$_cont = json_decode($cont, true);
                         $fg_con = file_get_contents($v['image']);
                         if ($fg_con){
                             file_put_contents($root, $fg_con);
-                        }
+                        }*/
                     }
                     $imgs[] = Html::img($url, ['class' => "img img-responsive"]);
                     $this->consoleMsg($url);
