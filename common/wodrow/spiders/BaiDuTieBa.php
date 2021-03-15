@@ -214,7 +214,7 @@ class BaiDuTieBa extends Component
                     $root = $this->upload_root.DIRECTORY_SEPARATOR.$image_name;
                     $url = $this->upload_url.DIRECTORY_SEPARATOR.$image_name;
                     if (!file_exists($root)){
-                        $client = new Client();
+                        /*$client = new Client();
                         $resp = $client->request('GET', $v['image'], [
                             'sink' => $root,
                             'headers' => [
@@ -222,12 +222,11 @@ class BaiDuTieBa extends Component
                             ],
                         ]);
                         $cont = $resp->getBody()->getContents();
-                        var_dump($cont);
-                        /*$_cont = json_decode($cont, true);
+                        var_dump($cont);*/
                         $fg_con = file_get_contents($v['image']);
                         if ($fg_con){
                             file_put_contents($root, $fg_con);
-                        }*/
+                        }
                     }
                     $imgs[] = Html::img($url, ['class' => "img img-responsive"]);
                     $this->consoleMsg($url);
