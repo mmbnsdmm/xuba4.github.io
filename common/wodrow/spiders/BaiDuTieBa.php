@@ -76,7 +76,7 @@ class BaiDuTieBa extends Component
     {
         $_dir = str_replace("http://tieba.baidu.com/p/", "", $this->url);
         $this->upload_root = \Yii::getAlias("@uploads_root/baidu_tieba/{$_dir}");
-        $this->upload_url = \Yii::getAlias("@uploads_url/baidu_tieba/{$_dir}");
+        $this->upload_url = YII_BASE_URL.\Yii::getAlias("@uploads_url/baidu_tieba/{$_dir}");
         if (!is_dir($this->upload_root)){
             FileHelper::createDirectory($this->upload_root);
         }
@@ -94,6 +94,9 @@ class BaiDuTieBa extends Component
         if ($qlProxy) {
             $ql = QueryList::getInstance()->get($this->url, null, [
                 'proxy' => $qlProxy,
+                'headers' => [
+                    'Referer' => 'https://querylist.cc/',
+                ]
             ]);
         }else{
             $ql = QueryList::getInstance()->get($this->url);
