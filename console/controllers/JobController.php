@@ -156,4 +156,32 @@ class JobController extends Controller
     {
         Log::deleteAll(['<', 'log_time', YII_BT_TIME - $keep]);
     }
+
+    public function actionClean()
+    {
+        $apps = ['admin', 'api', 'home', 'console', 'common'];
+        foreach ($apps as $k => $v) {
+            FileHelper::removeDirectory(\Yii::getAlias("@{$v}/runtime/cache"));
+            FileHelper::removeDirectory(\Yii::getAlias("@{$v}/runtime/debug"));
+            FileHelper::removeDirectory(\Yii::getAlias("@{$v}/runtime/HTML"));
+            FileHelper::removeDirectory(\Yii::getAlias("@{$v}/runtime/URI"));
+            FileHelper::removeDirectory(\Yii::getAlias("@{$v}/runtime/gii-2.0.34"));
+            FileHelper::removeDirectory(\Yii::getAlias("@{$v}/runtime/gii-2.0.35"));
+            FileHelper::removeDirectory(\Yii::getAlias("@{$v}/runtime/gii-2.0.38"));
+            if ($v !== 'common'){
+                $dirs = FileHelper::listDir(\Yii::getAlias("@wroot/{$v}/assets"));
+                foreach ($dirs as $k1 => $v1) {
+                    if (is_dir($v1)){
+                        FileHelper::removeDirectory($v1);
+                    }
+                }
+            }
+        }
+        $dirs = FileHelper::listDir(\Yii::getAlias("@wroot/assets"));
+        foreach ($dirs as $k => $v) {
+            if (is_dir($v1)){
+                FileHelper::removeDirectory($v);
+            }
+        }
+    }
 }
