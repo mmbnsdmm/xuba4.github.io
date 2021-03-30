@@ -89,19 +89,9 @@ class BaiDuTieBa extends Component
      */
     public function getList()
     {
-        $qlProxy = \Yii::$app->params['qlProxy'];
         $this->checkIsTieZi();
         $this->getUploadRootAndUrl();
-        if ($qlProxy) {
-            $ql = QueryList::getInstance()->get($this->url, null, [
-                'proxy' => $qlProxy,
-                'headers' => [
-                    'Referer' => 'https://querylist.cc/',
-                ],
-            ]);
-        }else{
-            $ql = QueryList::getInstance()->get($this->url);
-        }
+        $ql = QueryList::getInstance()->get($this->url);
         $this->title = $ql->find(".core_title_txt")->attr('title');
         if ($this->title)$this->title .= "--引自百度贴吧";
         $this->post_ids = [];
@@ -116,13 +106,7 @@ class BaiDuTieBa extends Component
                 if ($i == 1){
                     $_ql = $ql;
                 }else{
-                    if ($qlProxy) {
-                        $_ql = QueryList::getInstance()->get($this->url."?pn={$i}", null, [
-                            'proxy' => $qlProxy,
-                        ]);
-                    }else{
-                        $_ql = QueryList::getInstance()->get($this->url."?pn={$i}");
-                    }
+                    $_ql = QueryList::getInstance()->get($this->url."?pn={$i}");
                 }
                 $_list = $_ql->rules([
 //                    'html' => ['.j_l_post:visible .j_d_post_content', 'html'],
