@@ -165,9 +165,9 @@ class JobController extends Controller
             FileHelper::removeDirectory(\Yii::getAlias("@{$v}/runtime/debug"));
             FileHelper::removeDirectory(\Yii::getAlias("@{$v}/runtime/HTML"));
             FileHelper::removeDirectory(\Yii::getAlias("@{$v}/runtime/URI"));
-            FileHelper::removeDirectory(\Yii::getAlias("@{$v}/runtime/gii-2.0.34"));
-            FileHelper::removeDirectory(\Yii::getAlias("@{$v}/runtime/gii-2.0.35"));
-            FileHelper::removeDirectory(\Yii::getAlias("@{$v}/runtime/gii-2.0.38"));
+            for ($i = 20; $i < 50; $i++){
+                FileHelper::removeDirectory(\Yii::getAlias("@{$v}/runtime/gii-2.0.{$i}"));
+            }
             if ($v !== 'common'){
                 $dirs = FileHelper::listDir(\Yii::getAlias("@wroot/{$v}/assets"));
                 foreach ($dirs as $k1 => $v1) {
