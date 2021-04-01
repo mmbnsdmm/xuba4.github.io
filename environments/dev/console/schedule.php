@@ -30,8 +30,6 @@ $schedule->exec('php yii job/yiichina-sign')->cron('0 2 * * *');
 $schedule->exec('php yii job/php-la-sign')->cron('0 2 * * *');
 
 // 备份
-$schedule->exec('php yii job/backup')->cron('0 2 * * *');
-$schedule->exec('php yii job/db-backup')->cron('0 2 * * 0');
 
 // 清理
 $schedule->exec('php yii job/log-clear')->cron('0 2 * * 0');

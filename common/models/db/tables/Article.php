@@ -20,6 +20,10 @@ use Yii;
  * @property int $min_integral
  * @property int $is_boutique 是否精品
  * @property int $create_type 创作方式
+ * @property string|null $tieba_url 贴吧url
+ * @property string|null $tieba_post_ids json格式已处理楼层
+ * @property string|null $tieba_author_id
+ * @property string|null $tieba_author_name
  *
  * @property Collection[] $collections
  * @property Comments[] $comments
@@ -44,12 +48,14 @@ class Article extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'content', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by', 'get_password', 'min_level', 'min_integral', 'is_boutique', 'create_type'], 'trim'],
+            [['title', 'content', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by', 'get_password', 'min_level', 'min_integral', 'is_boutique', 'create_type', 'tieba_url', 'tieba_post_ids', 'tieba_author_id', 'tieba_author_name'], 'trim'],
             [['title', 'content', 'status', 'created_at', 'updated_at', 'created_by'], 'required'],
-            [['content'], 'string'],
+            [['content', 'tieba_post_ids'], 'string'],
             [['status', 'created_at', 'updated_at', 'created_by', 'updated_by', 'min_level', 'min_integral', 'is_boutique', 'create_type'], 'integer'],
-            [['title', 'get_password'], 'string', 'max' => 180],
-            [['updated_by', 'get_password'], 'default', 'value' => null],
+            [['title', 'get_password', 'tieba_author_name'], 'string', 'max' => 180],
+            [['tieba_url'], 'string', 'max' => 50],
+            [['tieba_author_id'], 'string', 'max' => 20],
+            [['updated_by', 'get_password', 'tieba_url', 'tieba_post_ids', 'tieba_author_id', 'tieba_author_name'], 'default', 'value' => null],
             [['min_level', 'min_integral', 'is_boutique'], 'default', 'value' => 0],
             [['create_type'], 'default', 'value' => 1],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
@@ -76,6 +82,10 @@ class Article extends \yii\db\ActiveRecord
             'min_integral' => Yii::t('app', 'Min Integral'),
             'is_boutique' => Yii::t('app', '是否精品'),
             'create_type' => Yii::t('app', '创作方式'),
+            'tieba_url' => Yii::t('app', '贴吧url'),
+            'tieba_post_ids' => Yii::t('app', 'json格式已处理楼层'),
+            'tieba_author_id' => Yii::t('app', 'Tieba Author ID'),
+            'tieba_author_name' => Yii::t('app', 'Tieba Author Name'),
         ];
     }
 

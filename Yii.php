@@ -45,9 +45,6 @@ Yii::$container = new yii\di\Container;
  * @property \common\components\User $user
  * @property \common\components\ApiTool $apiTool
  * @property \common\components\UniApp $uniApp
- * @property \creocoder\flysystem\SftpFilesystem sftpFileProd
- * @property \creocoder\flysystem\SftpFilesystem sftpFileDev
- * @property \creocoder\flysystem\SftpFilesystem sftpFileBackup
  * @property \yii\db\Connection $dbXuba3
  * @property \yii\db\Connection $dbXuba2
  * @property string $name

@@ -9,12 +9,15 @@
 namespace console\controllers;
 
 
+use common\models\db\Article;
 use common\models\db\Log;
+use common\wodrow\spiders\BaiDuTieBa;
 use QL\QueryList;
 use wodrow\yii2wtools\tools\ArrayHelper;
 use wodrow\yii2wtools\tools\BackUp;
 use wodrow\yii2wtools\tools\FileHelper;
-use wodrow\yii2wtools\tools\Tools;
+use common\components\Tools;
+use wodrow\yii2wtools\tools\Model;
 use yii\base\Exception;
 use yii\console\Controller;
 
@@ -109,42 +112,42 @@ class JobController extends Controller
     }
 
     /**
-     * php yii job/backup
-     * @throws
+     * 获取贴吧文章
+     * php yii job/ct
+     * @param $url
      */
-    public function actionBackup()
+    public function actionCt($url)
     {
-        BackUp::dbBackup(\Yii::getAlias("@uploads_root"), \Yii::$app->db);
-        BackUp::fileSysBackup(\Yii::$app->sftpFileProd, \Yii::$app->sftpFileBackup);
-        BackUp::fileSysBackup(\Yii::$app->sftpFileDev, \Yii::$app->sftpFileBackup);
-    }
-
-    /**
-     * php yii job/db-backup
-     * @param int $keep
-     * @throws
-     */
-    public function actionDbBackup($keep = 10)
-    {
-        $backDir = \Yii::getAlias("@storage_root/db");
-        $backTDir = $backDir. DIRECTORY_SEPARATOR . YII_BT_TIME;
-        if (!is_dir($backTDir))FileHelper::createDirectory($backTDir);
-        BackUp::dbBackup($backTDir, \Yii::$app->db);
-        $files = \common\components\Tools::listDir($backDir, false);
-        $_files = [];
-        foreach ($files as $k => $v){
-            $t = basename($v);
-            if (!\common\components\Tools::isTimestamp($t)){
-                \common\components\Tools::removeDir($v);
-            }else{
-                $_files[$t] = $v;
+        $spiderBaiDuTieBa = new BaiDuTieBa();
+        $spiderBaiDuTieBa->url = $url;
+        $spiderBaiDuTieBa->is_console = 1;
+        $spiderBaiDuTieBa->is_cache = 1;
+        $list = $spiderBaiDuTieBa->getList();
+        $article = Article::findOne(['tieba_url' => $url]);
+        if (!$article){
+            $article = new Article();
+            $article->tieba_url = $url;
+            $article->tieba_author_id = $spiderBaiDuTieBa->author_id;
+            $article->tieba_author_name = $spiderBaiDuTieBa->author_name;
+            $article->title = $spiderBaiDuTieBa->title;
+            $article->content = "";
+            $article->status = $article::STATUS_ACTIVE;
+            $article->is_boutique = $article::IS_BOUTIQUE_N;
+            $article->create_type = $article::CREATE_TYPE_REPRINTED;
+        }
+        $postIds = Tools::isJson($article->tieba_post_ids)?:[];
+        foreach ($list as $k => $v) {
+            if ($v['author_id'] == $spiderBaiDuTieBa->author_id){
+                if (!in_array($v['post_id'], $postIds)){
+                    $postIds[] = $v['post_id'];
+                    $article->content .= $v['text'];
+                }
             }
         }
-        krsort($_files);
-        $bl = array_slice($_files, 0, $keep);
-        $rms = array_diff($_files, $bl);
-        foreach ($rms as $k => $v) {
-            \common\components\Tools::removeDir($v);
+        if (!$article->save()){
+            var_dump("文章保存失败:".Model::getModelError($article));
+        }else{
+            var_dump($article->toArray());
         }
     }
 

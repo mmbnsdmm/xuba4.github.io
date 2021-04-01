@@ -21,7 +21,7 @@ use QL\QueryList;
 use wodrow\yii2wtools\tools\Color;
 use wodrow\yii2wtools\tools\Model;
 use wodrow\yii2wtools\tools\StrHelper;
-use wodrow\yii2wtools\tools\Tools;
+use common\components\Tools;
 use yii\console\Controller;
 use yii\db\Exception;
 use yii\helpers\Console;
@@ -172,7 +172,7 @@ class TestController extends Controller
             $user = new User();
             foreach ($xuba3Users as $k => $v){
                 if (User::findOne(['username' => $v['username']])){
-                    \common\components\Tools::yiiLog($v);
+                    Tools::yiiLog($v);
                     var_dump($v['username']);
                 }else{
                     $u = clone $user;
@@ -247,14 +247,38 @@ class TestController extends Controller
 
     public function actionTest9($url)
     {
-        ini_set ("memory_limit","-1");
-        ini_set("max_execution_time", "1800");
         $spiderBaiDuTieBa = new BaiDuTieBa();
         $spiderBaiDuTieBa->url = $url;
         $spiderBaiDuTieBa->is_console = 1;
         $spiderBaiDuTieBa->is_cache = 1;
         $list = $spiderBaiDuTieBa->getList();
-        $content = "";
+        $article = Article::findOne(['tieba_url' => $url]);
+        if (!$article){
+            $article = new Article();
+            $article->tieba_url = $url;
+            $article->tieba_author_id = $spiderBaiDuTieBa->author_id;
+            $article->tieba_author_name = $spiderBaiDuTieBa->author_name;
+            $article->title = $spiderBaiDuTieBa->title;
+            $article->content = "";
+            $article->status = $article::STATUS_ACTIVE;
+            $article->is_boutique = $article::IS_BOUTIQUE_N;
+            $article->create_type = $article::CREATE_TYPE_REPRINTED;
+        }
+        $postIds = Tools::isJson($article->tieba_post_ids)?:[];
+        foreach ($list as $k => $v) {
+            if ($v['author_id'] == $spiderBaiDuTieBa->author_id){
+                if (!in_array($v['post_id'], $postIds)){
+                    $postIds[] = $v['post_id'];
+                    $article->content .= $v['text'];
+                }
+            }
+        }
+        if (!$article->save()){
+            var_dump("文章保存失败:".Model::getModelError($article));
+        }else{
+            var_dump($article->toArray());
+        }
+        /*$content = "";
         foreach ($list as $k => $v) {
             if ($v['author_id'] == $spiderBaiDuTieBa->author_id){
                 $content .= $v['text'];
@@ -266,11 +290,11 @@ class TestController extends Controller
             'title' => $spiderBaiDuTieBa->title,
             'content' => $content,
             'create_type' => Article::CREATE_TYPE_REPRINTED,
-//            'tagModify' => \common\components\Tools::toJson([
+//            'tagModify' => Tools::toJson([
 //                'plus' => [1],
 //                'reduce' => [],
 //            ]),
         ], User::findOne(1));
-        var_dump($resp);
+        var_dump($resp);*/
     }
 }

@@ -44,30 +44,6 @@ return [
         'uniApp' => [
             'class' => \common\components\UniApp::class,
         ],
-        'sftpFileProd' => [
-            'class' => \creocoder\flysystem\SftpFilesystem::class,
-            'host' => '',
-            'port' => 22,
-            'username' => '',
-            'password' => '',
-            'root' => '',
-        ],
-        'sftpFileDev' => [
-            'class' => \creocoder\flysystem\SftpFilesystem::class,
-            'host' => '',
-            'port' => 22,
-            'username' => '',
-            'password' => '',
-            'root' => '',
-        ],
-        'sftpFileBackup' => [
-            'class' => \creocoder\flysystem\SftpFilesystem::class,
-            'host' => '',
-            'port' => 22,
-            'username' => '',
-            'password' => '',
-            'root' => '',
-        ],
     ],
     'aliases' => [
         '@bower' => "@vendor/bower",

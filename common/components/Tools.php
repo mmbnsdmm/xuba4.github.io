@@ -12,7 +12,7 @@ namespace common\components;
 use common\models\db\LogYiiLog;
 use yii\helpers\VarDumper;
 
-class Tools
+class Tools extends \wodrow\yii2wtools\tools\Tools
 {
     /**
      * 文件下载到本地
