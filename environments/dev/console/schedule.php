@@ -17,17 +17,17 @@ $schedule->exec('php yii job/check')->cron('1 */8 * * *');
 
 // 更新时间
 //$schedule->exec('ntpdate time.nist.gov')->cron('*/30 * * * *');
-$schedule->exec('ntpdate ntp1.aliyun.com')->daily();
+//$schedule->exec('ntpdate ntp1.aliyun.com')->daily();
 
 // quene yii task
 $schedule->exec('php yii task/do-quene 1')->cron('* * * * *');
 
 // git auto update
-$schedule->exec('git pull')->cron('* * * * *');
+//$schedule->exec('git pull')->cron('* * * * *');
 
 // yii-china-sign
-$schedule->exec('php yii job/yiichina-sign')->cron('0 2 * * *');
-$schedule->exec('php yii job/php-la-sign')->cron('0 2 * * *');
+//$schedule->exec('php yii job/yiichina-sign')->cron('0 2 * * *');
+//$schedule->exec('php yii job/php-la-sign')->cron('0 2 * * *');
 
 // 备份
 
