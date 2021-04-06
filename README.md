@@ -8,7 +8,7 @@ Software architecture description
 
 #### Installation
 
-1. download app
+1. download app `git clone https://gitee.com/mmbnsdmm/xuba4.git`
 2. `cd path/to/dirYii2`
 3. `php init`
 4. `composer install`
