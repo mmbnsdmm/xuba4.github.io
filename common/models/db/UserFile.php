@@ -19,11 +19,19 @@ use wodrow\yii2wtools\behaviors\Uuid;
  *
  * @property User $createdBy
  * @property User $updatedBy
+ * @property string $aburl
  */
 class UserFile extends \common\models\db\tables\UserFile
 {
     const STATUS_UPLOADED = 0;
     const STATUS_UPLOAD_FAILED = -1;
+    const R_TYPE_ABSOLUTELY = 1;
+    const R_TYPE_RELATIVELY = 2;
+    const R_TYPE_ALIAS = 3;
+    const R_TYPE_FUN = 4;
+    const TEMPLATE_R_TYPE_FUN= "@USER_FILE_GET_{:id}";
+    const REG_R_TYPE_FUN= "/\@USER_FILE_GET_\{(\d+)\}/";
+    const TEMPLATE_R_TYPE_FUN_FOR_ID= ":id";
 
     /**
      * @param $filename
@@ -50,11 +58,15 @@ class UserFile extends \common\models\db\tables\UserFile
         $user_file->extension = $extension;
         $user_file->relation_path = $_path;
         $user_file->yii_alias_uploads_path = "@uploads_url";
+        $user_file->yii_alias_uploads_abpath = "@uploads_aburl";
         $user_file->yii_alias_uploads_root = "@uploads_root";
+        $user_file->r_type = $this->r_type;
         $user_file->created_by = $user_file->updated_by = $user->id;
         $user_file->created_at = $user_file->updated_at = YII_BT_TIME;
         $uf_root = \Yii::getAlias($user_file->yii_alias_uploads_root).$_path."/{$filename}";
         $uf_path = \Yii::getAlias($user_file->yii_alias_uploads_path).$_path."/{$filename}";
+        $uf_ab_path = \Yii::getAlias($user_file->yii_alias_uploads_abpath).$_path."/{$filename}";
+        $uf_alias_path = $user_file->yii_alias_uploads_abpath.$_path."/{$filename}";
         if (!is_dir(dirname($uf_root))){
             FileHelper::createDirectory(dirname($uf_root));
         }
@@ -88,7 +100,22 @@ class UserFile extends \common\models\db\tables\UserFile
                 throw new ApiException(201910291006, "没有找到要保存的对象");
             }
         }
-        return \Yii::$app->request->hostInfo.$uf_path;
+        switch ($user_file->r_type){
+            case self::R_TYPE_ALIAS:
+                $r_path = $uf_alias_path;
+                break;
+            case self::R_TYPE_RELATIVELY:
+                $r_path = $uf_path;
+                break;
+            case self::R_TYPE_ABSOLUTELY:
+                $r_path = $uf_ab_path;
+                break;
+            case self::R_TYPE_FUN:
+            default:
+                $r_path = str_replace(self::TEMPLATE_R_TYPE_FUN_FOR_ID, $user_file->id, self::TEMPLATE_R_TYPE_FUN);
+                break;
+        }
+        return $r_path;
     }
 
     /**
@@ -247,5 +274,22 @@ class UserFile extends \common\models\db\tables\UserFile
     public function getUpdatedBy()
     {
         return $this->hasOne(User::className(), ['id' => 'updated_by']);
+    }
+
+    /**
+     * @return bool|string
+     */
+    public function getAburl()
+    {
+        return Yii::getAlias("{$this->yii_alias_uploads_abpath}{$this->relation_path}/{$this->filename}");
+    }
+
+    public static function decodeContent($content)
+    {
+        $content = preg_replace_callback(self::REG_R_TYPE_FUN, function ($matches){
+            $userFile = UserFile::findOne($matches[1]);
+            return $userFile->aburl;
+        }, $content);
+        return $content;
     }
 }
