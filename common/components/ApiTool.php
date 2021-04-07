@@ -11,6 +11,7 @@ namespace common\components;
 
 use common\models\db\LogEmailSendCode;
 use common\models\db\User;
+use common\models\db\UserFile;
 use GuzzleHttp\Client;
 use wodrow\yii2wtools\tools\ArrayHelper;
 use wodrow\yii2wtools\tools\Model;
@@ -184,6 +185,7 @@ class ApiTool extends Component
             'frozen' => $user->frozen,
             'status' => $user->status,
             'created_at' => $user->created_at,
+//            'avatar' => UserFile::decodeContent($user->avatar),
             'avatar' => $user->avatar,
             'mobile' => $user->mobile,
             'weixin' => $user->weixin,

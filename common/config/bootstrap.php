@@ -18,38 +18,40 @@ $BASE_URL = $_ENV['BASE_URL'];
 
 define("YII_BASE_URL", $BASE_URL);
 
+$yiiApps = ['console', 'api', 'home', 'admin'];
 Yii::setAlias('@common', YII_PROJECT_ROOT . '/common');
-Yii::setAlias('@console', YII_PROJECT_ROOT . '/console');
-Yii::setAlias('@api', YII_PROJECT_ROOT . '/api');
-Yii::setAlias('@home', YII_PROJECT_ROOT . '/home');
-Yii::setAlias('@admin', YII_PROJECT_ROOT . '/admin');
-
+foreach ($yiiApps as $k => $v){
+    Yii::setAlias("@{$v}", YII_PROJECT_ROOT . "/{$v}");
+}
 Yii::setAlias('@wroot', YII_PROJECT_ROOT . '/web');
 Yii::setAlias('@wurl', '/');
-Yii::setAlias('@static_root', YII_PROJECT_ROOT . '/web/static');
-Yii::setAlias('@static_url', '/static');
-Yii::setAlias('@storage_root', YII_PROJECT_ROOT . '/web/storage');
-Yii::setAlias('@storage_url', '/storage');
-Yii::setAlias('@others_url', '/others');
-if(YII_ENV_DEV){
-    Yii::setAlias('@uploads_root', YII_PROJECT_ROOT . '/web/storage/uploads/dev');
-    Yii::setAlias('@uploads_url', '/storage/uploads/dev');
+Yii::setAlias('@waburl', YII_BASE_URL);
+$webDirs = ['static', 'others'];
+foreach ($webDirs as $k => $v) {
+    Yii::setAlias("@{$v}_root", YII_PROJECT_ROOT . "/web/{$v}");
+    Yii::setAlias("@{$v}_url", "/{$v}");
+    Yii::setAlias("@{$v}_aburl", YII_BASE_URL . "/{$v}");
+}
+if (YII_ENV_DEV) {
+    Yii::setAlias('@storage_root', YII_PROJECT_ROOT . '/web/storage/dev');
+    Yii::setAlias('@storage_url', '/storage/dev');
+    Yii::setAlias('@storage_aburl', YII_BASE_URL . '/storage/dev');
 }else{
-    Yii::setAlias('@uploads_root', YII_PROJECT_ROOT . '/web/storage/uploads/prod');
-    Yii::setAlias('@uploads_url', '/storage/uploads/prod');
+    Yii::setAlias('@storage_root', YII_PROJECT_ROOT . '/web/storage/prod');
+    Yii::setAlias('@storage_url', '/storage/prod');
+    Yii::setAlias('@storage_aburl', YII_BASE_URL . '/storage/prod');
 }
-if (!is_dir(Yii::getAlias('@uploads_root'))){
-    \wodrow\yii2wtools\tools\FileHelper::createDirectory(Yii::getAlias('@uploads_root'));
+if (!is_dir(Yii::getAlias('@storage_root'))){
+    \wodrow\yii2wtools\tools\FileHelper::createDirectory(Yii::getAlias('@storage_root'));
 }
-Yii::setAlias('@tmp_root', YII_PROJECT_ROOT . '/web/storage/tmp');
-Yii::setAlias('@tmp_url', '/storage/tmp');
-if (!is_dir(Yii::getAlias('@tmp_root'))){
-    \wodrow\yii2wtools\tools\FileHelper::createDirectory(Yii::getAlias('@tmp_root'));
-}
-Yii::setAlias('@bin_root', YII_PROJECT_ROOT . '/web/storage/uploads/bin');
-Yii::setAlias('@bin_url', '/storage/uploads/bin');
-if (!is_dir(Yii::getAlias('@bin_root'))){
-    \wodrow\yii2wtools\tools\FileHelper::createDirectory(Yii::getAlias('@bin_root'));
+$storageDirs = ['uploads', 'tmp', 'bin', 'dbbackup', 'yiiconfigbackup'];
+foreach ($storageDirs as $k => $v) {
+    Yii::setAlias("@{$v}_root", Yii::getAlias("@storage_root/{$v}"));
+    Yii::setAlias("@{$v}_url", Yii::getAlias("@storage_url/{$v}"));
+    Yii::setAlias("@{$v}_aburl", Yii::getAlias("@storage_aburl/{$v}"));
+    if (!is_dir(Yii::getAlias("@{$v}_root"))){
+        \wodrow\yii2wtools\tools\FileHelper::createDirectory(Yii::getAlias("@{$v}_root"));
+    }
 }
 
 Yii::$container->set(\kartik\icons\FontAwesomeAsset::class, [
