@@ -310,7 +310,7 @@ class SiteController extends Controller
      * @return array urls 成功返回的所有文件链接
      * @throws
      */
-    public function actionWangEditorUpload($token, $base64 = null, $base64s = null, $url = null, $urls = null, $url_file_download = 1, $r_type = UserFile::REG_R_TYPE_ABSOLUTELY, $wangEV = 0)
+    public function actionWangEditorUpload($token, $base64 = null, $base64s = null, $url = null, $urls = null, $url_file_download = 1, $r_type = UserFile::R_TYPE_ABSOLUTELY, $wangEV = 0)
     {
         $user = \Yii::$app->user->loginByAccessToken($token);
         if (!$user){
