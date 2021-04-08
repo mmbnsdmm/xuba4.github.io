@@ -21,8 +21,11 @@ use wodrow\yii2wtools\behaviors\Uuid;
  *
  * @property User $createdBy
  * @property User $updatedBy
+ * @property string $url
  * @property string $aburl
+ * @property string $aliasurl
  * @property string $funurl
+ * @property string $rTypeResult
  */
 class UserFile extends \common\models\db\tables\UserFile
 {
@@ -75,9 +78,6 @@ class UserFile extends \common\models\db\tables\UserFile
         $userFile->created_by = $userFile->updated_by = $user->id;
         $userFile->created_at = $userFile->updated_at = YII_BT_TIME;
         $uf_root = \Yii::getAlias($this->yii_alias_uploads_root).$_path."/{$userFile->filename}";
-        $uf_path = \Yii::getAlias($this->yii_alias_uploads_path).$_path."/{$userFile->filename}";
-        $uf_ab_path = \Yii::getAlias($this->yii_alias_uploads_abpath).$_path."/{$userFile->filename}";
-        $uf_alias_path = $this->yii_alias_uploads_abpath.$_path."/{$userFile->filename}";
         if (!is_dir(dirname($uf_root))){
             FileHelper::createDirectory(dirname($uf_root));
         }
@@ -111,22 +111,7 @@ class UserFile extends \common\models\db\tables\UserFile
                 throw new ApiException(201910291006, "没有找到要保存的对象");
             }
         }
-        switch ($userFile->r_type){
-            case self::R_TYPE_ALIAS:
-                $r_path = $uf_alias_path;
-                break;
-            case self::R_TYPE_RELATIVELY:
-                $r_path = $uf_path;
-                break;
-            case self::R_TYPE_ABSOLUTELY:
-                $r_path = $uf_ab_path;
-                break;
-            case self::R_TYPE_FUN:
-            default:
-                $r_path = str_replace(self::TEMPLATE_R_TYPE_FUN_FOR_ID, $userFile->id, self::TEMPLATE_R_TYPE_FUN);
-                break;
-        }
-        return $r_path;
+        return $userFile->rTypeResult;
     }
 
     /**
@@ -221,11 +206,17 @@ class UserFile extends \common\models\db\tables\UserFile
     protected function _fileSaveUrl($url, $url_file_download = 0)
     {
         if ($url_file_download){
-            $this->r_type = UserFile::R_TYPE_ABSOLUTELY;
-            $this->original_url = $url;
-            $this->_extension = substr(strrchr($url, '.'), 1);
-            $content = file_get_contents($url);
-            $r = $this->upload($content);
+            $userFile = UserFile::findOne(['original_url' => $url]);
+            if ($userFile){
+                $userFile->r_type = $this->r_type;
+                $r = $userFile->rTypeResult;
+            }else{
+                $this->r_type = UserFile::R_TYPE_ABSOLUTELY;
+                $this->original_url = $url;
+                $this->_extension = substr(strrchr($url, '.'), 1);
+                $content = file_get_contents($url);
+                $r = $this->upload($content);
+            }
         }else{
             $r = $url;
         }
@@ -287,13 +278,28 @@ class UserFile extends \common\models\db\tables\UserFile
     {
         return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }
+    /**
+     * @return bool|string
+     */
+    public function getUrl()
+    {
+        return Yii::getAlias("{$this->yii_alias_uploads_path}{$this->relation_path}/{$this->filename}");
+    }
 
     /**
      * @return bool|string
      */
     public function getAburl()
     {
-        return Yii::getAlias("{$this->yii_alias_uploads_abpath}{$this->relation_path}/{$this->filename}");
+        return Yii::getAlias($this->aliasurl);
+    }
+
+    /**
+     * @return bool|string
+     */
+    public function getAliasurl()
+    {
+        return "{$this->yii_alias_uploads_abpath}{$this->relation_path}/{$this->filename}";
     }
 
     /**
@@ -302,6 +308,29 @@ class UserFile extends \common\models\db\tables\UserFile
     public function getFunurl()
     {
         return str_replace(self::TEMPLATE_R_TYPE_FUN_FOR_ID, $this->id, self::TEMPLATE_R_TYPE_FUN);
+    }
+
+    /**
+     * @return bool|string
+     */
+    public function getRTypeResult()
+    {
+        switch ($this->r_type){
+            case self::R_TYPE_ALIAS:
+                $r_path = $this->aliasurl;
+                break;
+            case self::R_TYPE_RELATIVELY:
+                $r_path = $this->url;
+                break;
+            case self::R_TYPE_ABSOLUTELY:
+                $r_path = $this->aburl;
+                break;
+            case self::R_TYPE_FUN:
+            default:
+                $r_path = $this->funurl;
+                break;
+        }
+        return $r_path;
     }
 
     public static function encodeContent($content)

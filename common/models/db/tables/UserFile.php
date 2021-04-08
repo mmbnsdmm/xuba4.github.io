@@ -53,6 +53,7 @@ class UserFile extends \yii\db\ActiveRecord
             [['original_url'], 'string', 'max' => 180],
             [['mime_type', 'size', 'created_by', 'updated_by', 'original_url'], 'default', 'value' => null],
             [['filename'], 'unique'],
+            [['original_url'], 'unique'],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
         ];

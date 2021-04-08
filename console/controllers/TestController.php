@@ -15,6 +15,7 @@ use common\models\db\AdminAuthItemChild;
 use common\models\db\Article;
 use common\models\db\SearchIndex;
 use common\models\db\User;
+use common\models\db\UserFile;
 use common\wodrow\spiders\BaiDuTieBa;
 use GuzzleHttp\Client;
 use QL\QueryList;
@@ -296,5 +297,14 @@ class TestController extends Controller
 //            ]),
         ], User::findOne(1));
         var_dump($resp);*/
+    }
+
+    public function actionTest10()
+    {
+        $x = UserFile::find()->all();
+        foreach ($x as $k => $v) {
+            $v->yii_alias_uploads_abpath = $v->yii_alias_uploads_abpath?:"@uploads_aburl";
+            $v->save();
+        }
     }
 }
