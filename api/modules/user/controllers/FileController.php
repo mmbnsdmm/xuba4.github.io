@@ -41,7 +41,6 @@ class FileController extends Controller
         }
         $user_file = new UserFile();
         $user_file->r_type = $r_type;
-        if (!$url_file_download)$user_file->r_type = UserFile::R_TYPE_ABSOLUTELY;
         $r =  $user_file->fileSave($base64, $base64s, $url, $urls, $url_file_download);
         return $r;
     }

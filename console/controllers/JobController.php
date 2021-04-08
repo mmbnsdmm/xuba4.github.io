@@ -144,6 +144,7 @@ class JobController extends Controller
                 }
             }
         }
+        $article->tieba_post_ids = Tools::toJson($postIds);
         if (!$article->save()){
             var_dump("文章保存失败:".Model::getModelError($article));
         }else{

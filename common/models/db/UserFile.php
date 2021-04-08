@@ -65,53 +65,53 @@ class UserFile extends \common\models\db\tables\UserFile
 //        $_path = "/user_files/{$user->id}/{$y}/{$m}/{$d}";
 //        $_path = "/user_files/{$y}{$m}{$d}_uid_{$user->id}";
         $_path = "/user_files/{$user->id}";
-        $this->generateFilename();
-        $this->extension = $this->_extension;
-        $this->relation_path = $_path;
-        $this->yii_alias_uploads_path = "@uploads_url";
-        $this->yii_alias_uploads_abpath = "@uploads_aburl";
-        $this->yii_alias_uploads_root = "@uploads_root";
-        $this->r_type = $this->r_type;
-        $this->created_by = $this->updated_by = $user->id;
-        $this->created_at = $this->updated_at = YII_BT_TIME;
-        $uf_root = \Yii::getAlias($this->yii_alias_uploads_root).$_path."/{$this->filename}";
-        $uf_path = \Yii::getAlias($this->yii_alias_uploads_path).$_path."/{$this->filename}";
-        $uf_ab_path = \Yii::getAlias($this->yii_alias_uploads_abpath).$_path."/{$this->filename}";
-        $uf_alias_path = $this->yii_alias_uploads_abpath.$_path."/{$this->filename}";
+        $userFile = clone $this;
+        $userFile->generateFilename();
+        $userFile->extension = $this->_extension;
+        $userFile->relation_path = $_path;
+        $userFile->yii_alias_uploads_path = "@uploads_url";
+        $userFile->yii_alias_uploads_abpath = "@uploads_aburl";
+        $userFile->yii_alias_uploads_root = "@uploads_root";
+        $userFile->created_by = $userFile->updated_by = $user->id;
+        $userFile->created_at = $userFile->updated_at = YII_BT_TIME;
+        $uf_root = \Yii::getAlias($this->yii_alias_uploads_root).$_path."/{$userFile->filename}";
+        $uf_path = \Yii::getAlias($this->yii_alias_uploads_path).$_path."/{$userFile->filename}";
+        $uf_ab_path = \Yii::getAlias($this->yii_alias_uploads_abpath).$_path."/{$userFile->filename}";
+        $uf_alias_path = $this->yii_alias_uploads_abpath.$_path."/{$userFile->filename}";
         if (!is_dir(dirname($uf_root))){
             FileHelper::createDirectory(dirname($uf_root));
         }
         if ($content){
             if (file_put_contents($uf_root, $content)){
-                $this->status = UserFile::STATUS_UPLOADED;
-                if (!$this->save()){
-                    throw new ApiException(201910291004, "数据保存失败:".Model::getModelError($this));
+                $userFile->status = UserFile::STATUS_UPLOADED;
+                if (!$userFile->save()){
+                    throw new ApiException(201910291004, "数据保存失败:".Model::getModelError($userFile));
                 }
             }else{
-                $this->status = UserFile::STATUS_UPLOAD_FAILED;
-                if (!$this->save()){
-                    throw new ApiException(201910291005, "数据保存失败:".Model::getModelError($this));
+                $userFile->status = UserFile::STATUS_UPLOAD_FAILED;
+                if (!$userFile->save()){
+                    throw new ApiException(201910291005, "数据保存失败:".Model::getModelError($userFile));
                 }
                 return false;
             }
         }else{
             if ($tmp_file){
                 if (!move_uploaded_file($tmp_file, $uf_root)){
-                    $this->status = UserFile::STATUS_UPLOADED;
-                    if (!$this->save()){
-                        throw new ApiException(201910291009, "数据保存失败:".Model::getModelError($this));
+                    $userFile->status = UserFile::STATUS_UPLOADED;
+                    if (!$userFile->save()){
+                        throw new ApiException(201910291009, "数据保存失败:".Model::getModelError($userFile));
                     }
                     throw new ApiException(201910291007, "临时文件移动失败");
                 }
-                $this->status = UserFile::STATUS_UPLOADED;
-                if (!$this->save()){
-                    throw new ApiException(201910291008, "数据保存失败:".Model::getModelError($this));
+                $userFile->status = UserFile::STATUS_UPLOADED;
+                if (!$userFile->save()){
+                    throw new ApiException(201910291008, "数据保存失败:".Model::getModelError($userFile));
                 }
             }else{
                 throw new ApiException(201910291006, "没有找到要保存的对象");
             }
         }
-        switch ($this->r_type){
+        switch ($userFile->r_type){
             case self::R_TYPE_ALIAS:
                 $r_path = $uf_alias_path;
                 break;
@@ -123,7 +123,7 @@ class UserFile extends \common\models\db\tables\UserFile
                 break;
             case self::R_TYPE_FUN:
             default:
-                $r_path = str_replace(self::TEMPLATE_R_TYPE_FUN_FOR_ID, $this->id, self::TEMPLATE_R_TYPE_FUN);
+                $r_path = str_replace(self::TEMPLATE_R_TYPE_FUN_FOR_ID, $userFile->id, self::TEMPLATE_R_TYPE_FUN);
                 break;
         }
         return $r_path;
@@ -221,6 +221,8 @@ class UserFile extends \common\models\db\tables\UserFile
     protected function _fileSaveUrl($url, $url_file_download = 0)
     {
         if ($url_file_download){
+            $this->r_type = UserFile::R_TYPE_ABSOLUTELY;
+            $this->original_url = $url;
             $this->_extension = substr(strrchr($url, '.'), 1);
             $content = file_get_contents($url);
             $r = $this->upload($content);

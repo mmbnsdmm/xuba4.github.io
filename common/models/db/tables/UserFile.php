@@ -22,6 +22,7 @@ use Yii;
  * @property int $created_at
  * @property int $updated_at
  * @property int $status
+ * @property string|null $original_url 原来的url地址
  *
  * @property User $createdBy
  * @property User $updatedBy
@@ -42,14 +43,15 @@ class UserFile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['filename', 'extension', 'mime_type', 'relation_path', 'yii_alias_uploads_path', 'yii_alias_uploads_abpath', 'yii_alias_uploads_root', 'size', 'r_type', 'created_by', 'updated_by', 'created_at', 'updated_at', 'status'], 'trim'],
+            [['filename', 'extension', 'mime_type', 'relation_path', 'yii_alias_uploads_path', 'yii_alias_uploads_abpath', 'yii_alias_uploads_root', 'size', 'r_type', 'created_by', 'updated_by', 'created_at', 'updated_at', 'status', 'original_url'], 'trim'],
             [['filename', 'extension', 'relation_path', 'yii_alias_uploads_path', 'yii_alias_uploads_abpath', 'yii_alias_uploads_root', 'r_type', 'created_at', 'updated_at', 'status'], 'required'],
             [['size', 'r_type', 'created_by', 'updated_by', 'created_at', 'updated_at', 'status'], 'integer'],
             [['filename'], 'string', 'max' => 260],
             [['extension'], 'string', 'max' => 40],
             [['mime_type'], 'string', 'max' => 50],
             [['relation_path', 'yii_alias_uploads_path', 'yii_alias_uploads_abpath', 'yii_alias_uploads_root'], 'string', 'max' => 200],
-            [['mime_type', 'size', 'created_by', 'updated_by'], 'default', 'value' => null],
+            [['original_url'], 'string', 'max' => 180],
+            [['mime_type', 'size', 'created_by', 'updated_by', 'original_url'], 'default', 'value' => null],
             [['filename'], 'unique'],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
@@ -77,6 +79,7 @@ class UserFile extends \yii\db\ActiveRecord
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
             'status' => Yii::t('app', 'Status'),
+            'original_url' => Yii::t('app', '原来的url地址'),
         ];
     }
 
