@@ -50,6 +50,7 @@ class UserFile extends \yii\db\ActiveRecord
             [['mime_type'], 'string', 'max' => 50],
             [['relation_path', 'yii_alias_uploads_path', 'yii_alias_uploads_abpath', 'yii_alias_uploads_root'], 'string', 'max' => 200],
             [['mime_type', 'size', 'created_by', 'updated_by'], 'default', 'value' => null],
+            [['filename'], 'unique'],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id']],
         ];
