@@ -69,15 +69,15 @@ class UserFile extends \common\models\db\tables\UserFile
 //        $_path = "/user_files/{$y}{$m}{$d}_uid_{$user->id}";
         $_path = "/user_files/{$user->id}";
         $userFile = clone $this;
-        $userFile->generateFilename();
         $userFile->extension = $this->_extension;
+        $userFile->generateFilename();
         $userFile->relation_path = $_path;
         $userFile->yii_alias_uploads_path = "@uploads_url";
         $userFile->yii_alias_uploads_abpath = "@uploads_aburl";
         $userFile->yii_alias_uploads_root = "@uploads_root";
         $userFile->created_by = $userFile->updated_by = $user->id;
         $userFile->created_at = $userFile->updated_at = YII_BT_TIME;
-        $uf_root = \Yii::getAlias($this->yii_alias_uploads_root).$_path."/{$userFile->filename}";
+        $uf_root = \Yii::getAlias($userFile->yii_alias_uploads_root).$_path."/{$userFile->filename}";
         if (!is_dir(dirname($uf_root))){
             FileHelper::createDirectory(dirname($uf_root));
         }
