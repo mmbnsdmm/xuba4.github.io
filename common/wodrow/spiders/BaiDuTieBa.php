@@ -188,38 +188,17 @@ class BaiDuTieBa extends Component
     {
         $imgs = [];
         foreach ($images as $k => $v){
-            switch ($v['pic_type']){
-                case "0":
-                    $image_name = basename($v['image']);
-                    if (strpos($image_name, '.png?t=') !== false){
-                        $_x = explode("?t=", $image_name);
-                        $image_name = $_x[0];
-                    }
-                    $root = $this->upload_root.DIRECTORY_SEPARATOR.$image_name;
-                    $url = $this->upload_url.DIRECTORY_SEPARATOR.$image_name;
-                    if (!file_exists($root)){
-                        /*$client = new Client();
-                        $resp = $client->request('GET', $v['image'], [
-                            'sink' => $root,
-                            'headers' => [
-                                'Referer' => 'https://querylist.cc/',
-                            ],
-                        ]);
-                        $cont = $resp->getBody()->getContents();
-                        var_dump($cont);*/
-                        $fg_con = file_get_contents($v['image']);
-                        if ($fg_con){
-                            file_put_contents($root, $fg_con);
-                        }
-                    }
-                    $imgs[] = Html::img($url, ['class' => "img img-responsive"]);
-                    $this->consoleMsg($url);
-                    break;
-                case "1":
-                default:
-                    unset($images[$k]);
-                    break;
+            $r = \Yii::$app->apiTool->post("/user/file/upload", ['url' => $v['image']], \Yii::$app->user->identity);
+            if ($r['code'] != 200){
+                throw new \yii\console\Exception($r['message']);
             }
+            if ($r['data']['status'] != 200){
+                throw new \yii\console\Exception($r['data']['msg']);
+            }
+
+            $url = $r['data']['urls'][0];
+            $imgs[] = Html::img($url, ['class' => "img img-responsive"]);
+            $this->consoleMsg($url);
         }
         return $imgs;
     }

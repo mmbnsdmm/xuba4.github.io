@@ -148,7 +148,7 @@ class JobController extends Controller
         if (!$article->save()){
             var_dump("文章保存失败:".Model::getModelError($article));
         }else{
-            var_dump($article->toArray());
+            var_dump("文章保存成功:{$article->id}");
         }
     }
 
