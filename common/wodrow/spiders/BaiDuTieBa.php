@@ -147,10 +147,6 @@ class BaiDuTieBa extends Component
                 $text = "<p>{$v['text']}</p>";
             }
             $_ql = QueryList::getInstance()->html($html);
-            $images = $_ql->rules([
-                'image' => ['img', 'src'],
-                'pic_type' => ['img', 'pic_type'],
-            ])->queryData();
             $videos = $_ql->rules([
                 'video' => ['embed', 'data-video'],
             ])->queryData();
@@ -158,6 +154,10 @@ class BaiDuTieBa extends Component
             if ($vids){
                 $text .= "<p>".implode('', $vids)."</p>";
             }
+            $images = $_ql->rules([
+                'image' => ['img', 'src'],
+                'pic_type' => ['img', 'pic_type'],
+            ])->queryData();
             $imgs = $this->saveTieBaImage($images);
             if ($imgs){
                 $text .= "<p>".implode('', $imgs)."</p>";
@@ -212,7 +212,9 @@ class BaiDuTieBa extends Component
     {
         $vids = [];
         foreach ($videos as $k => $v) {
-            $video_name = basename($v['video']);
+            $videoUrl = $v['video'];
+            $vids[] = "<video src='{$videoUrl}' controls='controls'>您的浏览器不支持 video 标签</video> <p class='text-danger'>视频来自第三方，会随着第三方删除而失效，请根据需要保存到本地</p>";
+            /*$video_name = basename($v['video']);
             if (strpos($video_name, '.png?t=') !== false) {
                 $_x = explode("?t=", $video_name);
                 $video_name = $_x[0];
@@ -220,12 +222,12 @@ class BaiDuTieBa extends Component
             $root = $this->upload_root . DIRECTORY_SEPARATOR . $video_name;
             $url = $this->upload_url . DIRECTORY_SEPARATOR . $video_name;
             if (!file_exists($root)) {
-                $fg_con = @file_get_contents($v['image']);
+                $fg_con = @file_get_contents($v['video']);
                 if ($fg_con) {
                     file_put_contents($root, $fg_con);
                 }
             }
-            $vids[] = "<video src='{$url}' controls='controls'>您的浏览器不支持 video 标签</video>";
+            $vids[] = "<video src='{$url}' controls='controls'>您的浏览器不支持 video 标签</video>";*/
 //            $fi = new \finfo(FILEINFO_MIME_TYPE);
 //            $mime_type = $fi->file($root);
         }
