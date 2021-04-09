@@ -26,8 +26,9 @@ return [
     'as console user login' => [
         'class' => \console\behaviors\ConsoleUserLogin::class,
         'only' => [
-            'test/test1',
             'job/ct',
+            'test/test1',
+            'test/test12',
         ],
     ],
     'params' => $params,

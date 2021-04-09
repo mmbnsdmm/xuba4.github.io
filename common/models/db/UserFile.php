@@ -21,6 +21,7 @@ use wodrow\yii2wtools\behaviors\Uuid;
  *
  * @property User $createdBy
  * @property User $updatedBy
+ * @property string $root
  * @property string $url
  * @property string $aburl
  * @property string $aliasurl
@@ -40,8 +41,6 @@ class UserFile extends \common\models\db\tables\UserFile
     const REG_R_TYPE_ABSOLUTELY= "/https?:\/\/[\w|\/|\.|\-]+/";
     const TEMPLATE_R_TYPE_FUN_FOR_ID= ":id";
 
-    protected $_extension;
-
     public function generateFilename()
     {
         $Y = date("Y");
@@ -50,7 +49,7 @@ class UserFile extends \common\models\db\tables\UserFile
         $H = date("H");
         $i = date("i");
         $s = date("s");
-        $this->filename = "{$Y}{$m}{$d}_{$H}{$i}{$s}_".\Yii::$app->security->generateRandomString().".{$this->_extension}";
+        $this->filename = "{$Y}{$m}{$d}_{$H}{$i}{$s}_".\Yii::$app->security->generateRandomString().".{$this->extension}";
         if (self::findOne(['filename' => $this->filename])){
             $this->generateFilename();
         }
@@ -65,11 +64,9 @@ class UserFile extends \common\models\db\tables\UserFile
     public function upload($content = null, $tmp_file = null)
     {
         $user = \Yii::$app->user->identity;
-//        $_path = "/user_files/{$user->id}/{$y}/{$m}/{$d}";
-//        $_path = "/user_files/{$y}{$m}{$d}_uid_{$user->id}";
         $_path = "/user_files/{$user->id}";
         $userFile = clone $this;
-        $userFile->extension = $this->_extension;
+        $userFile->extension = $this->extension;
         $userFile->generateFilename();
         $userFile->relation_path = $_path;
         $userFile->yii_alias_uploads_path = "@uploads_url";
@@ -162,7 +159,7 @@ class UserFile extends \common\models\db\tables\UserFile
                         $ufiles[] = $ufile;
                     }
                     foreach ($ufiles as $k => $v){
-                        $this->_extension = substr(strrchr($v['name'], '.'), 1);
+                        $this->extension = substr(strrchr($v['name'], '.'), 1);
                         $rurls[] = $this->upload(null, $v['tmp_name']);
                     }
                 }else{
@@ -190,7 +187,7 @@ class UserFile extends \common\models\db\tables\UserFile
             $r['msg'] = "信息匹配失败";
             return $r;
         }
-        $this->_extension = $mimes->getExtension($mime_type);
+        $this->extension = $mimes->getExtension($mime_type);
         $x= str_replace($result[1], '', $base64);
         $content = base64_decode($x);
         $r = $this->upload($content);
@@ -213,7 +210,7 @@ class UserFile extends \common\models\db\tables\UserFile
             }else{
                 $this->r_type = UserFile::R_TYPE_ABSOLUTELY;
                 $this->original_url = $url;
-                $this->_extension = substr(strrchr($url, '.'), 1);
+                $this->extension = substr(strrchr($url, '.'), 1);
                 $content = file_get_contents($url);
                 $r = $this->upload($content);
             }
@@ -278,6 +275,15 @@ class UserFile extends \common\models\db\tables\UserFile
     {
         return $this->hasOne(User::className(), ['id' => 'updated_by']);
     }
+
+    /**
+     * @return bool|string
+     */
+    public function getRoot()
+    {
+        return Yii::getAlias("{$this->yii_alias_uploads_root}{$this->relation_path}/{$this->filename}");
+    }
+
     /**
      * @return bool|string
      */
@@ -351,5 +357,16 @@ class UserFile extends \common\models\db\tables\UserFile
             return $userFile->aburl;
         }, $content);
         return $content;
+    }
+
+    /**
+     * @param $path
+     * @return null|static
+     */
+    public static function findByPath($path)
+    {
+        $filename = basename($path);
+        $userFile = static::findOne(['filename' => $filename]);
+        return $userFile;
     }
 }
