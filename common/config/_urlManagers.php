@@ -9,7 +9,8 @@
 $urlManagers = [
     'urlManagerHome' => [
         'class' => \yii\web\UrlManager::class,
-        'baseUrl' => YII_BASE_URL."/home",
+//        'baseUrl' => YII_BASE_URL."/home",
+        'baseUrl' => YII_BASE_URL,
         'hostInfo' => YII_BASE_URL,
         'enablePrettyUrl' => true,
         'showScriptName' => false,
