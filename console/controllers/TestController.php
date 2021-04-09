@@ -319,9 +319,9 @@ HTML;
         var_dump($content);
     }
 
-    public function actionTest12()
+    public function actionTest12($articleId = 0)
     {
-        $articles = Article::find()->where([">", 'id', 4])->all();
+        $articles = Article::find()->where([">", 'id', $articleId])->all();
         foreach ($articles as $k => $v) {
             var_dump($v->id);
             $content = UserFile::encodeContent($v->content);
