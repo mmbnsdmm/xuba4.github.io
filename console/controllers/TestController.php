@@ -321,28 +321,7 @@ HTML;
 
     public function actionTest12()
     {
-        /*$c = <<<HTML
-<p>这是怎么回事啊</p>
-<p><img class="img img-responsive" src="/storage/uploads/dev/baidu_tieba/4878377710/5a81b245d688d43f8c6852d9741ed21b0ff43b5e.jpg" alt=""></p>
-<p><img class="img img-responsive" src="http://xuba4.tc/storage/uploads/dev/baidu_tieba/4878377710/5a81b245d688d43f8c6852d9741ed21b0ff43b5e.jpg" alt=""></p>
-<p>如果还有需要的朋友直接加我qq吧    395196884</p>
-<p>加我的时候备注一下就行。      现在贴吧玩的少，回帖我可能不能及时看到。免得耽误大家。  需要的话直接加我qq就行。</p>
-HTML;
-        $reg = <<<REGEXP
-/src\=\"(https?\:\/\/[\w|\.|\-]+)?([\w|\/|\.|\-]+)\"/
-REGEXP;
-
-        $content = preg_replace_callback($reg, function ($matches){
-            $url = $matches[1];
-            $path = $matches[2];
-            var_dump($url);
-            var_dump($path);
-            return "src=\"{$url}\"";
-        }, $c);
-        var_dump($content);
-        var_dump(\Yii::getAlias("@wurl"));
-        exit;*/
-        $articles = Article::find()->where(['id' => 7])->all();
+        $articles = Article::find()->where([">", 'id', 4])->all();
         foreach ($articles as $k => $v) {
             var_dump($v->id);
             $content = UserFile::encodeContent($v->content);
@@ -352,28 +331,34 @@ REGEXP;
             try{
                 $content = preg_replace_callback($reg, function ($matches){
                     $path = $matches[2];
-                    var_dump($path);
                     $file = \Yii::getAlias("@wroot{$path}");
-                    $user = \Yii::$app->user->identity;
-                    $_path = "/user_files/{$user->id}";
-                    $userFile = new UserFile();
-                    $userFile->r_type = $userFile::R_TYPE_ABSOLUTELY;
-                    $userFile->extension = substr(strrchr(basename($path), '.'), 1);;
-                    $userFile->generateFilename();
-                    $userFile->relation_path = $_path;
-                    $userFile->yii_alias_uploads_path = "@uploads_url";
-                    $userFile->yii_alias_uploads_abpath = "@uploads_aburl";
-                    $userFile->yii_alias_uploads_root = "@uploads_root";
-                    $userFile->created_by = $userFile->updated_by = $user->id;
-                    $userFile->created_at = $userFile->updated_at = YII_BT_TIME;
-                    $userFile->status = $userFile::STATUS_UPLOADED;
-                    $uf_root = $userFile->root;
-                    if (!is_dir(dirname($uf_root))){
-                        FileHelper::createDirectory(dirname($uf_root));
+                    $userFile = UserFile::findOne(['original_url' => $path]);
+                    if (!$userFile){
+                        $user = \Yii::$app->user->identity;
+                        $_path = "/user_files/{$user->id}";
+                        $userFile = new UserFile();
+                        $userFile->original_url = $path;
+                        $userFile->r_type = $userFile::R_TYPE_ABSOLUTELY;
+                        $userFile->extension = substr(strrchr(basename($path), '.'), 1);;
+                        $userFile->generateFilename();
+                        $userFile->relation_path = $_path;
+                        $userFile->yii_alias_uploads_path = "@uploads_url";
+                        $userFile->yii_alias_uploads_abpath = "@uploads_aburl";
+                        $userFile->yii_alias_uploads_root = "@uploads_root";
+                        $userFile->created_by = $userFile->updated_by = $user->id;
+                        $userFile->created_at = $userFile->updated_at = YII_BT_TIME;
+                        $userFile->status = $userFile::STATUS_UPLOADED;
                     }
+                    $uf_root = $userFile->root;
+//                    if (!is_dir(dirname($uf_root))){
+//                        FileHelper::createDirectory(dirname($uf_root));
+//                    }
                     if (!$userFile->save()){
                         var_dump("移动文件数据保存失败:".Model::getModelError($userFile));exit;
                     }else{
+                        if (!file_exists($file)){
+                            var_dump("没有找到文件:{$file}");exit;
+                        }
                         if (!rename($file, $uf_root)){
                             var_dump("移动文件失败:{$file}");exit;
                         }
