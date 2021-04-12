@@ -344,6 +344,7 @@ REGEXP;
                 $content = preg_replace_callback($reg, function ($matches) use ($article, &$fileRollBack){
                     $path = $matches[2];
                     $file = \Yii::getAlias("@wroot{$path}");
+                    $file = str_replace('storage/uploads/prod/baidu_tieba', 'storage/prod/uploads/xuba3/baidu_tieba', $file);
                     $file = str_replace('storage/uploads/baidu_tieba', 'storage/prod/uploads/xuba3/baidu_tieba', $file);
                     if (!array_key_exists($file, $fileRollBack)){
                         if (!file_exists($file)){
