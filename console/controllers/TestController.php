@@ -326,76 +326,76 @@ HTML;
         var_dump($content);
     }
 
-    private function _fileRollBack($articleId)
-    {
-        foreach (\Yii::$app->cache->get("articleTest12-{$articleId}") as $k => $v) {
-            rename($v['from'], $v['to']);
-        }
-    }
-
     public function actionTest12($articleStartId = 1, $articleEndId = null)
     {
         $query = Article::find()->where([">=", 'id', $articleStartId]);
         if ($articleEndId !== null)$query->andWhere(["<=", 'id', $articleEndId]);
         $articles =$query->all();
         foreach ($articles as $k => $v) {
+            $article = $v;
             $fileRollBack = [];
             $trans = \Yii::$app->db->beginTransaction();
-            var_dump($v->id);
-            $content = UserFile::encodeContent($v->content);
+            var_dump($article->id);
+            $content = UserFile::encodeContent($article->content);
             $reg = <<<REGEXP
 /src\=\"(https?\:\/\/[\w|\.|\-]+)?([\w|\/|\\\|\.|\-]+)\"/
 REGEXP;
             try{
-                $content = preg_replace_callback($reg, function ($matches) use ($v, $fileRollBack){
+                $content = preg_replace_callback($reg, function ($matches) use ($article, &$fileRollBack){
                     $path = $matches[2];
                     $file = \Yii::getAlias("@wroot{$path}");
-                    $file = str_replace("storage/uploads/baidu_tieba", "storage/prod/uploads/xuba3/baidu_tieba", $file);
-                    if (!file_exists($file)){
-                        throw new \yii\console\Exception("没有找到文件:{$file}");
-                    }
-                    $userFile = UserFile::findOne(['original_url' => $path]);
-                    if (!$userFile){
-                        $user = \Yii::$app->user->identity;
-                        $_path = "/user_files/{$user->id}";
-                        $userFile = new UserFile();
-                        $userFile->original_url = $path;
-                        $userFile->r_type = $userFile::R_TYPE_ABSOLUTELY;
-                        $userFile->extension = substr(strrchr(basename($path), '.'), 1);;
-                        $userFile->generateFilename();
-                        $userFile->relation_path = $_path;
-                        $userFile->yii_alias_uploads_path = "@uploads_url";
-                        $userFile->yii_alias_uploads_abpath = "@uploads_aburl";
-                        $userFile->yii_alias_uploads_root = "@uploads_root";
-                        $userFile->created_by = $userFile->updated_by = $user->id;
-                        $userFile->created_at = $userFile->updated_at = YII_BT_TIME;
-                        $userFile->status = $userFile::STATUS_UPLOADED;
-                    }
-                    $uf_root = $userFile->root;
-                    if (!is_dir(dirname($uf_root))){
-                        FileHelper::createDirectory(dirname($uf_root));
-                    }
-                    if (!$userFile->save()){
-                        throw new \yii\console\Exception("移动文件数据保存失败:".Model::getModelError($userFile));
-                    }else{
-                        if (!rename($file, $uf_root)){
-                            throw new \yii\console\Exception("移动文件失败:rename('{$file}', '{$uf_root}')");
+                    $file = str_replace('storage/uploads/baidu_tieba', 'storage/prod/uploads/xuba3/baidu_tieba', $file);
+                    if (!array_key_exists($file, $fileRollBack)){
+                        if (!file_exists($file)){
+                            throw new \yii\console\Exception("没有找到文件:{$file}");
+                        }
+                        $userFile = UserFile::findOne(['original_url' => $path]);
+                        if (!$userFile){
+                            $user = \Yii::$app->user->identity;
+                            $_path = "/user_files/{$user->id}";
+                            $userFile = new UserFile();
+                            $userFile->original_url = $path;
+                            $userFile->r_type = $userFile::R_TYPE_ABSOLUTELY;
+                            $userFile->extension = substr(strrchr(basename($path), '.'), 1);;
+                            $userFile->generateFilename();
+                            $userFile->relation_path = $_path;
+                            $userFile->yii_alias_uploads_path = "@uploads_url";
+                            $userFile->yii_alias_uploads_abpath = "@uploads_aburl";
+                            $userFile->yii_alias_uploads_root = "@uploads_root";
+                            $userFile->created_by = $userFile->updated_by = $user->id;
+                            $userFile->created_at = $userFile->updated_at = YII_BT_TIME;
+                            $userFile->status = $userFile::STATUS_UPLOADED;
+                        }
+                        $uf_root = $userFile->root;
+                        if (!is_dir(dirname($uf_root))){
+                            FileHelper::createDirectory(dirname($uf_root));
+                        }
+                        if (!$userFile->save()){
+                            throw new \yii\console\Exception("移动文件数据保存失败:".Model::getModelError($userFile));
                         }else{
-                            $fileRollBack[] = ['form' => $uf_root, 'to' => $file];
-                            \Yii::$app->cache->set("articleTest12-{$v->id}", $fileRollBack);
+                            if (!rename($file, $uf_root)){
+                                throw new \yii\console\Exception("移动文件失败:rename('{$file}', '{$uf_root}')");
+                            }else{
+                                $fileRollBack[$file] = ['from' => $uf_root, 'to' => $file, 'src' => $userFile->funurl];
+                            }
                         }
                     }
-                    return "src=\"{$userFile->funurl}\"";
+                    return "src=\"{$fileRollBack[$file]['src']}\"";
                 }, $content);
-                $v->content = $content;
-                if (!$v->save()){
-                    throw new \yii\console\Exception("文章保存失败:".Model::getModelError($v));
+                $article->content = $content;
+                if (!$article->save()){
+                    throw new \yii\console\Exception("文章保存失败:".Model::getModelError($article));
                 }
                 $trans->commit();
-                \Yii::$app->cache->delete("articleTest12-{$v->id}");
+                \Yii::$app->cache->delete("articleTest12-{$article->id}");
             }catch (\yii\base\Exception $e){
                 $trans->rollBack();
-                $this->_fileRollBack($v->id);
+                if ($fileRollBack){
+                    foreach ($fileRollBack as $k1 => $v1) {
+                        var_dump("php -r \"rename('{$v1['from']}', '{$v1['to']}');\"");
+                        rename($v1['from'], $v1['to']);
+                    }
+                }
                 throw $e;
             }
         }
@@ -403,7 +403,8 @@ REGEXP;
 
     public function actionTest13()
     {
-        $f = "/www/wwwroot/bnsdmm/xuba4/web/storage/prod/uploads/xuba3/baidu_tieba/5986829561/e6b9292bd40735fa51f56f2893510fb30e2408bf.jpg";
+//        $f = "/www/wwwroot/bnsdmm/xuba4/web/storage/prod/uploads/xuba3/baidu_tieba/5986829561/e6b9292bd40735fa51f56f2893510fb30e2408bf.jpg";
+        $f = "/www/wwwroot/bnsdmm/xuba4/web/storage/prod/uploads/xuba3/baidu_tieba/5986829561/e6b9292bd407356f2893510fb30e2408bf.jpg";
 //        $f = "/home/wodrow/Test/orgi.jpg";
         $x = file_exists($f);
         var_dump($x);
