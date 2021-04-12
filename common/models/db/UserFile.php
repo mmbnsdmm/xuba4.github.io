@@ -38,7 +38,7 @@ class UserFile extends \common\models\db\tables\UserFile
     const R_TYPE_FUN = 4;
     const TEMPLATE_R_TYPE_FUN= "@USER_FILE_GET_{:id}";
     const REG_R_TYPE_FUN= "/\@USER_FILE_GET_\{(\d+)\}/";
-    const REG_R_TYPE_ABSOLUTELY= "/https?:\/\/[\w|\/|\.|\-]+/";
+    const REG_R_TYPE_ABSOLUTELY= "/https?:\/\/([\w|\/|\.|\-|:]+)/";
     const TEMPLATE_R_TYPE_FUN_FOR_ID= ":id";
 
     public function generateFilename()
