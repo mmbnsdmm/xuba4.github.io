@@ -396,6 +396,8 @@ REGEXP;
         var_dump($x);
 //        exit;
 //        rename($f,'/www/wwwroot/bnsdmm/xuba4/web/storage/prod/uploads/user_files/1/20210412_143021_0_VOy4rbMwPB9Gf0xAiCPz9Y3sAws0kK.jpg');
-        rename($f,'/home/wodrow/Test/tt.jpg');
+//        rename($f,'/home/wodrow/Test/tt.jpg');
+//        rename('/home/wodrow/Test/orgi.jpg', '/www/wwwroot/bnsdmm/xuba4/web/storage/prod/uploads/xuba3/baidu_tieba/5986829561/e6b9292bd40735fa51f56f2893510fb30e2408bf.jpg');
+        rename('/www/wwwroot/bnsdmm/xuba4/web/storage/prod/uploads/xuba3/baidu_tieba/5986829561/e6b9292bd40735fa51f56f2893510fb30e2408bf.jpg','/home/wodrow/Test/orgi.jpg');
     }
 }
