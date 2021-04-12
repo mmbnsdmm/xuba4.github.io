@@ -332,6 +332,7 @@ HTML;
         if ($articleEndId !== null)$query->andWhere(["<=", 'id', $articleEndId]);
         $articles =$query->all();
         foreach ($articles as $k => $v) {
+            $trans = \Yii::$app->db->beginTransaction();
             var_dump($v->id);
             $content = UserFile::encodeContent($v->content);
             $reg = <<<REGEXP
@@ -379,7 +380,9 @@ REGEXP;
                 if (!$v->save()){
                     var_dump("文章保存失败:".Model::getModelError($v));exit;
                 }
+                $trans->commit();
             }catch (\yii\console\Exception $e){
+                $trans->rollBack();
                 throw $e;
             }
         }
