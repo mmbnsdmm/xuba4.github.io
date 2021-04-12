@@ -427,7 +427,7 @@ REGEXP;
 
     public function actionTest14($startId = 1, $endId = null)
     {
-        $query = Article::find()->where([">=", 'id', $startId]);
+        $query = User::find()->where([">=", 'id', $startId]);
         if ($endId !== null)$query->andWhere(["<=", 'id', $endId]);
         $users = $query->all();
         foreach ($users as $k => $v) {
