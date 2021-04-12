@@ -26,8 +26,8 @@ $this->params['breadcrumbs'][] = ['label' =>  $this->title];
                     <tr>
                         <td>Mysql版本</td>
                         <td>
-                            主：<?php echo Yii::$app->db->master->pdo->getAttribute(\PDO::ATTR_SERVER_VERSION); ?>
-                            从：<?= Yii::$app->db->slave->pdo->getAttribute(\PDO::ATTR_SERVER_VERSION); ?>
+                            主：<?=Yii::$app->db->master?Yii::$app->db->master->dsn:"" ?>
+                            从：<?=Yii::$app->db->slave?Yii::$app->db->slave->dsn:"" ?>
                         </td>
                     </tr>
                     <tr>
