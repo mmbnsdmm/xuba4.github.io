@@ -321,6 +321,11 @@ class TestController extends Controller
         $content = <<<HTML
 <p>如下图，女孩的背景是足球场草坪，抠图之后衣服和鞋子的边缘都映射有少量的绿色，如何去除？如果用简单的hue saturation就把整个图像的颜色都变了，如何仅仅去除映射的少量绿色？</p><p><img class="img img-responsive" src="@USER_FILE_GET_{39}" alt=""><img class="img img-responsive" src="http://xuba4.tc/storage/dev/uploads/user_files/1/20210408_162250_b_oxRKycgIi77gGA2zHMn-nX30DZDFKI.jpg" alt=""></p><p>已经解决了，看看最后的作品：</p><p><img class="img img-responsive" src="http://xuba4.tc/storage/dev/uploads/user_files/1/20210408_162251_-dtRpkxfadOanBi-_5Mdko7Ws_YUtsf9.jpg" alt=""></p>
 HTML;
+        $content = <<<HTML
+<img src="@USER_FILE_GET_{39}">
+<img src="http://xuba4.tc/storage/dev/uploads/user_files/1/20210408_162250_b_oxRKycgIi77gGA2zHMn-nX30DZDFKI.jpg">
+<img src="http://xuba4.tc/storage/dev/uploads/user_files/1/20210408_162251_-dtRpkxfadOanBi-_5Mdko7Ws_YUtsf9.jpg">
+HTML;
 
         $content = UserFile::encodeContent($content);
         var_dump($content);
@@ -338,7 +343,7 @@ HTML;
             var_dump($article->id);
             $content = UserFile::encodeContent($article->content);
             $reg = <<<REGEXP
-/src\=\"(https?\:\/\/[\w|\.|\-]+)?([\w|\/|\\\|\.|\-]+)\"/
+/src\=\"(https?\:\/\/[\w|\.|\-|\:?]+)?([\w|\/|\\\|\.|\-]+)\"/
 REGEXP;
             try{
                 $content = preg_replace_callback($reg, function ($matches) use ($article, &$fileRollBack){
