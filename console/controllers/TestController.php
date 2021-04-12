@@ -307,6 +307,7 @@ class TestController extends Controller
             $v->yii_alias_uploads_abpath = $v->yii_alias_uploads_abpath?:"@uploads_aburl";
             $file = $v->root;
             if (!file_exists($file)){
+                var_dump($file);
                 $file = str_replace("/dev/", "/prod/", $file);
                 var_dump(file_exists($file));
                 exit;
@@ -340,7 +341,7 @@ REGEXP;
                 $content = preg_replace_callback($reg, function ($matches){
                     $path = $matches[2];
                     $file = \Yii::getAlias("@wroot{$path}");
-                    $file = str_replace("storage/uploads/baidu_tieba", "storage/uploads/prod/xuba3/baidu_tieba", $file);
+                    $file = str_replace("storage/uploads/baidu_tieba", "storage/prod/uploads/xuba3/baidu_tieba", $file);
                     if (!file_exists($file)){
                         var_dump("没有找到文件:{$file}");exit;
                     }
