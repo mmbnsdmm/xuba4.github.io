@@ -305,6 +305,12 @@ class TestController extends Controller
         $x = UserFile::find()->all();
         foreach ($x as $k => $v) {
             $v->yii_alias_uploads_abpath = $v->yii_alias_uploads_abpath?:"@uploads_aburl";
+            $file = $v->root;
+            if (!file_exists($file)){
+                $file = str_replace("/dev/", "/prod/", $file);
+                var_dump(file_exists($file));
+                exit;
+            }
             $v->save();
         }
     }
