@@ -319,13 +319,14 @@ HTML;
         var_dump($content);
     }
 
-    public function actionTest12($articleId = 0)
+    public function actionTest12($articleStartId = 1, $articleEndId = null)
     {
-        $articles = Article::find()->where([">", 'id', $articleId])->all();
+        $query = Article::find()->where([">=", 'id', $articleStartId]);
+        if ($articleEndId !== null)$query->andWhere(["<=", 'id', $articleEndId]);
+        $articles = Article::find()->all();
         foreach ($articles as $k => $v) {
             var_dump($v->id);
             $content = UserFile::encodeContent($v->content);
-            $content = str_replace("storage/uploads/baidu_tieba", "storage/uploads/prod/xuba3/baidu_tieba", $content);
             $reg = <<<REGEXP
 /src\=\"(https?\:\/\/[\w|\.|\-]+)?([\w|\/|\\\|\.|\-]+)\"/
 REGEXP;
@@ -333,6 +334,7 @@ REGEXP;
                 $content = preg_replace_callback($reg, function ($matches){
                     $path = $matches[2];
                     $file = \Yii::getAlias("@wroot{$path}");
+                    $file = str_replace("storage/uploads/baidu_tieba", "storage/uploads/prod/xuba3/baidu_tieba", $file);
                     if (!file_exists($file)){
                         var_dump("没有找到文件:{$file}");exit;
                     }
