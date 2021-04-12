@@ -370,7 +370,7 @@ REGEXP;
                     if (!$userFile->save()){
                         var_dump("移动文件数据保存失败:".Model::getModelError($userFile));exit;
                     }else{
-                        if (!rename("'{$file}'", "'{$uf_root}'")){
+                        if (!rename($file, $uf_root)){
                             var_dump("移动文件失败:{$file}");exit;
                         }
                     }
