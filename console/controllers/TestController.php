@@ -325,6 +325,7 @@ HTML;
         foreach ($articles as $k => $v) {
             var_dump($v->id);
             $content = UserFile::encodeContent($v->content);
+            $content = str_replace("storage/uploads", "storage/uploads/prod/xuba3/baidu_tieba", $content);
             $reg = <<<REGEXP
 /src\=\"(https?\:\/\/[\w|\.|\-]+)?([\w|\/|\\\|\.|\-]+)\"/
 REGEXP;
@@ -332,6 +333,9 @@ REGEXP;
                 $content = preg_replace_callback($reg, function ($matches){
                     $path = $matches[2];
                     $file = \Yii::getAlias("@wroot{$path}");
+                    if (!file_exists($file)){
+                        var_dump("没有找到文件:{$file}");exit;
+                    }
                     $userFile = UserFile::findOne(['original_url' => $path]);
                     if (!$userFile){
                         $user = \Yii::$app->user->identity;
@@ -356,9 +360,6 @@ REGEXP;
                     if (!$userFile->save()){
                         var_dump("移动文件数据保存失败:".Model::getModelError($userFile));exit;
                     }else{
-                        if (!file_exists($file)){
-                            var_dump("没有找到文件:{$file}");exit;
-                        }
                         if (!rename($file, $uf_root)){
                             var_dump("移动文件失败:{$file}");exit;
                         }
