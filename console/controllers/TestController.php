@@ -325,7 +325,7 @@ HTML;
         foreach ($articles as $k => $v) {
             var_dump($v->id);
             $content = UserFile::encodeContent($v->content);
-            $content = str_replace("storage/uploads", "storage/uploads/prod/xuba3/baidu_tieba", $content);
+            $content = str_replace("storage/uploads/baidu_tieba", "storage/uploads/xuba3/baidu_tieba", $content);
             $reg = <<<REGEXP
 /src\=\"(https?\:\/\/[\w|\.|\-]+)?([\w|\/|\\\|\.|\-]+)\"/
 REGEXP;
