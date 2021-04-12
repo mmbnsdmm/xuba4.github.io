@@ -390,8 +390,8 @@ REGEXP;
 
     public function actionTest13()
     {
-//        $f = "/www/wwwroot/bnsdmm/xuba4/web/storage/prod/uploads/xuba3/baidu_tieba/5986829561/e6b9292bd40735fa51f56f2893510fb30e2408bf.jpg";
-        $f = "/home/wodrow/Test/orgi.jpg";
+        $f = "/www/wwwroot/bnsdmm/xuba4/web/storage/prod/uploads/xuba3/baidu_tieba/5986829561/e6b9292bd40735fa51f56f2893510fb30e2408bf.jpg";
+//        $f = "/home/wodrow/Test/orgi.jpg";
         $x = file_exists($f);
         var_dump($x);
 //        exit;
