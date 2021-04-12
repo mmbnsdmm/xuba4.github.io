@@ -425,12 +425,17 @@ REGEXP;
 //        rename('/home/wodrow/Test/orgi.jpg', $f);
     }
 
-    public function actionTest14()
+    public function actionTest14($startId = 1, $endId = null)
     {
-        $users = User::find()->all();
+        $query = Article::find()->where([">=", 'id', $startId]);
+        if ($endId !== null)$query->andWhere(["<=", 'id', $endId]);
+        $users = $query->all();
         foreach ($users as $k => $v) {
             $user = $v;
             $user->avatar = str_replace("http://49.235.220.19:7053/static", "@static_aburl", $user->avatar);
+            var_dump($user->avatar);
+            $user->avatar = UserFile::encodeContent($user->avatar);
+            var_dump($user->avatar);
             $user->save();
         }
     }
