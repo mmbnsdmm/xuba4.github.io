@@ -364,9 +364,9 @@ REGEXP;
                         $userFile->status = $userFile::STATUS_UPLOADED;
                     }
                     $uf_root = $userFile->root;
-//                    if (!is_dir(dirname($uf_root))){
-//                        FileHelper::createDirectory(dirname($uf_root));
-//                    }
+                    if (!is_dir(dirname($uf_root))){
+                        FileHelper::createDirectory(dirname($uf_root));
+                    }
                     if (!$userFile->save()){
                         var_dump("移动文件数据保存失败:".Model::getModelError($userFile));exit;
                     }else{
@@ -397,7 +397,7 @@ REGEXP;
 //        exit;
 //        rename($f,'/www/wwwroot/bnsdmm/xuba4/web/storage/prod/uploads/user_files/1/20210412_143021_0_VOy4rbMwPB9Gf0xAiCPz9Y3sAws0kK.jpg');
 //        rename($f,'/home/wodrow/Test/tt.jpg');
-        rename($f,'/home/wodrow/Test/orgi.jpg');
-        rename('/home/wodrow/Test/orgi.jpg', $f);
+//        rename($f,'/home/wodrow/Test/orgi.jpg');
+//        rename('/home/wodrow/Test/orgi.jpg', $f);
     }
 }
