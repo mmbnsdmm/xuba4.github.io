@@ -323,7 +323,7 @@ HTML;
     {
         $query = Article::find()->where([">=", 'id', $articleStartId]);
         if ($articleEndId !== null)$query->andWhere(["<=", 'id', $articleEndId]);
-        $articles = Article::find()->all();
+        $articles =$query->all();
         foreach ($articles as $k => $v) {
             var_dump($v->id);
             $content = UserFile::encodeContent($v->content);
