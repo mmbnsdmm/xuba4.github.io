@@ -390,9 +390,11 @@ REGEXP;
 
     public function actionTest13()
     {
-        $x = file_exists("/www/wwwroot/bnsdmm/xuba4/web/storage/uploads/prod/xuba3/baidu_tieba/5986829561/e6b9292bd40735fa51f56f2893510fb30e2408bf.jpg");
+        $f = "/www/wwwroot/bnsdmm/xuba4/web/storage/uploads/prod/xuba3/baidu_tieba/5986829561/e6b9292bd40735fa51f56f2893510fb30e2408bf.jpg";
+        $x = file_exists($f);
         var_dump($x);
 //        exit;
-        rename("/www/wwwroot/bnsdmm/xuba4/web/storage/uploads/prod/xuba3/baidu_tieba/5986829561/e6b9292bd40735fa51f56f2893510fb30e2408bf.jpg","/www/wwwroot/bnsdmm/xuba4/web/storage/dev/uploads/user_files/1/20210412_130047_qKuwd111ijuq4XWdT5mzQJoL0p2hpH4O.jpg");
+//        rename($f,"/www/wwwroot/bnsdmm/xuba4/web/storage/dev/uploads/user_files/1/20210412_130047_qKuwd111ijuq4XWdT5mzQJoL0p2hpH4O.jpg");
+        rename($f,'/www/wwwroot/bnsdmm/xuba4/web/storage/prod/uploads/user_files/1/20210412_143021_0_VOy4rbMwPB9Gf0xAiCPz9Y3sAws0kK.jpg');
     }
 }
