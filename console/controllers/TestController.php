@@ -342,13 +342,22 @@ HTML;
 REGEXP;
             try{
                 $content = preg_replace_callback($reg, function ($matches) use ($article, &$fileRollBack){
+                    $domain = $matches[1];
                     $path = $matches[2];
                     $file = \Yii::getAlias("@wroot{$path}");
                     $file = str_replace('storage/uploads/prod/baidu_tieba', 'storage/prod/uploads/xuba3/baidu_tieba', $file);
                     $file = str_replace('storage/uploads/baidu_tieba', 'storage/prod/uploads/xuba3/baidu_tieba', $file);
                     if (!array_key_exists($file, $fileRollBack)){
                         if (!file_exists($file)){
-                            throw new \yii\console\Exception("没有找到文件:{$file}");
+                            if ($domain){
+                                $ips = ["120.92.150.43", "49.235.220.19", "121.37.179.86"];
+                                foreach ($ips as $k1 => $v1) {
+                                    if(strpos($path, $v1) !== false){
+                                        throw new \yii\console\Exception("没有找到文件:{$file}");
+                                    }
+                                }
+                                return $matches[0];
+                            }
                         }
                         $userFile = UserFile::findOne(['original_url' => $path]);
                         if (!$userFile){
