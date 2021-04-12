@@ -424,4 +424,14 @@ REGEXP;
 //        rename($f,'/home/wodrow/Test/orgi.jpg');
 //        rename('/home/wodrow/Test/orgi.jpg', $f);
     }
+
+    public function actionTest14()
+    {
+        $users = User::find()->all();
+        foreach ($users as $k => $v) {
+            $user = $v;
+            $user->avatar = str_replace("http://49.235.220.19:7053/static", "@static_aburl", $user->avatar);
+            $user->save();
+        }
+    }
 }

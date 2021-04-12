@@ -214,7 +214,6 @@ class ApiTool extends Component
     public function getRandomAvatarUrl()
     {
         $random = rand(1001, 2387);
-        $baseUrl = \Yii::getAlias("@static_url/avatars");
-        return "{$this->baseUri}{$baseUrl}/{$random}.jpg";
+        return "@static_aburl/avatars/{$random}.jpg";
     }
 }
