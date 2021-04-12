@@ -37,7 +37,7 @@ Vue.prototype.$jsQR = jsQR;
 import Tool from '@/common/tool'
 Vue.prototype.$tool = Tool;
 
-import Conf from '@/common/conf'
+import Conf from '@/common/initConf'
 Vue.prototype.$conf = Conf;
 
 import store from '@/common/store'

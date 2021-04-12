@@ -5,29 +5,9 @@
     <title>YY故事汇</title>
 </head>
 <body>
-<script language="javascript" type="text/javascript">
-    function IsPC() {
-        let userAgentInfo = navigator.userAgent;
-        let Agents = ["Android", "iPhone",
-            "SymbianOS", "Windows Phone",
-            "iPad", "iPod"];
-        let flag = true;
-        for (let v = 0; v < Agents.length; v++) {
-            if (userAgentInfo.indexOf(Agents[v]) > 0) {
-                flag = false;
-                break;
-            }
-        }
-        return flag;
-    }
-    let flag = IsPC();
-    if (flag){}else{
-        window.location.href="h5/index.html";
-    }
-</script>
-<div class="container">
+<div class="container" id="app">
     <div style="margin-top: 50px;">
-        <iframe width="360" height="720" src="h5/index.html" class="pull-right"></iframe>
+        <iframe width="360" height="720" :src="rSrc" class="pull-right"></iframe>
     </div>
 </div>
 <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
@@ -39,5 +19,46 @@
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="./src/common/conf.js"></script>
+<script language="javascript" type="text/javascript">
+    let Index = new Vue({
+        el: '#app',
+        name: "Index",
+        data: function () {
+            return {
+                rSrc: "h5/index.html"
+            };
+        },
+        mounted: function () {
+            let _this = this;
+            let _hostname = window.location.hostname;
+            console.log(_hostname);
+            if (!_hostname.includes(["mmbnsdmm.gitee.io"])){
+                _this.rSrc = "dist/build/h5/index.html";
+            }
+            let flag = _this.isPc();
+            if (flag){}else{
+                window.location.href=_this.rSrc;
+            }
+        },
+        methods: {
+            isPc: function () {
+                let userAgentInfo = navigator.userAgent;
+                let Agents = ["Android", "iPhone",
+                    "SymbianOS", "Windows Phone",
+                    "iPad", "iPod"];
+                let flag = true;
+                for (let v = 0; v < Agents.length; v++) {
+                    if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                        flag = false;
+                        break;
+                    }
+                }
+                return flag;
+            }
+        }
+    });
+</script>
 </body>
 </html>

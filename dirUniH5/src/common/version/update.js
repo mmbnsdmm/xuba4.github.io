@@ -1,5 +1,5 @@
 import Tool from '../tool'
-import Conf from '../conf'
+import Conf from '../initConf'
 let appTypeMap = {
     android: "安卓",
     ios: "苹果"

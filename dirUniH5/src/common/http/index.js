@@ -1,4 +1,4 @@
-import Conf from '../conf.js'
+import Conf from '../initConf.js'
 let http = {
     post: function(uri = null, formParams = {}, isAsync = true, successBack, errorBack){
         let url = Conf.apiUrl + uri;

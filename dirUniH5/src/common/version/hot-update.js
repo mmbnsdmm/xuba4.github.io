@@ -1,5 +1,5 @@
 // #ifdef APP-PLUS
-import Conf from '../conf'
+import Conf from '../initConf'
 uni.request({  
     url: Conf.apiUrl + "/public/get-last-vue-app",
     data: {
