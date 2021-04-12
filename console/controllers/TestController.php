@@ -432,9 +432,12 @@ REGEXP;
         $users = $query->all();
         foreach ($users as $k => $v) {
             $user = $v;
-            $user->avatar = str_replace("http://49.235.220.19:7053/static", "@static_aburl", $user->avatar);
-            $user->avatar = UserFile::encodeContent($user->avatar);
-            $user->save();
+            $user->avatar = str_replace("http://49.235.220.19:65108/static", "@static_aburl", $user->avatar);
+            if ($user->save()){
+                var_dump($user->avatar);
+            }else{
+                var_dump($user->errors);exit;
+            }
         }
     }
 }
