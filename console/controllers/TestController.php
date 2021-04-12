@@ -402,7 +402,6 @@ REGEXP;
                     throw new \yii\console\Exception("文章保存失败:".Model::getModelError($article));
                 }
                 $trans->commit();
-                \Yii::$app->cache->delete("articleTest12-{$article->id}");
             }catch (\yii\base\Exception $e){
                 $trans->rollBack();
                 if ($fileRollBack){
