@@ -343,7 +343,6 @@ class UserFile extends \common\models\db\tables\UserFile
     public static function encodeContent($content)
     {
         $content = preg_replace_callback(self::REG_R_TYPE_ABSOLUTELY, function ($matches){
-            var_dump($matches);
             $url = $matches[0];
             $domain = $matches[1];
             if ($domain){
