@@ -326,12 +326,20 @@ HTML;
         var_dump($content);
     }
 
+    private function _fileRollBack($articleId)
+    {
+        foreach (\Yii::$app->cache->get("articleTest12-{$articleId}") as $k => $v) {
+            rename($v['from'], $v['to']);
+        }
+    }
+
     public function actionTest12($articleStartId = 1, $articleEndId = null)
     {
         $query = Article::find()->where([">=", 'id', $articleStartId]);
         if ($articleEndId !== null)$query->andWhere(["<=", 'id', $articleEndId]);
         $articles =$query->all();
         foreach ($articles as $k => $v) {
+            $fileRollBack = [];
             $trans = \Yii::$app->db->beginTransaction();
             var_dump($v->id);
             $content = UserFile::encodeContent($v->content);
@@ -339,12 +347,12 @@ HTML;
 /src\=\"(https?\:\/\/[\w|\.|\-]+)?([\w|\/|\\\|\.|\-]+)\"/
 REGEXP;
             try{
-                $content = preg_replace_callback($reg, function ($matches){
+                $content = preg_replace_callback($reg, function ($matches) use ($v, $fileRollBack){
                     $path = $matches[2];
                     $file = \Yii::getAlias("@wroot{$path}");
                     $file = str_replace("storage/uploads/baidu_tieba", "storage/prod/uploads/xuba3/baidu_tieba", $file);
                     if (!file_exists($file)){
-                        var_dump("没有找到文件:{$file}");exit;
+                        throw new \yii\console\Exception("没有找到文件:{$file}");
                     }
                     $userFile = UserFile::findOne(['original_url' => $path]);
                     if (!$userFile){
@@ -368,21 +376,26 @@ REGEXP;
                         FileHelper::createDirectory(dirname($uf_root));
                     }
                     if (!$userFile->save()){
-                        var_dump("移动文件数据保存失败:".Model::getModelError($userFile));exit;
+                        throw new \yii\console\Exception("移动文件数据保存失败:".Model::getModelError($userFile));
                     }else{
                         if (!rename($file, $uf_root)){
-                            var_dump("移动文件失败:rename('{$file}', '{$uf_root}')");exit;
+                            throw new \yii\console\Exception("移动文件失败:rename('{$file}', '{$uf_root}')");
+                        }else{
+                            $fileRollBack[] = ['form' => $uf_root, 'to' => $file];
+                            \Yii::$app->cache->set("articleTest12-{$v->id}", $fileRollBack);
                         }
                     }
                     return "src=\"{$userFile->funurl}\"";
                 }, $content);
                 $v->content = $content;
                 if (!$v->save()){
-                    var_dump("文章保存失败:".Model::getModelError($v));exit;
+                    throw new \yii\console\Exception("文章保存失败:".Model::getModelError($v));
                 }
                 $trans->commit();
-            }catch (\yii\console\Exception $e){
+                \Yii::$app->cache->delete("articleTest12-{$v->id}");
+            }catch (\yii\base\Exception $e){
                 $trans->rollBack();
+                $this->_fileRollBack($v->id);
                 throw $e;
             }
         }
