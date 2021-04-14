@@ -351,6 +351,7 @@ REGEXP;
                     $path = $matches[2];
                     $file = \Yii::getAlias("@wroot{$path}");
                     $file = str_replace('storage/uploads/prod/baidu_tieba', 'storage/prod/uploads/xuba3/baidu_tieba', $file);
+                    $file = str_replace('storage/uploads/prod/xuba3/baidu_tieba', 'storage/prod/uploads/xuba3/baidu_tieba', $file);
                     $file = str_replace('storage/uploads/baidu_tieba', 'storage/prod/uploads/xuba3/baidu_tieba', $file);
                     if (!array_key_exists($file, $fileRollBack)){
                         if (!file_exists($file)){
@@ -443,5 +444,11 @@ REGEXP;
                 var_dump($user->errors);exit;
             }
         }
+    }
+
+    public function actionTest15()
+    {
+        $x = Article::find()->select(['content'])->where(['id' => 13])->one();
+        var_dump($x->toArray());
     }
 }
