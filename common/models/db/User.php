@@ -300,7 +300,9 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
         if (parent::beforeSave($insert)){
             $this->avatar = UserFile::encodeContent($this->avatar);
             $this->weixin_exceptional_url = UserFile::encodeContent($this->weixin_exceptional_url);
+            $this->weixin_exceptional_code = UserFile::encodeContent($this->weixin_exceptional_code);
             $this->alipay_exceptional_url = UserFile::encodeContent($this->alipay_exceptional_url);
+            $this->alipay_exceptional_code = UserFile::encodeContent($this->alipay_exceptional_code);
             return true;
         }else{
             return false;
@@ -322,7 +324,9 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
         parent::afterFind();
         $this->avatar = \Yii::getAlias(UserFile::decodeContent($this->avatar));
         $this->weixin_exceptional_url = UserFile::decodeContent($this->weixin_exceptional_url);
+        $this->weixin_exceptional_code = UserFile::decodeContent($this->weixin_exceptional_code);
         $this->alipay_exceptional_url = UserFile::decodeContent($this->alipay_exceptional_url);
+        $this->alipay_exceptional_code = UserFile::decodeContent($this->alipay_exceptional_code);
     }
 
     public function afterSave($insert, $changedAttributes)

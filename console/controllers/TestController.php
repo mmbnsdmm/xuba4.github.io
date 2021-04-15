@@ -440,6 +440,10 @@ REGEXP;
             $user->avatar = str_replace("http://49.235.220.19:65108/static", "@static_aburl", $user->avatar);
             if ($user->save()){
                 var_dump($user->avatar);
+                var_dump($user->alipay_exceptional_code);
+                var_dump($user->alipay_exceptional_url);
+                var_dump($user->weixin_exceptional_code);
+                var_dump($user->weixin_exceptional_url);
             }else{
                 var_dump($user->errors);exit;
             }
