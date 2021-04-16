@@ -362,7 +362,7 @@ class UserFile extends \common\models\db\tables\UserFile
             $userFile = UserFile::findOne(['filename' => $filename]);
             return $userFile?$userFile->funurl:$url;
         }, $content);
-        return $content?:null;
+        return $content;
     }
 
     public static function decodeContent($content)
