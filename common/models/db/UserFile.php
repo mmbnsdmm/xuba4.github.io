@@ -342,35 +342,39 @@ class UserFile extends \common\models\db\tables\UserFile
 
     public static function encodeContent($content)
     {
-        $content = preg_replace_callback(self::REG_R_TYPE_ABSOLUTELY, function ($matches){
-            $url = $matches[0];
-            $domain = $matches[1];
-            if ($domain){
-                $ips = ["120.92.150.43", "49.235.220.19", "121.37.179.86"];
-                $pp = false;
-                foreach ($ips as $k1 => $v1) {
-                    if(strpos($domain, $v1) === false){}else{
-                        $pp = true;
-                        break;
+        if ($content){
+            $content = preg_replace_callback(self::REG_R_TYPE_ABSOLUTELY, function ($matches){
+                $url = $matches[0];
+                $domain = $matches[1];
+                if ($domain){
+                    $ips = ["120.92.150.43", "49.235.220.19", "121.37.179.86"];
+                    $pp = false;
+                    foreach ($ips as $k1 => $v1) {
+                        if(strpos($domain, $v1) === false){}else{
+                            $pp = true;
+                            break;
+                        }
+                    }
+                    if ($pp){}else{
+                        return $url;
                     }
                 }
-                if ($pp){}else{
-                    return $url;
-                }
-            }
-            $filename = basename($url);
-            $userFile = UserFile::findOne(['filename' => $filename]);
-            return $userFile?$userFile->funurl:$url;
-        }, $content);
+                $filename = basename($url);
+                $userFile = UserFile::findOne(['filename' => $filename]);
+                return $userFile?$userFile->funurl:$url;
+            }, $content);
+        }
         return $content;
     }
 
     public static function decodeContent($content)
     {
-        $content = preg_replace_callback(self::REG_R_TYPE_FUN, function ($matches){
-            $userFile = UserFile::findOne($matches[1]);
-            return $userFile->aburl;
-        }, $content);
+        if ($content){
+            $content = preg_replace_callback(self::REG_R_TYPE_FUN, function ($matches){
+                $userFile = UserFile::findOne($matches[1]);
+                return $userFile->aburl;
+            }, $content);
+        }
         return $content;
     }
 
