@@ -116,7 +116,7 @@ class JobController extends Controller
      * php yii job/ct
      * @param $url
      */
-    public function actionCt($url)
+    public function actionCt($url, $saveAll = 0)
     {
         $spiderBaiDuTieBa = new BaiDuTieBa();
         $spiderBaiDuTieBa->url = $url;
@@ -137,7 +137,14 @@ class JobController extends Controller
         }
         $postIds = Tools::isJson($article->tieba_post_ids)?:[];
         foreach ($list as $k => $v) {
-            if ($v['author_id'] == $spiderBaiDuTieBa->author_id){
+            if ($saveAll == 0){
+                if ($v['author_id'] == $spiderBaiDuTieBa->author_id){
+                    if (!in_array($v['post_id'], $postIds)){
+                        $postIds[] = $v['post_id'];
+                        $article->content .= $v['text'];
+                    }
+                }
+            }else{
                 if (!in_array($v['post_id'], $postIds)){
                     $postIds[] = $v['post_id'];
                     $article->content .= $v['text'];
