@@ -66,7 +66,7 @@ class ApiTool extends Component
     {
         $form_params['token'] = $user->token;
         $form_params['timestamp'] = YII_BT_TIME;
-        $form_params['nonce'] = $form_params['timestamp'].rand(1000, 4000);
+        $form_params['nonce'] = $form_params['timestamp'].rand(10000000, 40000000);
         $p = $form_params;
         $p['key'] = $user->key;
         ksort($p);
