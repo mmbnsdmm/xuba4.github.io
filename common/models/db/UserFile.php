@@ -347,10 +347,15 @@ class UserFile extends \common\models\db\tables\UserFile
             $domain = $matches[1];
             if ($domain){
                 $ips = ["120.92.150.43", "49.235.220.19", "121.37.179.86"];
+                $pp = false;
                 foreach ($ips as $k1 => $v1) {
-                    if(strpos($domain, $v1) === false){
-                        return $matches[0];
+                    if(strpos($domain, $v1) === false){}else{
+                        $pp = true;
+                        break;
                     }
+                }
+                if ($pp){}else{
+                    return $url;
                 }
             }
             $filename = basename($url);
