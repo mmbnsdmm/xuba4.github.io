@@ -338,6 +338,7 @@ HTML;
         $articles =$query->all();
         foreach ($articles as $k => $v) {
             $article = $v;
+            $article->detachBehavior('timestamp');
             $fileRollBack = [];
             $trans = \Yii::$app->db->beginTransaction();
             var_dump($article->id);
