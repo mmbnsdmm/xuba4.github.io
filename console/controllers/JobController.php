@@ -118,6 +118,7 @@ class JobController extends Controller
      */
     public function actionCt($url, $saveAll = 0)
     {
+        ini_set('max_execution_time', '0');
         $spiderBaiDuTieBa = new BaiDuTieBa();
         $spiderBaiDuTieBa->url = $url;
         $spiderBaiDuTieBa->is_console = 1;
