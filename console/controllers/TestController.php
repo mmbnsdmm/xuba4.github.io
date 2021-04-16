@@ -456,4 +456,38 @@ REGEXP;
         $x = Article::find()->select(['content'])->where(['id' => 13])->one();
         var_dump($x->toArray());
     }
+
+    public function actionTest16()
+    {
+        $userfiles = \Yii::$app->dbXuba3->createCommand("select * from user_file")->queryAll();
+        $userFile = new UserFile();
+        foreach ($userfiles as $k => $v){
+            $original_url = "{$v['id']}----{$v['filename']}";
+            if (UserFile::findOne(['original_url' => $original_url])){
+                var_dump("has:{$v['id']}");
+            }else{
+                $uf = clone $userFile;
+                $uf->filename = $v['filename'];
+                $uf->extension = $v['extension'];
+                $uf->mime_type = $v['mime_type'];
+                $uf->relation_path = $v['relation_path'];
+                $uf->yii_alias_uploads_path = $v['yii_alias_uploads_path'];
+                $uf->yii_alias_uploads_root = $v['yii_alias_uploads_root'];
+                $uf->yii_alias_uploads_abpath = "@uploads_aburl";
+                $uf->size = $v['size'];
+                $uf->created_by = $v['created_by'];
+                $uf->updated_by = $v['updated_by'];
+                $uf->created_at = $v['created_at'];
+                $uf->updated_at = $v['updated_at'];
+                $uf->status = $v['status'];
+                $uf->r_type = $uf::R_TYPE_ABSOLUTELY;
+                $uf->original_url = $original_url;
+                if ($uf->save()){
+                    var_dump($uf->funurl);
+                }else{
+                    var_dump($uf->errors);
+                }
+            }
+        }
+    }
 }
