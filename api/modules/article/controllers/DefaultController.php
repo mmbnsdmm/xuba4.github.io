@@ -139,7 +139,7 @@ class DefaultController extends Controller
         $appendData = ['list' => [], 'page' => $page, 'page_size' => $page_size, 'total' => 0];
         $limit = $page_size;
         $offset = $limit * ($page - 1);
-        $query = Article::find();
+        $query = Article::find()->select(['title', 'id', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by', 'get_password', 'is_boutique', 'create_type']);
         if ($showUser === null){
             if ($json_filter_params){
                 $filter_params = json_decode($json_filter_params, true);

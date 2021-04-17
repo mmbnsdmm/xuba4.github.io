@@ -453,7 +453,8 @@ REGEXP;
 
     public function actionTest15()
     {
-        $x = Article::find()->select(['content'])->where(['id' => 13])->one();
+        $x = Article::find()->select(['title', 'id', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by', 'get_password', 'min_level', 'min_integral', 'is_boutique', 'create_type', 'tieba_url', 'tieba_post_ids', 'tieba_author_id', 'tieba_author_name'])->where(['id' => 13])->one();
+        var_dump($x->createdBy->toArray());
         var_dump($x->toArray());
     }
 
