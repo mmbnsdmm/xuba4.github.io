@@ -5,9 +5,11 @@
     <title>YY故事汇</title>
 </head>
 <body>
-<div class="container" id="app">
+<div class="container" id="app" v-cloak v-show="isPc">
     <div style="margin-top: 50px;">
-        <iframe width="360" height="720" :src="rSrc" class="pull-right"></iframe>
+        <iframe width="360" height="720" :src="rSrc" class="pull-right">
+            <p>你的浏览器不支持iframe</p>
+        </iframe>
     </div>
 </div>
 <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
@@ -26,35 +28,26 @@
         name: "Index",
         data: function () {
             return {
+                isPc: true,
                 rSrc: "h5/index.html"
             };
         },
         mounted: function () {
             let _this = this;
             let _hostname = window.location.hostname;
-            console.log(_hostname);
             if (!_hostname.includes(["mmbnsdmm.gitee.io"])){
                 _this.rSrc = "dist/build/h5/index.html";
+                // _this.rSrc = "http://127.0.0.1:8080";
             }
-            let flag = _this.isPc();
-            if (flag){}else{
-                window.location.href=_this.rSrc;
-            }
-        },
-        methods: {
-            isPc: function () {
-                let userAgentInfo = navigator.userAgent;
-                let Agents = ["Android", "iPhone",
-                    "SymbianOS", "Windows Phone",
-                    "iPad", "iPod"];
-                let flag = true;
-                for (let v = 0; v < Agents.length; v++) {
-                    if (userAgentInfo.indexOf(Agents[v]) > 0) {
-                        flag = false;
-                        break;
-                    }
+            let userAgentInfo = navigator.userAgent;
+            let Agents = ["Android", "iPhone",
+                "SymbianOS", "Windows Phone",
+                "iPad", "iPod"];
+            for (let v = 0; v < Agents.length; v++) {
+                if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                    _this.isPc = false;
+                    window.location.href=_this.rSrc;
                 }
-                return flag;
             }
         }
     });
