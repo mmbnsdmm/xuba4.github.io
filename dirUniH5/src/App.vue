@@ -1,16 +1,16 @@
 <script>
 	export default {
-		onLaunch: function() {
-            uni.onTabBarMidButtonTap(function () {
-                console.log(123)
-            })
-		},
-		onShow: function() {
-			// console.log('App Show')
-		},
-		onHide: function() {
-			// console.log('App Hide')
-		}
+    onLaunch: function() {
+      uni.onTabBarMidButtonTap(function () {
+          console.log(123)
+      })
+    },
+    onShow: function() {
+      // console.log('App Show')
+    },
+    onHide: function() {
+      // console.log('App Hide')
+    }
 	}
 </script>
 
