@@ -13,6 +13,7 @@ use yii\helpers\ArrayHelper;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use wodrow\yii2wtools\behaviors\Uuid;
+use wodrow\yii2wtools\tools\ArrayHelper as ToolsArrayHelper;
 
 /**
  * This is the model class for table "{{%user_file}}".
@@ -66,8 +67,10 @@ class UserFile extends \common\models\db\tables\UserFile
     {
         $user = \Yii::$app->user->identity;
         $_path = "/user_files/{$user->id}";
+        $extension = $this->extension;
+        list($ext, $query) = ToolsArrayHelper::str2arr($extension, "?");
         $userFile = clone $this;
-        $userFile->extension = $this->extension;
+        $userFile->extension = $ext;
         $userFile->generateFilename();
         $userFile->relation_path = $_path;
         $userFile->yii_alias_uploads_path = "@uploads_url";
