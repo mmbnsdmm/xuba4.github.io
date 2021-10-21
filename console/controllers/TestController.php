@@ -13,6 +13,7 @@ use common\models\db\AdminAuthAssignment;
 use common\models\db\AdminAuthItem;
 use common\models\db\AdminAuthItemChild;
 use common\models\db\Article;
+use common\models\db\Log;
 use common\models\db\SearchIndex;
 use common\models\db\User;
 use common\models\db\UserFile;
@@ -490,5 +491,18 @@ REGEXP;
                 }
             }
         }
+    }
+    
+    public function actionTest17()
+    {
+        throw new \Exception("dfasgdgd");
+    }
+
+    public function actionTest18()
+    {
+        $log = Log::findOne(6917);
+//        $log->message = "gasdgahgadf";
+//        $log->save();
+        var_dump($log->message);
     }
 }

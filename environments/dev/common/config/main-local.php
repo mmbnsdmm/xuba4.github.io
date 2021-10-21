@@ -3,10 +3,24 @@ return [
     'components' => [
         'db' => [
             'class' => "yii\db\Connection",
-            'dsn' => "mysql:host=127.0.0.1;port=3306;dbname=_inityii",
-            'username' => "",
-            'password' => "",
+//            'dsn' => "mysql:host=127.0.0.1;port=3306;dbname=_inityii",
+//            'username' => "",
+//            'password' => "",
             'charset' => "utf8mb4",
+            'masterConfig' => [
+                'username' => '',
+                'password' => '',
+            ],
+            'masters' => [
+                ['dsn' => 'mysql:host=127.0.0.1;port=3306;dbname=_inityii'],
+            ],
+            'slaveConfig' => [
+                'username' => '',
+                'password' => '',
+            ],
+            'slaves' => [
+                ['dsn' => 'mysql:host=127.0.0.1;port=3306;dbname=_inityii'],
+            ],
         ],
         'dbXuba3' => [
             'class' => "yii\db\Connection",
