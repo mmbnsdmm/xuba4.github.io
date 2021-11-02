@@ -43,8 +43,18 @@
 # windows thumbnail cache
 Thumbs.db
 
-# 宝塔
+# phpstudy
+/nginx.htaccess
 /.htaccess
+/web/nginx.htaccess
+/web/.htaccess
+
+# 宝塔
+###/.htaccess
 /.user.ini
 /404.html
 /index.html
+###/web/.htaccess
+/web/.user.ini
+/web/404.html
+/web/index.html
