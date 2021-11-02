@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@dcloudio/uni-app-plus": "^2.0.0-28320200727001",
+    "@dcloudio/uni-cli-i18n": "^2.0.0-32920210927002",
     "@dcloudio/uni-h5": "^2.0.0-28320200727001",
     "@dcloudio/uni-helper-json": "*",
     "@dcloudio/uni-mp-360": "^2.0.0-28320200727001",
@@ -54,6 +55,7 @@
     "@dcloudio/uni-stat": "^2.0.0-28320200727001",
     "@packy-tang/vue-tinymce": "^1.1.0",
     "@tinymce/tinymce-vue": "^3.2.2",
+    "@vue/cli": "^4.5.15",
     "avue-plugin-ueditor": "^0.1.5",
     "bootstrap": "^3.4.1",
     "chart.js": "^2.9.3",
