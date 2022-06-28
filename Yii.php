@@ -47,6 +47,7 @@ Yii::$container = new yii\di\Container;
  * @property \common\components\UniApp $uniApp
  * @property \yii\db\Connection $dbXuba3
  * @property \yii\db\Connection $dbXuba2
+ * @property \yii\elasticsearch\Connection $elasticsearch
  * @property string $name
  */
 abstract class BaseApplication extends yii\base\Application

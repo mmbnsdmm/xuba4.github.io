@@ -43,7 +43,8 @@
         "yiizh/yii2-cdn": "0.1.1",
         "yiisoft/yii2-queue": "2.3.2",
         "liyuze/yii2-ztree": "1.0.0",
-        "symfony/browser-kit": "4.4.37"
+        "symfony/browser-kit": "4.4.37",
+        "yiisoft/yii2-elasticsearch": "2.1.2"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "2.1.15",
