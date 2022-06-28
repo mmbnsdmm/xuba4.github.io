@@ -185,35 +185,35 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
     public function getTags()
     {
         return \Yii::$app->cache->getOrSet('User-getTags-'.$this->id, function () {
-            return $this->hasMany(Tag::className(), ['id' => 'tag_id'])->viaTable('{{%user_tag}}', ['created_by' => 'id']) ?: [];
+            return $this->hasMany(Tag::className(), ['id' => 'tag_id'])->viaTable('{{%user_tag}}', ['created_by' => 'id']);
         });
     }
 
     public function getArticles()
     {
         return \Yii::$app->cache->getOrSet('User-getArticles-'.$this->id, function () {
-            return $this->hasMany(Article::className(), ['created_by' => 'id'])->andWhere(["=", 'status', Article::STATUS_ACTIVE]) ?: [];
+            return $this->hasMany(Article::className(), ['created_by' => 'id'])->andWhere(["=", 'status', Article::STATUS_ACTIVE]);
         });
     }
 
     public function getCollections()
     {
         return \Yii::$app->cache->getOrSet('User-getCollections-'.$this->id, function () {
-            return $this->hasMany(Collection::className(), ['created_by' => 'id']) ?: [];
+            return $this->hasMany(Collection::className(), ['created_by' => 'id']);
         });
     }
 
     public function getAttentions()
     {
         return \Yii::$app->cache->getOrSet('User-getAttentions-'.$this->id, function () {
-            return $this->hasMany(Fans::className(), ['fans_id' => 'id']) ?: [];
+            return $this->hasMany(Fans::className(), ['fans_id' => 'id']);
         });
     }
 
     public function getFanses()
     {
         return \Yii::$app->cache->getOrSet('User-getFanses-'.$this->id, function () {
-            return $this->hasMany(Fans::className(), ['lender_id' => 'id']) ?: [];
+            return $this->hasMany(Fans::className(), ['lender_id' => 'id']);
         });
     }
 

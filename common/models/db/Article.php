@@ -269,7 +269,7 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
     public function getATags()
     {
         return Yii::$app->cache->getOrSet('Article-getATags-'.$this->id, function (){
-            return $this->hasMany(TagArticle::className(), ['article_id' => 'id']) ?: [];
+            return $this->hasMany(TagArticle::className(), ['article_id' => 'id']);
         });
     }
 
@@ -291,7 +291,7 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
     public function getCollections()
     {
         return Yii::$app->cache->getOrSet('Article-getCollections-'.$this->id, function (){
-            return $this->hasMany(Collection::className(), ['article_id' => 'id']) ?: [];
+            return $this->hasMany(Collection::className(), ['article_id' => 'id']);
         });
     }
 
