@@ -36,6 +36,12 @@ return [
             'password' => "",
             'charset' => "utf8mb4",
         ],
+        'elasticsearch' => [
+            'class' => 'yii\lasticsearch\Connection',
+            'node' => [
+                ['http_address' => 'http://192.168.1.1:9200'],
+            ],
+        ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'useFileTransport' => false,    //这里一定要改成false，不然邮件不会发送
