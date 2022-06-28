@@ -41,6 +41,7 @@ use yii\web\IdentityInterface;
  * @property-read string $nickName
  * @property-read boolean $isAdmin
  * @property-read array $profile
+ * @property TagArticle[] $tagArticles
  */
 class User extends \common\models\db\tables\User implements IdentityInterface, SearchIndexInterface
 {
@@ -440,5 +441,13 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
             'type_model_id' => $this->id,
             'title' => $this->nickName,
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTagArticles()
+    {
+        return $this->hasMany(TagArticle::className(), ['created_by' => 'id']);
     }
 }
