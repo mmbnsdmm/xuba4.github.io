@@ -132,8 +132,7 @@ class CenterController extends Controller
      */
     public function actionGetMyTags()
     {
-        $user = \Yii::$app->user->identity;
-        $query = UserTag::find()->where(['created_by' => $user->id]);
+        $query = UserTag::find()->where(['created_by' => \Yii::$app->user->id]);
         $utags = $query->all();
         $tagMap = ArrayHelper::map($utags, 'tag_id', "tag_name");
         $tagIds = [];

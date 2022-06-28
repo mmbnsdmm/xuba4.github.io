@@ -14,6 +14,7 @@ use common\models\db\Collection;
 use common\models\db\Tag;
 use common\models\db\TagArticle;
 use common\models\db\User;
+use common\models\db\UserFile;
 use wodrow\yii\rest\ApiException;
 use wodrow\yii\rest\Controller;
 use wodrow\yii2wtools\tools\Model;
@@ -139,7 +140,9 @@ class DefaultController extends Controller
         $appendData = ['list' => [], 'page' => $page, 'page_size' => $page_size, 'total' => 0];
         $limit = $page_size;
         $offset = $limit * ($page - 1);
-        $query = Article::find()->select(['title', 'id', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by', 'get_password', 'is_boutique', 'create_type']);
+        $query = Article::find()
+            ->select(['title', 'id', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by', 'get_password', 'is_boutique', 'create_type'])
+            ->with(['collections', 'aTags', 'createdBy', 'createdBy.attentions', 'createdBy.fanses', 'createdBy.articles']);
         if ($showUser === null){
             if ($json_filter_params){
                 $filter_params = json_decode($json_filter_params, true);
@@ -262,6 +265,7 @@ class DefaultController extends Controller
         if ($model->status === Article::STATUS_DELETE){
             throw new ApiException(202008191740, "文章已删除");
         }
+        $model->content = UserFile::decodeContent($model->content);
         return $model;
     }
 }
