@@ -149,7 +149,9 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
     public function afterFind()
     {
         parent::afterFind();
-        $this->content = UserFile::decodeContent($this->content);
+        $this->content = Yii::$app->cache->getOrSet('Article-afterFind-content-'.$this->id, function (){
+            return UserFile::decodeContent($this->content);
+        });
     }
 
     public function afterSave($insert, $changedAttributes)
@@ -181,6 +183,10 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
 
     protected function _deleteCaches()
     {
+        Yii::$app->cache->delete('Article-afterFind-content-'.$this->id);
+        Yii::$app->cache->delete('Article-getATags-'.$this->id);
+        Yii::$app->cache->delete('Article-getCollections-'.$this->id);
+        Yii::$app->cache->delete('User-getArticles-'.$this->created_by);
         if ($this->status == self::STATUS_ACTIVE){
             $this->setSearchIndex();
         }else{
@@ -193,7 +199,9 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
      */
     public function getCreatedBy()
     {
-        return $this->hasOne(User::className(), ['id' => 'created_by']);
+        return Yii::$app->cache->getOrSet('Article-getCreatedBy-'.$this->created_by, function () {
+            return $this->hasOne(User::className(), ['id' => 'created_by']);
+        });
     }
 
     /**
@@ -260,7 +268,9 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
      */
     public function getATags()
     {
-        return $this->hasMany(TagArticle::className(), ['article_id' => 'id']);
+        return Yii::$app->cache->getOrSet('Article-getATags-'.$this->id, function (){
+            return $this->hasMany(TagArticle::className(), ['article_id' => 'id']) ?: [];
+        });
     }
 
     /**
@@ -280,12 +290,15 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
      */
     public function getCollections()
     {
-        return $this->hasMany(Collection::className(), ['article_id' => 'id']);
+        return Yii::$app->cache->getOrSet('Article-getCollections-'.$this->id, function (){
+            return $this->hasMany(Collection::className(), ['article_id' => 'id']) ?: [];
+        });
     }
 
     public function getCollectionTotal()
     {
-        return Collection::find()->where(['article_id' => $this->id])->count();
+//        return Collection::find()->where(['article_id' => $this->id])->count();
+        return count($this->collections);
     }
 
     /**
@@ -298,7 +311,11 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
 
     public function getYourCollection()
     {
-        return Collection::findOne(['article_id' => $this->id, 'created_by' => Yii::$app->user->id]);
+//        return Collection::findOne(['article_id' => $this->id, 'created_by' => Yii::$app->user->id]);
+        foreach ($this->collections as $k => $v) {
+            if ($v->created_by == Yii::$app->user->id)return true;
+        }
+        return false;
     }
 
     public function collection()

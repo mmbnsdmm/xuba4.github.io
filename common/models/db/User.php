@@ -184,37 +184,51 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
 
     public function getTags()
     {
-        return $this->hasMany(Tag::className(), ['id' => 'tag_id'])->viaTable('{{%user_tag}}', ['created_by' => 'id']);
+        return \Yii::$app->cache->getOrSet('User-getTags-'.$this->id, function () {
+            return $this->hasMany(Tag::className(), ['id' => 'tag_id'])->viaTable('{{%user_tag}}', ['created_by' => 'id']) ?: [];
+        });
     }
 
     public function getArticles()
     {
-        return $this->hasMany(Article::className(), ['created_by' => 'id'])->andWhere(["=", 'status', Article::STATUS_ACTIVE]);
+        return \Yii::$app->cache->getOrSet('User-getArticles-'.$this->id, function () {
+            return $this->hasMany(Article::className(), ['created_by' => 'id'])->andWhere(["=", 'status', Article::STATUS_ACTIVE]) ?: [];
+        });
     }
 
     public function getCollections()
     {
-        return $this->hasMany(Collection::className(), ['created_by' => 'id']);
+        return \Yii::$app->cache->getOrSet('User-getCollections-'.$this->id, function () {
+            return $this->hasMany(Collection::className(), ['created_by' => 'id']) ?: [];
+        });
     }
 
     public function getAttentions()
     {
-        return $this->hasMany(Fans::className(), ['fans_id' => 'id']);
+        return \Yii::$app->cache->getOrSet('User-getAttentions-'.$this->id, function () {
+            return $this->hasMany(Fans::className(), ['fans_id' => 'id']) ?: [];
+        });
     }
 
     public function getFanses()
     {
-        return $this->hasMany(Fans::className(), ['lender_id' => 'id']);
+        return \Yii::$app->cache->getOrSet('User-getFanses-'.$this->id, function () {
+            return $this->hasMany(Fans::className(), ['lender_id' => 'id']) ?: [];
+        });
     }
 
     public function getIsYourAttention()
     {
-        if (\Yii::$app->user->isGuest){
+        if (\Yii::$app->user->isGuest) {
             return false;
         }
-        $identify = \Yii::$app->user->identity;
-        $fans = Fans::findOne(['lender_id' => $this->id, 'fans_id' => $identify->id]);
-        return !!$fans;
+        foreach ($this->fanses as $k => $v) {
+            if ($v->fans_id == \Yii::$app->user->identity)return true;
+        }
+//        $identify = \Yii::$app->user->identity;
+//        $fans = Fans::findOne(['lender_id' => $this->id, 'fans_id' => $identify->id]);
+//        return !!$fans;
+        return false;
     }
 
     public function getIsYourFans()
@@ -222,9 +236,13 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
         if (\Yii::$app->user->isGuest){
             return false;
         }
-        $identify = \Yii::$app->user->identity;
-        $fans = Fans::findOne(['lender_id' => $identify->id, 'fans_id' => $this->id]);
-        return !!$fans;
+        foreach ($this->attentions as $k => $v) {
+            if ($v->lender_id == \Yii::$app->user->identity)return true;
+        }
+        return false;
+//        $identify = \Yii::$app->user->identity;
+//        $fans = Fans::findOne(['lender_id' => $identify->id, 'fans_id' => $this->id]);
+//        return !!$fans;
     }
 
     /**
@@ -322,11 +340,21 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
     public function afterFind()
     {
         parent::afterFind();
-        $this->avatar = \Yii::getAlias(UserFile::decodeContent($this->avatar));
-        $this->weixin_exceptional_url = UserFile::decodeContent($this->weixin_exceptional_url);
-        $this->weixin_exceptional_code = UserFile::decodeContent($this->weixin_exceptional_code);
-        $this->alipay_exceptional_url = UserFile::decodeContent($this->alipay_exceptional_url);
-        $this->alipay_exceptional_code = UserFile::decodeContent($this->alipay_exceptional_code);
+        $this->avatar = \Yii::$app->cache->getOrSet('User-afterFind-avatar-'.$this->id, function (){
+            return UserFile::decodeContent($this->avatar);
+        });
+        $this->weixin_exceptional_url = \Yii::$app->cache->getOrSet('User-afterFind-weixin_exceptional_url-'.$this->id, function (){
+            return UserFile::decodeContent($this->weixin_exceptional_url);
+        });
+        $this->weixin_exceptional_code = \Yii::$app->cache->getOrSet('User-afterFind-weixin_exceptional_code-'.$this->id, function (){
+            return UserFile::decodeContent($this->weixin_exceptional_code);
+        });
+        $this->alipay_exceptional_url = \Yii::$app->cache->getOrSet('User-afterFind-alipay_exceptional_url-'.$this->id, function (){
+            return UserFile::decodeContent($this->alipay_exceptional_url);
+        });
+        $this->alipay_exceptional_code = \Yii::$app->cache->getOrSet('User-afterFind-alipay_exceptional_code-'.$this->id, function (){
+            return UserFile::decodeContent($this->alipay_exceptional_code);
+        });
     }
 
     public function afterSave($insert, $changedAttributes)
@@ -358,6 +386,12 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
 
     protected function _deleteCaches()
     {
+        \Yii::$app->cache->delete('User-afterFind-avatar-'.$this->id);
+        \Yii::$app->cache->delete('User-afterFind-weixin_exceptional_url-'.$this->id);
+        \Yii::$app->cache->delete('User-afterFind-weixin_exceptional_code-'.$this->id);
+        \Yii::$app->cache->delete('User-afterFind-alipay_exceptional_url-'.$this->id);
+        \Yii::$app->cache->delete('User-afterFind-alipay_exceptional_code-'.$this->id);
+        \Yii::$app->cache->delete('Article-getCreatedBy-'.$this->id);
         if ($this->status == self::STATUS_ACTIVE){
             $this->setSearchIndex();
         }else{
@@ -378,8 +412,11 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
      */
     public function getIsAdmin()
     {
-        $adminName = \Yii::$app->params['adminRoleAdminUserName'];
-        if (AdminAuthAssignment::findOne(['user_id' => $this->id, 'item_name' => $adminName])){
+        $adminAuthAssignment = \Yii::$app->cache->getOrSet('User-getIsAdmin', function () {
+            $adminName = \Yii::$app->params['adminRoleAdminUserName'];
+            return AdminAuthAssignment::findOne(['user_id' => $this->id, 'item_name' => $adminName]);
+        }, 3600 * 24);
+        if ($adminAuthAssignment){
             return true;
         }else{
             return false;

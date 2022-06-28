@@ -13,7 +13,12 @@ $config = [
             'targets' => [
                 [
                     'class' => \yii\log\DbTarget::class,
-                    'levels' => ['error', 'warning'],
+                    'levels' => ['error'],
+                ],
+                [
+                    'class' => \yii\log\FileTarget::class,
+                    'levels' => YII_ENV_DEV ? ['error', 'warning','info'] : [],
+                    'categories'=> YII_ENV_DEV ? ['yii\db\*','app\models\*'] : [],
                 ],
             ],
         ],

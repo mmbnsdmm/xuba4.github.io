@@ -505,4 +505,9 @@ REGEXP;
 //        $log->save();
         var_dump($log->message);
     }
+
+    public function actionTest19()
+    {
+        \Yii::$app->cache->flush();
+    }
 }
