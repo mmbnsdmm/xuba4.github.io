@@ -9,6 +9,7 @@
 namespace common\models\db;
 
 
+use common\models\db\tables\TagArticle;
 use common\models\interfaces\SearchIndexInterface;
 use common\Tools;
 use GuzzleHttp\Client;
@@ -36,12 +37,13 @@ use yii\web\IdentityInterface;
  * @property-read  Fans $isYourAttention
  * @property-read  Fans $isYourFans
  * @property Tag[] $tags
+ * @property TagArticle[] $tagArticles
+ * @property TagArticle[] $tagArticles0
  *
  * @property-read array $statusDesc
  * @property-read string $nickName
  * @property-read boolean $isAdmin
  * @property-read array $profile
- * @property TagArticle[] $tagArticles
  */
 class User extends \common\models\db\tables\User implements IdentityInterface, SearchIndexInterface
 {
@@ -195,6 +197,22 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
         return \Yii::$app->cache->getOrSet('User-getArticles-'.$this->id, function () {
             return $this->hasMany(Article::className(), ['created_by' => 'id'])->andWhere(["=", 'status', Article::STATUS_ACTIVE]);
         });
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTagArticles()
+    {
+        return $this->hasMany(TagArticle::className(), ['created_by' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTagArticles0()
+    {
+        return $this->hasMany(TagArticle::className(), ['updated_by' => 'id']);
     }
 
     public function getCollections()
@@ -441,13 +459,5 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
             'type_model_id' => $this->id,
             'title' => $this->nickName,
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTagArticles()
-    {
-        return $this->hasMany(TagArticle::className(), ['created_by' => 'id']);
     }
 }
