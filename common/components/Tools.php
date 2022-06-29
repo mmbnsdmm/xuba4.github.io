@@ -10,7 +10,10 @@ namespace common\components;
 
 
 use common\models\db\LogYiiLog;
+use yii\helpers\FileHelper;
 use yii\helpers\VarDumper;
+use yii\log\FileTarget;
+use yii\log\Logger;
 
 class Tools extends \wodrow\yii2wtools\tools\Tools
 {
@@ -47,7 +50,7 @@ class Tools extends \wodrow\yii2wtools\tools\Tools
         return rand(10, 99).rand(1000, 9999);
     }
 
-    public static function yiiLog($msg, $log_name = null, $is_saveto_db = false)
+    /*public static function yiiLog($msg, $log_name = null, $is_saveto_db = false)
     {
         if (!$log_name){
             $log_name = \Yii::$app->controller->route;
@@ -80,6 +83,32 @@ class Tools extends \wodrow\yii2wtools\tools\Tools
                 \wodrow\yii2wtools\tools\Tools::log($logYiiLog->errors, $log_name);
             }
         }
+    }*/
+
+    /**
+     * @param $msg
+     * @param null $log_name
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\log\LogRuntimeException
+     */
+    public static function yiiLog($msg, $log_name = null, $is_rewrite = 0)
+    {
+        if (!$log_name){
+            $log_name = \Yii::$app->controller->route;
+        }else{
+            $log_name = \Yii::$app->controller->route.DIRECTORY_SEPARATOR.$log_name;
+        }
+//        \wodrow\yii2wtools\tools\Tools::log($msg, $log_name);
+        $log = New FileTarget();
+        $log->logFile = \Yii::getAlias('@common/runtime/logs/') . \Yii::$app->id . DIRECTORY_SEPARATOR . "{$log_name}.log";
+        $dir = dirname($log->logFile);
+        if (!is_dir($dir))FileHelper::createDirectory($dir);
+        if ($is_rewrite) {
+            file_put_contents($log->logFile, '');
+        }
+        $log->messages[] = [$msg, Logger::LEVEL_INFO, 'tool-log', time()];
+        $log->export();
     }
 
     /**
