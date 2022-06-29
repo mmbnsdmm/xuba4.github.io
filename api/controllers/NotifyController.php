@@ -39,11 +39,11 @@ class NotifyController extends Controller
     /**
      * 我的个人支付宝通知推送
      */
-    public function actionWoPersonAliPayNotify($eStr, $sign)
+    public function actionWoPersonAliPayNotify($params, $t10, $nonce, $sign)
     {
-        return $this->success("succcess", [
-            'eStr' => $eStr,
-            'sign' => $sign,
-        ]);
+        $salt = '123456';
+        $_sign = $params.$t10.$nonce.$salt;
+        // $x = md5("%7B%22pkg%22%3A%22com.eg.android.AlipayGphone%22%2C%22content%22%3A%22%5B12%E6%9D%A1%5Dwww%22%2C%22notify_time%22%3A%222022-06-29%2011%3A58%3A44%22%2C%22title%22%3A%22wodrow%22%7D1656475124rand_1656475124239860638123456");
+        return $this->success("success", ['x' => $_sign]);
     }
 }
