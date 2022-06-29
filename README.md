@@ -18,23 +18,36 @@ Software architecture description
 
 ##### nginx
 
-    location / {
-        try_files $uri $uri/ /index.php$is_args$args;
-    }
-    location /app_dir {
-        try_files $uri $uri/ /app_dir/index.php$is_args$args;
-    }
+```allykeynamelanguage
+location / {
+    try_files $uri $uri/ /index.php$is_args$args;
+}
+location /app_dir {
+    try_files $uri $uri/ /app_dir/index.php$is_args$args;
+}
+
+location / 
+{
+     index  index.html index.htm index.php;
+     if (!-e $request_filename) {
+           rewrite ^/(.*)$ /index.php?s=$1 last;
+           rewrite ^/app_dir(.*)$ /app_dir/index.php?s=$1 last;
+           break;
+     }
+     #autoindex  on;
+}
+
+location / {
+    try_files $uri $uri/ /index.php$is_args$args;
+}
+location /api {
+    try_files $uri $uri/ /api/index.php$is_args$args;
+}
+location /admin {
+    try_files $uri $uri/ /admin/index.php$is_args$args;
+}
+```
     
-    location / 
-    {
-         index  index.html index.htm index.php;
-         if (!-e $request_filename) {
-               rewrite ^/(.*)$ /index.php?s=$1 last;
-               rewrite ^/app_dir(.*)$ /app_dir/index.php?s=$1 last;
-               break;
-         }
-         #autoindex  on;
-    }
     
 ##### apache
     
