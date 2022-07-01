@@ -165,6 +165,9 @@ class DefaultController extends Controller
      */
     public function actionView($id)
     {
+        if (!$id) {
+            return $this->error("id不能为空");
+        }
         $tag = $this->_getModel($id);
         return $this->success("获取成功", ['tag' => $tag->info]);
     }
@@ -180,6 +183,9 @@ class DefaultController extends Controller
      */
     public function actionDelete($id)
     {
+        if (!$id) {
+            return $this->error("id不能为空");
+        }
         $tag = $this->_getModel($id);
         if (!in_array(\Yii::$app->user->id, \Yii::$app->params['apiAdminUserIds'])){
             throw new ApiException(202008270953, "你没有修改此圈子权限");
