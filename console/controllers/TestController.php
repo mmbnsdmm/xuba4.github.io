@@ -439,7 +439,8 @@ REGEXP;
         $users = $query->all();
         foreach ($users as $k => $v) {
             $user = $v;
-            $user->avatar = str_replace("http://49.235.220.19:65050/static", "@static_aburl", $user->avatar);
+//            $user->avatar = str_replace("http://49.235.220.19:65050/static", "@static_aburl", $user->avatar);
+            $user->avatar = str_replace("@static_aburl", "http://49.235.220.19:65050/static", $user->avatar);
             if ($user->save()){
                 var_dump($user->avatar);
                 var_dump($user->alipay_exceptional_code);
