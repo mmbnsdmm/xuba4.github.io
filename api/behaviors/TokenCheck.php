@@ -59,7 +59,7 @@ class TokenCheck extends ActionFilter
             if (!in_array($params['nonce'], $tmp_nonces)){
                 $tmp_nonces[] = $params['nonce'];
                 if (count($tmp_nonces) > 2000) {
-                    unset($tmp_nonces[0]);
+                    array_shift($tmp_nonces);
                 }
                 \Yii::$app->cache->set($nonce_key, $tmp_nonces, 3600);
             }else{
