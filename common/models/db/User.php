@@ -242,7 +242,7 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
             return false;
         }
         foreach ($this->fanses as $k => $v) {
-            if ($v->fans_id == \Yii::$app->user->identity)return true;
+            if ($v->fans_id == \Yii::$app->user->id)return true;
         }
 //        $identify = \Yii::$app->user->identity;
 //        $fans = Fans::findOne(['lender_id' => $this->id, 'fans_id' => $identify->id]);
