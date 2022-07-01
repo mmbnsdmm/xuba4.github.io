@@ -350,7 +350,7 @@ class UserFile extends \common\models\db\tables\UserFile
                 $url = $matches[0];
                 $domain = $matches[1];
                 if ($domain){
-                    $ips = ["120.92.150.43", "49.235.220.19", "121.37.179.86"];
+                    $ips = ["120.92.150.43", "49.235.220.19", "121.37.179.86", "xuba4.andijt.com"];
                     $pp = false;
                     foreach ($ips as $k1 => $v1) {
                         if(strpos($domain, $v1) === false){}else{
