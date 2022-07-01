@@ -4,9 +4,17 @@ $config = [
     'language' => 'zh-CN',
     'timeZone' => 'Asia/Shanghai',
     'components' => [
+        'redis' => [
+            'class' => 'yii\redis\Connection',
+            'hostname' => '127.0.0.1',
+            'port' => '6379',
+            'database' => '14',
+        ],
         'cache' => [
-            'class' => 'yii\caching\FileCache',
-            'cachePath' => '@common/runtime/cache',
+//            'class' => 'yii\caching\FileCache',
+//            'cachePath' => '@common/runtime/cache',
+            'class' => 'yii\redis\Cache',
+            'keyPrefix' => "xuba4-",
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
