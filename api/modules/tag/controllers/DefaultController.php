@@ -82,7 +82,7 @@ class DefaultController extends Controller
             $filter_params = json_decode($json_filter_params, true);
             $query->andWhere($filter_params);
         }
-        if ($joinUser !== null){
+        if ($joinUser){
             $user = User::findOne($joinUser);
             if (!$user){
                 throw new ApiException(202008241028, "没有找到用户:{$joinUser}");
