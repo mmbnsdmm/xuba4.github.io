@@ -149,7 +149,7 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
     public function afterFind()
     {
         parent::afterFind();
-        $this->content = Yii::$app->cache->getOrSet('Article-afterFind-content-'.$this->id, function (){
+        $this->content = Yii::$app->cache->getOrSet('Article2afterFind2content'.$this->id, function (){
             return UserFile::decodeContent($this->content);
         });
     }
@@ -183,10 +183,10 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
 
     protected function _deleteCaches()
     {
-        Yii::$app->cache->delete('Article-afterFind-content-'.$this->id);
-        Yii::$app->cache->delete('Article-getATags-'.$this->id);
-        Yii::$app->cache->delete('Article-getCollections-'.$this->id);
-        Yii::$app->cache->delete('User-getArticles-'.$this->created_by);
+        Yii::$app->cache->delete('Article2afterFind2content'.$this->id);
+        Yii::$app->cache->delete('Article2getATags'.$this->id);
+        Yii::$app->cache->delete('Article2getCollections'.$this->id);
+        Yii::$app->cache->delete('User2getArticles'.$this->created_by);
         if ($this->status == self::STATUS_ACTIVE){
             $this->setSearchIndex();
         }else{
@@ -199,7 +199,7 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
      */
     public function getCreatedBy()
     {
-        return Yii::$app->cache->getOrSet('Article-getCreatedBy-'.$this->created_by, function () {
+        return Yii::$app->cache->getOrSet('Article2getCreatedBy'.$this->created_by, function () {
             return $this->hasOne(User::className(), ['id' => 'created_by']);
         });
     }
@@ -268,7 +268,7 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
      */
     public function getATags()
     {
-        return Yii::$app->cache->getOrSet('Article-getATags-'.$this->id, function (){
+        return Yii::$app->cache->getOrSet('Article2getATags'.$this->id, function (){
             return $this->hasMany(TagArticle::className(), ['article_id' => 'id']);
         });
     }
@@ -290,7 +290,7 @@ class Article extends \common\models\db\tables\Article implements SearchIndexInt
      */
     public function getCollections()
     {
-        return Yii::$app->cache->getOrSet('Article-getCollections-'.$this->id, function (){
+        return Yii::$app->cache->getOrSet('Article2getCollections'.$this->id, function (){
             return $this->hasMany(Collection::className(), ['article_id' => 'id']);
         });
     }

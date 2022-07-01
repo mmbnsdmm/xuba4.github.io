@@ -21,7 +21,7 @@ class QueneYiiTask extends \common\models\db\tables\QueneYiiTask
      */
     public static function initQuene()
     {
-        \Yii::$app->cache->delete("QueneYiiTask-doQuene");
+        \Yii::$app->cache->delete("QueneYiiTask2doQuene");
         static::updateAll(['status' => static::STATUS_REDAY], ['status' => static::STATUS_RUNNING]);
     }
 
@@ -35,7 +35,7 @@ class QueneYiiTask extends \common\models\db\tables\QueneYiiTask
         $log = new LogQueneYiiTask();
         $result_msgs = LogQueneYiiTask::instance()->resultCodeMsgs;
         $log->created_at = YII_BT_TIME;
-        $locked = \Yii::$app->cache->get("QueneYiiTask-doQuene");
+        $locked = \Yii::$app->cache->get("QueneYiiTask2doQuene");
         if ($locked){
             $locked_at = isset($locked['at'])?$locked['at']:0;
             $locked_at_date = date("Y-m-d H:i:s", $locked_at);
@@ -64,7 +64,7 @@ class QueneYiiTask extends \common\models\db\tables\QueneYiiTask
         $e_ids = [];
         foreach ($quenes as $k => $v){
             $locked['taskID'] = $v->id;
-            \Yii::$app->cache->set("QueneYiiTask-doQuene", $locked, 86400*365*10);
+            \Yii::$app->cache->set("QueneYiiTask2doQuene", $locked, 86400*365*10);
             if ($v->run_at){
                 $time_diff = YII_BT_TIME - $v->run_at;
                 if ($time_diff > 300){
@@ -122,7 +122,7 @@ class QueneYiiTask extends \common\models\db\tables\QueneYiiTask
                 throw new ApiException(201910151552, "执行日志保存失败:".Model::getModelError($log));
             }
         }
-        \Yii::$app->cache->delete("QueneYiiTask-doQuene");
+        \Yii::$app->cache->delete("QueneYiiTask2doQuene");
         return [
             'log' => $log->toArray(),
         ];

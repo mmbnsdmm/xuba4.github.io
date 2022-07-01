@@ -50,6 +50,7 @@ class TokenCheck extends ActionFilter
                 throw new ApiException(201808161411, '随机数必须4位以上');
             }
             $nonce_key = 'nonce_'.$params['token'];
+            $nonce_key = substr($nonce_key, 0, 32);
             $tmp_nonces = is_array(\Yii::$app->cache->get($nonce_key))?\Yii::$app->cache->get($nonce_key):[];
             if (!in_array($params['nonce'], $tmp_nonces)){
                 $tmp_nonces[] = $params['nonce'];

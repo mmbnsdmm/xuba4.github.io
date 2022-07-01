@@ -143,8 +143,8 @@ class Fans extends \common\models\db\tables\Fans
 
     protected function _deleteCaches()
     {
-        Yii::$app->cache->delete('User-getAttentions-'.$this->fans_id);
-        Yii::$app->cache->delete('User-getFanses-'.$this->lender_id);
+        Yii::$app->cache->delete('User2getAttentions'.$this->fans_id);
+        Yii::$app->cache->delete('User2getFanses'.$this->lender_id);
     }
 
     /**

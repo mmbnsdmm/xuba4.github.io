@@ -187,14 +187,14 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
 
     public function getTags()
     {
-        return \Yii::$app->cache->getOrSet('User-getTags-'.$this->id, function () {
+        return \Yii::$app->cache->getOrSet('User2getTags'.$this->id, function () {
             return $this->hasMany(Tag::className(), ['id' => 'tag_id'])->viaTable('{{%user_tag}}', ['created_by' => 'id']);
         });
     }
 
     public function getArticles()
     {
-        return \Yii::$app->cache->getOrSet('User-getArticles-'.$this->id, function () {
+        return \Yii::$app->cache->getOrSet('User2getArticles'.$this->id, function () {
             return $this->hasMany(Article::className(), ['created_by' => 'id'])->andWhere(["=", 'status', Article::STATUS_ACTIVE]);
         });
     }
@@ -217,21 +217,21 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
 
     public function getCollections()
     {
-        return \Yii::$app->cache->getOrSet('User-getCollections-'.$this->id, function () {
+        return \Yii::$app->cache->getOrSet('User2getCollections'.$this->id, function () {
             return $this->hasMany(Collection::className(), ['created_by' => 'id']);
         });
     }
 
     public function getAttentions()
     {
-        return \Yii::$app->cache->getOrSet('User-getAttentions-'.$this->id, function () {
+        return \Yii::$app->cache->getOrSet('User2getAttentions'.$this->id, function () {
             return $this->hasMany(Fans::className(), ['fans_id' => 'id']);
         });
     }
 
     public function getFanses()
     {
-        return \Yii::$app->cache->getOrSet('User-getFanses-'.$this->id, function () {
+        return \Yii::$app->cache->getOrSet('User2getFanses'.$this->id, function () {
             return $this->hasMany(Fans::className(), ['lender_id' => 'id']);
         });
     }
@@ -359,23 +359,23 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
     public function afterFind()
     {
         parent::afterFind();
-        $this->avatar = \Yii::$app->cache->getOrSet('User-afterFind-avatar-'.$this->id, function (){
+        $this->avatar = \Yii::$app->cache->getOrSet('User2afterFind2avatar'.$this->id, function (){
             $url = UserFile::decodeContent($this->avatar);
             if (substr($url, 0, 1) == '@') {
                 $url = \Yii::getAlias($url);
             }
             return $url;
         });
-        $this->weixin_exceptional_url = \Yii::$app->cache->getOrSet('User-afterFind-weixin_exceptional_url-'.$this->id, function (){
+        $this->weixin_exceptional_url = \Yii::$app->cache->getOrSet('User2afterFind2weixin4exceptional4url'.$this->id, function (){
             return UserFile::decodeContent($this->weixin_exceptional_url);
         });
-        $this->weixin_exceptional_code = \Yii::$app->cache->getOrSet('User-afterFind-weixin_exceptional_code-'.$this->id, function (){
+        $this->weixin_exceptional_code = \Yii::$app->cache->getOrSet('User2afterFind2weixin4exceptional4code'.$this->id, function (){
             return UserFile::decodeContent($this->weixin_exceptional_code);
         });
-        $this->alipay_exceptional_url = \Yii::$app->cache->getOrSet('User-afterFind-alipay_exceptional_url-'.$this->id, function (){
+        $this->alipay_exceptional_url = \Yii::$app->cache->getOrSet('User2afterFind2alipay4exceptional4url'.$this->id, function (){
             return UserFile::decodeContent($this->alipay_exceptional_url);
         });
-        $this->alipay_exceptional_code = \Yii::$app->cache->getOrSet('User-afterFind-alipay_exceptional_code-'.$this->id, function (){
+        $this->alipay_exceptional_code = \Yii::$app->cache->getOrSet('User2afterFind2alipay4exceptional4code'.$this->id, function (){
             return UserFile::decodeContent($this->alipay_exceptional_code);
         });
     }
@@ -409,12 +409,12 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
 
     protected function _deleteCaches()
     {
-        \Yii::$app->cache->delete('User-afterFind-avatar-'.$this->id);
-        \Yii::$app->cache->delete('User-afterFind-weixin_exceptional_url-'.$this->id);
-        \Yii::$app->cache->delete('User-afterFind-weixin_exceptional_code-'.$this->id);
-        \Yii::$app->cache->delete('User-afterFind-alipay_exceptional_url-'.$this->id);
-        \Yii::$app->cache->delete('User-afterFind-alipay_exceptional_code-'.$this->id);
-        \Yii::$app->cache->delete('Article-getCreatedBy-'.$this->id);
+        \Yii::$app->cache->delete('User2afterFind2avatar'.$this->id);
+        \Yii::$app->cache->delete('User2afterFind2weixin4exceptional4url'.$this->id);
+        \Yii::$app->cache->delete('User2afterFind2weixin4exceptional4code'.$this->id);
+        \Yii::$app->cache->delete('User2afterFind2alipay4exceptional4url'.$this->id);
+        \Yii::$app->cache->delete('User2afterFind2alipay4exceptional4code'.$this->id);
+        \Yii::$app->cache->delete('Article2getCreatedBy'.$this->id);
         if ($this->status == self::STATUS_ACTIVE){
             $this->setSearchIndex();
         }else{
@@ -435,7 +435,7 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
      */
     public function getIsAdmin()
     {
-        $adminAuthAssignment = \Yii::$app->cache->getOrSet('User-getIsAdmin', function () {
+        $adminAuthAssignment = \Yii::$app->cache->getOrSet('User2getIsAdmin', function () {
             $adminName = \Yii::$app->params['adminRoleAdminUserName'];
             return AdminAuthAssignment::findOne(['user_id' => $this->id, 'item_name' => $adminName]);
         }, 3600 * 24);

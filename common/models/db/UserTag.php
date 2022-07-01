@@ -146,7 +146,7 @@ class UserTag extends \common\models\db\tables\UserTag
 
     protected function _deleteCaches()
     {
-        Yii::$app->cache->delete('User-getTags-'.$this->created_by);
+        Yii::$app->cache->delete('User2getTags'.$this->created_by);
     }
 
     /**

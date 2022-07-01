@@ -97,8 +97,8 @@ class BaiDuTieBa extends Component
         $this->post_ids = [];
         $pages = $ql->find('.l_reply_num')->find('.red:eq(1)')->text();
         $this->consoleMsg($pages);
-        if (!$this->is_cache)\Yii::$app->cache->delete('baiduTieziId_'.$this->baiduTieziId);
-        $list = \Yii::$app->cache->get('baiduTieziId_'.$this->baiduTieziId);
+        if (!$this->is_cache)\Yii::$app->cache->delete('baiduTieziId'.$this->baiduTieziId);
+        $list = \Yii::$app->cache->get('baiduTieziId'.$this->baiduTieziId);
         if (!$list){
             $list = [];
             for ($i = 1; $i <= $pages; $i++){
@@ -116,7 +116,7 @@ class BaiDuTieBa extends Component
                 ])->queryData();
                 $list = ArrayHelper::merge($list, $_list);
             }
-            \Yii::$app->cache->set('baiduTieziId_'.$this->baiduTieziId, $list, 3600);
+            \Yii::$app->cache->set('baiduTieziId'.$this->baiduTieziId, $list, 3600);
         }
         foreach ($list as $k => $v){
             $_ql = QueryList::getInstance()->html($v['html']);

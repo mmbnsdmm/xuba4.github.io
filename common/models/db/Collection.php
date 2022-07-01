@@ -144,8 +144,8 @@ class Collection extends \common\models\db\tables\Collection
 
     protected function _deleteCaches()
     {
-        Yii::$app->cache->delete('Article-getCollections-'.$this->article_id);
-        Yii::$app->cache->delete('User-getCollections-'.$this->created_by);
+        Yii::$app->cache->delete('Article2getCollections'.$this->article_id);
+        Yii::$app->cache->delete('User2getCollections'.$this->created_by);
     }
 
     /**
