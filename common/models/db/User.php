@@ -360,7 +360,11 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
     {
         parent::afterFind();
         $this->avatar = \Yii::$app->cache->getOrSet('User-afterFind-avatar-'.$this->id, function (){
-            return UserFile::decodeContent($this->avatar);
+            $url = UserFile::decodeContent($this->avatar);
+            if (substr($url, 0, 1) == '@') {
+                $url = \Yii::getAlias($url);
+            }
+            return $url;
         });
         $this->weixin_exceptional_url = \Yii::$app->cache->getOrSet('User-afterFind-weixin_exceptional_url-'.$this->id, function (){
             return UserFile::decodeContent($this->weixin_exceptional_url);
