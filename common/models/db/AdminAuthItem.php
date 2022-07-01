@@ -57,10 +57,10 @@ class AdminAuthItem extends \common\models\db\tables\AdminAuthItem
 
     public static function getAllPermissions()
     {
-        $x = Yii::$app->cache->get("AdminAuthItem2getAllPermissions");
+        $x = Yii::$app->cache->get("AdminAuIt2getAllPermissions");
         if (!$x){
             $x = self::find()->where(['type' => self::TYPE_ROUTE])->andWhere(['not like', 'name', '/%', false])->all();
-            Yii::$app->cache->set("AdminAuthItem2getAllPermissions", $x);
+            Yii::$app->cache->set("AdminAuIt2getAllPermissions", $x);
         }
         return $x;
     }
@@ -82,8 +82,8 @@ class AdminAuthItem extends \common\models\db\tables\AdminAuthItem
      */
     public static function getChildsByRole($role, $get_type)
     {
-//        Yii::$app->cache->delete("AdminAuthItemChild2getChilds{$get_type}ByRole2{$role}");
-        $childs = Yii::$app->cache->getOrSet("AdminAuthItemChild2getChilds{$get_type}ByRole2{$role}", function () use ($role, $get_type) {
+//        Yii::$app->cache->delete("AdminAuItCh2getChs{$get_type}ByRole2{$role}");
+        $childs = Yii::$app->cache->getOrSet("AdminAuItCh2getChs{$get_type}ByRole2{$role}", function () use ($role, $get_type) {
             $query = AdminAuthItemChild::find()->alias('item_p_c')
                 ->joinWith('childAdminAuthItem child')
                 ->where(['item_p_c.parent' => $role]);
@@ -127,7 +127,7 @@ class AdminAuthItem extends \common\models\db\tables\AdminAuthItem
     protected function _deleteCaches()
     {
         Yii::$app->cache->delete("AdminAuthItem2getAllRoles");
-        Yii::$app->cache->delete("AdminAuthItem2getAllPermissions");
+        Yii::$app->cache->delete("AdminAuIt2getAllPermissions");
         Yii::$app->cache->delete("AdminAuthItem2getAllRoutes");
         foreach ($this->adminAuthAssignments as $k => $v) {
             $v->save();

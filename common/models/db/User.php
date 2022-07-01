@@ -366,16 +366,16 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
             }
             return $url;
         });
-        $this->weixin_exceptional_url = \Yii::$app->cache->getOrSet('User2afterFind2weixin4exceptional4url'.$this->id, function (){
+        $this->weixin_exceptional_url = \Yii::$app->cache->getOrSet('User2afFi2wx4excep4url'.$this->id, function (){
             return UserFile::decodeContent($this->weixin_exceptional_url);
         });
-        $this->weixin_exceptional_code = \Yii::$app->cache->getOrSet('User2afterFind2weixin4exceptional4code'.$this->id, function (){
+        $this->weixin_exceptional_code = \Yii::$app->cache->getOrSet('User2afFi2wx4excep4code'.$this->id, function (){
             return UserFile::decodeContent($this->weixin_exceptional_code);
         });
-        $this->alipay_exceptional_url = \Yii::$app->cache->getOrSet('User2afterFind2alipay4exceptional4url'.$this->id, function (){
+        $this->alipay_exceptional_url = \Yii::$app->cache->getOrSet('User2afFi2alip4excep4rul'.$this->id, function (){
             return UserFile::decodeContent($this->alipay_exceptional_url);
         });
-        $this->alipay_exceptional_code = \Yii::$app->cache->getOrSet('User2afterFind2alipay4exceptional4code'.$this->id, function (){
+        $this->alipay_exceptional_code = \Yii::$app->cache->getOrSet('User2afFi2alip4excep4code'.$this->id, function (){
             return UserFile::decodeContent($this->alipay_exceptional_code);
         });
     }
@@ -410,10 +410,10 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
     protected function _deleteCaches()
     {
         \Yii::$app->cache->delete('User2afterFind2avatar'.$this->id);
-        \Yii::$app->cache->delete('User2afterFind2weixin4exceptional4url'.$this->id);
-        \Yii::$app->cache->delete('User2afterFind2weixin4exceptional4code'.$this->id);
-        \Yii::$app->cache->delete('User2afterFind2alipay4exceptional4url'.$this->id);
-        \Yii::$app->cache->delete('User2afterFind2alipay4exceptional4code'.$this->id);
+        \Yii::$app->cache->delete('User2afFi2wx4excep4url'.$this->id);
+        \Yii::$app->cache->delete('User2afFi2wx4excep4code'.$this->id);
+        \Yii::$app->cache->delete('User2afFi2alip4excep4rul'.$this->id);
+        \Yii::$app->cache->delete('User2afFi2alip4excep4code'.$this->id);
         \Yii::$app->cache->delete('Article2getCreatedBy'.$this->id);
         if ($this->status == self::STATUS_ACTIVE){
             $this->setSearchIndex();

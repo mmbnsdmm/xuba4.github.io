@@ -20,7 +20,7 @@ class AdminAuthAssignment extends \common\models\db\tables\AdminAuthAssignment
 {
     public static function getRolesByUser($user_id)
     {
-        $assignRoles = Yii::$app->cache->getOrSet("AdminAuthAssignment2getRolesByUser{$user_id}", function () use ($user_id) {
+        $assignRoles = Yii::$app->cache->getOrSet("AdminAuAs2getRolesByUser{$user_id}", function () use ($user_id) {
             return self::find()->where(['user_id' => $user_id])->all();
         });
         return $assignRoles;
@@ -48,7 +48,7 @@ class AdminAuthAssignment extends \common\models\db\tables\AdminAuthAssignment
 
     protected function _deleteCaches()
     {
-        Yii::$app->cache->delete("AdminAuthAssignment2getRolesByUser{$this->user_id}");
+        Yii::$app->cache->delete("AdminAuAs2getRolesByUser{$this->user_id}");
     }
 
     public function afterSave($insert, $changedAttributes)
