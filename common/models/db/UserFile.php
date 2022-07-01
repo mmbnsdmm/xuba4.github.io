@@ -377,6 +377,10 @@ class UserFile extends \common\models\db\tables\UserFile
                 $userFile = UserFile::findOne($matches[1]);
                 return $userFile->aburl;
             }, $content);
+            $content = preg_replace_callback("/\@static_aburl\/avatars\/{(\d+)}\./", function ($matches){
+                $userFile = UserFile::findOne($matches[1]);
+                return $userFile->aburl;
+            }, $content);
         }
         return $content;
     }
