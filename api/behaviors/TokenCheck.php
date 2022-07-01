@@ -58,6 +58,9 @@ class TokenCheck extends ActionFilter
             $tmp_nonces = is_array(\Yii::$app->cache->get($nonce_key))?\Yii::$app->cache->get($nonce_key):[];
             if (!in_array($params['nonce'], $tmp_nonces)){
                 $tmp_nonces[] = $params['nonce'];
+                if (count($tmp_nonces) > 2000) {
+                    unset($tmp_nonces[0]);
+                }
                 \Yii::$app->cache->set($nonce_key, $tmp_nonces, 3600);
             }else{
                 throw new ApiException(201808161412, '请求随机数重复');
