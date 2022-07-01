@@ -32,6 +32,11 @@ class TokenCheck extends ActionFilter
         }
         if (strlen($params['token']) != 32) {
             throw new ApiException(201808161403, '认证口令长度错误');
+        }else{
+            $user = User::findIdentityByAccessToken($params['token']);
+        }
+        if (!$user){
+            throw new ApiException(201808161455, "没有找到用户,请重新登陆");
         }
         if (1){
             if (!isset($params['timestamp'])) {
@@ -49,8 +54,7 @@ class TokenCheck extends ActionFilter
             if (strlen($params['nonce']) < 3) {
                 throw new ApiException(201808161411, '随机数必须4位以上');
             }
-            $nonce_key = 'nonce_'.$params['token'];
-            $nonce_key = substr($nonce_key, 0, 32);
+            $nonce_key = 'nonceUser'.$user->id;
             $tmp_nonces = is_array(\Yii::$app->cache->get($nonce_key))?\Yii::$app->cache->get($nonce_key):[];
             if (!in_array($params['nonce'], $tmp_nonces)){
                 $tmp_nonces[] = $params['nonce'];
@@ -65,7 +69,6 @@ class TokenCheck extends ActionFilter
                 throw new ApiException(201808161405, '请求签名长度错误');
             }
             $p = $params;
-            $user = User::findOne(['token' => $params['token']]);
             $p['key'] = $user->key;
             ksort($p);
             unset($p['sign']);
@@ -78,11 +81,6 @@ class TokenCheck extends ActionFilter
             if ($_sign != $params['sign']){
                 throw new ApiException(201808161457, "验签失败");
             }
-        }else{
-            $user = User::findOne(['token' => $params['token']]);
-        }
-        if (!$user){
-            throw new ApiException(201808161455, "没有找到用户,请重新登陆");
         }
         if ($user->status != User::STATUS_ACTIVE){
             throw new ApiException(201808161456, "用户状态异常,你是否被禁了");
