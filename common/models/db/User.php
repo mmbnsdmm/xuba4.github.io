@@ -435,7 +435,7 @@ class User extends \common\models\db\tables\User implements IdentityInterface, S
      */
     public function getIsAdmin()
     {
-        $adminAuthAssignment = \Yii::$app->cache->getOrSet('User2getIsAdmin', function () {
+        $adminAuthAssignment = \Yii::$app->cache->getOrSet('User2getIsAdmin'.$this->id, function () {
             $adminName = \Yii::$app->params['adminRoleAdminUserName'];
             return AdminAuthAssignment::findOne(['user_id' => $this->id, 'item_name' => $adminName]);
         }, 3600 * 24);

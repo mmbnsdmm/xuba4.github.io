@@ -54,6 +54,20 @@ foreach ($storageDirs as $k => $v) {
     }
 }
 
+if (!function_exists('dd')) {
+    function dd(...$args)
+    {
+        if (function_exists('dump')) {
+            dump(...$args);
+        } else {
+            var_dump(...$args);
+        }
+        die;
+    }
+}
+
+Yii::$classMap['yii\caching\Cache'] = '@common/rewrites/caching/Cache.php';
+
 Yii::$container->set(\kartik\icons\FontAwesomeAsset::class, [
     'js' => [],
     'css' => [
