@@ -35,6 +35,7 @@
 
 # composer itself is not needed
 /composer.phar
+/composer2.phar
 /composer.lock
 
 # npm
