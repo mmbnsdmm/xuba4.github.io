@@ -78,6 +78,9 @@ class DefaultController extends Controller
         $limit = $page_size;
         $offset = $limit * ($page - 1);
         $query = Tag::find();
+        $query->with([
+            'createdBy', 'createdBy.attentions', 'createdBy.fanses', 'createdBy.articles'
+        ]);
         if ($json_filter_params){
             $filter_params = json_decode($json_filter_params, true);
             $query->andWhere($filter_params);
